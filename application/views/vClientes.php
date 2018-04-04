@@ -145,6 +145,20 @@
                         </select>
                     </div>
                 </div> 
+                <!-- FOTO -->
+                <div for="" align="center">
+                    <br>
+                    <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
+                </div>
+                <div class="col-md-12" align="center">
+                    <input type="file" id="Foto" name="Foto" class="d-none">
+                    <button type="button" class="btn btn-default" id="btnArchivo" name="btnArchivo">
+                        <span class="fa fa-upload fa-1x"></span> SELECCIONA EL ARCHIVO
+                    </button>
+                    <br><hr>
+                    <div id="VistaPrevia" class="col-md-12" align="center"></div>
+                </div>
+                <!-- FIN FOTO -->
             </form>
         </div> 
     </div> 
@@ -263,6 +277,20 @@
                         </div>
                     </div> 
 
+                    <!-- FOTO -->
+                    <div for="" align="center">
+                        <br>
+                        <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
+                    </div>
+                    <div class="col-md-12" align="center">
+                        <input type="file" id="Foto" name="Foto" class="d-none">
+                        <button type="button" class="btn btn-default" id="btnArchivo" name="btnArchivo">
+                            <span class="fa fa-upload fa-1x"></span> SELECCIONA EL ARCHIVO
+                        </button>
+                        <br><hr>
+                        <div id="VistaPrevia" class="col-md-12" align="center"></div>
+                    </div>
+                    <!-- FIN FOTO -->
                 </form>
             </div> 
         </div> 
@@ -285,7 +313,73 @@
     var btnConfirmarEliminar = $("#btnConfirmarEliminar");
     var mdlConfirmar = $("#mdlConfirmar");
 
+    /*DEFINIR VARIABLES PARA LA SELECCION DE ARCHIVOS*/
+    var Archivo = pnlNuevo.find("#Foto");
+    var btnArchivo = pnlNuevo.find("#btnArchivo");
+    var VistaPrevia = pnlNuevo.find("#VistaPrevia");
+    var ModificarArchivo = pnlEditar.find("#Foto");
+    var btnModificarArchivo = pnlEditar.find("#btnArchivo");
+    var ModificarVistaPrevia = pnlEditar.find("#VistaPrevia");
+
     $(document).ready(function () {
+
+        /*NUEVO ARCHIVO*/
+        btnArchivo.on("click", function () {
+            Archivo.change(function () {
+                HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
+                var imageType = /image.*/;
+                if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match(imageType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var preview = '<button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-responsive" width="400px"><div class="caption"><p>' + Archivo[0].files[0].name + '</p></div>';
+                        VistaPrevia.html(preview);
+                    };
+                    reader.readAsDataURL(Archivo[0].files[0]);
+                } else {
+                    if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match('application/pdf')) {
+                        var readerpdf = new FileReader();
+                        readerpdf.onload = function (e) {
+                            VistaPrevia.html('<div><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br> <embed src="' + readerpdf.result + '" type="application/pdf" width="90%" height="800px"' +
+                                    ' pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"></div>');
+                        };
+                        readerpdf.readAsDataURL(Archivo[0].files[0]);
+                    } else {
+                        VistaPrevia.html('EL ARCHIVO SE SUBIRÁ, PERO NO ES POSIBLE RECONOCER SI ES UN PDF O UNA IMAGEN');
+                    }
+                }
+                HoldOn.close();
+            });
+            Archivo.trigger('click');
+        });
+        /*FIN NUEVO ARCHIVO*/
+
+        /*MODIFICAR ARCHIVO*/
+        btnModificarArchivo.on("click", function () {
+            ModificarArchivo.change(function () {
+                var imageType = /image.*/;
+                if (ModificarArchivo[0].files[0] !== undefined && ModificarArchivo[0].files[0].type.match(imageType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var preview = '<button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-responsive" width="400px"><div class="caption"><p>' + ModificarArchivo[0].files[0].name + '</p></div>';
+                        ModificarVistaPrevia.html(preview);
+                    };
+                    reader.readAsDataURL(ModificarArchivo[0].files[0]);
+                } else {
+                    if (ModificarArchivo[0].files[0] !== undefined && ModificarArchivo[0].files[0].type.match('application/pdf')) {
+                        var readerpdf = new FileReader();
+                        readerpdf.onload = function (e) {
+                            ModificarVistaPrevia.html('<div><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br> <embed src="' + readerpdf.result + '" type="application/pdf" width="90%" height="800px"' +
+                                    ' pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"></div>');
+                        };
+                        readerpdf.readAsDataURL(ModificarArchivo[0].files[0]);
+                    } else {
+                        ModificarVistaPrevia.html('EL ARCHIVO SE SUBIRÁ, PERO NO ES POSIBLE RECONOCER SI ES UN PDF O UNA IMAGEN');
+                    }
+                }
+            });
+            ModificarArchivo.trigger('click');
+        });
+        /*FIN MODIFICAR ARCHIVO*/
 
 
         //Valida RFC
@@ -553,14 +647,31 @@
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-
+                            var dtm = data[0];
                             pnlEditar.find("input").val("");
                             pnlEditar.find("select").val("").trigger('change');
                             $.each(data[0], function (k, v) {
-                                pnlEditar.find("#" + k).val(v);
-                                //pnlEditar.find("#" + k).val(v).trigger('change');
-                                pnlEditar.find("[name='" + k + "']").val(v).trigger('change');
+                                if (k !== 'Foto') {
+                                    pnlEditar.find("#" + k).val(v);
+                                    pnlEditar.find("[name='" + k + "']").val(v).trigger('change');
+                                }
                             });
+                            /*COLOCAR FOTO*/
+                            if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
+                                var ext = getExt(dtm.Foto);
+                                if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
+                                    pnlEditar.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                                }
+                                if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
+                                    pnlEditar.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                                }
+                                if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
+                                    pnlEditar.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                                }
+                            } else {
+                                pnlEditar.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                            }
+                            /*FIN COLOCAR FOTO*/
                             pnlTablero.addClass("d-none");
                             pnlEditar.removeClass('d-none');
                             $(':input:text:enabled:visible:first').focus();
