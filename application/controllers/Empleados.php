@@ -111,8 +111,32 @@ class Empleados extends CI_Controller {
                 'ZapTiendaEmpleadoSaldo' => ($this->input->post('ZapTiendaEmpleadoSaldo') !== NULL) ? $this->input->post('ZapTiendaEmpleadoSaldo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $ID=$this->empleados_model->onAgregar($data);
-            echo $ID;
+            $ID = $this->empleados_model->onAgregar($data);
+
+            /* SUBIR FOTO */
+            $URL_DOC = 'uploads/Empleados/';
+            $master_url = $URL_DOC . '/';
+            if (isset($_FILES["Foto"]["name"])) {
+                if (!file_exists($URL_DOC)) {
+                    mkdir($URL_DOC, 0777, true);
+                }
+                if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
+                    mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                }
+                if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                    $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                    $DATA = array(
+                        'Foto' => ($img),
+                    );
+                    $this->empleados_model->onModificar($ID, $DATA);
+                } else {
+                    $DATA = array(
+                        'Foto' => (null),
+                    );
+                    $this->empleados_model->onModificar($ID, $DATA);
+                }
+            }
+            /* FIN SUBIR FOTO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -176,6 +200,34 @@ class Empleados extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->empleados_model->onModificar($ID, $data);
+
+            /* MODIFICAR FOTO */
+            if ($_FILES["Foto"]["tmp_name"] !== "") {
+                $URL_DOC = 'uploads/Empleados';
+                $master_url = $URL_DOC . '/';
+                if (isset($_FILES["Foto"]["name"])) {
+                    if (!file_exists($URL_DOC)) {
+                        mkdir($URL_DOC, 0777, true);
+                    }
+                    if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
+                        mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                    }
+                    if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                        $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                        $DATA = array(
+                            'Foto' => ($img),
+                        );
+                        $this->empleados_model->onModificar($ID, $DATA);
+                    } else {
+                        $DATA = array(
+                            'Foto' => (null),
+                        );
+                        $this->empleados_model->onModificar($ID, $DATA);
+                    }
+                }
+            }
+            /* FIN MODIFICAR FOTO */
+            
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
