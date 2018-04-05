@@ -1,6 +1,6 @@
 <div class="card " id="pnlTablero">
     <div class="card-body">
-        <legend class="float-left">Gestión de Vendedores</legend>
+        <legend class="float-left">Gestión de Empleados</legend>
         <div align="right">
             <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
             <button type="button" class="btn btn-primary" id="btnRefrescar"><span class="fa fa-refresh"></span><br>REFRESCAR</button>
@@ -39,6 +39,21 @@
     <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark"> 
             <form id="frmNuevo">
+
+                <div class="row">
+
+                    <div class="col-md-2 float-left">
+                        <legend class="float-left">Empleados</legend>
+                    </div>
+                    <div class="col-md-7 float-right">
+
+                    </div>
+                    <div class="col-md-3 float-right" align="right">
+                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-sm">
                         <label for="Tienda">Tienda*</label>
@@ -297,20 +312,7 @@
                     </div>
                 </div> 
 
-                <br>
-                <div class="row">
 
-                    <div class="col-md-2 float-left">
-                        <!--                        <legend class="float-left">Nuevo</legend>-->
-                    </div>
-                    <div class="col-md-7 float-right">
-
-                    </div>
-                    <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                    </div>
-                </div>
 
             </form>
         </div> 
@@ -320,7 +322,7 @@
 
 <!--SCRIPT-->
 <script>
-    var master_url = base_url + 'index.php/Vendedores/';
+    var master_url = base_url + 'index.php/Empleados/';
     var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
@@ -478,14 +480,14 @@
             pnlDatos.find("input").val("");
             pnlDatos.find("select").val("").trigger('change');
             pnlDatos.find("[name='Tienda']").select2('open');
-            temp=0;
+            temp = 0;
         });
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass('d-none');
-            temp=0;
+            temp = 0;
         });
-     
+
         getRecords();
         getTiendas();
         handleEnter();
@@ -503,33 +505,33 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblVendedores', data));
-                $('#tblVendedores tfoot th').each(function () {
+                $("#tblRegistros").html(getTable('tblEmpleados', data));
+                $('#tblEmpleados tfoot th').each(function () {
                     $(this).html('');
                 });
-//                var thead = $('#tblVendedores thead th');
-//                var tfoot = $('#tblVendedores tfoot th');
+//                var thead = $('#tblEmpleados thead th');
+//                var tfoot = $('#tblEmpleados tfoot th');
 //                thead.eq(0).addClass("d-none");
 //                tfoot.eq(0).addClass("d-none");
-//                $.each($.find('#tblVendedores tbody tr'), function (k, v) {
+//                $.each($.find('#tblEmpleados tbody tr'), function (k, v) {
 //                    var td = $(v).find("td");
 //                    td.eq(0).addClass("d-none");
 //                });
 
 
-                var tblSelected = $('#tblVendedores').DataTable(tableOptions);
-                $('#tblVendedores_filter input[type=search]').focus();
+                var tblSelected = $('#tblEmpleados').DataTable(tableOptions);
+                $('#tblEmpleados_filter input[type=search]').focus();
 
-                $('#tblVendedores tbody').on('click', 'tr', function () {
+                $('#tblEmpleados tbody').on('click', 'tr', function () {
 
-                    $("#tblVendedores tbody tr").removeClass("success");
+                    $("#tblEmpleados tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var dtm = tblSelected.row(this).data();
                     temp = parseInt(dtm[0]);
                 });
 
-                $('#tblVendedores tbody').on('dblclick', 'tr', function () {
-                    $("#tblVendedores tbody tr").removeClass("success");
+                $('#tblEmpleados tbody').on('dblclick', 'tr', function () {
+                    $("#tblEmpleados tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var id = this.id;
                     var index = $.inArray(id, selected);
@@ -562,7 +564,8 @@
                             });
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
-                            pnlDatos.find("[name='Tienda']").select2('open');
+                            $(':input:text:enabled:visible:first').focus();
+//                            pnlDatos.find("[name='Tienda']").select2('open');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {

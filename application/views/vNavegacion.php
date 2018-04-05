@@ -41,7 +41,7 @@
 
                     <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Vendedores') ?>">Vendedores</a></li>
+                    <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Clientes') ?>">Clientes</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
                     <div class="dropdown-divider" ></div>
