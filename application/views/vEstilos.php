@@ -316,7 +316,15 @@
     var ModificarVistaPrevia = pnlEditar.find("#VistaPrevia");
 
 
+
     $(document).ready(function () {
+
+
+        $("select").on('select2:selecting', function (e) {
+            var ind = $('.form-control').index(this);
+            $('.form-control').eq(ind + 1).focus();
+        });
+
 
         $(".select2-selection").on("focus", function () {
             $(this).parent().parent().prev().select2("open");
