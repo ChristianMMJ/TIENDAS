@@ -111,7 +111,8 @@ class Empleados extends CI_Controller {
                 'ZapTiendaEmpleadoSaldo' => ($this->input->post('ZapTiendaEmpleadoSaldo') !== NULL) ? $this->input->post('ZapTiendaEmpleadoSaldo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->empleados_model->onAgregar($data);
+            $ID=$this->empleados_model->onAgregar($data);
+            echo $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

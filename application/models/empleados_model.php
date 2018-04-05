@@ -17,7 +17,7 @@ class empleados_model extends CI_Model {
                     . "ISNULL(T.Clave,'')+'-'+ISNULL(T.RazonSocial,'') as Tienda ", false);
             $this->db->from('sz_Empleados AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            //$this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -85,7 +85,7 @@ class empleados_model extends CI_Model {
             $this->db->select('U.*', false);
             $this->db->from('sz_Empleados AS U');
             $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            //$this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

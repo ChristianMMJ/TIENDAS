@@ -3,10 +3,7 @@
         <legend class="float-left">Gestión de Empleados</legend>
         <div align="right">
             <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
-            <button type="button" class="btn btn-primary" id="btnRefrescar"><span class="fa fa-refresh"></span><br>REFRESCAR</button>
-            <button type="button" class="btn btn-primary" id="btnConfirmarEliminar"><span class="fa fa-trash"></span><br>ELIMINAR</button>
         </div>
-
         <div class="card-block">
             <div id="tblRegistros"></div>
         </div>
@@ -33,7 +30,27 @@
         </div>
     </div>
 </div>
-
+<!--Confirmacion-->
+<div class="modal" id="mdlAvisoEmpleado" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ESTE EMPLEADO TIENE PRÉTAMOS O DEBE ZAPATOS
+                <br>
+                DESCONTAR EL SALDO DEL FINIQUITO
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-raised btn-primary" data-dismiss="modal">ACEPTAR</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
@@ -50,7 +67,7 @@
                     </div>
                     <div class="col-md-3 float-right" align="right">
                         <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>SALIR</button>
                     </div>
                 </div>
 
@@ -112,8 +129,42 @@
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  name="Ciudad" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Estado">Estado</label>  
-                        <input type="text" class="form-control form-control-sm" maxlength="60"  name="Estado" required >
+                        <label for="Estado">Estado</label>   
+                        <select class="form-control form-control-sm "  name="Estado" required=""> 
+                            <option value=""></option>
+                            <option value="Aguascalientes">Aguascalientes</option>
+                            <option value="Baja California">Baja California</option>
+                            <option value="Baja California Sur">Baja California Sur</option>
+                            <option value="Campeche">Campeche</option>
+                            <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                            <option value="Colima">Colima</option>
+                            <option value="Chiapas">Chiapas</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                            <option value="Distrito Federal">Distrito Federal</option>
+                            <option value="Durango">Durango</option>
+                            <option value="Guanajuato">Guanajuato</option>
+                            <option value="Guerrero">Guerrero</option>
+                            <option value="Hidalgo">Hidalgo</option>
+                            <option value="Jalisco">Jalisco</option>
+                            <option value="México">México</option>
+                            <option value="Michoacán">Michoacán</option>
+                            <option value="Morelos">Morelos</option>
+                            <option value="Nayarit">Nayarit</option>
+                            <option value="Nuevo León">Nuevo León</option>
+                            <option value="Oaxaca">Oaxaca</option>
+                            <option value="Puebla">Puebla</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Quintana Roo">Quintana Roo</option>
+                            <option value="San Luis Potosí">San Luis Potosí</option>
+                            <option value="Sinaloa">Sinaloa</option>
+                            <option value="Sonora">Sonora</option>
+                            <option value="Tabasco">Tabasco</option>
+                            <option value="Tamaulipas">Tamaulipas</option>
+                            <option value="Tlaxcala">Tlaxcala</option>
+                            <option value="Veracruz">Veracruz</option>
+                            <option value="Yucatán">Yucatán</option>
+                            <option value="Zacatecas">Zacatecas</option>
+                        </select>
                     </div>
                     <div class="col-sm">
                         <label for="CP">Código Postal</label>  
@@ -274,28 +325,28 @@
                                 <label for="Beneficiario">Beneficiario</label>  
                                 <input type="text" class="form-control form-control-sm "  maxlength="80" name="Beneficiario"  >
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <label for="ParentescoBeneficiario">Parentesco</label>  
                                 <input type="text" class="form-control form-control-sm "  maxlength="50" name="ParentescoBeneficiario"  >
                             </div>
                             <div class="col-sm-2">
                                 <label for="PorcentajeBeneficio">% Porcentaje Beneficio</label>  
-                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PorcentajeBeneficio"  >
+                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="4" name="PorcentajeBeneficio"  >
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="ZapTiendaVendedor">Zap. Vend.</label>  
-                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaVendedor"  >
+                                <label for="ZapTiendaEmpleado">Zap. Vend.</label>  
+                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleado"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="ZapTiendaVendedorPagos">Zap. Vend. Pago</label>  
-                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaVendedorPagos"  >
+                                <label for="ZapTiendaEmpleadoPagos">Zap. Vend. Pago</label>  
+                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleadoPagos"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="ZapTiendaVendedorSaldo">Zap. Vend. Saldo</label>  
-                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaVendedorSaldo"  >
+                                <label for="ZapTiendaEmpleadoSaldo">Zap. Vend. Saldo</label>  
+                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleadoSaldo"  >
                             </div>
 
                         </div>
@@ -311,9 +362,6 @@
                         </select>
                     </div>
                 </div> 
-
-
-
             </form>
         </div> 
     </div> 
@@ -335,6 +383,8 @@
     var btnEliminar = $("#btnEliminar");
     var btnConfirmarEliminar = $("#btnConfirmarEliminar");
     var mdlConfirmar = $("#mdlConfirmar");
+    var nuevo= true;
+
 
     $(document).ready(function () {
         $(".select2-selection").on("focus", function () {
@@ -392,7 +442,19 @@
             if ($('#frmNuevo').valid()) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
 
-                if (temp !== 0 && temp !== undefined && temp > 0) {
+                if (!nuevo) {
+                    if (pnlDatos.find("[name='Estatus']").val() === 'INACTIVO') {
+                        frm.append('FechaEgreso', formattedDate());
+                        if (parseFloat(pnlDatos.find("[name='SaldoPrestamo']").val()) !== 0 
+                                || parseFloat(pnlDatos.find("[name='SaldoPrestamo']").val()) > 0
+                                || parseFloat(pnlDatos.find("[name='ZapTiendaEmpleadoSaldo']").val()) !== 0
+                                || parseFloat(pnlDatos.find("[name='ZapTiendaEmpleadoSaldo']").val()) > 0
+                                )
+                        {
+                            $('#mdlAvisoEmpleado').modal('show');
+
+                        }
+                    }
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -402,9 +464,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        btnRefrescar.trigger('click');
-                        pnlDatos.addClass('d-none');
-                        pnlTablero.removeClass('d-none');
+                        getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -419,11 +479,10 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
+                        nuevo =false;
+                        temp=data;
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         getRecords();
-                        pnlTablero.removeClass("d-none");
-                        pnlDatos.addClass('d-none');
-                        console.log(data, x, jq);
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -434,58 +493,18 @@
 
             }
         });
-        //Evento clic del boton confirmar borrar
-        btnConfirmarEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                //Muestra el modal
-                mdlConfirmar.modal('show');
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-            }
-        });
-        btnEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "CARGANDO DATOS..."
-                });
-                $.ajax({
-                    url: master_url + 'onEliminar',
-                    type: "POST",
-                    data: {
-                        ID: temp
-                    }
-                }).done(function (data, x, jq) {
-                    console.log(data);
-                    mdlConfirmar.modal('hide');
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'REIGISTRO ELIMINADO', 'danger');
-                    pnlEditar.addClass("d-none");
-                    pnlTablero.removeClass("d-none");
-                    btnRefrescar.trigger('click');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-            }
-        });
-        btnRefrescar.click(function () {
-            getRecords();
-        });
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatos.find("input").val("");
             pnlDatos.find("select").val("").trigger('change');
             pnlDatos.find("[name='Tienda']").select2('open');
-            temp = 0;
+            nuevo=true;
         });
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass('d-none');
-            temp = 0;
+            nuevo=true;
         });
 
         getRecords();
@@ -495,6 +514,7 @@
 
     function getRecords() {
         temp = 0;
+        
         HoldOn.open({
             theme: "sk-bounce",
             message: "CARGANDO DATOS..."
@@ -509,16 +529,6 @@
                 $('#tblEmpleados tfoot th').each(function () {
                     $(this).html('');
                 });
-//                var thead = $('#tblEmpleados thead th');
-//                var tfoot = $('#tblEmpleados tfoot th');
-//                thead.eq(0).addClass("d-none");
-//                tfoot.eq(0).addClass("d-none");
-//                $.each($.find('#tblEmpleados tbody tr'), function (k, v) {
-//                    var td = $(v).find("td");
-//                    td.eq(0).addClass("d-none");
-//                });
-
-
                 var tblSelected = $('#tblEmpleados').DataTable(tableOptions);
                 $('#tblEmpleados_filter input[type=search]').focus();
 
@@ -542,19 +552,20 @@
                     }
                     var dtm = tblSelected.row(this).data();
                     if (temp !== 0 && temp !== undefined && temp > 0) {
+                        
+                        nuevo = false;
                         HoldOn.open({
                             theme: "sk-bounce",
                             message: "CARGANDO DATOS..."
                         });
                         $.ajax({
-                            url: master_url + 'getVendedorByID',
+                            url: master_url + 'getEmpleadoByID',
                             type: "POST",
                             dataType: "JSON",
                             data: {
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-                            console.log(data);
                             pnlDatos.find("input").val("");
                             pnlDatos.find("select").val("").trigger('change');
                             $.each(data[0], function (k, v) {
