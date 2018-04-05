@@ -36,22 +36,9 @@
 
 <!--GUARDAR-->
 <div id="" class="container-fluid">
-    <div class="card border-0  d-none" id="pnlNuevo">
+    <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark"> 
             <form id="frmNuevo">
-
-                <div class="row">
-                    <div class="col-md-2 float-left">
-                        <legend class="float-left">Nuevo</legend>
-                    </div>
-                    <div class="col-md-7 float-right">
-
-                    </div>
-                    <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="Tienda">Tienda*</label>
@@ -60,8 +47,16 @@
                         </select>
                     </div>
                 </div> 
+                <input type="text" class="d-none"  name="ID"  >
                 <div class="row">
-
+                    <div class="col-sm">
+                        <label for="PrimerNombre">Nombre 1*</label>  
+                        <input type="text" class="form-control form-control-sm"  maxlength="50" name="PrimerNombre" required >
+                    </div>
+                    <div class="col-sm">
+                        <label for="SegundoNombre">Nombre 2</label>  
+                        <input type="text" class="form-control form-control-sm"  maxlength="50"  name="SegundoNombre"  >
+                    </div>
                     <div class="col-sm">
                         <label for="ApellidoP">Apellido P*</label>  
                         <input type="text" class=" form-control form-control-sm " maxlength="50" name="ApellidoP" required >
@@ -69,14 +64,6 @@
                     <div class="col-sm">
                         <label for="ApellidoM">Apellido M*</label>  
                         <input type="text" class=" form-control form-control-sm" maxlength="50"  name="ApellidoM" required >
-                    </div>
-                    <div class="col-sm">
-                        <label for="PrimerNombre">Nombre 1*</label>  
-                        <input type="text" class="form-control form-control-sm"  maxlength="50" name="PrimerNombre" required >
-                    </div>
-                    <div class="col-sm">
-                        <label for="SegundoNombre">Nombre 2*</label>  
-                        <input type="text" class="form-control form-control-sm"  maxlength="50"  name="SegundoNombre"  >
                     </div>
                 </div>
 
@@ -148,11 +135,10 @@
                         </select>
                     </div>
                 </div> 
-
                 <div class="row">
                     <div class="col-sm">
-                        <label for="FechaIngreo">Fecha Ingreso</label>  
-                        <input type="text" class="form-control form-control-sm" name="FechaIngreo"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
+                        <label for="FechaIngreso">Fecha Ingreso</label>  
+                        <input type="text" class="form-control form-control-sm" name="FechaIngreso"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                     </div>
                     <div class="col-sm">
                         <label for="FechaNacimiento">Fecha Nacimiento</label>  
@@ -190,7 +176,6 @@
                 </div>
                 <br>
                 <div class="card border-primary mb-3">
-
                     <div class="card-header">Conceptos Fijos</div>
                     <div class="card-body">
                         <div class="row">
@@ -248,6 +233,10 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
+                                <label for="SalarioNeto">Sueldo Neto</label>  
+                                <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="SalarioNeto"  >
+                            </div>
+                            <div class="col-sm-2">
                                 <label for="NoFiscal">No. Fiscal</label>  
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="NoFiscal"  >
                             </div>
@@ -297,9 +286,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
@@ -311,92 +297,35 @@
                     </div>
                 </div> 
 
+                <br>
+                <div class="row">
+
+                    <div class="col-md-2 float-left">
+                        <!--                        <legend class="float-left">Nuevo</legend>-->
+                    </div>
+                    <div class="col-md-7 float-right">
+
+                    </div>
+                    <div class="col-md-3 float-right" align="right">
+                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
+                    </div>
+                </div>
+
             </form>
         </div> 
     </div> 
 </div>
-<!--EDITAR-->
-<div id="" class="container-fluid">
-    <div class="card border-0  d-none" id="pnlEditar">
-        <div class="card-body text-dark"> 
-            <div class="card-body text-dark"> 
-                <form id="frmEditar">
-                    <div class="row">
-                        <div class="col-md-2 float-left">
-                            <legend class="float-left">Editar </legend>
-                        </div>
-                        <div class="col-md-7 float-right">
 
-                        </div>
-                        <div class="col-md-3 float-right" align="right">
-                            <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                            <button type="button" class="btn btn-primary" id="btnModificar"><span class="fa fa-check"></span><br>GUARDAR</button>
-                        </div>
-                    </div>
-                    <div class="d-none">
-                        <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
-                    </div>
-
-
-
-                    <div class="row">
-                        <div class="col-sm">
-                            <label for="Pais">País</label>  
-                            <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Colonia" name="Colonia"  >
-                        </div>
-
-                        <div class="col-sm">
-                            <label for="Telefono">Teléfono</label>  
-                            <input type="tel" class="form-control form-control-sm"  maxlength="15"  id="Telefono" name="Telefono"  >
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <label for="Correo">Correo</label>  
-                            <input type="email" class="form-control form-control-sm"  maxlength="60"  id="Correo" name="Correo"  >
-                        </div>
-                        <div class="col-sm">
-                            <label for="LimiteCredito">Límite de Crédito</label>  
-                            <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"  id="LimiteCredito" name="LimiteCredito"  >
-                        </div>
-                        <div class="col-sm">
-                            <label for="PlazoPagos">Plazo Pagos</label>  
-                            <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"  id="PlazoPagos" name="PlazoPagos"  >
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <label for="RegimenFiscal">Regimen Fiscal*</label>
-                            <select class="form-control form-control-sm "  name="RegimenFiscal" required=""> 
-                                <option value=""></option>  
-                            </select>
-                        </div>
-                    </div> 
-                    <div class="row">
-                        <div class="col-sm">
-                            <label for="Estatus">Estatus*</label>
-                            <select class="form-control form-control-sm"  name="Estatus" required=""> 
-                                <option value=""></option>  
-                                <option>ACTIVO</option>
-                                <option>INACTIVO</option> 
-                            </select>
-                        </div>
-                    </div> 
-
-                </form>
-            </div> 
-        </div> 
-    </div> 
-</div>
 
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Vendedores/';
-    var pnlNuevo = $("#pnlNuevo");
+    var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
-    var btnGuardar = pnlNuevo.find("#btnGuardar");
-    var btnCancelar = pnlNuevo.find("#btnCancelar");
+    var btnGuardar = pnlDatos.find("#btnGuardar");
+    var btnCancelar = pnlDatos.find("#btnCancelar");
     var pnlEditar = $("#pnlEditar");
     var btnModificar = pnlEditar.find("#btnModificar");
     var btnCancelarModificar = pnlEditar.find("#btnCancelar");
@@ -410,82 +339,13 @@
             $(this).parent().parent().prev().select2("open");
         });
         //Valida RFC
-        
-        pnlNuevo.find("[name='RFC']").blur(function () {
+        pnlDatos.find("[name='RFC']").blur(function () {
             var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
             var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
 
             if (rfcCorrecto) {
             } else {
                 $("[name='RFC']").val("");
-            }
-        });
-        pnlEditar.find("[name='RFC']").blur(function () {
-            var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
-            var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
-
-            if (rfcCorrecto) {
-            } else {
-                $("[name='RFC']").val("");
-            }
-        });
-        btnModificar.click(function () {
-            $.validator.setDefaults({
-                ignore: []
-            });
-            $('#frmEditar').validate({
-                errorClass: 'myErrorClass',
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    error.insertAfter(element);
-                },
-                rules: {
-                },
-                // The select element, which would otherwise get the class, is hidden from
-                // view.
-                highlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
-                    } else {
-                        elem.addClass(errorClass);
-                    }
-                },
-
-                //When removing make the same adjustments as when adding
-                unhighlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
-                    } else {
-                        elem.removeClass(errorClass);
-                    }
-                }
-            });
-            //Regresa si es valido para los select2
-            $('select').on('change', function () {
-                $(this).valid();
-            });
-            //Si es verdadero que hacer
-            if ($('#frmEditar').valid()) {
-                var frm = new FormData(pnlEditar.find("#frmEditar")[0]);
-                $.ajax({
-                    url: master_url + 'onModificar',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                    btnRefrescar.trigger('click');
-                    pnlEditar.addClass('d-none');
-                    pnlTablero.removeClass('d-none');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
             }
         });
         btnGuardar.click(function () {
@@ -528,26 +388,48 @@
             //Regresa verdadero si ya se cumplieron las reglas, si no regresa falso
             //Si es verdadero que hacer
             if ($('#frmNuevo').valid()) {
-                var frm = new FormData(pnlNuevo.find("#frmNuevo")[0]);
+                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
 
-                $.ajax({
-                    url: master_url + 'onAgregar',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                    getRecords();
-                    pnlTablero.removeClass("d-none");
-                    pnlNuevo.addClass('d-none');
-                    console.log(data, x, jq);
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
+                if (temp !== 0 && temp !== undefined && temp > 0) {
+                    $.ajax({
+                        url: master_url + 'onModificar',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: frm
+                    }).done(function (data, x, jq) {
+                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        btnRefrescar.trigger('click');
+                        pnlDatos.addClass('d-none');
+                        pnlTablero.removeClass('d-none');
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    $.ajax({
+                        url: master_url + 'onAgregar',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: frm
+                    }).done(function (data, x, jq) {
+                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        getRecords();
+                        pnlTablero.removeClass("d-none");
+                        pnlDatos.addClass('d-none');
+                        console.log(data, x, jq);
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
+
+
             }
         });
         //Evento clic del boton confirmar borrar
@@ -587,28 +469,25 @@
                 onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
             }
         });
-
         btnRefrescar.click(function () {
             getRecords();
         });
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
-            pnlNuevo.removeClass('d-none');
-            pnlNuevo.find("input").val("");
-            pnlNuevo.find("select").val("").trigger('change');
-            pnlNuevo.find("[name='Tienda']").select2('open');
+            pnlDatos.removeClass('d-none');
+            pnlDatos.find("input").val("");
+            pnlDatos.find("select").val("").trigger('change');
+            pnlDatos.find("[name='Tienda']").select2('open');
+            temp=0;
         });
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
-            pnlNuevo.addClass('d-none');
+            pnlDatos.addClass('d-none');
+            temp=0;
         });
-        btnCancelarModificar.click(function () {
-            pnlEditar.addClass("d-none");
-            pnlTablero.removeClass("d-none");
-        });
-
+     
         getRecords();
-        getRegimenesFiscales();
+        getTiendas();
         handleEnter();
     });
 
@@ -628,14 +507,14 @@
                 $('#tblVendedores tfoot th').each(function () {
                     $(this).html('');
                 });
-                var thead = $('#tblVendedores thead th');
-                var tfoot = $('#tblVendedores tfoot th');
-                thead.eq(0).addClass("d-none");
-                tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblVendedores tbody tr'), function (k, v) {
-                    var td = $(v).find("td");
-                    td.eq(0).addClass("d-none");
-                });
+//                var thead = $('#tblVendedores thead th');
+//                var tfoot = $('#tblVendedores tfoot th');
+//                thead.eq(0).addClass("d-none");
+//                tfoot.eq(0).addClass("d-none");
+//                $.each($.find('#tblVendedores tbody tr'), function (k, v) {
+//                    var td = $(v).find("td");
+//                    td.eq(0).addClass("d-none");
+//                });
 
 
                 var tblSelected = $('#tblVendedores').DataTable(tableOptions);
@@ -666,24 +545,24 @@
                             message: "CARGANDO DATOS..."
                         });
                         $.ajax({
-                            url: master_url + 'getClienteByID',
+                            url: master_url + 'getVendedorByID',
                             type: "POST",
                             dataType: "JSON",
                             data: {
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-
-                            pnlEditar.find("input").val("");
-                            pnlEditar.find("select").val("").trigger('change');
+                            console.log(data);
+                            pnlDatos.find("input").val("");
+                            pnlDatos.find("select").val("").trigger('change');
                             $.each(data[0], function (k, v) {
-                                pnlEditar.find("[name='" + k + "']").val(v);
+                                pnlDatos.find("[name='" + k + "']").val(v);
                                 //pnlEditar.find("#" + k).val(v).trigger('change');
-                                pnlEditar.find("[name='" + k + "']").val(v).trigger('change');
+                                pnlDatos.find("[name='" + k + "']").val(v).trigger('change');
                             });
                             pnlTablero.addClass("d-none");
-                            pnlEditar.removeClass('d-none');
-                            pnlNuevo.find("[name='Tienda']").select2('open');
+                            pnlDatos.removeClass('d-none');
+                            pnlDatos.find("[name='Tienda']").select2('open');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -711,19 +590,18 @@
         });
     }
 
-    function getRegimenesFiscales() {
+    function getTiendas() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
-            url: master_url + 'getRegimenesFiscales',
+            url: master_url + 'getTiendas',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             var options = '<option></option>';
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.SValue + '</option>';
+                options += '<option value="' + v.ID + '">' + v.Tienda + '</option>';
             });
-            pnlNuevo.find("[name='RegimenFiscal']").html(options);
-            pnlEditar.find("[name='RegimenFiscal']").html(options);
+            pnlDatos.find("[name='Tienda']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

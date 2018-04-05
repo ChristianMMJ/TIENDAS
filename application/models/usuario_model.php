@@ -12,7 +12,7 @@ class usuario_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, ISNULL(T.RazonSocial,'') as Tienda ", false);
+            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, ISNULL(T.Clave,'')+'-'+ISNULL(T.RazonSocial,'') as Tienda ", false);
             $this->db->from('sz_Usuarios AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');

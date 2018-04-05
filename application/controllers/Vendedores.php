@@ -59,7 +59,7 @@ class Vendedores extends CI_Controller {
         try {
             $data = array(
                 'ApellidoP' => ($this->input->post('ApellidoP') !== NULL) ? $this->input->post('ApellidoP') : NULL,
-                'ApellidoP' => ($this->input->post('ApellidoP') !== NULL) ? $this->input->post('ApellidoP') : NULL,
+                'ApellidoM' => ($this->input->post('ApellidoM') !== NULL) ? $this->input->post('ApellidoM') : NULL,
                 'PrimerNombre' => ($this->input->post('PrimerNombre') !== NULL) ? $this->input->post('PrimerNombre') : NULL,
                 'SegundoNombre' => ($this->input->post('SegundoNombre') !== NULL) ? $this->input->post('SegundoNombre') : NULL,
                 'Direccion' => ($this->input->post('Direccion') !== NULL) ? $this->input->post('Direccion') : NULL,
@@ -108,6 +108,7 @@ class Vendedores extends CI_Controller {
                 'CtaBancaria' => ($this->input->post('CtaBancaria') !== NULL) ? $this->input->post('CtaBancaria') : NULL,
                 'ZapTiendaVendedor' => ($this->input->post('ZapTiendaVendedor') !== NULL) ? $this->input->post('ZapTiendaVendedor') : NULL,
                 'ZapTiendaVendedorPagos' => ($this->input->post('ZapTiendaVendedorPagos') !== NULL) ? $this->input->post('ZapTiendaVendedorPagos') : NULL,
+                'ZapTiendaVendedorSaldo' => ($this->input->post('ZapTiendaVendedorSaldo') !== NULL) ? $this->input->post('ZapTiendaVendedorSaldo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->vendedores_model->onAgregar($data);
@@ -121,7 +122,7 @@ class Vendedores extends CI_Controller {
             extract($this->input->post());
             $data = array(
                 'ApellidoP' => ($this->input->post('ApellidoP') !== NULL) ? $this->input->post('ApellidoP') : NULL,
-                'ApellidoP' => ($this->input->post('ApellidoP') !== NULL) ? $this->input->post('ApellidoP') : NULL,
+                'ApellidoM' => ($this->input->post('ApellidoM') !== NULL) ? $this->input->post('ApellidoM') : NULL,
                 'PrimerNombre' => ($this->input->post('PrimerNombre') !== NULL) ? $this->input->post('PrimerNombre') : NULL,
                 'SegundoNombre' => ($this->input->post('SegundoNombre') !== NULL) ? $this->input->post('SegundoNombre') : NULL,
                 'Direccion' => ($this->input->post('Direccion') !== NULL) ? $this->input->post('Direccion') : NULL,
@@ -170,6 +171,7 @@ class Vendedores extends CI_Controller {
                 'CtaBancaria' => ($this->input->post('CtaBancaria') !== NULL) ? $this->input->post('CtaBancaria') : NULL,
                 'ZapTiendaVendedor' => ($this->input->post('ZapTiendaVendedor') !== NULL) ? $this->input->post('ZapTiendaVendedor') : NULL,
                 'ZapTiendaVendedorPagos' => ($this->input->post('ZapTiendaVendedorPagos') !== NULL) ? $this->input->post('ZapTiendaVendedorPagos') : NULL,
+                'ZapTiendaVendedorSaldo' => ($this->input->post('ZapTiendaVendedorSaldo') !== NULL) ? $this->input->post('ZapTiendaVendedorSaldo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->vendedores_model->onModificar($ID, $data);

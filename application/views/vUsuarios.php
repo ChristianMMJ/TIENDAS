@@ -83,11 +83,9 @@
                         <select class="form-control form-control-sm " name="Tipo">
                             <option value=""></option>  
                             <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                            <option value="COMPRAS">COMPRAS</option>
-                            <option value="VENTAS">VENTAS</option>
-                            <option value="PRODUCCION">PRODUCCION</option>
-                            <option value="ALMACEN">ALMACEN</option> 
-                            <option value="CAPTURA">CONTABILIDAD</option>
+                            <option value="GERENTE">GERENTE</option>
+                            <option value="CAJERO">CAJERO</option>
+                            <option value="VENDEDOR">VENDEDOR</option>
                         </select>
                     </div>
                     <div class="col-sm">
@@ -170,11 +168,9 @@
                             <select class="form-control form-control-sm " id="Tipo" name="Tipo">
                                 <option value=""></option>  
                                 <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                                <option value="COMPRAS">COMPRAS</option>
-                                <option value="VENTAS">VENTAS</option>
-                                <option value="PRODUCCION">PRODUCCION</option>
-                                <option value="ALMACEN">ALMACEN</option> 
-                                <option value="CAPTURA">CONTABILIDAD</option>
+                                <option value="GERENTE">GERENTE</option>
+                                <option value="CAJERO">CAJERO</option>
+                                <option value="VENDEDOR">VENDEDOR</option>
                             </select>
                         </div>
                         <div class="col-sm">

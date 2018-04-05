@@ -12,8 +12,11 @@ class vendedores_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ U.SegundoNombre As Vendedor ", false);
+            $this->db->select("U.ID, "
+                    . "U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ ISNULL(U.SegundoNombre,'') As Vendedor,"
+                    . "ISNULL(T.Clave,'')+'-'+ISNULL(T.RazonSocial,'') as Tienda ", false);
             $this->db->from('sz_Vendedores AS U');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -27,7 +30,7 @@ class vendedores_model extends CI_Model {
         }
     }
 
-    public function getTiendas() {
+    public function getVendedores() {
         try {
             $this->db->select("U.ID, U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ U.SegundoNombre As Vendedor   ", false);
             $this->db->from('sz_Vendedores AS U');
