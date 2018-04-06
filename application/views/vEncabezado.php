@@ -14,9 +14,9 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap CSS -->
-        <link href="<?php print base_url('css/bootstrap_yeti.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('css/bootstrap_yeti.min.css') ?>" rel="stylesheet"> 
 
-        <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet"> 
 
         <!--DataTables Plugin-->
         <link rel="stylesheet" href="<?php echo base_url(); ?>js/tabletools/master/DataTables/datatables.min.css">
@@ -30,12 +30,8 @@
 <!--        <link href="<?php echo base_url(); ?>js/select2/select2.min.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/select2/select2.min.js"></script>-->
 <!--        <script src="<?php echo base_url(); ?>js/select2/select2-tab-fix.js"></script>-->
-        <script src="<?php echo base_url(); ?>js/select3/js/standalone/selectize.js"></script>
-        <link href="<?php echo base_url(); ?>js/select3/css/selectize.bootstrap3.css" rel="stylesheet" />
-
-
-
-
+        <script src="<?php echo base_url(); ?>js/selectize/js/standalone/selectize.min.js"></script>
+        <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.min.css" rel="stylesheet" />
         <!-- Validacion forms -->
         <script rel="javascript" type="text/javascript" href="<?php echo base_url(); ?>js/additional-methods.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
@@ -95,13 +91,11 @@
 //                }
 //            });
 
-            $('select').selectize();
-
-            $('select').selectize({
-                allowEmptyOption: true,
-                create: true
-            });
-
+            $('select').selectize(
+                    {
+                        placeholder: 'SELECCIONE UNA OPCIÓN'
+                    }
+            );
 
             $('.numbersOnly').keypress(function (event) {
                 var charCode = (event.which) ? event.which : event.keyCode;
