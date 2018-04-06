@@ -163,12 +163,9 @@
         });
         /*FIN NUEVO ARCHIVO*/
         btnGuardar.click(function () {
-
             isValid('pnlDatos');
             if (valido) {
-
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
-
                 if (!nuevo) {
                     $.ajax({
                         url: master_url + 'onModificar',

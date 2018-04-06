@@ -3,16 +3,12 @@
         <legend class="float-left">Gestión de Estilos</legend>
         <div align="right">
             <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
-            <button type="button" class="btn btn-primary" id="btnRefrescar"><span class="fa fa-refresh"></span><br>REFRESCAR</button>
-            <button type="button" class="btn btn-primary" id="btnConfirmarEliminar"><span class="fa fa-trash"></span><br>ELIMINAR</button>
         </div>
-
         <div class="card-block">
             <div id="tblRegistros"></div>
         </div>
     </div>
 </div>
-
 <!--MODALES--> 
 <!--Confirmacion-->
 <div class="modal" id="mdlConfirmar" tabindex="-1" role="dialog">
@@ -34,10 +30,9 @@
         </div>
     </div>
 </div>
-
 <!--GUARDAR-->
 <div id="" class="container-fluid">
-    <div class="card border-0  d-none" id="pnlNuevo">
+    <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark"> 
             <form id="frmNuevo"> 
                 <div class="row">
@@ -55,6 +50,9 @@
 
 
                 <div class="row"><!--START ROW-->
+                    <div class="d-none">
+                        <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
+                    </div> 
                     <div class="col-md has-success">
                         <label for="Clave">Clave*</label>
                         <input type="text" class="form-control form-control-sm " placeholder="" id="Clave" name="Clave" required="">
@@ -162,161 +160,18 @@
         </div> 
     </div> 
 </div>
-
-<!--EDITAR--> 
-<div id="" class="container-fluid">
-    <div class="card border-0  d-none" id="pnlEditar">
-        <div class="card-body text-dark"> 
-            <form id="frmEditar"> 
-                <div class="row">
-                    <div class="col-md-2 float-left">
-                        <legend class="float-left">Editar</legend>
-                    </div>
-                    <div class="col-md-7 float-right">
-
-                    </div>
-                    <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
-                    </div>
-                </div>  
-                <div class="d-none">
-                    <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
-                </div> 
-                <div class="row"><!--START ROW-->
-                    <div class="col-md has-success">
-                        <label for="Clave">Clave*</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="" id="Clave" name="Clave" required="">
-                    </div>
-                    <div class="col-md">
-                        <label for="Descripción">Descripción*</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="" id="Descripcion" name="Descripcion" required="">
-                    </div>
-
-                    <div class="col-md">
-                        <label for="Genero">Género</label>
-                        <select class="form-control form-control-sm "   name="Genero"> 
-                            <option value=""></option>  
-                            <option value="MASCULINO">MASCULINO</option>   
-                            <option value="FEMENINO">FEMENINO</option>   
-                        </select>
-                    </div> 
-                    <div class="col-md">
-                        <label for="Tipo">Tipo de Estilo*</label>
-                        <select class="form-control form-control-sm "   name="TipoEstilo" required="">  
-                            <option value=""></option>  
-                        </select>
-                    </div>
-
-                    <div class="w-100"></div> <!--SALTO-->
-                    <div class="col-md">
-                        <label for="Linea">Linea*</label>
-                        <select class="form-control form-control-sm "   name="Linea" required="">  
-                            <option value=""></option>  
-                        </select>
-                    </div>  
-                    <div class="col-md">
-                        <label for="Serie">Serie*</label>
-                        <select class="form-control form-control-sm "  name="Serie" required=""> 
-                            <option value=""></option>  
-                        </select>
-                    </div>  
-                    <div class="col-md">
-                        <label for="Temporada">Temporada*</label>
-                        <select class="form-control form-control-sm "   name="Temporada" required=""> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-                    <div class="col-md">
-                        <label for="Marca">Marca*</label>
-                        <select class="form-control form-control-sm "   name="Marca" required=""> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-
-                    <div class="w-100"></div> <!--SALTO-->
-                    <div class="col-md">
-                        <label for="Ano">Año*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" min="1990" max="2090" maxlength="4" placeholder="" id="Ano" name="Ano" required="">
-                    </div>
-                    <div class="col-md">
-                        <label for="Loc1">Loc 1*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc1" name="Loc1" >
-                    </div>
-                    <div class="col-md">
-                        <label for="Loc2">Loc 2*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc2" name="Loc2" >
-                    </div>
-                    <div class="col-md">
-                        <label for="Loc3">Loc 3*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc3" name="Loc3" >
-                    </div>
-
-                    <div class="w-100"></div> <!--SALTO-->
-
-                    <div class="col-md-3">
-                        <label for="Min">Mínimo*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" min="0" max="100000" maxlength="6" placeholder="" id="Min" name="Min" required="">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="Max">Máximo*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" min="0" max="100000" maxlength="6" placeholder="" id="Max" name="Max" required="">
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm "   name="Estatus" required=""> 
-                            <option value=""></option>  
-                            <option value="ACTIVO">ACTIVO</option>   
-                            <option value="INACTIVO">INACTIVO</option>   
-                        </select>
-                    </div>
-
-                </div><!--FIN ROW-->
-                <!-- FOTO -->
-                <div for="" align="center">
-                    <br>
-                    <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
-                </div>
-                <div class="col-md-12" align="center">
-                    <input type="file" id="Foto" name="Foto" class="d-none">
-                    <button type="button" class="btn btn-default" id="btnArchivo" name="btnArchivo">
-                        <span class="fa fa-upload fa-1x"></span> SELECCIONA EL ARCHIVO
-                    </button>
-                    <br><hr>
-                    <div id="VistaPrevia" class="col-md-12" align="center"></div>
-                </div>
-                <!--FIN FOTO-->
-            </form>
-        </div> 
-    </div> 
-</div>
-
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Estilos/';
-    var pnlNuevo = $("#pnlNuevo");
+    var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
-    var btnGuardar = pnlNuevo.find("#btnGuardar");
-    var btnCancelar = pnlNuevo.find("#btnCancelar");
-    var pnlEditar = $("#pnlEditar");
-    var btnModificar = pnlEditar.find("#btnGuardar");
-    var btnCancelarModificar = pnlEditar.find("#btnCancelar");
-    var btnRefrescar = $("#btnRefrescar");
-    var btnEliminar = $("#btnEliminar");
-    var btnConfirmarEliminar = $("#btnConfirmarEliminar");
-    var mdlConfirmar = $("#mdlConfirmar");
-
+    var btnGuardar = pnlDatos.find("#btnGuardar");
+    var btnCancelar = pnlDatos.find("#btnCancelar");
     var Archivo = $("#Foto");
     var btnArchivo = $("#btnArchivo");
     var VistaPrevia = $("#VistaPrevia");
-    var ModificarArchivo = pnlEditar.find("#Foto");
-    var btnModificarArchivo = pnlEditar.find("#btnArchivo");
-    var ModificarVistaPrevia = pnlEditar.find("#VistaPrevia");
-
-
-
+    var nuevo = true;
     $(document).ready(function () {
         btnArchivo.on("click", function () {
             Archivo.change(function () {
@@ -346,185 +201,62 @@
             });
             Archivo.trigger('click');
         });
-        btnModificarArchivo.on("click", function () {
-            ModificarArchivo.change(function () {
-
-                var imageType = /image.*/;
-                if (ModificarArchivo[0].files[0] !== undefined && ModificarArchivo[0].files[0].type.match(imageType)) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var preview = '<button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-responsive" width="400px"><div class="caption"><p>' + ModificarArchivo[0].files[0].name + '</p></div>';
-                        ModificarVistaPrevia.html(preview);
-                    };
-                    reader.readAsDataURL(ModificarArchivo[0].files[0]);
-                } else {
-                    if (ModificarArchivo[0].files[0] !== undefined && ModificarArchivo[0].files[0].type.match('application/pdf')) {
-                        var readerpdf = new FileReader();
-                        readerpdf.onload = function (e) {
-                            ModificarVistaPrevia.html('<div><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br> <embed src="' + readerpdf.result + '" type="application/pdf" width="90%" height="800px"' +
-                                    ' pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"></div>');
-                        };
-                        readerpdf.readAsDataURL(ModificarArchivo[0].files[0]);
-                    } else {
-                        ModificarVistaPrevia.html('EL ARCHIVO SE SUBIRÁ, PERO NO ES POSIBLE RECONOCER SI ES UN PDF O UNA IMAGEN');
-                    }
-                }
-
-            });
-            ModificarArchivo.trigger('click');
-        });
-
-        //Evento clic del boton confirmar borrar
-        btnConfirmarEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                //Muestra el modal
-                mdlConfirmar.modal('show');
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-            }
-        });
-        btnEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "CARGANDO DATOS..."
-                });
-                $.ajax({
-                    url: master_url + 'onEliminar',
-                    type: "POST",
-                    data: {
-                        ID: temp
-                    }
-                }).done(function (data, x, jq) {
-
-                    mdlConfirmar.modal('hide');
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'REGISTRO ELIMINADO', 'danger');
-                    pnlEditar.addClass("d-none");
-                    pnlTablero.removeClass("d-none");
-                    btnRefrescar.trigger('click');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-            }
-        });
-        btnModificar.click(function () {
-            $.validator.setDefaults({
-                ignore: []
-            });
-            pnlEditar.find('#frmEditar').validate({
-                errorClass: 'myErrorClass',
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    error.insertAfter(element);
-                },
-                rules: {
-                    Clave: 'required',
-                    Descripcion: 'required'
-                },
-                // The select element, which would otherwise get the class, is hidden from
-                // view.
-                highlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
-                    } else {
-                        elem.addClass(errorClass);
-                    }
-                },
-
-                //When removing make the same adjustments as when adding
-                unhighlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
-                    } else {
-                        elem.removeClass(errorClass);
-                    }
-                }
-            });
-            //Regresa si es valido para los select2
-            $('select').on('change', function () {
-                $(this).valid();
-            });
-            //Si es verdadero que hacer
-
-            if (pnlEditar.find('#frmEditar').valid()) {
-                var frm = new FormData(pnlEditar.find("#frmEditar")[0]);
-
-                $.ajax({
-                    url: master_url + 'onModificar',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                    getRecords();
-                    pnlTablero.removeClass("d-none");
-                    pnlEditar.addClass('d-none');
-                    console.log(data, x, jq);
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-            }
-        });
         btnGuardar.click(function () {
-            isValid('pnlNuevo');
+            isValid('pnlDatos');
             if (valido) {
-                console.log('* FORM VALIDO')
-                var frm = new FormData(pnlNuevo.find("#frmNuevo")[0]); 
-                $.ajax({
-                    url: master_url + 'onAgregar',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                    getRecords();
-                    pnlTablero.removeClass("d-none");
-                    pnlNuevo.addClass('d-none');
-                    console.log(data, x, jq);
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
+                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                if (!nuevo) {
+                    $.ajax({
+                        url: master_url + 'onModificar',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: frm
+                    }).done(function (data, x, jq) {
+                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        getRecords();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    $.ajax({
+                        url: master_url + 'onAgregar',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: frm
+                    }).done(function (data, x, jq) {
+                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        getRecords();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
 
-                });
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
-
-        btnRefrescar.click(function () {
-            getRecords();
-        });
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
-            pnlNuevo.removeClass('d-none');
-            pnlNuevo.find("input").val("");
-
-            $.each(pnlNuevo.find("select"), function (k, v) {
-                pnlNuevo.find("select")[k].selectize.clear(true);
+            pnlDatos.removeClass('d-none');
+            pnlDatos.find("input").val("");
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
             });
-
             $(':input:text:enabled:visible:first').focus();
+            nuevo = true;
         });
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
-            pnlNuevo.addClass('d-none');
-        });
-        btnCancelarModificar.click(function () {
-            pnlEditar.addClass("d-none");
-            pnlTablero.removeClass("d-none");
+            pnlDatos.addClass('d-none');
+            nuevo = true;
         });
         /*CALLS*/
         handleEnter();
@@ -581,6 +313,7 @@
                     }
                     var dtm = tblSelected.row(this).data();
                     if (temp !== 0 && temp !== undefined && temp > 0) {
+                        nuevo = false;
                         HoldOn.open({
                             theme: "sk-bounce",
                             message: "CARGANDO DATOS..."
@@ -595,15 +328,15 @@
                         }).done(function (data, x, jq) {
                             if (data.length > 0) {
                                 var dtm = data[0];
-                                pnlEditar.find("input").val("");
-                                $.each(pnlEditar.find("select"), function (k, v) {
-                                    pnlEditar.find("select")[k].selectize.clear(true);
+                                pnlDatos.find("input").val("");
+                                $.each(pnlDatos.find("select"), function (k, v) {
+                                    pnlDatos.find("select")[k].selectize.clear(true);
                                 });
                                 $.each(data[0], function (k, v) {
                                     if (k !== 'Foto') {
-                                        pnlEditar.find("[name='" + k + "']").val(v);
-                                        if (pnlEditar.find("[name='" + k + "']").is('select')) {
-                                            pnlEditar.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                        pnlDatos.find("[name='" + k + "']").val(v);
+                                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                            pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                         }
                                     }
 
@@ -611,19 +344,19 @@
                                 if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                                     var ext = getExt(dtm.Foto);
                                     if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
-                                        pnlEditar.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                                        pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
                                     }
                                     if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
-                                        pnlEditar.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                                        pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
                                     }
                                     if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
-                                        pnlEditar.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                                        pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
                                     }
                                 } else {
-                                    pnlEditar.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                                    pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
                                 }
                                 pnlTablero.addClass("d-none");
-                                pnlEditar.removeClass('d-none');
+                                pnlDatos.removeClass('d-none');
                                 $(':input:text:enabled:visible:first').focus();
                             }
                         }).fail(function (x, y, z) {
@@ -663,8 +396,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlNuevo.find("[name='Marca']")[0].selectize.addOption({text: v.SValue, value: v.ID});
-                pnlEditar.find("[name='Marca']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                pnlDatos.find("[name='Marca']")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -680,8 +412,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlNuevo.find("[name='Temporada']")[0].selectize.addOption({text: v.SValue, value: v.ID});
-                pnlEditar.find("[name='Temporada']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -698,8 +429,7 @@
         }).done(function (data, x, jq) {
 
             $.each(data, function (k, v) {
-                pnlNuevo.find("[name='TipoEstilo']")[0].selectize.addOption({text: v.SValue, value: v.ID});
-                pnlEditar.find("[name='TipoEstilo']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                pnlDatos.find("[name='TipoEstilo']")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -716,8 +446,7 @@
         }).done(function (data, x, jq) {
 
             $.each(data, function (k, v) {
-                pnlNuevo.find("[name='Linea']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
-                pnlEditar.find("[name='Linea']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                pnlDatos.find("[name='Linea']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -733,8 +462,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlNuevo.find("[name='Serie']")[0].selectize.addOption({text: v.Clave, value: v.ID});
-                pnlEditar.find("[name='Serie']")[0].selectize.addOption({text: v.Clave, value: v.ID});
+                pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: v.Clave, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);

@@ -75,7 +75,7 @@
 //                $.each($(this).find("input.form-control"), function () {
 //                    var e = $(this).parent().find("small.text-danger");
 //                    if ($(this).val() === '' && e.length === 0) {
-//                        $(this).parent().find("label").after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+//                        $(this).parent().find("label").after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
 //                        $(this).css("border", "1px solid #d01010");
 //                        valido = false;
 //                    } else {
@@ -90,7 +90,7 @@
 //                $.each($(this).find("select"), function () {
 //                    var e = $(this).parent().find("small.text-danger");
 //                    if ($(this).val() === '' && e.length === 0) {
-//                        $(this).after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+//                        $(this).after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
 //                        $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
 //                        valido = false;
 //                    } else {
@@ -180,7 +180,7 @@
             $.each($('#' + p).find("div.card-body").find("input.form-control"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
-                    $(this).parent().find("label").after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+                    $(this).parent().find("label").after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
                     $(this).css("border", "1px solid #d01010");
                     valido = false;
                 } else {
@@ -195,7 +195,7 @@
             $.each($('#' + p).find("div.card-body").find("select"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
-                    $(this).after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+                    $(this).after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
                     $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
                     valido = false;
                 } else {
