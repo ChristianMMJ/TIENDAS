@@ -355,4 +355,12 @@
             HoldOn.close();
         });
     }
+    
+    function onRemovePreview(e) {
+        $(e).parent().parent("#VistaPrevia").html("");
+        $('#Foto').trigger('blur');
+        $('#Foto').on('blur', function (e) {
+            $('#Foto').val('');
+        });
+    }
 </script>

@@ -9,27 +9,6 @@
         </div>
     </div>
 </div>
-<!--MODALES--> 
-<!--Confirmacion-->
-<div class="modal" id="mdlConfirmar" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Deseas eliminar el registro?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
-                <button type="button" class="btn btn-raised btn-primary" id="btnEliminar">ACEPTAR</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
@@ -37,21 +16,18 @@
             <form id="frmNuevo"> 
                 <div class="row">
                     <div class="col-md-2 float-left">
-                        <legend class="float-left">Nuevo</legend>
+                        <legend class="float-left">Estilos</legend>
                     </div>
                     <div class="col-md-7 float-right">
-
                     </div>
                     <div class="col-md-3 float-right" align="right">
                         <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
                         <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
                     </div>
                 </div> 
-
-
                 <div class="row"><!--START ROW-->
                     <div class="d-none">
-                        <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
+                        <input type="text" class="" id="ID" name="ID" required >
                     </div> 
                     <div class="col-md has-success">
                         <label for="Clave">Clave*</label>
@@ -339,7 +315,6 @@
                                             pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                         }
                                     }
-
                                 });
                                 if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                                     var ext = getExt(dtm.Foto);
