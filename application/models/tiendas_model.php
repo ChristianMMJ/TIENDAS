@@ -15,6 +15,7 @@ class tiendas_model extends CI_Model {
             $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Razón Social' ", false);
             $this->db->from('sz_Tiendas AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->order_by('U.Clave', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

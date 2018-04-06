@@ -16,6 +16,8 @@ class combinaciones_model extends CI_Model {
             $this->db->from('sz_Combinaciones AS U');
             $this->db->join('sz_Estilos AS E', 'E.ID = U.Estilo', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->order_by("E.Clave", "ASC");
+            $this->db->order_by("U.Clave", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

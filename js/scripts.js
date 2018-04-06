@@ -85,7 +85,7 @@ var tableOptions = {
     "scrollCollapse": false,
     "bSort": true,
     "aaSorting": [
-        [0, 'desc']
+        [1, 'desc']
     ]
             //    ,
             //    "columnDefs": [

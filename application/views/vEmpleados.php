@@ -9,27 +9,7 @@
         </div>
     </div>
 </div>
-<!--MODALES--> 
-<!--Confirmacion-->
-<div class="modal" id="mdlConfirmar" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Deseas eliminar el registro?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
-                <button type="button" class="btn btn-raised btn-primary" id="btnEliminar">ACEPTAR</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!--Confirmacion-->
 <div class="modal" id="mdlAvisoEmpleado" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -393,7 +373,7 @@
         </form>
     </div> 
 </div> 
-</div>
+
 
 
 <!--SCRIPT-->
@@ -404,13 +384,6 @@
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
-    var pnlEditar = $("#pnlEditar");
-    var btnModificar = pnlEditar.find("#btnModificar");
-    var btnCancelarModificar = pnlEditar.find("#btnCancelar");
-    var btnRefrescar = $("#btnRefrescar");
-    var btnEliminar = $("#btnEliminar");
-    var btnConfirmarEliminar = $("#btnConfirmarEliminar");
-    var mdlConfirmar = $("#mdlConfirmar");
     var nuevo = true;
 
     /*DEFINIR VARIABLES PARA LA SELECCION DE ARCHIVOS*/
@@ -418,12 +391,7 @@
     var btnArchivo = pnlDatos.find("#btnArchivo");
     var VistaPrevia = pnlDatos.find("#VistaPrevia");
 
-
     $(document).ready(function () {
-        $(".select2-selection").on("focus", function () {
-            $(this).parent().parent().prev().select2("open");
-        });
-
         /*NUEVO ARCHIVO*/
         btnArchivo.on("click", function () {
             Archivo.change(function () {
@@ -452,7 +420,6 @@
             });
             Archivo.trigger('click');
         });
-
         //Valida RFC
         pnlDatos.find("[name='RFC']").blur(function () {
             var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
@@ -464,45 +431,8 @@
             }
         });
         btnGuardar.click(function () {
-            $.validator.setDefaults({
-                ignore: []
-            });
-            $('#frmNuevo').validate({
-                errorClass: 'myErrorClass',
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    error.insertAfter(element);
-                },
-                rules: {
-                },
-                // The select element, which would otherwise get the class, is hidden from
-                // view.
-                highlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
-                    } else {
-                        elem.addClass(errorClass);
-                    }
-                },
-
-                //When removing make the same adjustments as when adding
-                unhighlight: function (element, errorClass, validClass) {
-                    var elem = $(element);
-                    if (elem.hasClass("select2-offscreen")) {
-                        $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
-                    } else {
-                        elem.removeClass(errorClass);
-                    }
-                }
-            });
-            //Regresa si es valido para los select2
-            $('select').on('change', function () {
-                $(this).valid();
-            });
-            //Regresa verdadero si ya se cumplieron las reglas, si no regresa falso
-            //Si es verdadero que hacer
-            if ($('#frmNuevo').valid()) {
+            isValid('pnlDatos');
+            if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
 
                 if (!nuevo) {
@@ -515,7 +445,6 @@
                                 )
                         {
                             $('#mdlAvisoEmpleado').modal('show');
-
                         }
                     }
                     $.ajax({
@@ -552,8 +481,6 @@
                         HoldOn.close();
                     });
                 }
-
-
             }
         });
         btnNuevo.click(function () {
@@ -565,9 +492,10 @@
             pnlDatos.find("#Datos2").removeClass("active show");
             pnlDatos.find("#Datos3").removeClass("active show");
             pnlDatos.find("input").val("");
-            pnlDatos.find("select").val("").trigger('change');
-            pnlDatos.find("[name='Tienda']").select2('open');
-
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            $(':input:text:enabled:visible:first').focus();
             nuevo = true;
         });
         btnCancelar.click(function () {
@@ -575,15 +503,12 @@
             pnlDatos.addClass('d-none');
             nuevo = true;
         });
-
         getRecords();
         getTiendas();
         handleEnter();
     });
-
     function getRecords() {
         temp = 0;
-
         HoldOn.open({
             theme: "sk-bounce",
             message: "CARGANDO DATOS..."
@@ -637,7 +562,9 @@
                         }).done(function (data, x, jq) {
                             var dtm = data[0];
                             pnlDatos.find("input").val("");
-                            pnlDatos.find("select").val("").trigger('change');
+                            $.each(pnlDatos.find("select"), function (k, v) {
+                                pnlDatos.find("select")[k].selectize.clear(true);
+                            });
                             pnlDatos.find(".nav-tabs a").removeClass("active show");
                             $(pnlDatos.find(".nav-tabs a")[0]).addClass("active show");
                             pnlDatos.find("#Datos1").addClass("active show");
@@ -646,7 +573,9 @@
                             $.each(data[0], function (k, v) {
                                 if (k !== 'Foto') {
                                     pnlDatos.find("[name='" + k + "']").val(v);
-                                    pnlDatos.find("[name='" + k + "']").val(v).trigger('change');
+                                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                    }
                                 }
 
                             });
@@ -669,7 +598,6 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             $(':input:text:enabled:visible:first').focus();
-//                            pnlDatos.find("[name='Tienda']").select2('open');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -688,7 +616,6 @@
                         }
                     });
                 });
-
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -696,7 +623,6 @@
             HoldOn.close();
         });
     }
-
     function getTiendas() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -704,11 +630,9 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.Tienda + '</option>';
+                pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
-            pnlDatos.find("[name='Tienda']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
