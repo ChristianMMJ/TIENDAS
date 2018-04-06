@@ -27,9 +27,15 @@
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/Buttons-1.5.1/js/buttons.html5.min.js" type="text/javascript"></script>
 
         <!--select2 control--> 
-        <link href="<?php echo base_url(); ?>js/select2/select2.min.css" rel="stylesheet" />
-        <script src="<?php echo base_url(); ?>js/select2/select2.min.js"></script>
+<!--        <link href="<?php echo base_url(); ?>js/select2/select2.min.css" rel="stylesheet" />
+        <script src="<?php echo base_url(); ?>js/select2/select2.min.js"></script>-->
 <!--        <script src="<?php echo base_url(); ?>js/select2/select2-tab-fix.js"></script>-->
+        <script src="<?php echo base_url(); ?>js/select3/js/standalone/selectize.js"></script>
+        <link href="<?php echo base_url(); ?>js/select3/css/selectize.bootstrap3.css" rel="stylesheet" />
+
+
+
+
         <!-- Validacion forms -->
         <script rel="javascript" type="text/javascript" href="<?php echo base_url(); ?>js/additional-methods.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
@@ -78,15 +84,22 @@
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
 
-            $("select").select2({
-                width: '100%',
-                placeholder: "SELECCIONE UNA OPCIÓN",
-                allowClear: true,
-                "language": {
-                    "noResults": function () {
-                        return "NO SE ENCONTRARON REGISTROS";
-                    }
-                }
+//            $("select").select2({
+//                width: '100%',
+//                placeholder: "SELECCIONE UNA OPCIÓN",
+//                allowClear: true,
+//                "language": {
+//                    "noResults": function () {
+//                        return "NO SE ENCONTRARON REGISTROS";
+//                    }
+//                }
+//            });
+
+            $('select').selectize();
+
+            $('select').selectize({
+                allowEmptyOption: true,
+                create: true
             });
 
 
@@ -103,9 +116,9 @@
 
 
 
-            $(document).on('touchend', function () {
-                $(".select2-search, .select2-focusser").remove();
-            });
+//            $(document).on('touchend', function () {
+//                $(".select2-search, .select2-focusser").remove();
+//            });
 
 
             $('.modal').on('shown.bs.modal', function (e) {

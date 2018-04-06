@@ -320,15 +320,15 @@
     $(document).ready(function () {
 
 
-        $("select").on('select2:selecting', function (e) {
-            var ind = $('.form-control').index(this);
-            $('.form-control').eq(ind + 1).focus();
-        });
-
-
-        $(".select2-selection").on("focus", function () {
-            $(this).parent().parent().prev().select2("open");
-        });
+//        $("select").on('select2:selecting', function (e) {
+//            var ind = $('.form-control').index(this);
+//            $('.form-control').eq(ind + 1).focus();
+//        });
+//
+//
+//        $(".select2-selection").on("focus", function () {
+//            $(this).parent().parent().prev().select2("open");
+//        });
 
         btnArchivo.on("click", function () {
             Archivo.change(function () {
@@ -558,7 +558,7 @@
             pnlTablero.addClass("d-none");
             pnlNuevo.removeClass('d-none');
             pnlNuevo.find("input").val("");
-            pnlNuevo.find("select").select2("val", "");
+            //pnlNuevo.find("select").select2("val", "");
             pnlNuevo.find("#Clave").focus();
             $(':input:text:enabled:visible:first').focus();
         });
@@ -640,12 +640,16 @@
                             if (data.length > 0) {
                                 var dtm = data[0];
                                 pnlEditar.find("input").val("");
-                                pnlEditar.find("select").select2("val", "");
+                                var $select;
+                                var selectize;
                                 $.each(data[0], function (k, v) {
                                     if (k !== 'Foto') {
-                                        pnlEditar.find("#" + k).val(v);
-                                        //pnlEditar.find("#" + k).val(v).trigger('change');
-                                        pnlEditar.find("[name='" + k + "']").val(v).trigger('change');
+                                        pnlEditar.find("[name='" + k + "']").val(v);
+                                        if (pnlEditar.find("[name='" + k + "']").is('select')) {
+                                            $select = pnlEditar.find("[name='" + k + "']").selectize();
+                                            selectize = $select[0].selectize;
+                                            selectize.setValue(v);
+                                        }
                                     }
 
                                 });
@@ -703,12 +707,14 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
+            var $select = pnlNuevo.find("[name='Marca']").selectize();
+            var $select2 = pnlEditar.find("[name='Marca']").selectize();
+            var selectize = $select[0].selectize;
+            var selectize2 = $select2[0].selectize;
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.SValue + '</option>';
+                selectize.addOption({text: v.SValue, value: v.ID});
+                selectize2.addOption({text: v.SValue, value: v.ID});
             });
-            pnlNuevo.find("[name='Marca']").html(options);
-            pnlEditar.find("[name='Marca']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -722,12 +728,14 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
+            var $select = pnlNuevo.find("[name='Temporada']").selectize();
+            var $select2 = pnlEditar.find("[name='Temporada']").selectize();
+            var selectize = $select[0].selectize;
+            var selectize2 = $select2[0].selectize;
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.SValue + '</option>';
+                selectize.addOption({text: v.SValue, value: v.ID});
+                selectize2.addOption({text: v.SValue, value: v.ID});
             });
-            pnlNuevo.find("[name='Temporada']").html(options);
-            pnlEditar.find("[name='Temporada']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -741,12 +749,14 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
+            var $select = pnlNuevo.find("[name='TipoEstilo']").selectize();
+            var $select2 = pnlEditar.find("[name='TipoEstilo']").selectize();
+            var selectize = $select[0].selectize;
+            var selectize2 = $select2[0].selectize;
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.SValue + '</option>';
+                selectize.addOption({text: v.SValue, value: v.ID});
+                selectize2.addOption({text: v.SValue, value: v.ID});
             });
-            pnlNuevo.find("[name='TipoEstilo']").html(options);
-            pnlEditar.find("[name='TipoEstilo']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -760,12 +770,14 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
+            var $select = pnlNuevo.find("[name='Linea']").selectize();
+            var $select2 = pnlEditar.find("[name='Linea']").selectize();
+            var selectize = $select[0].selectize;
+            var selectize2 = $select2[0].selectize;
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.Descripcion + '</option>';
+                selectize.addOption({text: v.Descripcion, value: v.ID});
+                selectize2.addOption({text: v.Descripcion, value: v.ID});
             });
-            pnlNuevo.find("[name='Linea']").html(options);
-            pnlEditar.find("[name='Linea']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -779,12 +791,14 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            var options = '<option></option>';
+            var $select = pnlNuevo.find("[name='Serie']").selectize();
+            var $select2 = pnlEditar.find("[name='Serie']").selectize();
+            var selectize = $select[0].selectize;
+            var selectize2 = $select2[0].selectize;
             $.each(data, function (k, v) {
-                options += '<option value="' + v.ID + '">' + v.Clave + '</option>';
+                selectize.addOption({text: v.Clave, value: v.ID});
+                selectize2.addOption({text: v.Clave, value: v.ID});
             });
-            pnlNuevo.find("[name='Serie']").html(options);
-            pnlEditar.find("[name='Serie']").html(options);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
