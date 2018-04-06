@@ -60,21 +60,21 @@
 
                     <div class="col-sm">
                         <label for="IValue">Clave/Orden*</label>  
-                        <input type="text" class="form-control numbersOnly" id="IValue" name="IValue" required >
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="IValue" name="IValue" required >
                     </div>
                     <div class="col-sm">
                         <label for="SValue">Nombre Corto*</label>  
-                        <input type="text" class="form-control" id="SValue" name="SValue" required >
+                        <input type="text" class="form-control form-control-sm" id="SValue" name="SValue" required >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="Valor_Text">Descripción</label>  
-                        <input type="text" class="form-control" id="Valor_Text" name="Valor_Text"  >
+                        <input type="text" class="form-control form-control-sm" id="Valor_Text" name="Valor_Text"  >
                     </div>
                     <div class="col-sm">
                         <label for="Valor_Num">Valor</label>  
-                        <input type="number" class="form-control" id="Valor_Num" name="Valor_Num" >
+                        <input type="number" class="form-control form-control-sm" id="Valor_Num" name="Valor_Num" >
                     </div>
 
 
@@ -82,17 +82,17 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="Special">Extra</label>  
-                        <input type="text" class="form-control" id="Special" name="Special"  >
+                        <input type="text" class="form-control form-control-sm" id="Special" name="Special"  >
                     </div>
 
                 </div>
                 <div class="row"> 
-                    <div class="col-sm">
+                   <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-lg"  name="Estatus"> 
+                        <select class="form-control form-control-sm "   name="Estatus" required=""> 
                             <option value=""></option>  
-                            <option>ACTIVO</option>
-                            <option>INACTIVO</option> 
+                            <option value="ACTIVO">ACTIVO</option>   
+                            <option value="INACTIVO">INACTIVO</option>   
                         </select>
                     </div>
                 </div> 
@@ -119,30 +119,30 @@
                         </div>
                     </div>
                     <div class="d-none">
-                        <input type="text" class="form-control" id="ID" name="ID" required >
+                        <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
                     </div>
                     <div class="row">
                         <div class="d-none">
-                            <input type="text" class="form-control" id="FieldId" name="FieldId" >
+                            <input type="text" class="form-control form-control-sm" id="FieldId" name="FieldId" >
                         </div>
 
                         <div class="col-sm">
                             <label for="IValue">Clave/Orden*</label>  
-                            <input type="text" class="form-control numbersOnly" id="IValue" name="IValue" required >
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="IValue" name="IValue" required >
                         </div>
                         <div class="col-sm">
                             <label for="SValue">Nombre Corto*</label>  
-                            <input type="text" class="form-control" id="SValue" name="SValue" required >
+                            <input type="text" class="form-control form-control-sm" id="SValue" name="SValue" required >
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm">
                             <label for="Valor_Text">Descripción</label>  
-                            <input type="text" class="form-control" id="Valor_Text" name="Valor_Text"  >
+                            <input type="text" class="form-control form-control-sm" id="Valor_Text" name="Valor_Text"  >
                         </div>
                         <div class="col-sm">
                             <label for="Valor_Num">Valor</label>  
-                            <input type="number" class="form-control" id="Valor_Num" name="Valor_Num" >
+                            <input type="number" class="form-control form-control-sm" id="Valor_Num" name="Valor_Num" >
                         </div>
 
 
@@ -157,10 +157,10 @@
                     <div class="row"> 
                         <div class="col-sm">
                             <label for="Estatus">Estatus*</label>
-                            <select class="form-control form-control-lg" id="Estatus" name="Estatus"> 
+                            <select class="form-control form-control-sm form-control-lg" id="Estatus" name="Estatus"> 
                                 <option value=""></option>  
-                                <option>ACTIVO</option>
-                                <option>INACTIVO</option> 
+                                <option value="ACTIVO">ACTIVO</option>
+                                <option value="INACTIVO">INACTIVO</option> 
                             </select>
                         </div>
                     </div> 
