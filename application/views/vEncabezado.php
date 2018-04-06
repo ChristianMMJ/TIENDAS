@@ -32,9 +32,11 @@
 <!--        <script src="<?php echo base_url(); ?>js/select2/select2-tab-fix.js"></script>-->
         <script src="<?php echo base_url(); ?>js/selectize/js/standalone/selectize.min.js"></script>
         <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.min.css" rel="stylesheet" />
+
         <!-- Validacion forms -->
         <script rel="javascript" type="text/javascript" href="<?php echo base_url(); ?>js/additional-methods.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
+
         <!--Font Awesome Icons-->
         <link rel="stylesheet" href="<?php print base_url(); ?>css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php print base_url(); ?>css/animate.min.css">
@@ -63,11 +65,44 @@
 
         <!-- Custom scripts for this template -->
         <script src="<?php echo base_url(); ?>js/scripts.js"></script>
-    </head> 
+    </head>  
 
     <script>
         var base_url = "<?php print base_url(); ?>";
         $(function () {
+
+            $("div.card-body").change(function () {
+                $.each($(this).find("input.form-control"), function () {
+                    var e = $(this).parent().find("small.text-danger");
+                    if ($(this).val() === '' && e.length === 0) {
+                        $(this).parent().find("label").after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                        $(this).css("border", "1px solid #d01010");
+                        valido = false;
+                    } else {
+                        if ($(this).val() !== '') {
+                            $(this).css("border", "1px solid #ccc");
+                            $(this).parent().find("small.text-danger").remove();
+                            valido = true;
+                        }
+                    }
+                });
+
+                $.each($(this).find("select"), function () {
+                    var e = $(this).parent().find("small.text-danger");
+                    if ($(this).val() === '' && e.length === 0) {
+                        $(this).after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                        $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
+                        valido = false;
+                    } else {
+                        if ($(this).val() !== '') {
+                            $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
+                            $(this).parent().find("small.text-danger").remove();
+                            valido = true;
+                        }
+                    }
+                });
+            });
+
             // $(".btn").addClass("animated shake");
             $("table.display").DataTable(tableOptions);
             $('table').css('display', 'block');
@@ -153,5 +188,49 @@
                     exit: 'animated fadeOutDown'
                 }
             });
+        }
+
+        function isValid(p) {
+            var inputs = $('#' + p).find("div.card-body").find("input.form-control").length;
+            var selects = $('#' + p).find("div.card-body").find("select").length;
+            var valid_inputs = 0;
+            var valid_selects = 0;
+
+            $.each($('#' + p).find("div.card-body").find("input.form-control"), function () {
+                var e = $(this).parent().find("small.text-danger");
+                if ($(this).val() === '' && e.length === 0) {
+                    $(this).parent().find("label").after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                    $(this).css("border", "1px solid #d01010");
+                    valido = false;
+                } else {
+                    if ($(this).val() !== '') {
+                        $(this).css("border", "1px solid #ccc");
+                        $(this).parent().find("small.text-danger").remove();
+                        valid_inputs += 1;
+                    }
+                }
+            });
+
+            $.each($('#' + p).find("div.card-body").find("select"), function () {
+                var e = $(this).parent().find("small.text-danger");
+                if ($(this).val() === '' && e.length === 0) {
+                    $(this).after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                    $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
+                    valido = false;
+                } else {
+                    if ($(this).val() !== '') {
+                        $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
+                        $(this).parent().find("small.text-danger").remove();
+                        valid_selects += 1;
+                    }
+                }
+            });
+            console.log('inputs ' + inputs);
+            console.log('valid_inputs ' + valid_inputs);
+            console.log('selects ' + selects);
+            console.log('valid_selects ' + valid_selects);
+            if (valid_inputs === inputs && valid_selects === selects) {
+                valido = true;
+            }
         }
     </script>
