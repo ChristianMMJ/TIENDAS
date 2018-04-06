@@ -318,9 +318,6 @@
 
 
     $(document).ready(function () {
-
-
-
         btnArchivo.on("click", function () {
             Archivo.change(function () {
                 HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
@@ -482,33 +479,10 @@
             $.validator.setDefaults({
                 ignore: []
             });
-            $('#frmNuevo').validate({
-                errorClass: 'myErrorClass',
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    error.insertAfter(element);
-                },
-
-                ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input',
-
-                rules: {
-                    Clave: 'required',
-                    Descripcion: 'required',
-                    Temporada: 'required'
-                }
-
-
-
-            });
-            //Regresa si es valido para los select2
-//            $('select').on('change', function () {
-//                $(this).valid();
-//            });
-            //Regresa verdadero si ya se cumplieron las reglas, si no regresa falso
-            //Si es verdadero que hacer
-            if (pnlNuevo.find('#frmNuevo').valid()) {
-                var frm = new FormData(pnlNuevo.find("#frmNuevo")[0]);
-
+            isValid('pnlNuevo');
+            if (valido) {
+                console.log('* FORM VALIDO')
+                var frm = new FormData(pnlNuevo.find("#frmNuevo")[0]); 
                 $.ajax({
                     url: master_url + 'onAgregar',
                     type: "POST",
@@ -526,9 +500,13 @@
                     console.log(x, y, z);
                 }).always(function () {
                     HoldOn.close();
+
                 });
+            } else {
+                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
+
         btnRefrescar.click(function () {
             getRecords();
         });
