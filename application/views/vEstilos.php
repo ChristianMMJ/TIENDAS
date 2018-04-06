@@ -476,9 +476,6 @@
             }
         });
         btnGuardar.click(function () {
-            $.validator.setDefaults({
-                ignore: []
-            });
             isValid('pnlNuevo');
             if (valido) {
                 console.log('* FORM VALIDO')

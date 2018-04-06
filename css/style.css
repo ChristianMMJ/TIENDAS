@@ -7,22 +7,17 @@
 
 /*Clase de validacion*/
 ul.myErrorClass, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
-    border-width: 1px !important;
+/*    border-width: 1px !important;
     border-style: solid !important;
-    border-color: #cc0000 !important;
-    background-color: #f3d8d8 !important;
-    background-image: url(http://goo.gl/GXVcmC) !important;
-    background-position: 50% 50% !important;
-    background-repeat: repeat !important;
+    border-color: #dc3545 !important;*/
 }
+
 ul.myErrorClass input {
     color: #666 !important;
 }
 label.myErrorClass {
-    color: red;
+    color: #dc3545;
     font-size: 11px;
-    /*    font-style: italic;*/
-    display: block;
 }
 
 

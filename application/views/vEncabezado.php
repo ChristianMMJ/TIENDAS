@@ -71,37 +71,37 @@
         var base_url = "<?php print base_url(); ?>";
         $(function () {
 
-            $("div.card-body").change(function () {
-                $.each($(this).find("input.form-control"), function () {
-                    var e = $(this).parent().find("small.text-danger");
-                    if ($(this).val() === '' && e.length === 0) {
-                        $(this).parent().find("label").after("<small class=\"text-danger\">*Este campo es requerido*</small>");
-                        $(this).css("border", "1px solid #d01010");
-                        valido = false;
-                    } else {
-                        if ($(this).val() !== '') {
-                            $(this).css("border", "1px solid #ccc");
-                            $(this).parent().find("small.text-danger").remove();
-                            valido = true;
-                        }
-                    }
-                });
-
-                $.each($(this).find("select"), function () {
-                    var e = $(this).parent().find("small.text-danger");
-                    if ($(this).val() === '' && e.length === 0) {
-                        $(this).after("<small class=\"text-danger\">*Este campo es requerido*</small>");
-                        $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
-                        valido = false;
-                    } else {
-                        if ($(this).val() !== '') {
-                            $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
-                            $(this).parent().find("small.text-danger").remove();
-                            valido = true;
-                        }
-                    }
-                });
-            });
+//            $("div.card-body").change(function () {
+//                $.each($(this).find("input.form-control"), function () {
+//                    var e = $(this).parent().find("small.text-danger");
+//                    if ($(this).val() === '' && e.length === 0) {
+//                        $(this).parent().find("label").after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+//                        $(this).css("border", "1px solid #d01010");
+//                        valido = false;
+//                    } else {
+//                        if ($(this).val() !== '') {
+//                            $(this).css("border", "1px solid #ccc");
+//                            $(this).parent().find("small.text-danger").remove();
+//                            valido = true;
+//                        }
+//                    }
+//                });
+//
+//                $.each($(this).find("select"), function () {
+//                    var e = $(this).parent().find("small.text-danger");
+//                    if ($(this).val() === '' && e.length === 0) {
+//                        $(this).after("<small class=\"text-danger\">Este campo es obligatorio</small>");
+//                        $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
+//                        valido = false;
+//                    } else {
+//                        if ($(this).val() !== '') {
+//                            $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
+//                            $(this).parent().find("small.text-danger").remove();
+//                            valido = true;
+//                        }
+//                    }
+//                });
+//            });
 
             // $(".btn").addClass("animated shake");
             $("table.display").DataTable(tableOptions);
@@ -115,23 +115,12 @@
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
 
-//            $("select").select2({
-//                width: '100%',
-//                placeholder: "SELECCIONE UNA OPCIÓN",
-//                allowClear: true,
-//                "language": {
-//                    "noResults": function () {
-//                        return "NO SE ENCONTRARON REGISTROS";
-//                    }
-//                }
-//            });
-
             $('select').selectize(
                     {
                         placeholder: 'SELECCIONE UNA OPCIÓN'
                     }
             );
-
+            //Clase que admite solo numeros y un punto decimal
             $('.numbersOnly').keypress(function (event) {
                 var charCode = (event.which) ? event.which : event.keyCode;
                 if (
@@ -142,14 +131,6 @@
 
                 return true;
             });
-
-
-
-//            $(document).on('touchend', function () {
-//                $(".select2-search, .select2-focusser").remove();
-//            });
-
-
             $('.modal').on('shown.bs.modal', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
@@ -199,7 +180,7 @@
             $.each($('#' + p).find("div.card-body").find("input.form-control"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
-                    $(this).parent().find("label").after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                    $(this).parent().find("label").after("<small class=\"text-danger\">Este campo es obligatorio</small>");
                     $(this).css("border", "1px solid #d01010");
                     valido = false;
                 } else {
@@ -214,7 +195,7 @@
             $.each($('#' + p).find("div.card-body").find("select"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
-                    $(this).after("<small class=\"text-danger\">*Este campo es requerido*</small>");
+                    $(this).after("<small class=\"text-danger\">Este campo es obligatorio</small>");
                     $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
                     valido = false;
                 } else {
