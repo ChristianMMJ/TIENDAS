@@ -152,6 +152,7 @@
             jQuery.validator.messages.email = 'Correo no válido';
 
         });
+
         function onNotify(span, message, type) {
             $.notify({
                 title: span,
@@ -172,12 +173,12 @@
         }
 
         function isValid(p) {
-            var inputs = $('#' + p).find("div.card-body").find("input.form-control").length;
-            var selects = $('#' + p).find("div.card-body").find("select").length;
+            var inputs = $('#' + p).find("div.card-body").find("input.form-control:required").length;
+            var selects = $('#' + p).find("div.card-body").find("select.required").length; 
             var valid_inputs = 0;
-            var valid_selects = 0;
+            var valid_selects = 0; 
 
-            $.each($('#' + p).find("div.card-body").find("input.form-control"), function () {
+            $.each($('#' + p).find("div.card-body").find("input.form-control:required"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
                     $(this).parent().find("label").after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
@@ -191,9 +192,8 @@
                     }
                 }
             });
-
-            $.each($('#' + p).find("div.card-body").find("select"), function () {
-                var e = $(this).parent().find("small.text-danger");
+            $.each($('#' + p).find("div.card-body").find("select.required"), function () {
+                var e = $(this).parent().find("small.text-danger"); 
                 if ($(this).val() === '' && e.length === 0) {
                     $(this).after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
                     $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
@@ -206,6 +206,7 @@
                     }
                 }
             });
+
             console.log('inputs ' + inputs);
             console.log('valid_inputs ' + valid_inputs);
             console.log('selects ' + selects);

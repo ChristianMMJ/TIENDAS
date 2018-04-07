@@ -48,7 +48,7 @@
                     </div> 
                     <div class="col-md">
                         <label for="Tipo">Tipo de Estilo*</label>
-                        <select class="form-control form-control-sm "   name="TipoEstilo" required="">  
+                        <select class="form-control form-control-sm required"   name="TipoEstilo" required="">  
                             <option value=""></option>  
                         </select>
                     </div>
@@ -56,25 +56,25 @@
                     <div class="w-100"></div> <!--SALTO-->
                     <div class="col-md">
                         <label for="Linea">Linea*</label>
-                        <select class="form-control form-control-sm "   name="Linea" required="">  
+                        <select class="form-control form-control-sm required"   name="Linea" required="">  
                             <option value=""></option>  
                         </select>
                     </div>  
                     <div class="col-md">
                         <label for="Serie">Serie*</label>
-                        <select class="form-control form-control-sm "  name="Serie" required=""> 
+                        <select class="form-control form-control-sm required"  name="Serie" required=""> 
                             <option value=""></option>  
                         </select>
                     </div>  
                     <div class="col-md">
                         <label for="Temporada">Temporada*</label>
-                        <select class="form-control form-control-sm "   name="Temporada" required=""> 
+                        <select class="form-control form-control-sm required"   name="Temporada" required=""> 
                             <option value=""></option>  
                         </select>
                     </div>
                     <div class="col-md">
                         <label for="Marca">Marca*</label>
-                        <select class="form-control form-control-sm "   name="Marca" required=""> 
+                        <select class="form-control form-control-sm required"   name="Marca" required=""> 
                             <option value=""></option>  
                         </select>
                     </div>
@@ -110,7 +110,7 @@
 
                     <div class="col-md-3">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm "   name="Estatus" required=""> 
+                        <select class="form-control form-control-sm required"   name="Estatus" required=""> 
                             <option value=""></option>  
                             <option value="ACTIVO">ACTIVO</option>   
                             <option value="INACTIVO">INACTIVO</option>   
@@ -243,6 +243,7 @@
         getLineas();
         getSeries();
     });
+    
     function getRecords() {
         temp = 0;
         HoldOn.open({
