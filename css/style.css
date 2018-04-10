@@ -117,3 +117,6 @@ input {
     display: table  !important;
     width: 100% !important;
 }
+.table.DetalleAngosoto td {
+    padding: .2rem; 
+}

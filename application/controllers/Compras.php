@@ -113,7 +113,22 @@ class Compras extends CI_Controller {
                 'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
                 'Estatus' => 'ACTIVO'
             );
-            $this->compras_model->onAgregar($data);
+            $ID = $this->compras_model->onAgregar($data);
+            /*DETALLE*/ 
+            $Detalle = json_decode($this->input->post("Detalle"));
+            foreach ($Detalle as $key => $v) {
+                $data = array(
+                    'Compra' => $ID,
+                    'Estilo' => $v->Estilo,
+                    'Color' => $v->Color,
+                    'Precio' => $v->Precio,
+                    'Talla' => $v->Talla,
+                    'Cantidad' => $v->Cantidad,
+                    'Subtotal' => $v->Subtotal,
+                    'EsCoTa' => ''
+                ); 
+                $this->compras_model->onAgregarDetalle($data);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

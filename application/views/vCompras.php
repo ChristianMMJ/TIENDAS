@@ -72,7 +72,6 @@
 </div>
 <!--DETALLE-->
 <div id="pnlDatosDetalle" class="container-fluid d-none">
-   
     <div class="card border-dark">
         <div class="card-header">
             <strong>Detalle de la Compra</strong>
@@ -170,63 +169,10 @@
                 </tbody>
             </table>
 
-            <!--            <div class="" style="width: 1200px;" id="dSerieEncabezado">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T1">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T2">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T3">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T4">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T5">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T6">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T7">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T8">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T9">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T10">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T11">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T12">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T13">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T14">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T15">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T16">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T17">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T18">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T19">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T20">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T21">
-                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T22">
-                            &nbsp;
-                            Pares:
-                        </div>
-                        <div class=" " style="width: 1200px;" id="dSerieEncabezadoE">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C1">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C2">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C3">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C4">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C5">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C6">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C7">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C8">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C9">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C10">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C11">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C12">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C13">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C14">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C15">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C16">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C17">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C18">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C19">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C20">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C21">
-                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C22">
-                            &nbsp;
-                            
-                        </div>-->
-
             <!--DETALLE-->
             <div class="w-100"><br></div>
             <div class="table-responsive">
-                <table id="tblDetalle" class="table table-hover" width="100%">
+                <table id="tblDetalle" class="table table-hover DetalleAngosoto" width="100%">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -241,6 +187,29 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+            <div class="w-100"><br></div>
+            <div class="row" align="center">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-2 text-danger">
+                    PARES
+                </div>
+                <div class="col-sm-2 text-primary">
+                    SUBTOTAL
+                </div>
+                <div class="col-sm-2 text-warning">
+                    I.V.A
+                </div>
+                <div class="col-sm-2 text-success">
+                    TOTAL
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-4"></div>
+                <div id="Pares" class="col-sm-2 text-danger"><strong>0</strong></div>
+                <div id="SubTotal" class="col-sm-2 text-primary"><strong>$0.0</strong></div>
+                <div id="IVA" class="col-sm-2 text-warning"><strong>$0.0</strong></div>
+                <div id="Total" class="col-sm-2 text-success"><strong>$0.0</strong></div>
             </div>
             <!--FIN DETALLE-->
         </div>
@@ -264,27 +233,33 @@
 
     $(document).ready(function () {
 
-        $("body").keyup(function (e) {
-            if (e.keyCode === 46) {
-
-            }
-        });
-
         pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
             pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
             $(this).addClass("success");
         });
+
         pnlDatosDetalle.find('#tblDetalle tbody').on('dblclick', 'tr', function () {
             $.each(pnlDatosDetalle.find('#tblDetalle > tbody > tr'), function () {
                 var cell = $(this).find("td").eq(4);
                 var rcantidad = cell.text() !== '' ? cell.text() : cell.find("#RunCantidad").val();
                 cell.html(rcantidad);
             });
-
-            var cell = $(this).find("td").eq(4);
+            var cells = $(this).find("td");
+            var cell = cells.eq(4);
             cell.html('<input type="text" class="form-control form-control-sm numbersOnly" style="width: 45px;" maxlength="3" id="RunCantidad" value="' + cell.text() + '">');
             cell.find("#RunCantidad").focusout(function () {
                 cell.html($(this).val());
+                var precio = parseFloat(getNumber(cells.eq(5).text()));
+                cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
+                onCalcularMontos();
+            });
+            cell.find("#RunCantidad").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    cell.html($(this).val());
+                    var precio = parseFloat(getNumber(cells.eq(5).text()));
+                    cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
+                    onCalcularMontos();
+                }
             });
             cell.find("#RunCantidad").focus();
         });
@@ -308,15 +283,15 @@
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
-                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
-                if (!nuevo) {
+                var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                if (!nuevo) { 
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
                         cache: false,
                         contentType: false,
                         processData: false,
-                        data: frm
+                        data: f
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
@@ -327,14 +302,30 @@
                     });
 
                 } else {
+                    /*AGREGAR DETALLE*/
+                    var detalle = [];
+                    tblDetalleCompra.destroy();
+                    pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
+                        var row = $(this).find("td");
+                        var material = {
+                            Estilo: row.eq(1).text().replace(/\s+/g, ''),
+                            Color: row.eq(2).text().replace(/\s+/g, ''),
+                            Precio: row.eq(5).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
+                            Talla: row.eq(3).text().replace(/\s+/g, ''),
+                            Cantidad: (row.eq(4).text().replace(/\s+/g, '') !== '') ? row.eq(4).text().replace(/\s+/g,'') : 0,
+                            Subtotal: (row.eq(6).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(6).text()) : 0
+                        };
+                        detalle.push(material);
+                    }); 
+                    f.append('Detalle', JSON.stringify(detalle));
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
                         cache: false,
                         contentType: false,
                         processData: false,
-                        data: frm
-                    }).done(function (data, x, jq) {
+                        data: f
+                    }).done(function (data, x, jq) { 
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         getRecords();
                     }).fail(function (x, y, z) {
@@ -622,42 +613,70 @@
     /*FIN AUTOSUMAR PARES*/
 
     /*AGREGAR ESTILO-COLOR*/
-
     function onAgregarFila() {
         var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
         var Estilo = pnlDatosDetalle.find("[name='Estilo']");
         var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
-        /*COMPROBAR ESTILO Y COMBINACION*/
-        var estilo_combinacion_existen = false;
-        $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-            var cells = $(this).find("td");
-            if (cells.eq(1).text() === Estilo.val() && cells.eq(2).text() === Combinacion.val()) {
-                estilo_combinacion_existen = true;
-                return false;
-            }
-        });
-        /*FIN COMPROBAR ESTILO Y COMBINACION*/
-        /*VALIDAR ESTILO Y COMBINACION*/
-        if (!estilo_combinacion_existen) {
-            $.each(rows.find("input.numbersOnly:enabled"), function () {
-                var talla = rows.find("input").eq($(this).parent().index()).val();
-                if (talla > 0) {
-                    var par = parseInt($(this).val());
-                    if (par > 0) {
-                        tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>', Estilo.val(), Combinacion.val(), talla, $(this).val(), 0, 0.0]).draw(false);
-                        $(this).val('');
-                    }
+        var Costo = pnlDatosDetalle.find("[name='PrecioMov']");
+        if (Costo.val() !== '' && parseFloat(Costo.val()) > 0) {
+            /*COMPROBAR ESTILO Y COMBINACION*/
+            var estilo_combinacion_existen = false;
+            $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
+                var cells = $(this).find("td");
+                if (cells.eq(1).text() === Estilo.val() && cells.eq(2).text() === Combinacion.val()) {
+                    estilo_combinacion_existen = true;
+                    return false;
                 }
             });
-            onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+            /*FIN COMPROBAR ESTILO Y COMBINACION*/
+            /*VALIDAR ESTILO Y COMBINACION*/
+            if (!estilo_combinacion_existen) {
+                $.each(rows.find("input.numbersOnly:enabled"), function () {
+                    var talla = rows.find("input").eq($(this).parent().index()).val();
+                    if (talla > 0) {
+                        var par = parseInt($(this).val());
+                        if (par > 0) {
+                            tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
+                                Estilo.val(),
+                                Combinacion.val(),
+                                talla,
+                                $(this).val(),
+                                "$" + $.number(Costo.val(), 2, '.', ','),
+                                "$" + $.number((par * Costo.val()), 2, '.', ',')
+                            ]).draw(false);
+                            $(this).val('');
+                        }
+                    }
+                });
+                onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+                onCalcularMontos();
+            } else {
+                onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
+            }
+            /*VALIDAR ESTILO Y COMBINACION*/
         } else {
-            onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
+            onNotify('<span class="fa fa-times fa-lg"></span>', 'DEBE DE ESTABLECER UN COSTO', 'danger');
         }
-        /*VALIDAR ESTILO Y COMBINACION*/
     }
 
     function onEliminarFila(e) {
+        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');
         tblDetalleCompra.row($(e).parent().parent()).remove().draw();
+        onCalcularMontos();
+    }
+
+    function onCalcularMontos() {
+        var pares = 0;
+        var total = 0.0;
+        $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
+            var cells = $(this).find("td");
+            pares += parseInt(cells.eq(4).text());
+            total += getNumberFloat(cells.eq(6).text());
+        });
+        pnlDatosDetalle.find("#Pares").find("strong").text(pares);
+        pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
+        pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(total * 0.16, 2, '.', ','));
+        pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total * 1.16, 2, '.', ','));
     }
 
 </script>
