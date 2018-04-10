@@ -1,3 +1,8 @@
+.table.Tallas th, .table.Tallas td {
+    padding: .09rem; 
+    vertical-align: top;
+    border-top: 0px solid #dee2e6;
+}
 
 /*No edición en controles*/
 .disabledForms{
@@ -7,9 +12,9 @@
 
 /*Clase de validacion*/
 ul.myErrorClass, input.myErrorClass, textarea.myErrorClass, select.myErrorClass {
-/*    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: #dc3545 !important;*/
+    /*    border-width: 1px !important;
+        border-style: solid !important;
+        border-color: #dc3545 !important;*/
 }
 
 ul.myErrorClass input {

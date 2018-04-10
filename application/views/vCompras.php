@@ -72,7 +72,7 @@
 </div>
 <!--DETALLE-->
 <div id="pnlDatosDetalle" class="container-fluid d-none">
-    <br>
+   
     <div class="card border-dark">
         <div class="card-header">
             <strong>Detalle de la Compra</strong>
@@ -114,7 +114,7 @@
             </div> 
 
             <label for="Mayoreo">Tallas</label> 
-            <table id="tblTallas" class="table">
+            <table id="tblTallas" class="table Tallas">
                 <thead></thead>
                 <tbody>
                     <tr>
