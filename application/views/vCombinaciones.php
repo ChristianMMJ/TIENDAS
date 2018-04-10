@@ -1,17 +1,18 @@
-
 <div class="card " id="pnlTablero">
     <div class="card-body">
-        <legend class="float-left">Gestión de Colores</legend>
-        <div align="right">
-            <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+        <div class="row">
+            <div class="col-sm-6 float-left">
+                <legend class="float-left">Gestión de Colores</legend>
+            </div>
+            <div class="col-sm-6 float-right" align="right">
+                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+            </div>
         </div>
         <div class="card-block">
             <div id="tblRegistros"></div>
         </div>
     </div>
 </div>
-
-
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
@@ -26,8 +27,8 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -42,7 +43,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Clave">Clave*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required >
+                        <input type="text" class="form-control form-control-sm numbersOnly " id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
                         <label for="Descripcion">Descripción*</label>  
@@ -52,7 +53,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm "  name="Estatus" required=""> 
+                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
                             <option value=""></option>  
                             <option>ACTIVO</option>
                             <option>INACTIVO</option> 
@@ -87,9 +88,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        btnRefrescar.trigger('click');
-                        pnlEditar.addClass('d-none');
-                        pnlTablero.removeClass('d-none');
+                        getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {

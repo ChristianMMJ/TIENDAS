@@ -22,17 +22,6 @@ label.myErrorClass {
 
 
 
-/*Select 2*/
-.select2-container--default .select2-selection--single {
-    background-color: #fff;
-    border: 1px solid rgb(204, 204, 204);
-    border-radius: 0px; 
-}
-.select2-container .select2-selection--single {
-
-    height: 29px !important;
-}
-
 /*Tablas*/
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     vertical-align: middle !important;

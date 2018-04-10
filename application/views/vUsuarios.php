@@ -1,33 +1,15 @@
 <div class="card " id="pnlTablero">
     <div class="card-body">
-        <legend class="float-left">Gestión de Usuarios</legend>
-        <div align="right">
-            <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+        <div class="row">
+            <div class="col-sm-6 float-left">
+                <legend class="float-left">Gestión de Usuarios</legend>
+            </div>
+            <div class="col-sm-6 float-right" align="right">
+                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+            </div>
         </div>
-
         <div class="card-block">
             <div id="tblRegistros"></div>
-        </div>
-    </div>
-</div>
-<!--MODALES--> 
-<!--Confirmacion-->
-<div class="modal" id="mdlConfirmar" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Deseas eliminar el registro?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
-                <button type="button" class="btn btn-raised btn-primary" id="btnEliminar">ACEPTAR</button>
-            </div>
         </div>
     </div>
 </div>
@@ -45,8 +27,8 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -58,19 +40,19 @@
                         <input type="text" class="form-control form-control-sm" id="Usuario" name="Usuario" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Estatus">Contraseña*</label>  
+                        <label for="Contrasena">Contraseña*</label>  
                         <input type="password" class="form-control form-control-sm" id="Contrasena" name="Contrasena" required >
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Estatus">Correo*</label> 
+                        <label for="Correo">Correo*</label> 
                         <input type="email" id="Correo" name="Correo" class="form-control form-control-sm" placeholder="lobo@lobo.com.mx" required>
                     </div> 
                     <div class="col-sm">
                         <label for="Tienda">Tienda*</label>
-                        <select class="form-control form-control-sm " name="Tienda"> 
+                        <select class="form-control form-control-sm required" name="Tienda"> 
                             <option value=""></option>  
                         </select>
                     </div>
@@ -80,7 +62,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="Tipo">Tipo</label>
-                        <select class="form-control form-control-sm " name="Tipo">
+                        <select class="form-control form-control-sm required" name="Tipo">
                             <option value=""></option>  
                             <option value="ADMINISTRADOR">ADMINISTRADOR</option>
                             <option value="GERENTE">GERENTE</option>
@@ -90,7 +72,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm "  name="Estatus"> 
+                        <select class="form-control form-control-sm required"  name="Estatus"> 
                             <option value=""></option>  
                             <option>ACTIVO</option>
                             <option>INACTIVO</option> 

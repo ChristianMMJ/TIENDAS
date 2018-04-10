@@ -1,8 +1,12 @@
 <div class="card " id="pnlTablero">
     <div class="card-body">
-        <legend class="float-left">Gestión de Estilos</legend>
-        <div align="right">
-            <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+        <div class="row">
+            <div class="col-sm-6 float-left">
+                <legend class="float-left">Gestión de Estilos</legend>
+            </div>
+            <div class="col-sm-6 float-right" align="right">
+                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+            </div>
         </div>
         <div class="card-block">
             <div id="tblRegistros"></div>
@@ -21,8 +25,8 @@
                     <div class="col-md-7 float-right">
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div> 
                 <div class="row"><!--START ROW-->
@@ -40,7 +44,7 @@
 
                     <div class="col-md">
                         <label for="Genero">Género</label>
-                        <select class="form-control form-control-sm "   name="Genero"> 
+                        <select class="form-control form-control-sm required"   name="Genero"> 
                             <option value=""></option>  
                             <option value="MASCULINO">MASCULINO</option>   
                             <option value="FEMENINO">FEMENINO</option>   

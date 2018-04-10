@@ -1,6 +1,3 @@
-
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between">
     <a class="navbar-brand" href="<?php print base_url(); ?>">
         <img src="<?php print base_url(); ?>img/LS.png" width="30px">
@@ -11,6 +8,11 @@
 
     <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+                <a class="nav-link" href="<?php print base_url('Compras') ?>">Compras</a>
+            </li>
+
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

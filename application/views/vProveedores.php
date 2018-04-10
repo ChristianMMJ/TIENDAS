@@ -1,8 +1,12 @@
 <div class="card " id="pnlTablero">
     <div class="card-body">
-        <legend class="float-left">Gestión de Proveedores</legend>
-        <div align="right">
-            <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+        <div class="row">
+            <div class="col-sm-6 float-left">
+                <legend class="float-left">Gestión de Proveedores</legend>
+            </div>
+            <div class="col-sm-6 float-right" align="right">
+                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+            </div>
         </div>
         <div class="card-block">
             <div id="tblRegistros"></div>
@@ -22,8 +26,8 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar"><span class="fa fa-undo"></span><br>CANCELAR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-check"></span><br>GUARDAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -71,7 +75,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Estado">Estado</label>   
-                        <select class="form-control form-control-sm "  id="Estado" name="Estado" required=""> 
+                        <select class="form-control form-control-sm required"  id="Estado" name="Estado" required=""> 
                             <option value=""></option>
                             <option value="Aguascalientes">Aguascalientes</option>
                             <option value="Baja California">Baja California</option>
@@ -147,7 +151,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm"  name="Estatus" required=""> 
+                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
                             <option value=""></option>  
                             <option>ACTIVO</option>
                             <option>INACTIVO</option> 
@@ -423,46 +427,6 @@
         }).always(function () {
             HoldOn.close();
         });
-    }
-    //Función para validar un RFC
-    function rfcValido(rfc, aceptarGenerico = true) {
-        const re = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
-        var validado = rfc.match(re);
-
-        if (!validado)  //Coincide con el formato general del regex?
-            return false;
-
-        //Separar el dígito verificador del resto del RFC
-        const digitoVerificador = validado.pop(),
-                rfcSinDigito = validado.slice(1).join(''),
-                len = rfcSinDigito.length,
-                //Obtener el digito esperado
-                diccionario = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ Ñ",
-                indice = len + 1;
-        var suma,
-                digitoEsperado;
-
-        if (len == 12)
-            suma = 0
-        else
-            suma = 481; //Ajuste para persona moral
-
-        for (var i = 0; i < len; i++)
-            suma += diccionario.indexOf(rfcSinDigito.charAt(i)) * (indice - i);
-        digitoEsperado = 11 - suma % 11;
-        if (digitoEsperado == 11)
-            digitoEsperado = 0;
-        else if (digitoEsperado == 10)
-            digitoEsperado = "A";
-
-        //El dígito verificador coincide con el esperado?
-        // o es un RFC Genérico (ventas a público general)?
-        if ((digitoVerificador != digitoEsperado)
-                && (!aceptarGenerico || rfcSinDigito + digitoVerificador != "XAXX010101000"))
-            return false;
-        else if (!aceptarGenerico && rfcSinDigito + digitoVerificador == "XEXX010101000")
-            return false;
-        return rfcSinDigito + digitoVerificador;
     }
 
     function onRemovePreview(e) {
