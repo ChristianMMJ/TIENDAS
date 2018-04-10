@@ -97,6 +97,25 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+    
+      public function getSerieXEstilo($Estilo) {
+        try {
+            $this->db->select("S.* ", false);
+            $this->db->from('sz_Estilos AS E');
+            $this->db->join('sz_Series AS S','E.Serie = S.ID','left');
+            $this->db->where('E.ID', $Estilo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    } 
      
     
 }

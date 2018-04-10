@@ -297,7 +297,7 @@ function handleEnter() {
     $('body').on('keydown', 'input, select, textarea', function (e) {
 
         var self = $(this)
-                , form = self.parents('form:eq(0)')
+                , form = self.parents('body')
                 , focusable
                 , next
                 ;

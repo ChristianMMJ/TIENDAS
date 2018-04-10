@@ -141,28 +141,28 @@
                 Pares:
             </div>
             <div class=" " style="width: 1200px;" id="dSerieEncabezadoE">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="T1">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C1">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C2">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C3">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C4">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C5">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C6">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C7">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C8">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C9">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C10">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C11">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C12">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C13">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C14">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C15">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C16">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C17">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C18">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C19">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C20">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C21">
+                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C22">
                 &nbsp;
                 <input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares">
             </div>
@@ -182,8 +182,9 @@
     var currentDate = new Date();
     var nuevo = true;
     $(document).ready(function () {
-        pnlDatos.find("[name='Estilo']").change(function () {
+        pnlDatosDetalle.find("[name='Estilo']").change(function () {
             getCombinacionesXEstilo($(this).val());
+            getSerieXEstilo($(this).val());
         });
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -368,6 +369,26 @@
         });
     }
 
+    function getSerieXEstilo(Estilo) {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getSerieXEstilo',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            $.each(data[0], function (k, v) {
+                pnlDatosDetalle.find("[name='" + k + "']").val(v);
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
     function getCombinacionesXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -378,11 +399,11 @@
                 Estilo: Estilo
             }
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Combinacion']")[0].selectize.clearOptions();
+            pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.clearOptions();
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
-            pnlDatos.find("[name='Combinacion']")[0].selectize.open();
+            pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.open();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -398,7 +419,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                pnlDatosDetalle.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);

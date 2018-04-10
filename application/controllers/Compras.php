@@ -69,6 +69,18 @@ class Compras extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function getSerieXEstilo() {
+        try {
+            extract($this->input->post());
+            $data = $this->estilos_model->getSerieXEstilo($Estilo);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    
 
     public function getTiendas() {
         try {

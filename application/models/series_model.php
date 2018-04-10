@@ -44,8 +44,6 @@ class series_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
-   
 
     public function onAgregar($array) {
         try {
@@ -59,8 +57,6 @@ class series_model extends CI_Model {
         }
     }
 
-  
-
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
@@ -70,8 +66,6 @@ class series_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
-
 
     public function onEliminar($ID) {
         try {
@@ -83,9 +77,6 @@ class series_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
-
-
 
     public function getSerieByID($ID) {
         try {
