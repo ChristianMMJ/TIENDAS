@@ -40,6 +40,18 @@ class compras_model extends CI_Model {
         }
     }
 
+    public function onAgregarDetalle($array) {
+        try {
+            $this->db->insert("sz_CompraDetalle", $array);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
