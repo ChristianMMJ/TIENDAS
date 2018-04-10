@@ -1,3 +1,47 @@
+.customBackground{
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/*Tablas mas angostas*/
+.table th {
+    padding: 0.3rem; 
+    background-color: white;
+}
+table td {
+    padding: 0.0rem; 
+    background-color: white;
+}
+
+.table-sm td {
+    padding: 0.0rem;
+    background-color: white;
+}
+/*Fuente Nav Submenu*/
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+    font-size: 0.8203125rem;
+}
+.navbar-dark .navbar-nav .nav-link {
+    font-size: 0.8203125rem;
+}
+
+/*Controles pequeños*/
+label {
+    margin-bottom: .1rem; 
+}
+
+.selectize-input {
+    min-height: 0px;
+}
+.selectize-input {
+    padding: 0px 7px;
+}
+
+.form-control-sm, .input-group-sm > .form-control, .input-group-sm > .input-group-prepend > .input-group-text, .input-group-sm > .input-group-append > .input-group-text, .input-group-sm > .input-group-prepend > .btn, .input-group-sm > .input-group-append > .btn {
+    height: 22.5px;
+    font-size: 11.5px;
+}
+
+/*Tallas Ventas y Compras*/
 .table.Tallas th, .table.Tallas td {
     padding: .09rem; 
     vertical-align: top;
@@ -116,7 +160,4 @@ input {
 .table-responsive table{
     display: table  !important;
     width: 100% !important;
-}
-.table.DetalleAngosoto td {
-    padding: .2rem; 
 }

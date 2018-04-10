@@ -5,7 +5,7 @@
                 <legend class="float-left">Gestión de Colores</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br>AGREGAR</button>
+                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block">

@@ -14,7 +14,7 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap CSS -->
-        <link href="<?php print base_url('css/bootstrap_yeti.min.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('css/bootstrap_yeti.css') ?>" rel="stylesheet"> 
 
         <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet"> 
 
@@ -207,10 +207,6 @@
                 }
             });
 
-            console.log('inputs ' + inputs);
-            console.log('valid_inputs ' + valid_inputs);
-            console.log('selects ' + selects);
-            console.log('valid_selects ' + valid_selects);
             if (valid_inputs === inputs && valid_selects === selects) {
                 valido = true;
             }
