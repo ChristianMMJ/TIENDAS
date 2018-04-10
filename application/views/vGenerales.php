@@ -20,7 +20,7 @@
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
-                        <legend class="float-left">Nuevo</legend>
+                        <legend class="float-left">Catálogos</legend>
                     </div>
                     <div class="col-md-7 float-right">
 
