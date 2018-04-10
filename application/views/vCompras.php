@@ -114,58 +114,135 @@
             </div> 
 
             <label for="Mayoreo">Tallas</label> 
-            <div class="" style="width: 1200px;" id="dSerieEncabezado">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T1">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T2">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T3">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T4">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T5">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T6">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T7">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T8">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T9">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T10">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T11">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T12">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T13">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T14">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T15">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T16">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T17">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T18">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T19">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T20">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T21">
-                <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T22">
-                &nbsp;
-                Pares:
+            <table id="tblTallas" class="table">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                        <td>Pares</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C1"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C2"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C3"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C4"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C5"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C6"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C7"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C8"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C9"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C10"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C11"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C12"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C13"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C14"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C15"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C16"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C17"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C18"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C19"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C20"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C21"></td>
+                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C22"></td>
+                        <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!--            <div class="" style="width: 1200px;" id="dSerieEncabezado">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T1">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T2">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T3">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T4">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T5">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T6">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T7">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T8">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T9">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T10">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T11">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T12">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T13">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T14">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T15">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T16">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T17">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T18">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T19">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T20">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T21">
+                            <input type="text" style="width: 45px;" class="numbersOnly" disabled="" name="T22">
+                            &nbsp;
+                            Pares:
+                        </div>
+                        <div class=" " style="width: 1200px;" id="dSerieEncabezadoE">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C1">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C2">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C3">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C4">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C5">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C6">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C7">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C8">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C9">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C10">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C11">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C12">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C13">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C14">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C15">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C16">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C17">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C18">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C19">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C20">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C21">
+                            <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C22">
+                            &nbsp;
+                            
+                        </div>-->
+
+            <!--DETALLE-->
+            <div class="w-100"><br></div>
+            <div class="table-responsive">
+                <table id="tblDetalle" class="table table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Estilo</th>
+                            <th scope="col">Color</th>
+                            <th scope="col">Talla</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            <div class=" " style="width: 1200px;" id="dSerieEncabezadoE">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C1">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C2">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C3">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C4">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C5">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C6">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C7">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C8">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C9">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C10">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C11">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C12">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C13">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C14">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C15">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C16">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C17">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C18">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C19">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C20">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C21">
-                <input type="text" style="width: 45px;" class="numbersOnly" maxlength="3"  name="C22">
-                &nbsp;
-                <input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares">
-            </div>
+            <!--FIN DETALLE-->
         </div>
     </div>
 </div>
@@ -181,7 +258,49 @@
 
     var currentDate = new Date();
     var nuevo = true;
+
+    /*DATATABLE GLOBAL*/
+    var tblDetalleCompra;
+
     $(document).ready(function () {
+
+        $("body").keyup(function (e) {
+            if (e.keyCode === 46) {
+
+            }
+        });
+
+        pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
+            pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
+            $(this).addClass("success");
+        });
+        pnlDatosDetalle.find('#tblDetalle tbody').on('dblclick', 'tr', function () {
+            $.each(pnlDatosDetalle.find('#tblDetalle > tbody > tr'), function () {
+                var cell = $(this).find("td").eq(4);
+                var rcantidad = cell.text() !== '' ? cell.text() : cell.find("#RunCantidad").val();
+                cell.html(rcantidad);
+            });
+
+            var cell = $(this).find("td").eq(4);
+            cell.html('<input type="text" class="form-control form-control-sm numbersOnly" style="width: 45px;" maxlength="3" id="RunCantidad" value="' + cell.text() + '">');
+            cell.find("#RunCantidad").focusout(function () {
+                cell.html($(this).val());
+            });
+            cell.find("#RunCantidad").focus();
+        });
+
+        $.each(pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly"), function () {
+            $(this).keyup(function (e) {
+                if (e.keyCode === 13) {
+                    var talla = pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
+                    if (talla <= 0) {
+                        onAgregarFila();
+                    }
+                }
+                onAutoSumarPares();
+            });
+        });
+
         pnlDatosDetalle.find("[name='Estilo']").change(function () {
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
@@ -229,6 +348,44 @@
             }
         });
         btnNuevo.click(function () {
+            if ($.fn.DataTable.isDataTable('#tblDetalle')) {
+                tblDetalleCompra.destroy();
+                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
+            }
+
+            tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable({
+                "bLengthChange": false,
+                language: {
+                    processing: "Proceso en curso...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ Elementos",
+                    info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
+                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
+                    infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
+                    infoPostFix: "",
+                    loadingRecords: "Procesando los datos...",
+                    zeroRecords: "No se encontro nada.",
+                    emptyTable: "No existen datos en la tabla.",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "&Uacute;ltimo"
+                    },
+                    aria: {
+                        sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": Habilitado para ordenar la columna en orden descendente"
+                    },
+                    buttons: {
+                        copyTitle: 'Registros copiados a portapapeles',
+                        copyKeys: 'Copiado con teclas clave.',
+                        copySuccess: {
+                            _: ' %d Registros copiados',
+                            1: ' 1 Registro copiado'
+                        }
+                    }
+                }
+            });
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
@@ -444,4 +601,63 @@
             HoldOn.close();
         });
     }
+
+
+    /*AUTOSUMAR PARES*/
+    function onAutoSumarPares() {
+        var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
+        var pares = 0;
+        $.each(rows.find("input.numbersOnly:enabled"), function () {
+            if (rows.find("input").eq($(this).parent().index()).val() > 0) {
+                var par = parseInt($(this).val());
+                if (par > 0) {
+                    pares += par;
+                }
+            } else {
+                $(this).val('');
+            }
+        });
+        pnlDatosDetalle.find("input[name='TPares']").val(pares);
+    }
+    /*FIN AUTOSUMAR PARES*/
+
+    /*AGREGAR ESTILO-COLOR*/
+
+    function onAgregarFila() {
+        var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
+        var Estilo = pnlDatosDetalle.find("[name='Estilo']");
+        var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
+        /*COMPROBAR ESTILO Y COMBINACION*/
+        var estilo_combinacion_existen = false;
+        $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
+            var cells = $(this).find("td");
+            if (cells.eq(1).text() === Estilo.val() && cells.eq(2).text() === Combinacion.val()) {
+                estilo_combinacion_existen = true;
+                return false;
+            }
+        });
+        /*FIN COMPROBAR ESTILO Y COMBINACION*/
+        /*VALIDAR ESTILO Y COMBINACION*/
+        if (!estilo_combinacion_existen) {
+            $.each(rows.find("input.numbersOnly:enabled"), function () {
+                var talla = rows.find("input").eq($(this).parent().index()).val();
+                if (talla > 0) {
+                    var par = parseInt($(this).val());
+                    if (par > 0) {
+                        tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>', Estilo.val(), Combinacion.val(), talla, $(this).val(), 0, 0.0]).draw(false);
+                        $(this).val('');
+                    }
+                }
+            });
+            onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+        } else {
+            onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
+        }
+        /*VALIDAR ESTILO Y COMBINACION*/
+    }
+
+    function onEliminarFila(e) {
+        tblDetalleCompra.row($(e).parent().parent()).remove().draw();
+    }
+
 </script>
