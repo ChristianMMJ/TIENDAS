@@ -62,6 +62,16 @@ class compras_model extends CI_Model {
         }
     }
 
+    public function onModificarDetalle($ID, $Compra, $DATA) {
+        try {
+            $this->db->where('ID', $ID);
+            $this->db->where('Compra', $Compra);
+            $this->db->update("sz_CompraDetalle", $DATA); 
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
@@ -79,6 +89,32 @@ class compras_model extends CI_Model {
             $this->db->from('sz_Compras AS U');
             $this->db->where('U.ID', $ID);
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getCompraDetalleByID($ID) {
+        try {
+            $this->db->select('CD.ID AS ID, CD.Estilo AS IdEstilo, CD.Color AS IdColor,'
+                    . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
+                    . 'C.Descripcion AS Color,'
+                    . 'CD.Talla AS Talla,'
+                    . 'CD.Cantidad AS Cantidad,'
+                    . 'CD.Precio AS Precio,'
+                    . 'CD.Subtotal AS SubTotal', false);
+            $this->db->from('sz_CompraDetalle AS CD');
+            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
+            $this->db->where('CD.Compra', $ID);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

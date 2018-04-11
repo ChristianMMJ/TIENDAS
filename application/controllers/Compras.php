@@ -50,6 +50,14 @@ class Compras extends CI_Controller {
         }
     }
 
+    public function getCompraDetalleByID() {
+        try {
+            print json_encode($this->compras_model->getCompraDetalleByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstilos() {
         try {
             extract($this->input->post());
@@ -69,7 +77,7 @@ class Compras extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getSerieXEstilo() {
         try {
             extract($this->input->post());
@@ -79,8 +87,6 @@ class Compras extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
-    
 
     public function getTiendas() {
         try {
@@ -114,7 +120,7 @@ class Compras extends CI_Controller {
                 'Estatus' => 'ACTIVO'
             );
             $ID = $this->compras_model->onAgregar($data);
-            /*DETALLE*/ 
+            /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $data = array(
@@ -126,7 +132,7 @@ class Compras extends CI_Controller {
                     'Cantidad' => $v->Cantidad,
                     'Subtotal' => $v->Subtotal,
                     'EsCoTa' => ''
-                ); 
+                );
                 $this->compras_model->onAgregarDetalle($data);
             }
         } catch (Exception $exc) {
@@ -147,6 +153,15 @@ class Compras extends CI_Controller {
                 'Estatus' => 'ACTIVO'
             );
             $this->compras_model->onModificar($ID, $data);
+            /* DETALLE */
+            $Detalle = json_decode($this->input->post("Detalle"));
+            foreach ($Detalle as $key => $v) {
+                $data = array(
+                    'Cantidad' => $v->Cantidad,
+                    'Subtotal' => $v->Subtotal
+                );
+                $this->compras_model->onModificarDetalle($v->ID/*ID DETALLE*/, $ID/*ID COMPRA*/, $data);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
