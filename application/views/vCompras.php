@@ -354,10 +354,10 @@
                         var material = {
                             Estilo: row.eq(1).text().replace(/\s+/g, ''),
                             Color: row.eq(2).text().replace(/\s+/g, ''),
-                            Precio: row.eq(5).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
-                            Talla: row.eq(3).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(4).text().replace(/\s+/g, '') !== '') ? row.eq(4).text().replace(/\s+/g, '') : 0,
-                            Subtotal: (row.eq(6).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(6).text()) : 0
+                            Precio: row.eq(7).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
+                            Talla: row.eq(5).text().replace(/\s+/g, ''),
+                            Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
+                            Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
                         };
                         detalle.push(material);
                     });
@@ -693,7 +693,7 @@
                                     talla,
                                     $(this).val(),
                                     "$" + $.number(Costo.val(), 2, '.', ','),
-                                    "$" + $.number((par * Costo.val()), 2, '.', ','),0
+                                    "$" + $.number((par * Costo.val()), 2, '.', ','), 0
                                 ]).draw(false);
 
                                 $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
