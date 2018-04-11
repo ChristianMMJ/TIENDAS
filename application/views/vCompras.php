@@ -226,7 +226,14 @@
     /*DATATABLE GLOBAL*/
     var tblDetalleCompra;
     var tblInicial = {
+        "autoWidth": true,
+        "colReorder": true,
+        "displayLength": 20,
         "bLengthChange": false,
+        "deferRender": true,
+        "scrollY": 350,
+        "scrollCollapse": false,
+        "bSort": false,
         "columnDefs": [
             {
                 "targets": [1],
@@ -359,6 +366,7 @@
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
+                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                     });
 
                 } else {
