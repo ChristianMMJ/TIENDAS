@@ -72,6 +72,14 @@ class compras_model extends CI_Model {
         }
     }
 
+    public function onEliminarDetalle($ID) {
+        try { 
+            $this->db->where('ID', $ID);
+            $this->db->delete("sz_CompraDetalle"); 
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');

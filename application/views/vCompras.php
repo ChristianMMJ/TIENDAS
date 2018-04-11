@@ -352,6 +352,11 @@
                         detalle.push(material);
                     });
                     f.append('Detalle', JSON.stringify(detalle));
+                    console.log('* DETALLE ELIMINADO *');
+                    console.log(detalle_eliminado);
+                    console.log('* DETALLE ELIMINADO *');
+                    console.log(detalle_eliminado);
+                    f.append('DetalleEliminado', JSON.stringify(detalle_eliminado));
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -367,6 +372,7 @@
                     }).always(function () {
                         HoldOn.close();
                         tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                        detalle_eliminado = [];
                     });
 
                 } else {
@@ -407,6 +413,7 @@
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
+        
         btnNuevo.click(function () {
             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
                 tblDetalleCompra.destroy();
@@ -518,8 +525,7 @@
 
                             /*DETALLE*/
                             $.getJSON(master_url + 'getCompraDetalleByID', {ID: temp}).done(function (data, x, jq) {
-                                $.each(data, function (k, v) {
-                                    console.log(k, v);
+                                $.each(data, function (k, v) { 
                                     tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
                                         v.IdEstilo,
                                         v.IdColor,
@@ -734,11 +740,12 @@
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
-
+    var detalle_eliminado = [];
     function onEliminarFila(e) {
-        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');
+        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');           
+        detalle_eliminado.push({ID: $(tblDetalleCompra.row($(e).parent().parent()).data()).eq(9)[0]});
         tblDetalleCompra.row($(e).parent().parent()).remove().draw();
-        onCalcularMontos();
+        onCalcularMontos(); 
     }
 
     function onCalcularMontos() {

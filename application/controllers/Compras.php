@@ -162,6 +162,14 @@ class Compras extends CI_Controller {
                 );
                 $this->compras_model->onModificarDetalle($v->ID/*ID DETALLE*/, $ID/*ID COMPRA*/, $data);
             }
+            /* FIN DETALLE */
+            /*DETALLE ELIMINADO*/
+            $DetalleEliminado = json_decode($this->input->post("DetalleEliminado"));
+            foreach ($DetalleEliminado as $key => $v) { 
+                $this->compras_model->onEliminarDetalle($v->ID);
+            }
+            /*FIN DETALLE ELIMINADO*/
+            
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
