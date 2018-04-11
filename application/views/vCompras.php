@@ -227,6 +227,22 @@
     var tblDetalleCompra;
     var tblInicial = {
         "bLengthChange": false,
+        "columnDefs": [
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [2],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [9],
+                "visible": false,
+                "searchable": false
+            }],
         language: {
             processing: "Proceso en curso...",
             search: "Buscar:",
@@ -271,24 +287,24 @@
         });
         pnlDatosDetalle.find('#tblDetalle tbody').on('dblclick', 'tr', function () {
             $.each(pnlDatosDetalle.find('#tblDetalle > tbody > tr'), function () {
-                var cell = $(this).find("td").eq(6);
+                var cell = $(this).find("td").eq(4);
                 var rcantidad = cell.text() !== '' ? cell.text() : cell.find("#RunCantidad").val();
                 cell.html(rcantidad);
             });
             var cells = $(this).find("td");
-            var cell = cells.eq(6);
+            var cell = cells.eq(4);
             cell.html('<input type="text" class="form-control form-control-sm numbersOnly" style="width: 45px;" maxlength="3" id="RunCantidad" value="' + cell.text() + '">');
             cell.find("#RunCantidad").focusout(function () {
                 cell.html($(this).val());
-                var precio = parseFloat(getNumber(cells.eq(7).text()));
-                cells.eq(8).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
+                var precio = parseFloat(getNumber(cells.eq(5).text()));
+                cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
                 onCalcularMontos();
             });
             cell.find("#RunCantidad").keyup(function (e) {
                 if (e.keyCode === 13) {
                     cell.html($(this).val());
-                    var precio = parseFloat(getNumber(cells.eq(7).text()));
-                    cells.eq(8).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
+                    var precio = parseFloat(getNumber(cells.eq(5).text()));
+                    cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
                     onCalcularMontos();
                 }
             });
@@ -376,6 +392,7 @@
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
+                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                     });
                 }
             } else {
@@ -506,11 +523,6 @@
                                         "$" + $.number(v.SubTotal, 2, '.', ','),
                                         v.ID
                                     ]).draw(false);
-                                });
-                                $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-                                    $(this).find("td").eq(1).addClass("d-none");
-                                    $(this).find("td").eq(2).addClass("d-none");
-                                    $(this).find("td").eq(9).addClass("d-none");
                                 });
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
@@ -695,12 +707,6 @@
                                     "$" + $.number(Costo.val(), 2, '.', ','),
                                     "$" + $.number((par * Costo.val()), 2, '.', ','), 0
                                 ]).draw(false);
-
-                                $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-                                    $(this).find("td").eq(1).addClass("d-none");
-                                    $(this).find("td").eq(2).addClass("d-none");
-                                    $(this).find("td").eq(9).addClass("d-none");
-                                });
                                 $(this).val('');
                             }
                         }
@@ -732,8 +738,8 @@
         var total = 0.0;
         $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
             var cells = $(this).find("td");
-            pares += parseInt(cells.eq(6).text());
-            total += getNumberFloat(cells.eq(8).text());
+            pares += parseInt(cells.eq(4).text());
+            total += getNumberFloat(cells.eq(6).text());
         });
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
