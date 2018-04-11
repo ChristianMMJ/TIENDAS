@@ -352,10 +352,7 @@
                         detalle.push(material);
                     });
                     f.append('Detalle', JSON.stringify(detalle));
-                    console.log('* DETALLE ELIMINADO *');
-                    console.log(detalle_eliminado);
-                    console.log('* DETALLE ELIMINADO *');
-                    console.log(detalle_eliminado);
+                     
                     f.append('DetalleEliminado', JSON.stringify(detalle_eliminado));
                     $.ajax({
                         url: master_url + 'onModificar',
@@ -760,12 +757,10 @@
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
-        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) {
-            console.log('* CALCULANDO IVA *');
+        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) { 
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(total * 0.16, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total * 1.16, 2, '.', ','));
-        } else {
-            console.log('* NO IVA *');
+        } else { 
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(0, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
