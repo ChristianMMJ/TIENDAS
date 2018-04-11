@@ -81,7 +81,7 @@ var tableOptions = {
     "bLengthChange": false,
     "deferRender": true,
 //    "scrollY": false,
-    "scrollX": true,
+//    "scrollX": true,
     "scrollCollapse": false,
     "bSort": true,
     "aaSorting": [
@@ -251,7 +251,7 @@ var tableOptionsMiniTables = {
 function getTable(tblname, data) {
     var column = '';
     var i = 0;
-    var div = "<div class=\" table-responsive \">";
+    var div = "<div class=\" \">";
     div = "<table id=\"" + tblname + "\" class=\" table table-sm  \"  width=\"100%\">";
     //Create header
     div += "<thead>";

@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="card-block">
-            <div id="tblRegistros"></div>
+            <div class="table-responsive" id="tblRegistros"></div>
         </div>
     </div>
 </div>
