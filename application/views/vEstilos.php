@@ -88,20 +88,6 @@
                         <label for="Ano">Año*</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" min="1990" max="2090" maxlength="4" placeholder="" id="Ano" name="Ano" required="">
                     </div>
-                    <div class="col-md">
-                        <label for="Loc1">Loc 1*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc1" name="Loc1" >
-                    </div>
-                    <div class="col-md">
-                        <label for="Loc2">Loc 2*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc2" name="Loc2" >
-                    </div>
-                    <div class="col-md">
-                        <label for="Loc3">Loc 3*</label>
-                        <input type="text" class="form-control form-control-sm" id="Loc3" name="Loc3" >
-                    </div>
-
-                    <div class="w-100"></div> <!--SALTO-->
 
                     <div class="col-md-3">
                         <label for="Min">Mínimo*</label>

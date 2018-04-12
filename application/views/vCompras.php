@@ -132,28 +132,28 @@
                                 <td>Pares</td>
                             </tr>
                             <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C22"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
+                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
                                 <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
                             </tr>
                         </tbody>
@@ -229,7 +229,10 @@
         "deferRender": true,
         "scrollY": 350,
         "scrollCollapse": false,
-        "bSort": false,
+        "bSort": true,
+        "aaSorting": [
+            [9, 'asc']/*ID*/, [5, 'asc']/*Tallas*/
+        ],
         "columnDefs": [
             {
                 "targets": [1],
@@ -321,6 +324,7 @@
                 if (e.keyCode === 13) {
                     var talla = pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
                     if (talla <= 0) {
+                        onAgregarExistencias();
                         onAgregarFila();
                         $("[name='Estilo']")[0].selectize.focus();
                         $("[name='Estilo']")[0].selectize.clear(true);
@@ -365,6 +369,8 @@
         });
         //Evento en el select de estilo para traer las tallas y los colores
         pnlDatosDetalle.find("[name='Estilo']").change(function () {
+            $("[name='Combinacion']")[0].selectize.clear(true);
+            $("[name='Combinacion']")[0].selectize.clearOptions();
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
         });
@@ -425,8 +431,10 @@
                         //Se mete el objeto al arreglo
                         detalle.push(material);
                     });
-                    //Convertimos a caden el objeto en formato json
+                    //Convertimos a cadena el objeto en formato json
                     f.append('Detalle', JSON.stringify(detalle));
+                    f.append('Existencias', JSON.stringify(existencias));
+                    f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
@@ -435,6 +443,7 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         nuevo = false;
                         getRecords();
@@ -748,7 +757,8 @@
                                     talla,
                                     $(this).val(),
                                     "$" + $.number(Costo.val(), 2, '.', ','),
-                                    "$" + $.number((par * Costo.val()), 2, '.', ','), 0
+                                    "$" + $.number((par * Costo.val()), 2, '.', ','),
+                                    (rows.length + 1) //Obetener un indice temporal
                                 ]).draw(false);
                                 $(this).val('');
                             }
@@ -769,6 +779,43 @@
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
+
+    var existencias = [];
+    function onAgregarExistencias() {
+        var renglonExistencia = {
+            Tienda: pnlDatos.find("[name='Tienda']")[0].selectize.getValue(),
+            Documento: pnlDatos.find("[name='DocMov']").val(),
+            Estilo: pnlDatosDetalle.find("[name='Estilo']")[0].selectize.getValue(),
+            Color: pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.getValue(),
+            Ex1: (pnlDatosDetalle.find("[name='Ex1']").val() !== '') ? pnlDatosDetalle.find("[name='Ex1']").val() : 0,
+            Ex2: (pnlDatosDetalle.find("[name='Ex2']").val() !== '') ? pnlDatosDetalle.find("[name='Ex2']").val() : 0,
+            Ex3: (pnlDatosDetalle.find("[name='Ex3']").val() !== '') ? pnlDatosDetalle.find("[name='Ex3']").val() : 0,
+            Ex4: (pnlDatosDetalle.find("[name='Ex4']").val() !== '') ? pnlDatosDetalle.find("[name='Ex4']").val() : 0,
+            Ex5: (pnlDatosDetalle.find("[name='Ex5']").val() !== '') ? pnlDatosDetalle.find("[name='Ex5']").val() : 0,
+            Ex6: (pnlDatosDetalle.find("[name='Ex6']").val() !== '') ? pnlDatosDetalle.find("[name='Ex6']").val() : 0,
+            Ex7: (pnlDatosDetalle.find("[name='Ex7']").val() !== '') ? pnlDatosDetalle.find("[name='Ex7']").val() : 0,
+            Ex8: (pnlDatosDetalle.find("[name='Ex8']").val() !== '') ? pnlDatosDetalle.find("[name='Ex8']").val() : 0,
+            Ex9: (pnlDatosDetalle.find("[name='Ex9']").val() !== '') ? pnlDatosDetalle.find("[name='Ex9']").val() : 0,
+            Ex10: (pnlDatosDetalle.find("[name='Ex10']").val() !== '') ? pnlDatosDetalle.find("[name='Ex10']").val() : 0,
+            Ex11: (pnlDatosDetalle.find("[name='Ex11']").val() !== '') ? pnlDatosDetalle.find("[name='Ex11']").val() : 0,
+            Ex12: (pnlDatosDetalle.find("[name='Ex12']").val() !== '') ? pnlDatosDetalle.find("[name='Ex12']").val() : 0,
+            Ex13: (pnlDatosDetalle.find("[name='Ex13']").val() !== '') ? pnlDatosDetalle.find("[name='Ex13']").val() : 0,
+            Ex14: (pnlDatosDetalle.find("[name='Ex14']").val() !== '') ? pnlDatosDetalle.find("[name='Ex14']").val() : 0,
+            Ex15: (pnlDatosDetalle.find("[name='Ex15']").val() !== '') ? pnlDatosDetalle.find("[name='Ex15']").val() : 0,
+            Ex16: (pnlDatosDetalle.find("[name='Ex16']").val() !== '') ? pnlDatosDetalle.find("[name='Ex16']").val() : 0,
+            Ex17: (pnlDatosDetalle.find("[name='Ex17']").val() !== '') ? pnlDatosDetalle.find("[name='Ex17']").val() : 0,
+            Ex18: (pnlDatosDetalle.find("[name='Ex18']").val() !== '') ? pnlDatosDetalle.find("[name='Ex18']").val() : 0,
+            Ex19: (pnlDatosDetalle.find("[name='Ex19']").val() !== '') ? pnlDatosDetalle.find("[name='Ex19']").val() : 0,
+            Ex20: (pnlDatosDetalle.find("[name='Ex20']").val() !== '') ? pnlDatosDetalle.find("[name='Ex20']").val() : 0,
+            Ex21: (pnlDatosDetalle.find("[name='Ex21']").val() !== '') ? pnlDatosDetalle.find("[name='Ex21']").val() : 0,
+            Ex22: (pnlDatosDetalle.find("[name='Ex22']").val() !== '') ? pnlDatosDetalle.find("[name='Ex22']").val() : 0,
+            Precio: pnlDatosDetalle.find("[name='PrecioMov']").val(),
+            PrecioMenudeo: pnlDatosDetalle.find("[name='Menudeo']").val(),
+            PrecioMayoreo: pnlDatosDetalle.find("[name='Mayoreo']").val()
+        };
+        existencias.push(renglonExistencia);
+    }
+
     var detalle_eliminado = [];
     function onEliminarFila(e) {
         onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');

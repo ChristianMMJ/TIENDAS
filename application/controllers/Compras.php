@@ -12,6 +12,7 @@ class Compras extends CI_Controller {
         $this->load->model('tiendas_model');
         $this->load->model('proveedores_model');
         $this->load->model('combinaciones_model');
+        $this->load->model('existencias_model');
     }
 
     public function index() {
@@ -97,7 +98,7 @@ class Compras extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getPorcentajesByTienda() {
         try {
             extract($this->input->post());
@@ -145,6 +146,50 @@ class Compras extends CI_Controller {
                 );
                 $this->compras_model->onAgregarDetalle($data);
             }
+            /* INSERTA EXISTENCIAS */            
+            if ($this->input->post('AfecInv') === "1") {
+                $EstatusExistencias = 1;
+            }
+            else{
+                $EstatusExistencias = 0;
+            }
+
+            $Existencias = json_decode($this->input->post("Existencias"));
+            foreach ($Existencias as $key => $v) {
+                $data = array(
+                    'Tienda' => $v->Tienda,
+                    'Documento' => $v->Documento,
+                    'Estilo' => $v->Estilo,
+                    'Color' => $v->Color,
+                    'Ex1' => $v->Ex1,
+                    'Ex2' => $v->Ex2,
+                    'Ex3' => $v->Ex3,
+                    'Ex4' => $v->Ex4,
+                    'Ex5' => $v->Ex5,
+                    'Ex6' => $v->Ex6,
+                    'Ex7' => $v->Ex7,
+                    'Ex8' => $v->Ex8,
+                    'Ex9' => $v->Ex9,
+                    'Ex10' => $v->Ex10,
+                    'Ex11' => $v->Ex11,
+                    'Ex12' => $v->Ex12,
+                    'Ex13' => $v->Ex13,
+                    'Ex14' => $v->Ex14,
+                    'Ex15' => $v->Ex15,
+                    'Ex16' => $v->Ex16,
+                    'Ex17' => $v->Ex17,
+                    'Ex18' => $v->Ex18,
+                    'Ex19' => $v->Ex19,
+                    'Ex20' => $v->Ex20,
+                    'Ex21' => $v->Ex21,
+                    'Ex22' => $v->Ex22,
+                    'Precio' => $v->Precio,
+                    'PrecioMenudeo' => $v->PrecioMenudeo,
+                    'PrecioMayoreo' => $v->PrecioMayoreo,
+                    'Estatus' => $EstatusExistencias
+                );
+                $this->existencias_model->onAgregar($data);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -170,16 +215,15 @@ class Compras extends CI_Controller {
                     'Cantidad' => $v->Cantidad,
                     'Subtotal' => $v->Subtotal
                 );
-                $this->compras_model->onModificarDetalle($v->ID/*ID DETALLE*/, $ID/*ID COMPRA*/, $data);
+                $this->compras_model->onModificarDetalle($v->ID/* ID DETALLE */, $ID/* ID COMPRA */, $data);
             }
             /* FIN DETALLE */
-            /*DETALLE ELIMINADO*/
+            /* DETALLE ELIMINADO */
             $DetalleEliminado = json_decode($this->input->post("DetalleEliminado"));
-            foreach ($DetalleEliminado as $key => $v) { 
+            foreach ($DetalleEliminado as $key => $v) {
                 $this->compras_model->onEliminarDetalle($v->ID);
             }
-            /*FIN DETALLE ELIMINADO*/
-            
+            /* FIN DETALLE ELIMINADO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
