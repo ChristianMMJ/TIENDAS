@@ -120,6 +120,7 @@
                     }).done(function (data, x, jq) {
                         console.log(data, x, jq);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+nuevo=false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
