@@ -60,6 +60,8 @@ class Tiendas extends CI_Controller {
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
+                'PorMen' => ($this->input->post('PorMen') !== NULL) ? $this->input->post('PorMen') : NULL,
+                'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->tiendas_model->onAgregar($data);
@@ -109,6 +111,8 @@ class Tiendas extends CI_Controller {
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
+                'PorMen' => ($this->input->post('PorMen') !== NULL) ? $this->input->post('PorMen') : NULL,
+                'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->tiendas_model->onModificar($ID, $DATA);

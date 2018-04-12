@@ -14,10 +14,9 @@
     </div>
 </div>
 <!--GUARDAR-->
-<div class="container-fluid d-none" id="pnlDatos">
-    <br>
-    <div class="card border-dark">
-        <div class="card-header ">
+<div class="d-none" id="pnlDatos">
+    <div class="card border-0">
+        <div class="card-body text-dark customBackground" > 
             <div class="row">
                 <div class="col-md-8 float-left">
                     <strong>Compras</strong>
@@ -33,8 +32,7 @@
                     <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                 </div>
             </div>
-        </div>
-        <div class="card-body text-dark customBackground" > 
+            <hr>
             <form id="frmNuevo">
                 <div class="row">
                     <div class="d-none">
@@ -87,18 +85,18 @@
                     </div>
                     <div class="col-sm-1">
                         <label for="Clave">% Men.</label> 
-                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" disabled="" id="" name=""  >
+                        <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="Men"  >
                     </div>
                     <div class="col-sm-1">
                         <label for="Clave">% May.</label> 
-                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" disabled="" id="" name=""  >
+                        <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="May"  >
                     </div>
                     <div class="col-sm-1">
-                        <label for="Menudeo">Menudeo</label>  
+                        <label for="Menudeo">$ Men.</label>  
                         <input type="text" class="form-control form-control-sm numbersOnly" name="Menudeo" disabled="">
                     </div>
                     <div class="col-sm-1">
-                        <label for="Mayoreo">Mayoreo</label>  
+                        <label for="Mayoreo">$ May.</label>  
                         <input type="text" class="form-control form-control-sm numbersOnly" name="Mayoreo" disabled="">
                     </div>
                 </div> 
@@ -219,10 +217,8 @@
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
-
     var currentDate = new Date();
     var nuevo = true;
-
     /*DATATABLE GLOBAL*/
     var tblDetalleCompra;
     var tblInicial = {
@@ -281,17 +277,19 @@
             }
         }
     };
-
     $(document).ready(function () {
+        //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
         pnlDatos.find("input[name='TipoDoc']").keyup(function () {
             if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
                 onCalcularMontos();
             }
         });
+        //Sombreado de la fila
         pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
             pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
             $(this).addClass("success");
         });
+        //Edicion de cantidad con enter y cuando pierde el foco y se recalculan los totales
         pnlDatosDetalle.find('#tblDetalle tbody').on('dblclick', 'tr', function () {
             $.each(pnlDatosDetalle.find('#tblDetalle > tbody > tr'), function () {
                 var cell = $(this).find("td").eq(4);
@@ -317,6 +315,7 @@
             });
             cell.find("#RunCantidad").focus();
         });
+        //Evento que controla la insercion de filas a la tabla cuando se termina de capturar los pares
         $.each(pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly"), function () {
             $(this).keyup(function (e) {
                 if (e.keyCode === 13) {
@@ -325,15 +324,51 @@
                         onAgregarFila();
                         $("[name='Estilo']")[0].selectize.focus();
                         $("[name='Estilo']")[0].selectize.clear(true);
+                        $("[name='Combinacion']")[0].selectize.clear(true);
+                        $("[name='Combinacion']")[0].selectize.clearOptions();
                     }
                 }
                 onAutoSumarPares();
             });
         });
+        //Evento en el control de costo para traer los porcentajes de venta y agregarselos al costo
+        pnlDatosDetalle.find("[name='PrecioMov']").change(function () {
+            if ($(this).val().length > 0) {
+                var costo = parseFloat($(this).val());
+                var Tienda = pnlDatos.find("[name='Tienda']")[0].selectize.getValue();
+                if (Tienda !== null && Tienda !== "") {
+                    $.ajax({
+                        url: master_url + 'getPorcentajesByTienda',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            ID: Tienda
+                        }
+                    }).done(function (data, x, jq) {
+                        var por = data[0];
+
+                        pnlDatosDetalle.find("[name='Men']").val(por.PorMen);
+                        pnlDatosDetalle.find("[name='May']").val(por.PorMay);
+
+                        var PrecioMenudeo = costo + ((por.PorMen / 100) * costo);
+                        var PrecioMayoreo = costo + ((por.PorMay / 100) * costo);
+                        pnlDatosDetalle.find("[name='Menudeo']").val(Math.round(PrecioMenudeo));
+                        pnlDatosDetalle.find("[name='Mayoreo']").val(Math.round(PrecioMayoreo));
+
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
+            }
+        });
+        //Evento en el select de estilo para traer las tallas y los colores
         pnlDatosDetalle.find("[name='Estilo']").change(function () {
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
         });
+        //Evento del boton guardar
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -352,7 +387,6 @@
                         detalle.push(material);
                     });
                     f.append('Detalle', JSON.stringify(detalle));
-                     
                     f.append('DetalleEliminado', JSON.stringify(detalle_eliminado));
                     $.ajax({
                         url: master_url + 'onModificar',
@@ -371,13 +405,15 @@
                         tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                         detalle_eliminado = [];
                     });
-
                 } else {
                     /*AGREGAR DETALLE*/
                     var detalle = [];
+                    //Destruye la instancia de datatable
                     tblDetalleCompra.destroy();
+                    //Iteramos en la tabla natural
                     pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                         var row = $(this).find("td");
+                        //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
                         var material = {
                             Estilo: row.eq(1).text().replace(/\s+/g, ''),
                             Color: row.eq(2).text().replace(/\s+/g, ''),
@@ -386,8 +422,10 @@
                             Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
                             Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
                         };
+                        //Se mete el objeto al arreglo
                         detalle.push(material);
                     });
+                    //Convertimos a caden el objeto en formato json
                     f.append('Detalle', JSON.stringify(detalle));
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -398,7 +436,7 @@
                         data: f
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                        nuevo=false;
+                        nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -411,7 +449,6 @@
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
-        
         btnNuevo.click(function () {
             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
                 tblDetalleCompra.destroy();
@@ -442,7 +479,6 @@
         getProveedores();
         handleEnter();
     });
-
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -469,7 +505,6 @@
                 });
                 var tblSelected = $('#tblCompras').DataTable(tableOptions);
                 $('#tblCompras_filter input[type=search]').focus();
-
                 $('#tblCompras tbody').on('click', 'tr', function () {
 
                     $("#tblCompras tbody tr").removeClass("success");
@@ -477,7 +512,6 @@
                     var dtm = tblSelected.row(this).data();
                     temp = parseInt(dtm[0]);
                 });
-
                 $('#tblCompras tbody').on('dblclick', 'tr', function () {
                     $("#tblCompras tbody tr").removeClass("success");
                     $(this).addClass("success");
@@ -514,16 +548,14 @@
                                     pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                 }
                             });
-
                             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
                                 tblDetalleCompra.destroy();
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
                             }
                             tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-
                             /*DETALLE*/
                             $.getJSON(master_url + 'getCompraDetalleByID', {ID: temp}).done(function (data, x, jq) {
-                                $.each(data, function (k, v) { 
+                                $.each(data, function (k, v) {
                                     tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
                                         v.IdEstilo,
                                         v.IdColor,
@@ -622,7 +654,6 @@
                 Estilo: Estilo
             }
         }).done(function (data, x, jq) {
-            pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.clearOptions();
             $.each(data, function (k, v) {
                 pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
@@ -740,10 +771,10 @@
     }
     var detalle_eliminado = [];
     function onEliminarFila(e) {
-        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');           
+        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');
         detalle_eliminado.push({ID: $(tblDetalleCompra.row($(e).parent().parent()).data()).eq(9)[0]});
         tblDetalleCompra.row($(e).parent().parent()).remove().draw();
-        onCalcularMontos(); 
+        onCalcularMontos();
     }
 
     function onCalcularMontos() {
@@ -758,10 +789,10 @@
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
-        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) { 
+        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) {
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(total * 0.16, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total * 1.16, 2, '.', ','));
-        } else { 
+        } else {
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(0, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total, 2, '.', ','));
         }

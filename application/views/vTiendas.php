@@ -19,7 +19,6 @@
     <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark"> 
             <form id="frmNuevo">
-
                 <div class="row">
                     <div class="col-md-2 float-left">
                         <legend class="float-left">Tiendas</legend>
@@ -36,26 +35,24 @@
                     <div class="d-none">
                         <input type="text" class="" id="ID" name="ID"  >
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-2">
                         <label for="Clave">Clave*</label>  
                         <input type="text" class="form-control form-control-sm" maxlength="35" id="Clave" name="Clave" required >
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-4">
                         <label for="RazonSocial">Razon Social*</label>  
                         <input type="text" class="form-control form-control-sm" maxlength="200" id="RazonSocial" name="RazonSocial" required >
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="RFC">RFC*</label>  
                         <input type="text" class="form-control form-control-sm"  maxlength="15" id="RFC" name="RFC" required >
                     </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="Direccion">Dirección</label>  
                         <input type="text" class="form-control form-control-sm"  maxlength="150"  id="Direccion" name="Direccion" required >
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-sm">
                         <label for="NoExt">Num. Ext*</label>  
                         <input type="text" class="form-control form-control-sm" maxlength="10"  id="NoExt" name="NoExt" required >
@@ -64,11 +61,6 @@
                         <label for="NoInt">Num. Int.*</label>  
                         <input type="text" class="form-control form-control-sm"  maxlength="10"  id="NoInt" name="NoInt"  >
                     </div>
-
-                </div>
-
-                <div class="row">
-
                     <div class="col-sm">
                         <label for="Colonia">Colonia</label>  
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Colonia" name="Colonia"  >
@@ -76,8 +68,10 @@
                     <div class="col-sm">
                         <label for="Ciudad">Ciudad</label>  
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Ciudad" name="Ciudad"  >
-                    </div> 
-                    <div class="col-sm">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
                         <label for="Estado">Estado</label>   
                         <select class="form-control form-control-sm required"  id="Estado" name="Estado" required=""> 
                             <option value=""></option>
@@ -115,27 +109,33 @@
                             <option value="Zacatecas">Zacatecas</option>
                         </select>
                     </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="CP">Código Postal</label>  
                         <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"  id="CP" name="CP"  >
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="Telefono">Teléfono</label>  
                         <input type="tel" class="form-control form-control-sm"  maxlength="15"  id="Telefono" name="Telefono"  >
                     </div>
-                    <div class="col-sm">
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="PorMen">Menudeo</label>  
+                        <input type="text" class="form-control form-control-sm numbersOnly" required="" maxlength="4" name="PorMen"  >
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="PorMay">Mayoreo</label>  
+                        <input type="text" class="form-control form-control-sm numbersOnly" required=""  maxlength="4" name="PorMay"  >
+                    </div>
+                    <div class="col-sm-3">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm-lg required"  name="Estatus" required=""> 
+                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
                             <option value=""></option>  
                             <option>ACTIVO</option>
                             <option>INACTIVO</option> 
                         </select>
                     </div>
-                </div> 
+                </div>
                 <!-- FOTO -->
                 <div for="" align="center">
                     <br>
@@ -239,7 +239,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-nuevo=false;
+                        nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -390,7 +390,7 @@ nuevo=false;
         });
     }
 
-    
+
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
         $('#Foto').trigger('blur');

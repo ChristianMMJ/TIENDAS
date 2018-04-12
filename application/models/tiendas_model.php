@@ -44,6 +44,23 @@ class tiendas_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function getPorcentajesByTienda($ID) {
+        try {
+            $this->db->select("U.PorMen, U.PorMay  ", false);
+            $this->db->from('sz_Tiendas AS U');
+            $this->db->where_in('U.ID', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onAgregar($array) {
         try {

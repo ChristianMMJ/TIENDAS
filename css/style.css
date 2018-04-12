@@ -1,3 +1,5 @@
+
+
 .customBackground{
     background-color: rgba(0, 0, 0, 0.03);
 }
@@ -26,7 +28,10 @@ table td {
 
 /*Controles pequeños*/
 label {
-    margin-bottom: .1rem; 
+    margin-bottom: 0rem;
+}
+label, .control-label, .help-block, .checkbox, .radio, .form-control-feedback {
+    font-size: 0.72rem;
 }
 
 .selectize-input {
