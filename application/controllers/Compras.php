@@ -146,11 +146,10 @@ class Compras extends CI_Controller {
                 );
                 $this->compras_model->onAgregarDetalle($data);
             }
-            /* INSERTA EXISTENCIAS */            
+            /* INSERTA EXISTENCIAS */
             if ($this->input->post('AfecInv') === "1") {
                 $EstatusExistencias = 1;
-            }
-            else{
+            } else {
                 $EstatusExistencias = 0;
             }
 
@@ -188,7 +187,41 @@ class Compras extends CI_Controller {
                     'PrecioMayoreo' => $v->PrecioMayoreo,
                     'Estatus' => $EstatusExistencias
                 );
-                $this->existencias_model->onAgregar($data);
+
+                $existe = $this->existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
+                if (!empty($existe[0])) {
+
+                    $dataM = array(
+                        'Ex1' => $v->Ex1 + $existe[0]->Ex1,
+                        'Ex2' => $v->Ex2 + $existe[0]->Ex2,
+                        'Ex3' => $v->Ex3 + $existe[0]->Ex3,
+                        'Ex4' => $v->Ex4 + $existe[0]->Ex4,
+                        'Ex5' => $v->Ex5 + $existe[0]->Ex5,
+                        'Ex6' => $v->Ex6 + $existe[0]->Ex6,
+                        'Ex7' => $v->Ex7 + $existe[0]->Ex7,
+                        'Ex8' => $v->Ex8 + $existe[0]->Ex8,
+                        'Ex9' => $v->Ex9 + $existe[0]->Ex9,
+                        'Ex10' => $v->Ex10 + $existe[0]->Ex10,
+                        'Ex11' => $v->Ex11 + $existe[0]->Ex11,
+                        'Ex12' => $v->Ex12 + $existe[0]->Ex12,
+                        'Ex13' => $v->Ex13 + $existe[0]->Ex13,
+                        'Ex14' => $v->Ex14 + $existe[0]->Ex14,
+                        'Ex15' => $v->Ex15 + $existe[0]->Ex15,
+                        'Ex16' => $v->Ex16 + $existe[0]->Ex16,
+                        'Ex17' => $v->Ex17 + $existe[0]->Ex17,
+                        'Ex18' => $v->Ex18 + $existe[0]->Ex18,
+                        'Ex19' => $v->Ex19 + $existe[0]->Ex19,
+                        'Ex20' => $v->Ex20 + $existe[0]->Ex20,
+                        'Ex21' => $v->Ex21 + $existe[0]->Ex21,
+                        'Ex22' => $v->Ex22 + $existe[0]->Ex22,
+                        'Precio' => $v->Precio,
+                        'PrecioMenudeo' => $v->PrecioMenudeo,
+                        'PrecioMayoreo' => $v->PrecioMayoreo,
+                    );
+                    $this->existencias_model->onModificar($existe[0]->ID, $dataM);
+                } else {
+                    $this->existencias_model->onAgregar($data);
+                }
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -224,6 +257,17 @@ class Compras extends CI_Controller {
                 $this->compras_model->onEliminarDetalle($v->ID);
             }
             /* FIN DETALLE ELIMINADO */
+
+
+
+            /* MODIFICA EXISTENCIAS */
+            if ($this->input->post('AfecInv') === "1") {
+                $EstatusExistencias = 1;
+            } else {
+                $EstatusExistencias = 0;
+            }
+            $this->existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
+            
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

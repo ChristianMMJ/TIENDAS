@@ -10,6 +10,25 @@ class existencias_model extends CI_Model {
         parent::__construct();
     }
 
+    public function onComprobarExistencias($Tienda, $Estilo, $Color) {
+        try {
+            $this->db->select("E.*", false);
+            $this->db->from('sz_Existencias AS E');
+            $this->db->where('E.Tienda', $Tienda);
+            $this->db->where('E.Estilo', $Estilo);
+            $this->db->where('E.Color', $Color);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onAgregar($array) {
         try {
@@ -27,6 +46,19 @@ class existencias_model extends CI_Model {
         try {
             $this->db->where('ID', $ID);
             $this->db->update("sz_Existencias", $DATA);
+//            print $str = $this->db->last_query();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarEstatusExistencias($ID, $DATA) {
+        try {
+            $DATOS = array(
+                'Estatus' => $DATA
+            );
+            $this->db->where('Documento', $ID);
+            $this->db->update("sz_Existencias", $DATOS);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -63,5 +95,3 @@ class existencias_model extends CI_Model {
     }
 
 }
-
-

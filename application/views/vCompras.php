@@ -231,7 +231,7 @@
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
-            [9, 'asc']/*ID*/, [5, 'asc']/*Tallas*/
+            [9, 'asc']/*ID*/, [5, 'asc']/*Tallas*/,[2, 'asc']/*Tallas*/
         ],
         "columnDefs": [
             {
@@ -394,6 +394,8 @@
                     });
                     f.append('Detalle', JSON.stringify(detalle));
                     f.append('DetalleEliminado', JSON.stringify(detalle_eliminado));
+                    f.append('Existencias', JSON.stringify(existencias));
+                    f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
