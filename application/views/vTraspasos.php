@@ -19,7 +19,7 @@
         <div class="card-body text-dark customBackground" > 
             <div class="row">
                 <div class="col-md-8 float-left">
-                    <strong>Traspaso</strong>
+                    <strong>Traspasos</strong>
                 </div>
                 <div class="col-md-2 float-right">
                     <div class="custom-control custom-checkbox">
@@ -147,22 +147,22 @@
                                 <th scope="col">Talla</th>
                                 <th scope="col">Cantidad</th>
                                 <th scope="col" class="d-none">IDR</th>
+                                <th scope="col" class="">Orden</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
                 </div>
-                <div class="w-100"><br></div>
                 <div class="row" align="center">
-                    <div class="col-sm-4">
+                    <div class="col-sm-7">
                     </div>
-                    <div class="col-sm-2 text-danger">
+                    <div class="col-sm-5 text-danger">
                         PARES
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-sm-4"></div>
-                    <div id="Pares" class="col-sm-2 text-danger"><strong>0</strong></div>
+                    <div class="col-sm-7"></div>
+                    <div id="Pares" class="col-sm-5 text-danger"><strong>0</strong></div>
                 </div>
                 <!--FIN DETALLE-->
             </div>
@@ -192,21 +192,26 @@
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
-            [9, 'asc']/*ID*/, [5, 'asc']/*Tallas*/, [2, 'asc']/*Tallas*/
+            [7, 'desc']/*ID*/
         ],
         "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
             {
                 "targets": [1],
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [2],
+                "targets": [6],
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [9],
+                "targets": [7],
                 "visible": false,
                 "searchable": false
             }],
@@ -242,11 +247,13 @@
         }
     };
     $(document).ready(function () {
-        //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
-            if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
-                onCalcularMontos();
+        //Verificar Tienda no sea igual a dTienda
+        pnlDatos.find("[name='Tienda']").change(function () {
+            if($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue() ){
+                pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
+                onNotify('<span class="fa fa-times fa-lg"></span>', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN', 'danger');
             }
+
         });
         //Sombreado de la fila
         pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
@@ -270,7 +277,6 @@
                 onAutoSumarPares();
             });
         });
-
         //Evento en el select de estilo para traer las tallas y los colores
         pnlDatosDetalle.find("[name='Estilo']").change(function () {
             $("[name='Combinacion']")[0].selectize.clear(true);
@@ -290,9 +296,11 @@
                     pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                         var row = $(this).find("td");
                         var material = {
-                            ID: row.eq(9).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
-                            Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
+                            ID: row.eq(6).text().replace(/\s+/g, ''),
+                            Estilo: row.eq(0).text().replace(/\s+/g, ''),
+                            Color: row.eq(1).text().replace(/\s+/g, ''),
+                            Talla: row.eq(4).text().replace(/\s+/g, ''),
+                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0
                         };
                         detalle.push(material);
                     });
@@ -307,6 +315,7 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
                     }).fail(function (x, y, z) {
@@ -325,10 +334,10 @@
                         var row = $(this).find("td");
                         //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
                         var material = {
-                            Estilo: row.eq(1).text().replace(/\s+/g, ''),
-                            Color: row.eq(2).text().replace(/\s+/g, ''),
-                            Talla: row.eq(5).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0
+                            Estilo: row.eq(0).text().replace(/\s+/g, ''),
+                            Color: row.eq(1).text().replace(/\s+/g, ''),
+                            Talla: row.eq(4).text().replace(/\s+/g, ''),
+                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0
                         };
                         //Se mete el objeto al arreglo
                         detalle.push(material);
@@ -440,7 +449,7 @@
                             message: "CARGANDO DATOS..."
                         });
                         $.ajax({
-                            url: master_url + 'getCompraByID',
+                            url: master_url + 'getTraspasoByID',
                             type: "POST",
                             dataType: "JSON",
                             data: {
@@ -463,8 +472,9 @@
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
                             }
                             tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                            n = 1;
                             /*DETALLE*/
-                            $.getJSON(master_url + 'getCompraDetalleByID', {ID: temp}).done(function (data, x, jq) {
+                            $.getJSON(master_url + 'getTraspasoDetalleByID', {ID: temp}).done(function (data, x, jq) {
                                 $.each(data, function (k, v) {
                                     tblDetalleCompra.row.add([
                                         v.IdEstilo,
@@ -473,8 +483,10 @@
                                         v.Color,
                                         v.Talla,
                                         v.Cantidad,
-                                        v.ID
+                                        v.ID,
+                                        n
                                     ]).draw(false);
+                                    n += 1;
                                 });
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
@@ -523,8 +535,8 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='dTienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
                 pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+                pnlDatos.find("[name='dTienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -590,6 +602,7 @@
             HoldOn.close();
         });
     }
+
     /*AUTOSUMAR PARES*/
     function onAutoSumarPares() {
         var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
@@ -608,15 +621,19 @@
     }
     /*FIN AUTOSUMAR PARES*/
     /*AGREGAR ESTILO-COLOR*/
+
+    var n = 1;
     function onAgregarFila() {
+        n = (n > 0) ? n : 1;
         var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
         var Estilo = pnlDatosDetalle.find("[name='Estilo']");
         var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
+
         /*COMPROBAR ESTILO Y COMBINACION*/
         var estilo_combinacion_existen = false;
         $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
             var cells = $(this).find("td");
-            if (cells.eq(1).text() === Estilo.val() && cells.eq(2).text() === Combinacion.val()) {
+            if (cells.eq(0).text() === Estilo.val() && cells.eq(1).text() === Combinacion.val()) {
                 estilo_combinacion_existen = true;
                 return false;
             }
@@ -629,6 +646,10 @@
                 if (talla > 0) {
                     var par = parseInt($(this).val());
                     if (par > 0) {
+                        console.log('* ROWS *');
+                        console.log('row ' + n);
+                        console.log('row l ' + pnlDatosDetalle.find("#tblTallas > tbody > tr").length);
+                        console.log('* FIN ROWS *');
                         tblDetalleCompra.row.add([
                             Estilo.val(),
                             Combinacion.val(),
@@ -636,9 +657,11 @@
                             Combinacion.find("option:selected").text(),
                             talla,
                             $(this).val(),
-                            (rows.length + 1) //Obetener un indice temporal
+                            0,
+                            n
                         ]).draw(false);
                         $(this).val('');
+                        n += 1;
                     }
                 }
             });
@@ -648,13 +671,14 @@
             onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
         }
         /*VALIDAR ESTILO Y COMBINACION*/
+
     }
-    
 
     var existencias = [];
     function onAgregarExistencias() {
         var renglonExistencia = {
             Tienda: pnlDatos.find("[name='Tienda']")[0].selectize.getValue(),
+            dTienda: pnlDatos.find("[name='dTienda']")[0].selectize.getValue(),
             Documento: pnlDatos.find("[name='DocMov']").val(),
             Estilo: pnlDatosDetalle.find("[name='Estilo']")[0].selectize.getValue(),
             Color: pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.getValue(),
@@ -680,17 +704,17 @@
             Ex20: (pnlDatosDetalle.find("[name='Ex20']").val() !== '') ? pnlDatosDetalle.find("[name='Ex20']").val() : 0,
             Ex21: (pnlDatosDetalle.find("[name='Ex21']").val() !== '') ? pnlDatosDetalle.find("[name='Ex21']").val() : 0,
             Ex22: (pnlDatosDetalle.find("[name='Ex22']").val() !== '') ? pnlDatosDetalle.find("[name='Ex22']").val() : 0
+
         };
         existencias.push(renglonExistencia);
     }
-
-
 
     function onCalcularMontos() {
         var pares = 0;
         $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
             var cells = $(this).find("td");
-            pares += parseInt(cells.eq(4).text());
+            console.log(cells);
+            pares += parseInt(cells.eq(3).text());
         });
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);

@@ -62,6 +62,16 @@ class traspasos_model extends CI_Model {
         }
     }
 
+    public function onModificarDetalle($ID, $Compra, $DATA) {
+        try {
+            $this->db->where('ID', $ID);
+            $this->db->where('Traspaso', $Compra);
+            $this->db->update("sz_TraspasosDetalle", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
@@ -85,6 +95,51 @@ class traspasos_model extends CI_Model {
              */
             $str = $this->db->last_query();
 //        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTraspasoDetalleByID($ID) {
+        try {
+            $this->db->select('CD.ID AS ID, CD.Estilo AS IdEstilo, CD.Color AS IdColor,'
+                    . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
+                    . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
+                    . 'CD.Talla AS Talla,'
+                    . 'CD.Cantidad AS Cantidad ', false);
+            $this->db->from('sz_CompraDetalle AS CD');
+            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
+            $this->db->where('CD.Compra', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function Existe($Estilo, $Color, $Talla, $Compra) {
+        try {
+            $this->db->select('COUNT(*) AS EXISTE', false);
+            $this->db->from('sz_TraspasosDetalle AS CD ');
+            $this->db->where('CD.Traspaso', $Compra);
+            $this->db->where('CD.Talla', $Talla);
+            $this->db->where('CD.Color', $Color);
+            $this->db->where('CD.Estilo', $Estilo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

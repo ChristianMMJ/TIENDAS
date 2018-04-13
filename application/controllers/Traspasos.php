@@ -40,16 +40,25 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
-    public function getCompraByID() {
+    
+     public function getTraspasoByID() {
         try {
             extract($this->input->post());
-            $data = $this->traspasos_model->getCompraByID($ID);
+            $data = $this->traspasos_model->getTraspasoByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
+    public function getTraspasoDetalleByID() {
+        try {
+            print json_encode($this->traspasos_model->getTraspasoDetalleByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 
     public function getEstilos() {
         try {

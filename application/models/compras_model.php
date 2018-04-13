@@ -66,20 +66,21 @@ class compras_model extends CI_Model {
         try {
             $this->db->where('ID', $ID);
             $this->db->where('Compra', $Compra);
-            $this->db->update("sz_CompraDetalle", $DATA); 
+            $this->db->update("sz_CompraDetalle", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
     public function onEliminarDetalle($ID) {
-        try { 
+        try {
             $this->db->where('ID', $ID);
-            $this->db->delete("sz_CompraDetalle"); 
+            $this->db->delete("sz_CompraDetalle");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
@@ -114,7 +115,7 @@ class compras_model extends CI_Model {
         try {
             $this->db->select('CD.ID AS ID, CD.Estilo AS IdEstilo, CD.Color AS IdColor,'
                     . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
-                    . 'C.Descripcion AS Color,'
+                    . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad,'
                     . 'CD.Precio AS Precio,'
@@ -135,8 +136,9 @@ class compras_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function Existe($Estilo, $Color, $Talla, $Compra) {
-        try {            
+        try {
             $this->db->select('COUNT(*) AS EXISTE', false);
             $this->db->from('sz_CompraDetalle AS CD ');
             $this->db->where('CD.Compra', $Compra);
