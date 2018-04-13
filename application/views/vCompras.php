@@ -174,6 +174,7 @@
                                 <th scope="col">Precio</th>
                                 <th scope="col">SubTotal</th>
                                 <th scope="col" class="d-none">IDR</th>
+                                <th scope="col" class="">Orden</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -231,7 +232,7 @@
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
-            [9, 'asc']/*ID*/, [5, 'asc']/*Tallas*/,[2, 'asc']/*Tallas*/
+            [10, 'desc']/*ID*/
         ],
         "columnDefs": [
             {
@@ -246,6 +247,11 @@
             },
             {
                 "targets": [9],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [10],
                 "visible": false,
                 "searchable": false
             }],
@@ -387,6 +393,10 @@
                         var row = $(this).find("td");
                         var material = {
                             ID: row.eq(9).text().replace(/\s+/g, ''),
+                            Estilo: row.eq(1).text().replace(/\s+/g, ''),
+                            Color: row.eq(2).text().replace(/\s+/g, ''),
+                            Precio: row.eq(7).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
+                            Talla: row.eq(5).text().replace(/\s+/g, ''),
                             Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
                             Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
                         };
@@ -404,6 +414,7 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
                     }).fail(function (x, y, z) {
@@ -564,6 +575,7 @@
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
                             }
                             tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                            n = 1;
                             /*DETALLE*/
                             $.getJSON(master_url + 'getCompraDetalleByID', {ID: temp}).done(function (data, x, jq) {
                                 $.each(data, function (k, v) {
@@ -576,8 +588,10 @@
                                         v.Cantidad,
                                         "$" + $.number(v.Precio, 2, '.', ','),
                                         "$" + $.number(v.SubTotal, 2, '.', ','),
-                                        v.ID
+                                        v.ID,
+                                        n
                                     ]).draw(false);
+                                    n += 1;
                                 });
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
@@ -727,7 +741,10 @@
     }
     /*FIN AUTOSUMAR PARES*/
     /*AGREGAR ESTILO-COLOR*/
+
+    var n = 1;
     function onAgregarFila() {
+        n = (n > 0) ? n : 1;
         var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr");
         var Estilo = pnlDatosDetalle.find("[name='Estilo']");
         var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
@@ -751,6 +768,10 @@
                         if (talla > 0) {
                             var par = parseInt($(this).val());
                             if (par > 0) {
+                                console.log('* ROWS *');
+                                console.log('row ' + n);
+                                console.log('row l ' + pnlDatosDetalle.find("#tblTallas > tbody > tr").length);
+                                console.log('* FIN ROWS *');
                                 tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
                                     Estilo.val(),
                                     Combinacion.val(),
@@ -760,9 +781,11 @@
                                     $(this).val(),
                                     "$" + $.number(Costo.val(), 2, '.', ','),
                                     "$" + $.number((par * Costo.val()), 2, '.', ','),
-                                    (rows.length + 1) //Obetener un indice temporal
+                                    0,
+                                    n                                    
                                 ]).draw(false);
                                 $(this).val('');
+                                n += 1;
                             }
                         }
                     });
