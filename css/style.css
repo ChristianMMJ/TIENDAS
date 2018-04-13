@@ -1,5 +1,24 @@
+/*Modal FullScreen*/
+.modal.modal-fullscreen .modal-dialog {
+    width: 75%;
+    height: auto;
+    max-width: none; 
+}
 
+.modal.modal-fullscreen .modal-content {
+    height: auto;
+    min-height: 100%;
+}
 
+@media only screen and (max-width: 480px) {
+    .modal.modal-fullscreen .modal-dialog {
+    width: 95%;
+    height: auto;
+    max-width: none; 
+}
+}
+
+/*Fondo para formas de captura de modulos*/
 .customBackground{
     background-color: rgba(0, 0, 0, 0.03);
 }

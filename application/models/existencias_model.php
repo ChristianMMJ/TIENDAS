@@ -9,6 +9,29 @@ class existencias_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
+    
+     public function getExistenciasByTienda($Tienda) {
+        try {
+            $this->db->select("U.ID, E.Clave +'-'+ E.Descripcion AS 'Estilo' , C.Clave +'-'+ c.Descripcion AS 'Color' "
+                    . "", false);
+            $this->db->from('sz_Existencias AS U');
+             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->where_in('U.Estatus', '1');
+            $this->db->where_in('U.Tienda', $Tienda);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onComprobarExistencias($Tienda, $Estilo, $Color) {
         try {
@@ -76,7 +99,7 @@ class existencias_model extends CI_Model {
         }
     }
 
-    public function getProveedorByID($ID) {
+    public function getExistenciaByID($ID) {
         try {
             $this->db->select('U.*', false);
             $this->db->from('sz_Existencias AS U');
