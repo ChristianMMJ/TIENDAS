@@ -244,11 +244,28 @@ class Compras extends CI_Controller {
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
-                $data = array(
-                    'Cantidad' => $v->Cantidad,
-                    'Subtotal' => $v->Subtotal
-                );
-                $this->compras_model->onModificarDetalle($v->ID/* ID DETALLE */, $ID/* ID COMPRA */, $data);
+                /* COMPROBAR SI EL MATERIAL-PIEZA LEIDO EXISTE */
+                $dtm = $this->compras_model->Existe($v->Estilo, $v->Color, $v->Talla, $this->input->post('ID'));
+                /* SI EXISTE, MODIFICARLO */ 
+                if ($dtm[0]->EXISTE > 0) {
+                    $data = array(
+                        'Cantidad' => $v->Cantidad,
+                        'Subtotal' => $v->Subtotal
+                    );
+                    $this->compras_model->onModificarDetalle($v->ID/* ID DETALLE */, $ID/* ID COMPRA */, $data);
+                } else {
+                    $data = array(
+                        'Compra' => $ID,
+                        'Estilo' => $v->Estilo,
+                        'Color' => $v->Color,
+                        'Precio' => $v->Precio,
+                        'Talla' => $v->Talla,
+                        'Cantidad' => $v->Cantidad,
+                        'Subtotal' => $v->Subtotal,
+                        'EsCoTa' => ''
+                    );
+                    $this->compras_model->onAgregarDetalle($data);
+                }
             }
             /* FIN DETALLE */
             /* DETALLE ELIMINADO */
@@ -267,7 +284,6 @@ class Compras extends CI_Controller {
                 $EstatusExistencias = 0;
             }
             $this->existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
-            
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

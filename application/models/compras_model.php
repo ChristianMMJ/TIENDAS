@@ -135,5 +135,25 @@ class compras_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+    public function Existe($Estilo, $Color, $Talla, $Compra) {
+        try {            
+            $this->db->select('COUNT(*) AS EXISTE', false);
+            $this->db->from('sz_CompraDetalle AS CD ');
+            $this->db->where('CD.Compra', $Compra);
+            $this->db->where('CD.Talla', $Talla);
+            $this->db->where('CD.Color', $Color);
+            $this->db->where('CD.Estilo', $Estilo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
 }
