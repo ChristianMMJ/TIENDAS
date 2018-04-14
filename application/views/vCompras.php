@@ -328,8 +328,10 @@
         $.each(pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly"), function () {
             $(this).keyup(function (e) {
                 if (e.keyCode === 13) {
+                    var Estilo = pnlDatosDetalle.find("[name='Estilo']");
+                    var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
                     var talla = pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
-                    if (talla <= 0) {
+                    if (talla <= 0 && Estilo.val() !== '' && Combinacion.val() !== '') {
                         onAgregarExistencias();
                         onAgregarFila();
                         $("[name='Estilo']")[0].selectize.focus();
@@ -379,13 +381,18 @@
             $("[name='Combinacion']")[0].selectize.clearOptions();
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
+            onComprobarEstiloCombinacion(pnlDatosDetalle.find("[name='Estilo']").val(), pnlDatosDetalle.find("[name='Combinacion']").val());
+        });
+
+        pnlDatosDetalle.find("[name='Combinacion']").change(function () {
+            onComprobarEstiloCombinacion(pnlDatosDetalle.find("[name='Estilo']").val(), pnlDatosDetalle.find("[name='Combinacion']").val());
         });
         //Evento del boton guardar
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
                 HoldOn.open({
-                    theme:"sk_Bounce",
+                    theme: "sk_Bounce",
                     message: "GUARDANDO DATOS..."
                 });
                 var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
@@ -505,6 +512,21 @@
         getProveedores();
         handleEnter();
     });
+
+    var agregado = false;
+    function onComprobarEstiloCombinacion(e, c) {   
+        $.each(tblDetalleCompra.rows().data(), function () { 
+            var Estilo = $(this)[1];
+            var Combinacion = $(this)[2];
+            if (parseInt(e) === parseInt(Estilo) && parseInt(c) === parseInt(Combinacion)) {
+                swal('ATENCIÓN', 'YA SE HA AGREGADO ESTE ESTILO Y COLOR', 'warning');
+                pnlDatosDetalle.find("[name='Combinacion']").val('');
+                onBeep(2);
+                return false;
+            }
+        });
+    }
+
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -757,46 +779,57 @@
             if (Costo.val() !== '' && parseFloat(Costo.val()) > 0) {
                 /*COMPROBAR ESTILO Y COMBINACION*/
                 var estilo_combinacion_existen = false;
-                $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-                    var cells = $(this).find("td");
-                    if (cells.eq(1).text() === Estilo.val() && cells.eq(2).text() === Combinacion.val()) {
+                $.each(tblDetalleCompra.rows().data(), function () {
+                    var xEstilo = $(this)[1];
+                    var xCombinacion = $(this)[2];
+                    if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val()) {
                         estilo_combinacion_existen = true;
+                        console.log('* EXISTEN *')
                         return false;
                     }
                 });
                 /*FIN COMPROBAR ESTILO Y COMBINACION*/
                 /*VALIDAR ESTILO Y COMBINACION*/
                 if (!estilo_combinacion_existen) {
-                    $.each(rows.find("input.numbersOnly:enabled"), function () {
-                        var talla = rows.find("input").eq($(this).parent().index()).val();
-                        if (talla > 0) {
-                            var par = parseInt($(this).val());
-                            if (par > 0) {
-                                console.log('* ROWS *');
-                                console.log('row ' + n);
-                                console.log('row l ' + pnlDatosDetalle.find("#tblTallas > tbody > tr").length);
-                                console.log('* FIN ROWS *');
-                                tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
-                                    Estilo.val(),
-                                    Combinacion.val(),
-                                    Estilo.find("option:selected").text(),
-                                    Combinacion.find("option:selected").text(),
-                                    talla,
-                                    $(this).val(),
-                                    "$" + $.number(Costo.val(), 2, '.', ','),
-                                    "$" + $.number((par * Costo.val()), 2, '.', ','),
-                                    0,
-                                    n                                    
-                                ]).draw(false);
-                                $(this).val('');
-                                n += 1;
+                    if (Estilo.val() !== ''
+                            && Combinacion.val() !== ''
+                            && Estilo.find("option:selected").text() !== ''
+                            && Combinacion.find("option:selected").text() !== '') {
+                        $.each(rows.find("input.numbersOnly:enabled"), function () {
+                            var talla = rows.find("input").eq($(this).parent().index()).val();
+                            if (talla > 0 && Estilo.val() !== ''
+                                    && Combinacion.val() !== ''
+                                    && Estilo.find("option:selected").text() !== ''
+                                    && Combinacion.find("option:selected").text() !== '') {
+                                var par = parseInt($(this).val());
+                                if (par > 0) {
+
+                                    tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
+                                        Estilo.val(),
+                                        Combinacion.val(),
+                                        Estilo.find("option:selected").text(),
+                                        Combinacion.find("option:selected").text(),
+                                        talla,
+                                        $(this).val(),
+                                        "$" + $.number(Costo.val(), 2, '.', ','),
+                                        "$" + $.number((par * Costo.val()), 2, '.', ','),
+                                        0,
+                                        n
+                                    ]).draw(false);
+                                    $(this).val('');
+                                    n += 1;
+                                }
                             }
-                        }
-                    });
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
-                    onCalcularMontos();
+                        });
+                        onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+                        onCalcularMontos();
+                    } else {
+                        swal('ATENCIÓN', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'warning');
+                        onBeep(2);
+                    }
                 } else {
-                    onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
+                    swal('ATENCIÓN', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'warning');
+                    onBeep(2);
                 }
                 /*VALIDAR ESTILO Y COMBINACION*/
             } else {
@@ -856,10 +889,9 @@
     function onCalcularMontos() {
         var pares = 0;
         var total = 0.0;
-        $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-            var cells = $(this).find("td");
-            pares += parseInt(cells.eq(4).text());
-            total += getNumberFloat(cells.eq(6).text());
+        $.each(tblDetalleCompra.rows().data(), function () { 
+            pares += parseInt($(this)[6]);
+            total += getNumberFloat($(this)[8]);
         });
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);

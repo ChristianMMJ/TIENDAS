@@ -104,8 +104,8 @@
             // $(".btn").addClass("animated shake");
             $("table.display").DataTable(tableOptions);
             $('table').css('display', 'block');
-            $('[data-toggle="tooltip"]').tooltip();
-            $('[data-toggle="popover"]').popover();
+//            $('[data-toggle="tooltip"]').tooltip();
+//            $('[data-toggle="popover"]').popover();
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
@@ -172,9 +172,9 @@
 
         function isValid(p) {
             var inputs = $('#' + p).find("div.card-body").find("input.form-control:required").length;
-            var selects = $('#' + p).find("div.card-body").find("select.required").length; 
+            var selects = $('#' + p).find("div.card-body").find("select.required").length;
             var valid_inputs = 0;
-            var valid_selects = 0; 
+            var valid_selects = 0;
 
             $.each($('#' + p).find("div.card-body").find("input.form-control:required"), function () {
                 var e = $(this).parent().find("small.text-danger");
@@ -191,7 +191,7 @@
                 }
             });
             $.each($('#' + p).find("div.card-body").find("select.required"), function () {
-                var e = $(this).parent().find("small.text-danger"); 
+                var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
                     $(this).after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
                     $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
@@ -208,5 +208,19 @@
             if (valid_inputs === inputs && valid_selects === selects) {
                 valido = true;
             }
+        }
+
+        /*
+         * @function onBeep
+         * 
+         * @constructor
+         *
+         * @param {media} indice
+         *   1 = ok
+         *   2 = error
+         */
+        function onBeep(indice) {
+            var audio = new Audio('<?php print base_url(); ?>media/' + indice + '.mp3');
+            audio.play();
         }
     </script>
