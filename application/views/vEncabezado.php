@@ -26,10 +26,7 @@
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/JSZip-3.1.3/jszip.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/Buttons-1.5.1/js/buttons.html5.min.js" type="text/javascript"></script>
 
-        <!--select2 control--> 
-<!--        <link href="<?php echo base_url(); ?>js/select2/select2.min.css" rel="stylesheet" />
-        <script src="<?php echo base_url(); ?>js/select2/select2.min.js"></script>-->
-<!--        <script src="<?php echo base_url(); ?>js/select2/select2-tab-fix.js"></script>-->
+        <!--selectize control--> 
         <script src="<?php echo base_url(); ?>js/selectize/js/standalone/selectize.min.js"></script>
         <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.min.css" rel="stylesheet" />
 
@@ -43,12 +40,13 @@
         <!--HoldOn Stupid Accions-->
         <link href="<?php print base_url(); ?>css/HoldOn.min.css" rel="stylesheet">
         <script src="<?php print base_url(); ?>js/HoldOn.min.js"></script>
-
+        <!--Barra superior de carga-->
         <script src="<?php print base_url(); ?>js/pace.min.js"></script>
         <link href="<?php print base_url(); ?>css/pace.css" rel="stylesheet" />
         <!--Masked number format money etc-->
         <script src="<?php print base_url(); ?>js/jquery.maskedinput.min.js"></script>
-
+        <!--Masked number format money etc-->
+        <script src="<?php print base_url(); ?>js/sweetalert.min.js"></script>
         <!--Notifiers-->
         <script src="<?php echo base_url(); ?>js/notify/bootstrap-notify-3.1.3/bootstrap-notify.min.js"></script>
         <!--Date picker-->

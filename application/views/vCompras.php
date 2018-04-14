@@ -384,6 +384,10 @@
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
+                HoldOn.open({
+                    theme:"sk_Bounce",
+                    message: "GUARDANDO DATOS..."
+                });
                 var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
                     /*AGREGAR DETALLE*/

@@ -101,6 +101,7 @@
         handleEnter();
     });
     function getExistenciasByTienda(Tienda) {
+        console.log(Tienda);
         temp = 0;
         HoldOn.open({
             theme: "sk-bounce",
@@ -114,15 +115,11 @@
                 Tienda: Tienda
             }
         }).done(function (data, x, jq) {
-
             if (data.length > 0) {
-
                 $("#tblRegistros").html(getTable('tblExistencias', data));
-
                 $('#tblExistencias tfoot th').each(function () {
                     $(this).html('');
                 });
-
                 $('#tblExistencias tfoot th').each(function () {
                     var title = $(this).text();
                     $(this).html('<div  style="overflow-x:auto; "><div class="form-group "><input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/></div></div>');
@@ -165,9 +162,7 @@
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-
                             getSerieXEstilo(data[0].Estilo);
-
                             $('#mdlInfoExixtencia').find("input").val("");
                             $.each(data[0], function (k, v) {
                                 $('#mdlInfoExixtencia').find("[name='" + k + "']").val(v);
@@ -191,6 +186,10 @@
                         }
                     });
                 });
+            }
+            else{
+             onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN EXISTENCIAS EN ESTA TIENDA', 'danger');
+             $("#tblRegistros").html("");
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
