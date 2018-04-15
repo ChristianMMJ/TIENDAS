@@ -108,7 +108,8 @@ class Traspasos extends CI_Controller {
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
                 'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
-                'Estatus' => 'ACTIVO'
+                'Estatus' => 'ACTIVO',
+                'Usuario' => $this->session->userdata('USERNAME')
             );
             $ID = $this->traspasos_model->onAgregar($data);
             /* DETALLE */
@@ -201,6 +202,7 @@ class Traspasos extends CI_Controller {
 //                    $this->existencias_model->onAgregar($data);
 //                }
 //            }
+            print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

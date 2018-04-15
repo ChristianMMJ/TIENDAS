@@ -27,7 +27,7 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
                         <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
@@ -105,6 +105,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+pnlDatos.find('#ID').val(data);
 nuevo=false;
                         getRecords();
                     }).fail(function (x, y, z) {

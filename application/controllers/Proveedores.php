@@ -77,8 +77,8 @@ class Proveedores extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
                 
             );
-            $this->proveedores_model->onAgregar($data);
-            
+            $ID=$this->proveedores_model->onAgregar($data);
+            print $ID;
             /*SUBIR FOTO*/ 
             $URL_DOC = 'uploads/Proveedores/';
             $master_url = $URL_DOC . '/';

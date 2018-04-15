@@ -6,6 +6,7 @@
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
+                <button type="button" class="btn btn-primary" id="btnEliminar"><span class="fa fa-trash"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -22,149 +23,154 @@
                     <strong>Compras</strong>
                 </div>
                 <div class="col-md-2 float-right">
-                    <div class="custom-control custom-checkbox">
+                    <div class="custom-control custom-checkbox" id="dAfecInv">
                         <input type="checkbox" class="custom-control-input" id="AfecInv" >
                         <label class="custom-control-label" for="AfecInv">Afecta Inv. Tienda</label>
                     </div>
                 </div>
                 <div class="col-md-2 float-right" align="right">
-                    <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                    <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
                     <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                 </div>
             </div>
             <hr>
-            <form id="frmNuevo">
-                <div class="row">
-                    <div class="d-none">
-                        <input type="text" class="" id="ID" name="ID"  >
+            <div id="Encabezado">
+                <form id="frmNuevo">
+                    <div class="row">
+                        <div class="d-none">
+                            <input type="text" class="" id="ID" name="ID"  >
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="Tienda">Tienda*</label>
+                            <select class="form-control form-control-sm required"  name="Tienda"> 
+                                <option value=""></option>  
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="Proveedor">Proveedor*</label>
+                            <select class="form-control form-control-sm required"  name="Proveedor"> 
+                                <option value=""></option>  
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="TipoDoc">Tp*</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="FechaMov">Fecha Mov.</label>  
+                            <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="DocMov">Docto.*</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" name="DocMov" required >
+                        </div>
                     </div>
-                    <div class="col-sm-4">
-                        <label for="Tienda">Tienda*</label>
-                        <select class="form-control form-control-sm required"  name="Tienda"> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="Proveedor">Proveedor*</label>
-                        <select class="form-control form-control-sm required"  name="Proveedor"> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="TipoDoc">Tp*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" name="TipoDoc" required >
-                    </div>
-                    <div class="col-sm-2">
-                        <label for="FechaMov">Fecha Mov.</label>  
-                        <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
-                    </div>
-                    <div class="col-sm-2">
-                        <label for="DocMov">Docto.*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" name="DocMov" required >
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <!--DETALLE-->
             <div class=" d-none" id="pnlDatosDetalle">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="Estilo">Estilo*</label>
-                        <select class="form-control form-control-sm "  name="Estilo" required=""> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="Combinacion">Color*</label>
-                        <select class="form-control form-control-sm "  name="Combinacion" required=""> 
-                            <option value=""></option>  
-                        </select>
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="PrecioMov">Costo*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="9" name="PrecioMov" >
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="Clave">% Men.</label> 
-                        <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="Men"  >
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="Clave">% May.</label> 
-                        <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="May"  >
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="Menudeo">$ Men.</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" name="Menudeo" disabled="">
-                    </div>
-                    <div class="col-sm-1">
-                        <label for="Mayoreo">$ May.</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" name="Mayoreo" disabled="">
-                    </div>
-                </div> 
+                <div id="ControlesDetalle">
 
-                <label for="Mayoreo">Tallas</label> 
-                <div class="table-responsive">
-                    <table id="tblTallas" class="table Tallas">
-                        <thead></thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
-                                <td>Pares</td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
-                                <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="Estilo">Estilo*</label>
+                            <select class="form-control form-control-sm "  name="Estilo" required=""> 
+                                <option value=""></option>  
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="Combinacion">Color*</label>
+                            <select class="form-control form-control-sm "  name="Combinacion" required=""> 
+                                <option value=""></option>  
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="PrecioMov">Costo*</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="9" name="PrecioMov" >
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="Clave">% Men.</label> 
+                            <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="Men"  >
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="Clave">% May.</label> 
+                            <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="May"  >
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="Menudeo">$ Men.</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly" name="Menudeo" disabled="">
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="Mayoreo">$ May.</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly" name="Mayoreo" disabled="">
+                        </div>
+                    </div> 
+
+                    <label for="Mayoreo">Tallas</label> 
+                    <div class="table-responsive">
+                        <table id="tblTallas" class="table Tallas">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                                    <td>Pares</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
+                                    <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
                 <!--DETALLE-->
                 <div class="table-responsive">
                     <table id="tblDetalle" class="table table-sm" width="100%">
                         <thead>
                             <tr>
-                                <th scope="col"></th>
                                 <th scope="col" class="d-none">IDEstilo</th>
                                 <th scope="col" class="d-none">IDColor</th>
                                 <th scope="col">Estilo</th>
@@ -218,6 +224,7 @@
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
+    var btnEliminar = $("#btnEliminar");
     var currentDate = new Date();
     var nuevo = true;
     /*DATATABLE GLOBAL*/
@@ -225,33 +232,33 @@
     var tblInicial = {
         "autoWidth": true,
         "colReorder": true,
-        "displayLength": 20,
+        "displayLength": 18,
         "bLengthChange": false,
         "deferRender": true,
-        "scrollY": 350,
+        "scrollY": 300,
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
-            [10, 'desc']/*ID*/
+            [9, 'desc']/*ID*/
         ],
         "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
             {
                 "targets": [1],
                 "visible": false,
                 "searchable": false
             },
             {
-                "targets": [2],
+                "targets": [8],
                 "visible": false,
                 "searchable": false
             },
             {
                 "targets": [9],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [10],
                 "visible": false,
                 "searchable": false
             }],
@@ -297,32 +304,6 @@
         pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
             pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
             $(this).addClass("success");
-        });
-        //Edicion de cantidad con enter y cuando pierde el foco y se recalculan los totales
-        pnlDatosDetalle.find('#tblDetalle tbody').on('dblclick', 'tr', function () {
-            $.each(pnlDatosDetalle.find('#tblDetalle > tbody > tr'), function () {
-                var cell = $(this).find("td").eq(4);
-                var rcantidad = cell.text() !== '' ? cell.text() : cell.find("#RunCantidad").val();
-                cell.html(rcantidad);
-            });
-            var cells = $(this).find("td");
-            var cell = cells.eq(4);
-            cell.html('<input type="text" class="form-control form-control-sm numbersOnly" style="width: 45px;" maxlength="3" id="RunCantidad" value="' + cell.text() + '">');
-            cell.find("#RunCantidad").focusout(function () {
-                cell.html($(this).val());
-                var precio = parseFloat(getNumber(cells.eq(5).text()));
-                cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
-                onCalcularMontos();
-            });
-            cell.find("#RunCantidad").keyup(function (e) {
-                if (e.keyCode === 13) {
-                    cell.html($(this).val());
-                    var precio = parseFloat(getNumber(cells.eq(5).text()));
-                    cells.eq(6).html("$" + $.number((parseFloat($(this).val()) * precio), 2, '.', ','));
-                    onCalcularMontos();
-                }
-            });
-            cell.find("#RunCantidad").focus();
         });
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar los pares
         $.each(pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly"), function () {
@@ -387,35 +368,16 @@
         pnlDatosDetalle.find("[name='Combinacion']").change(function () {
             onComprobarEstiloCombinacion(pnlDatosDetalle.find("[name='Estilo']").val(), pnlDatosDetalle.find("[name='Combinacion']").val());
         });
-        //Evento del boton guardar
+        //Evento botones
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
                 HoldOn.open({
-                    theme: "sk_Bounce",
+                    theme: "sk-bounce",
                     message: "GUARDANDO DATOS..."
                 });
                 var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
-                    /*AGREGAR DETALLE*/
-                    var detalle = [];
-                    tblDetalleCompra.destroy();
-                    pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
-                        var row = $(this).find("td");
-                        var material = {
-                            ID: row.eq(9).text().replace(/\s+/g, ''),
-                            Estilo: row.eq(1).text().replace(/\s+/g, ''),
-                            Color: row.eq(2).text().replace(/\s+/g, ''),
-                            Precio: row.eq(7).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
-                            Talla: row.eq(5).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
-                            Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
-                        };
-                        detalle.push(material);
-                    });
-                    f.append('Detalle', JSON.stringify(detalle));
-                    f.append('DetalleEliminado', JSON.stringify(detalle_eliminado));
-                    f.append('Existencias', JSON.stringify(existencias));
                     f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
                     $.ajax({
                         url: master_url + 'onModificar',
@@ -425,15 +387,19 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
-                        console.log(data);
+                        if (pnlDatos.find("#AfecInv")[0].checked) {
+                            pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                            $('#Encabezado').addClass('disabledForms');
+                            $('#ControlesDetalle').addClass('disabledForms');
+                            btnGuardar.addClass('d-none');
+                            swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
+                        }
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
-                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-                        detalle_eliminado = [];
                     });
                 } else {
                     /*AGREGAR DETALLE*/
@@ -445,12 +411,12 @@
                         var row = $(this).find("td");
                         //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
                         var material = {
-                            Estilo: row.eq(1).text().replace(/\s+/g, ''),
-                            Color: row.eq(2).text().replace(/\s+/g, ''),
-                            Precio: row.eq(7).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
-                            Talla: row.eq(5).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(6).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0,
-                            Subtotal: (row.eq(8).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(8).text()) : 0
+                            Estilo: row.eq(0).text().replace(/\s+/g, ''),
+                            Color: row.eq(1).text().replace(/\s+/g, ''),
+                            Precio: row.eq(6).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
+                            Talla: row.eq(4).text().replace(/\s+/g, ''),
+                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0,
+                            Subtotal: (row.eq(7).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(7).text()) : 0
                         };
                         //Se mete el objeto al arreglo
                         detalle.push(material);
@@ -467,7 +433,15 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
-                        console.log(data);
+                        nuevo = false;
+                        pnlDatos.find('#ID').val(data);
+                        if (pnlDatos.find("#AfecInv")[0].checked) {
+                            pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                            $('#Encabezado').addClass('disabledForms');
+                            $('#ControlesDetalle').addClass('disabledForms');
+                            btnGuardar.addClass('d-none');
+                            swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
+                        }
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         nuevo = false;
                         getRecords();
@@ -488,12 +462,18 @@
                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
             }
             tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+            existencias = [];
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
             pnlDatos.find("input").val("");
             pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
             pnlDatos.find('#AfecInv').prop('checked', false);
+            pnlDatos.find('#TipoDoc').val('2');
+            pnlDatos.find('#dAfecInv').removeClass('disabledForms');
+            $('#Encabezado').removeClass('disabledForms');
+            $('#ControlesDetalle').removeClass('disabledForms');
+            btnGuardar.removeClass('d-none');
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -506,6 +486,46 @@
             pnlDatosDetalle.addClass('d-none');
             nuevo = true;
         });
+        btnEliminar.click(function () {
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                swal({
+                    title: "Confirmar",
+                    text: "Deseas eliminar el registro?",
+                    icon: "warning",
+                    buttons: ["Cancelar", "Aceptar"],
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
+                        });
+                        $.ajax({
+                            url: master_url + 'onEliminar',
+                            type: "POST",
+                            data: {
+                                ID: temp
+                            }
+                        }).done(function (data, x, jq) {
+                            if (data === '1') {
+                                swal("Hecho", "El registro se ha eliminado!", 'success')
+                                getRecords();
+                            } else {
+                                swal("Error al borrar registro!", "El movimiento ya afectó el inventario", "info");
+                            }
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+                        swal("Error al borrar registro!", "No es posible borrar el movimiento, intenta de nuevo", "error");
+                    }
+                });
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+            }
+        });
         getRecords();
         getEstilos();
         getTiendas();
@@ -514,10 +534,10 @@
     });
 
     var agregado = false;
-    function onComprobarEstiloCombinacion(e, c) {   
-        $.each(tblDetalleCompra.rows().data(), function () { 
-            var Estilo = $(this)[1];
-            var Combinacion = $(this)[2];
+    function onComprobarEstiloCombinacion(e, c) {
+        $.each(tblDetalleCompra.rows().data(), function () {
+            var Estilo = $(this)[0];
+            var Combinacion = $(this)[1];
             if (parseInt(e) === parseInt(Estilo) && parseInt(c) === parseInt(Combinacion)) {
                 swal('ATENCIÓN', 'YA SE HA AGREGADO ESTE ESTILO Y COLOR', 'warning');
                 pnlDatosDetalle.find("[name='Combinacion']").val('');
@@ -589,13 +609,13 @@
                             $.each(pnlDatos.find("select"), function (k, v) {
                                 pnlDatos.find("select")[k].selectize.clear(true);
                             });
-                            pnlDatos.find('#AfecInv').prop('checked', false);
                             $.each(data[0], function (k, v) {
                                 pnlDatos.find("[name='" + k + "']").val(v);
                                 if (pnlDatos.find("[name='" + k + "']").is('select')) {
                                     pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                 }
                             });
+                            //Cargar Detalle
                             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
                                 tblDetalleCompra.destroy();
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
@@ -605,7 +625,7 @@
                             /*DETALLE*/
                             $.getJSON(master_url + 'getCompraDetalleByID', {ID: temp}).done(function (data, x, jq) {
                                 $.each(data, function (k, v) {
-                                    tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
+                                    tblDetalleCompra.row.add([
                                         v.IdEstilo,
                                         v.IdColor,
                                         v.Estilo,
@@ -627,11 +647,26 @@
                             });
                             /*FIN DETALLE*/
 
+                            //Validar que este afectado 
+                            if (data[0].Estatus === 'AFECTADO') {
+                                pnlDatos.find('#AfecInv').prop('checked', true);
+                                pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                                $('#Encabezado').addClass('disabledForms');
+                                $('#ControlesDetalle').addClass('disabledForms');
+                                btnGuardar.addClass('d-none');
+                            } else {
+                                pnlDatos.find('#AfecInv').prop('checked', false);
+                                pnlDatos.find('#dAfecInv').removeClass('disabledForms');
+                                $('#Encabezado').addClass('disabledForms');
+                                $('#ControlesDetalle').addClass('disabledForms');
+                                btnGuardar.removeClass('d-none');
+
+                            }
                             /*MOSTRAR PANEL PRINCIPAL*/
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             pnlDatosDetalle.removeClass("d-none");
-                            $(':input:text:enabled:visible:first').focus();
+
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -804,7 +839,7 @@
                                 var par = parseInt($(this).val());
                                 if (par > 0) {
 
-                                    tblDetalleCompra.row.add(['<span class="fa fa-trash fa-2x" onclick="onEliminarFila(this)"></span>',
+                                    tblDetalleCompra.row.add([
                                         Estilo.val(),
                                         Combinacion.val(),
                                         Estilo.find("option:selected").text(),
@@ -878,20 +913,12 @@
         existencias.push(renglonExistencia);
     }
 
-    var detalle_eliminado = [];
-    function onEliminarFila(e) {
-        onNotify('<span class="fa fa-times fa-lg"></span>', 'TALLA ELIMINADA', 'danger');
-        detalle_eliminado.push({ID: $(tblDetalleCompra.row($(e).parent().parent()).data()).eq(9)[0]});
-        tblDetalleCompra.row($(e).parent().parent()).remove().draw();
-        onCalcularMontos();
-    }
-
     function onCalcularMontos() {
         var pares = 0;
         var total = 0.0;
-        $.each(tblDetalleCompra.rows().data(), function () { 
-            pares += parseInt($(this)[6]);
-            total += getNumberFloat($(this)[8]);
+        $.each(tblDetalleCompra.rows().data(), function () {
+            pares += parseInt($(this)[5]);
+            total += getNumberFloat($(this)[7]);
         });
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);

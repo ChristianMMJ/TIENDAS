@@ -12,8 +12,19 @@ class traspasos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento , U.FechaMov as 'Fecha Movimiento' ", false);
+            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento , "
+                    . "U.dTienda as 'De Tienda', "
+                    . "U.Tienda as 'A Tienda', "
+                    . "(CASE WHEN  U.Estatus ='ACTIVO' "
+                    . "THEN CONCAT('<h5><span class=''badge badge-info''>','ACTIVO','</span><h5>') "
+                    . "WHEN  U.Estatus ='AFECTADO' "
+                    . "THEN CONCAT('<h5><span class=''badge badge-success''>','AFECTADO','</span></h5>') "
+                    . "END) AS Estatus ,"
+                    . "U.FechaMov as 'Fecha Movimiento', "
+                    . "US.Usuario AS 'Usuario' "
+                    . " ", false);
             $this->db->from('sz_Traspasos AS U');
+            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $this->db->order_by("U.DocMov", "ASC");
             $query = $this->db->get();

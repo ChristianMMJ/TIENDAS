@@ -12,15 +12,28 @@ class compras_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento , U.FechaMov as 'Fecha Movimiento' ", false);
+            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento ,"
+                    
+                    . "(CASE WHEN  U.Estatus ='ACTIVO' "
+                    . "THEN CONCAT('<h5><span class=''badge badge-info''>','EN TRANSITO','</span><h5>') "
+                    . "WHEN  U.Estatus ='AFECTADO' "
+                    . "THEN CONCAT('<h5><span class=''badge badge-success''>','ENTRADA','</span></h5>') "
+                    . "END) AS Estatus ,"
+                    
+                    . "T.Clave + '-'+T.RazonSocial AS 'Tienda' ,"
+                    . "U.FechaMov as 'Fecha Movimiento ', "
+                    . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Compras AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
+            $this->db->where_in('U.Estatus', array('AFECTADO','ACTIVO'));
             $this->db->order_by("U.DocMov", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -97,7 +110,6 @@ class compras_model extends CI_Model {
             $this->db->select('U.*', false);
             $this->db->from('sz_Compras AS U');
             $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

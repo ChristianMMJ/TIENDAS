@@ -27,13 +27,13 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar">CANCELAR</button>
+                        <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
                         <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="d-none">
-                        <input type="text" class="form-control form-control-sm" id="ID" name="ID" required >
+                        <input type="text" class="" id="ID" name="ID" >
                     </div>
                     <div class="col-sm">
                         <label for="Usuario">Usuario*</label>  
@@ -175,8 +175,10 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        pnlDatos.find('#ID').val(data);
                         getRecords();
-                        nuevo=false;
+                        pnlDatos.find('#ID').val(data);
+                        nuevo = false;
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -222,7 +224,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $("#tblRegistros").html(getTable('tblUsuarios', data));
-            
+
             $('#tblUsuarios tfoot th').each(function () {
                 $(this).html('');
             });
@@ -338,7 +340,7 @@
             HoldOn.close();
         });
     }
-    
+
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
         $('#Foto').trigger('blur');

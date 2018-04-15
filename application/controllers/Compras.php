@@ -13,6 +13,7 @@ class Compras extends CI_Controller {
         $this->load->model('proveedores_model');
         $this->load->model('combinaciones_model');
         $this->load->model('existencias_model');
+        date_default_timezone_set('America/Mexico_City');
     }
 
     public function index() {
@@ -121,6 +122,15 @@ class Compras extends CI_Controller {
 
     public function onAgregar() {
         try {
+            //Verifica si se afecta o no
+            if ($this->input->post('AfecInv') === "1") {
+                $EstatusExistencias = 1;
+                $Estatus = 'AFECTADO';
+            } else {
+                $EstatusExistencias = 0;
+                $Estatus = 'ACTIVO';
+            }
+
             $data = array(
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
@@ -128,7 +138,8 @@ class Compras extends CI_Controller {
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
                 'Proveedor' => ($this->input->post('Proveedor') !== NULL) ? $this->input->post('Proveedor') : NULL,
                 'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
-                'Estatus' => 'ACTIVO'
+                'Estatus' => $Estatus,
+                'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->compras_model->onAgregar($data);
             /* DETALLE */
@@ -147,17 +158,11 @@ class Compras extends CI_Controller {
                 $this->compras_model->onAgregarDetalle($data);
             }
             /* INSERTA EXISTENCIAS */
-            if ($this->input->post('AfecInv') === "1") {
-                $EstatusExistencias = 1;
-            } else {
-                $EstatusExistencias = 0;
-            }
-
             $Existencias = json_decode($this->input->post("Existencias"));
             foreach ($Existencias as $key => $v) {
                 $data = array(
                     'Tienda' => $v->Tienda,
-                    'Documento' => $v->Documento,
+                    'Documento' => $ID,
                     'Estilo' => $v->Estilo,
                     'Color' => $v->Color,
                     'Ex1' => $v->Ex1,
@@ -223,6 +228,7 @@ class Compras extends CI_Controller {
                     $this->existencias_model->onAgregar($data);
                 }
             }
+            print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -231,59 +237,63 @@ class Compras extends CI_Controller {
     public function onModificar() {
         try {
             extract($this->input->post());
+            //Verifica si se afecta o no
+            if ($this->input->post('AfecInv') === "1") {
+
+                //BUSCAR EXISTENCIAS QUE YA EXISTAN PERO AUN ESTEN EN ESTATUS 0 PARA MODIFICAR EXISTENCIAS
+                $ExistenciasVerifica = $this->existencias_model->getExistenciaByDocumento($ID);
+                $v = $ExistenciasVerifica[0];
+                if (!empty($v)) {
+                    $existeTemp = $this->existencias_model->onComprobarExistenciasTempXDoc($ID, $v->Tienda, $v->Estilo, $v->Color);
+                    $existeFinal = $this->existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
+                    if (!empty($existeTemp[0]) && !empty($existeFinal[0])) {
+                        $dataEM = array(
+                            'Ex1' => $existeFinal[0]->Ex1 + $existeTemp[0]->Ex1,
+                            'Ex2' => $existeFinal[0]->Ex2 + $existeTemp[0]->Ex2,
+                            'Ex3' => $existeFinal[0]->Ex3 + $existeTemp[0]->Ex3,
+                            'Ex4' => $existeFinal[0]->Ex4 + $existeTemp[0]->Ex4,
+                            'Ex5' => $existeFinal[0]->Ex5 + $existeTemp[0]->Ex5,
+                            'Ex6' => $existeFinal[0]->Ex6 + $existeTemp[0]->Ex6,
+                            'Ex7' => $existeFinal[0]->Ex7 + $existeTemp[0]->Ex7,
+                            'Ex8' => $existeFinal[0]->Ex8 + $existeTemp[0]->Ex8,
+                            'Ex9' => $existeFinal[0]->Ex9 + $existeTemp[0]->Ex9,
+                            'Ex10' => $existeFinal[0]->Ex10 + $existeTemp[0]->Ex10,
+                            'Ex11' => $existeFinal[0]->Ex11 + $existeTemp[0]->Ex11,
+                            'Ex12' => $existeFinal[0]->Ex12 + $existeTemp[0]->Ex12,
+                            'Ex13' => $existeFinal[0]->Ex13 + $existeTemp[0]->Ex13,
+                            'Ex14' => $existeFinal[0]->Ex14 + $existeTemp[0]->Ex14,
+                            'Ex15' => $existeFinal[0]->Ex15 + $existeTemp[0]->Ex15,
+                            'Ex16' => $existeFinal[0]->Ex16 + $existeTemp[0]->Ex16,
+                            'Ex17' => $existeFinal[0]->Ex17 + $existeTemp[0]->Ex17,
+                            'Ex18' => $existeFinal[0]->Ex18 + $existeTemp[0]->Ex18,
+                            'Ex19' => $existeFinal[0]->Ex19 + $existeTemp[0]->Ex19,
+                            'Ex20' => $existeFinal[0]->Ex20 + $existeTemp[0]->Ex20,
+                            'Ex21' => $existeFinal[0]->Ex21 + $existeTemp[0]->Ex21,
+                            'Ex22' => $existeFinal[0]->Ex22 + $existeTemp[0]->Ex22,
+                            'Precio' => $existeTemp[0]->Ex22,
+                            'PrecioMenudeo' => $existeTemp[0]->Ex22,
+                            'PrecioMayoreo' => $existeTemp[0]->Ex22,
+                        );
+                        $this->existencias_model->onModificar($existeFinal[0]->ID, $dataEM);
+                        $this->existencias_model->onEliminarExistenciaTemp($existeTemp[0]->ID, $v->Tienda, $v->Estilo, $v->Color);
+
+                        /* MODIFICA ESTATUS EXISTENCIAS */
+                        $this->existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
+                    }
+                }
+
+
+                $Estatus = 'AFECTADO';
+                $this->existencias_model->onModificarEstatusExistencias($ID, 1);
+            } else {
+                $Estatus = 'ACTIVO';
+            }
+
             $data = array(
-                'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
-                'FechaCreacion' => Date('d/m/Y h:i:s a'),
-                'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
-                'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
-                'Proveedor' => ($this->input->post('Proveedor') !== NULL) ? $this->input->post('Proveedor') : NULL,
-                'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
-                'Estatus' => 'ACTIVO'
+                'Estatus' => $Estatus
             );
             $this->compras_model->onModificar($ID, $data);
-            /* DETALLE */
-            $Detalle = json_decode($this->input->post("Detalle"));
-            foreach ($Detalle as $key => $v) {
-                /* COMPROBAR SI EL MATERIAL-PIEZA LEIDO EXISTE */
-                $dtm = $this->compras_model->Existe($v->Estilo, $v->Color, $v->Talla, $this->input->post('ID'));
-                /* SI EXISTE, MODIFICARLO */ 
-                if ($dtm[0]->EXISTE > 0) {
-                    $data = array(
-                        'Cantidad' => $v->Cantidad,
-                        'Subtotal' => $v->Subtotal
-                    );
-                    $this->compras_model->onModificarDetalle($v->ID/* ID DETALLE */, $ID/* ID COMPRA */, $data);
-                } else {
-                    $data = array(
-                        'Compra' => $ID,
-                        'Estilo' => $v->Estilo,
-                        'Color' => $v->Color,
-                        'Precio' => $v->Precio,
-                        'Talla' => $v->Talla,
-                        'Cantidad' => $v->Cantidad,
-                        'Subtotal' => $v->Subtotal,
-                        'EsCoTa' => ''
-                    );
-                    $this->compras_model->onAgregarDetalle($data);
-                }
-            }
             /* FIN DETALLE */
-            /* DETALLE ELIMINADO */
-            $DetalleEliminado = json_decode($this->input->post("DetalleEliminado"));
-            foreach ($DetalleEliminado as $key => $v) {
-                $this->compras_model->onEliminarDetalle($v->ID);
-            }
-            /* FIN DETALLE ELIMINADO */
-
-
-
-            /* MODIFICA EXISTENCIAS */
-            if ($this->input->post('AfecInv') === "1") {
-                $EstatusExistencias = 1;
-            } else {
-                $EstatusExistencias = 0;
-            }
-            $this->existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -292,7 +302,19 @@ class Compras extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->compras_model->onEliminar($ID);
+            $Compra=$this->compras_model->getCompraByID($ID);
+            if(!empty($Compra[0])){
+                if($Compra[0]->Estatus === 'ACTIVO'){
+                    $this->compras_model->onEliminar($ID);
+                    $this->existencias_model->onEliminar($ID);
+                    print 1;
+                }
+                else{
+                    print 2;
+                }
+                
+            }
+ 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

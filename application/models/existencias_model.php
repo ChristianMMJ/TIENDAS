@@ -40,6 +40,7 @@ class existencias_model extends CI_Model {
             $this->db->where('E.Tienda', $Tienda);
             $this->db->where('E.Estilo', $Estilo);
             $this->db->where('E.Color', $Color);
+            $this->db->where('E.Estatus', '1');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -52,6 +53,29 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function onComprobarExistenciasTempXDoc($ID,$Tienda, $Estilo, $Color) {
+        try {
+            $this->db->select("E.*", false);
+            $this->db->from('sz_Existencias AS E');
+            $this->db->where('E.Tienda', $Tienda);
+            $this->db->where('E.Estilo', $Estilo);
+            $this->db->where('E.Color', $Color);
+            $this->db->where('E.Documento', $ID);
+            $this->db->where('E.Estatus', '0');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
 
     public function onAgregar($array) {
         try {
@@ -90,10 +114,23 @@ class existencias_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', '0');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Existencias");
+            $this->db->delete("sz_Existencias");
 //            print $str = $this->db->last_query();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function onEliminarExistenciaTemp($ID,$Tienda,$Estilo,$Color) {
+        try {
+            $this->db->set('Estatus', '0');
+            $this->db->where('Documento', $ID);
+            $this->db->where('Estilo', $Estilo);
+            $this->db->where('Tienda', $Tienda);
+            $this->db->where('Color', $Color);
+            $this->db->delete("sz_Existencias");
+            //print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -101,8 +138,14 @@ class existencias_model extends CI_Model {
 
     public function getExistenciaByID($ID) {
         try {
-            $this->db->select('U.*', false);
+            $this->db->select("U.*, T.Clave + '-'+T.RazonSocial AS NombreTienda, "
+                    . "E.Clave + '-'+E.Descripcion AS NombreEstilo, "
+                    . "C.Clave + '-'+C.Descripcion AS NombreColor "
+                    . " ", false);
             $this->db->from('sz_Existencias AS U');
+             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*
@@ -116,5 +159,23 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
+    
+    public function getExistenciaByDocumento($ID) {
+        try {
+            $this->db->select("U.* ", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->where('U.Documento', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
 }

@@ -64,7 +64,7 @@ class Usuarios extends CI_Controller {
                 'Registro' => Date('d/m/Y h:i:s a'),
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL
             );
-            $this->usuario_model->onAgregar($data);
+            $ID=$this->usuario_model->onAgregar($data);
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Usuarios/';
             $master_url = $URL_DOC . '/';
@@ -88,6 +88,7 @@ class Usuarios extends CI_Controller {
                     $this->usuario_model->onModificar($ID, $DATA);
                 }
             }
+            print $ID;
             /* FIN SUBIR FOTO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

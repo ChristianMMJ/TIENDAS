@@ -44,7 +44,7 @@ class Clientes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getClienteByID() {
         try {
             extract($this->input->post());
@@ -75,10 +75,9 @@ class Clientes extends CI_Controller {
                 'LimiteCredito' => ($this->input->post('LimiteCredito') !== NULL) ? $this->input->post('LimiteCredito') : 0,
                 'PlazoPagos' => ($this->input->post('PlazoPagos') !== NULL) ? $this->input->post('PlazoPagos') : 0,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
-                
             );
-            $this->clientes_model->onAgregar($data);
-            
+            $ID = $this->clientes_model->onAgregar($data);
+
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Clientes/';
             $master_url = $URL_DOC . '/';
@@ -102,6 +101,7 @@ class Clientes extends CI_Controller {
                     $this->clientes_model->onModificar($ID, $DATA);
                 }
             }
+            print $ID;
             /* FIN SUBIR FOTO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

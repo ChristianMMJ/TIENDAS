@@ -22,12 +22,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Existencias</h5>
+                <h5 class="modal-title">Existencias Tienda:  <strong id="DatosTienda"></strong> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                
+                Estilo: <strong id="DatosEstilo"></strong><br>
+                Color: <strong id="DatosColor"></strong>
+                
+                <br><br>
+                
                 <label for="Mayoreo">Tallas</label> 
                 <div style="overflow-x:auto; white-space: nowrap; ">
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1">
@@ -52,7 +58,6 @@
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20">
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21">
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22">
-                    &nbsp;Pares
                     <br>
                     <span class="disabledForms">
                         <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1">
@@ -78,7 +83,6 @@
                         <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21">
                         <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22">
                     </span>
-                    <input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares">
                 </div>
             </div>
             <div class="modal-footer">
@@ -117,9 +121,7 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblExistencias', data));
-                $('#tblExistencias tfoot th').each(function () {
-                    $(this).html('');
-                });
+   
                 $('#tblExistencias tfoot th').each(function () {
                     var title = $(this).text();
                     $(this).html('<div  style="overflow-x:auto; "><div class="form-group "><input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/></div></div>');
@@ -164,6 +166,9 @@
                         }).done(function (data, x, jq) {
                             getSerieXEstilo(data[0].Estilo);
                             $('#mdlInfoExixtencia').find("input").val("");
+                            $('#mdlInfoExixtencia').find("#DatosTienda").text(data[0].NombreTienda);
+                            $('#mdlInfoExixtencia').find("#DatosEstilo").text(data[0].NombreEstilo);
+                            $('#mdlInfoExixtencia').find("#DatosColor").text(data[0].NombreColor);
                             $.each(data[0], function (k, v) {
                                 $('#mdlInfoExixtencia').find("[name='" + k + "']").val(v);
                             });
@@ -186,10 +191,9 @@
                         }
                     });
                 });
-            }
-            else{
-             onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN EXISTENCIAS EN ESTA TIENDA', 'danger');
-             $("#tblRegistros").html("");
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN EXISTENCIAS EN ESTA TIENDA', 'danger');
+                $("#tblRegistros").html("");
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);

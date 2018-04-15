@@ -136,6 +136,7 @@ class Empleados extends CI_Controller {
                     $this->empleados_model->onModificar($ID, $DATA);
                 }
             }
+            print $ID;
             /* FIN SUBIR FOTO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

@@ -45,7 +45,7 @@
         <link href="<?php print base_url(); ?>css/pace.css" rel="stylesheet" />
         <!--Masked number format money etc-->
         <script src="<?php print base_url(); ?>js/jquery.maskedinput.min.js"></script>
-        <!--Masked number format money etc-->
+        <!--Modales simplificados-->
         <script src="<?php print base_url(); ?>js/sweetalert.min.js"></script>
         <!--Notifiers-->
         <script src="<?php echo base_url(); ?>js/notify/bootstrap-notify-3.1.3/bootstrap-notify.min.js"></script>

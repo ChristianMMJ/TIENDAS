@@ -64,7 +64,7 @@ class Tiendas extends CI_Controller {
                 'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->tiendas_model->onAgregar($data);
+            $ID=$this->tiendas_model->onAgregar($data);
 
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Tiendas/';
@@ -90,7 +90,7 @@ class Tiendas extends CI_Controller {
                 }
             }
             /* FIN SUBIR FOTO */
-            
+            print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
