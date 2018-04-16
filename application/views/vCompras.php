@@ -300,6 +300,24 @@
                 onCalcularMontos();
             }
         });
+
+        //Alerta de afectación al inventario
+
+
+        pnlDatos.find("#AfecInv").change(function () {
+            if (this.checked) {
+                swal({
+                    buttons: ["Cancelar", "Aceptar"],
+                    title: 'Estás Seguro',
+                    text: "Esta opción modificará las existencias en el inventario",
+                    icon: "info"
+                }).then((result) => {
+                    if (!result) {
+                        pnlDatos.find('#AfecInv').prop('checked', false);
+                    }
+                });
+            }
+        });
         //Sombreado de la fila
         pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
             pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
@@ -370,91 +388,100 @@
         });
         //Evento botones
         btnGuardar.click(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "GUARDANDO DATOS..."
-                });
-                var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
-                if (!nuevo) {
-                    f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
-                    $.ajax({
-                        url: master_url + 'onModificar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: f
-                    }).done(function (data, x, jq) {
-                        if (pnlDatos.find("#AfecInv")[0].checked) {
-                            pnlDatos.find('#dAfecInv').addClass('disabledForms');
-                            $('#Encabezado').addClass('disabledForms');
-                            $('#ControlesDetalle').addClass('disabledForms');
-                            btnGuardar.addClass('d-none');
-                            swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
+            swal({
+                buttons: ["Cancelar", "Aceptar"],
+                title: 'Estas Seguro?',
+                text: "Al guardar el movimiento ya no podrás realizar cambios",
+                icon: "info"
+            }).then((result) => {
+                if (result) {
+                    isValid('pnlDatos');
+                    if (valido) {
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "GUARDANDO DATOS..."
+                        });
+                        var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                        if (!nuevo) {
+                            f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
+                            $.ajax({
+                                url: master_url + 'onModificar',
+                                type: "POST",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                data: f
+                            }).done(function (data, x, jq) {
+                                if (pnlDatos.find("#AfecInv")[0].checked) {
+                                    pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                                    $('#Encabezado').addClass('disabledForms');
+                                    $('#ControlesDetalle').addClass('disabledForms');
+                                    btnGuardar.addClass('d-none');
+                                    swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
+                                }
+                                onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                                getRecords();
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
+                                HoldOn.close();
+                            });
+                        } else {
+                            /*AGREGAR DETALLE*/
+                            var detalle = [];
+                            //Destruye la instancia de datatable
+                            tblDetalleCompra.destroy();
+                            //Iteramos en la tabla natural
+                            pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
+                                var row = $(this).find("td");
+                                //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
+                                var material = {
+                                    Estilo: row.eq(0).text().replace(/\s+/g, ''),
+                                    Color: row.eq(1).text().replace(/\s+/g, ''),
+                                    Precio: row.eq(6).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
+                                    Talla: row.eq(4).text().replace(/\s+/g, ''),
+                                    Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0,
+                                    Subtotal: (row.eq(7).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(7).text()) : 0
+                                };
+                                //Se mete el objeto al arreglo
+                                detalle.push(material);
+                            });
+                            //Convertimos a cadena el objeto en formato json
+                            f.append('Detalle', JSON.stringify(detalle));
+                            f.append('Existencias', JSON.stringify(existencias));
+                            f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
+                            $.ajax({
+                                url: master_url + 'onAgregar',
+                                type: "POST",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                data: f
+                            }).done(function (data, x, jq) {
+                                nuevo = false;
+                                pnlDatos.find('#ID').val(data);
+                                if (pnlDatos.find("#AfecInv")[0].checked) {
+                                    pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                                    $('#Encabezado').addClass('disabledForms');
+                                    $('#ControlesDetalle').addClass('disabledForms');
+                                    btnGuardar.addClass('d-none');
+                                    swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
+                                }
+                                onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                                nuevo = false;
+                                getRecords();
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
+                                HoldOn.close();
+                                tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                            });
                         }
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        getRecords();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    /*AGREGAR DETALLE*/
-                    var detalle = [];
-                    //Destruye la instancia de datatable
-                    tblDetalleCompra.destroy();
-                    //Iteramos en la tabla natural
-                    pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
-                        var row = $(this).find("td");
-                        //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
-                        var material = {
-                            Estilo: row.eq(0).text().replace(/\s+/g, ''),
-                            Color: row.eq(1).text().replace(/\s+/g, ''),
-                            Precio: row.eq(6).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
-                            Talla: row.eq(4).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0,
-                            Subtotal: (row.eq(7).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(7).text()) : 0
-                        };
-                        //Se mete el objeto al arreglo
-                        detalle.push(material);
-                    });
-                    //Convertimos a cadena el objeto en formato json
-                    f.append('Detalle', JSON.stringify(detalle));
-                    f.append('Existencias', JSON.stringify(existencias));
-                    f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
-                    $.ajax({
-                        url: master_url + 'onAgregar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: f
-                    }).done(function (data, x, jq) {
-                        nuevo = false;
-                        pnlDatos.find('#ID').val(data);
-                        if (pnlDatos.find("#AfecInv")[0].checked) {
-                            pnlDatos.find('#dAfecInv').addClass('disabledForms');
-                            $('#Encabezado').addClass('disabledForms');
-                            $('#ControlesDetalle').addClass('disabledForms');
-                            btnGuardar.addClass('d-none');
-                            swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
-                        }
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                        nuevo = false;
-                        getRecords();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-                    });
+                    } else {
+                        onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                    }
                 }
-            } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
-            }
+            });
         });
         btnNuevo.click(function () {
             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
@@ -518,8 +545,6 @@
                         }).always(function () {
                             HoldOn.close();
                         });
-                    } else {
-                        swal("Error al borrar registro!", "No es posible borrar el movimiento, intenta de nuevo", "error");
                     }
                 });
             } else {
@@ -802,7 +827,6 @@
     }
     /*FIN AUTOSUMAR PARES*/
     /*AGREGAR ESTILO-COLOR*/
-
     var n = 1;
     function onAgregarFila() {
         n = (n > 0) ? n : 1;

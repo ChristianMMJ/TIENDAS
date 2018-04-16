@@ -219,9 +219,9 @@ class Compras extends CI_Controller {
                         'Ex20' => $v->Ex20 + $existe[0]->Ex20,
                         'Ex21' => $v->Ex21 + $existe[0]->Ex21,
                         'Ex22' => $v->Ex22 + $existe[0]->Ex22,
-                        'Precio' => $v->Precio,
-                        'PrecioMenudeo' => $v->PrecioMenudeo,
-                        'PrecioMayoreo' => $v->PrecioMayoreo,
+                        'Precio' => ($v->Precio > $existe[0]->Precio) ? $v->Precio : $existe[0]->Precio,
+                        'PrecioMenudeo' => ($v->PrecioMenudeo > $existe[0]->PrecioMenudeo) ? $v->PrecioMenudeo : $existe[0]->PrecioMenudeo,
+                        'PrecioMayoreo' => ($v->PrecioMayoreo > $existe[0]->PrecioMayoreo) ? $v->PrecioMayoreo : $existe[0]->PrecioMayoreo
                     );
                     $this->existencias_model->onModificar($existe[0]->ID, $dataM);
                 } else {
@@ -270,9 +270,9 @@ class Compras extends CI_Controller {
                             'Ex20' => $existeFinal[0]->Ex20 + $existeTemp[0]->Ex20,
                             'Ex21' => $existeFinal[0]->Ex21 + $existeTemp[0]->Ex21,
                             'Ex22' => $existeFinal[0]->Ex22 + $existeTemp[0]->Ex22,
-                            'Precio' => $existeTemp[0]->Ex22,
-                            'PrecioMenudeo' => $existeTemp[0]->Ex22,
-                            'PrecioMayoreo' => $existeTemp[0]->Ex22,
+                            'Precio' => ($existeTemp[0]->Precio > $existeFinal[0]->Precio) ? $existeTemp[0]->Precio : $existeFinal[0]->Precio,
+                            'PrecioMenudeo' => ($existeTemp[0]->PrecioMenudeo > $existeFinal[0]->PrecioMenudeo) ? $existeTemp[0]->PrecioMenudeo : $existeFinal[0]->PrecioMenudeo,
+                            'PrecioMayoreo' => ($existeTemp[0]->PrecioMayoreo > $existeFinal[0]->PrecioMayoreo) ? $existeTemp[0]->PrecioMayoreo : $existeFinal[0]->PrecioMayoreo
                         );
                         $this->existencias_model->onModificar($existeFinal[0]->ID, $dataEM);
                         $this->existencias_model->onEliminarExistenciaTemp($existeTemp[0]->ID, $v->Tienda, $v->Estilo, $v->Color);
@@ -302,19 +302,16 @@ class Compras extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $Compra=$this->compras_model->getCompraByID($ID);
-            if(!empty($Compra[0])){
-                if($Compra[0]->Estatus === 'ACTIVO'){
+            $Compra = $this->compras_model->getCompraByID($ID);
+            if (!empty($Compra[0])) {
+                if ($Compra[0]->Estatus === 'ACTIVO') {
                     $this->compras_model->onEliminar($ID);
                     $this->existencias_model->onEliminar($ID);
                     print 1;
-                }
-                else{
+                } else {
                     print 2;
                 }
-                
             }
- 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
