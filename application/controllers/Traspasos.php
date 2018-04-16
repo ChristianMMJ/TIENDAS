@@ -79,6 +79,13 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    public function getCombinacionesXEstiloConExistencias() {
+        try { 
+            print json_encode($this->combinaciones_model->getCombinacionesXEstiloConExistencias($this->input->get('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getSerieXEstilo() {
         try {
@@ -261,4 +268,11 @@ class Traspasos extends CI_Controller {
         }
     }
 
+    public function getExistenciasByIDs() {
+        try { 
+            print json_encode($this->estilos_model->getExistenciasByIDs($this->input->get('Tienda'),$this->input->get('Estilo'),$this->input->get('Color')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }

@@ -249,7 +249,7 @@
     $(document).ready(function () {
         //Verificar Tienda no sea igual a dTienda
         pnlDatos.find("[name='Tienda']").change(function () {
-            if($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue() ){
+            if ($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue()) {
                 pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
                 onNotify('<span class="fa fa-times fa-lg"></span>', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN', 'danger');
             }
@@ -264,8 +264,26 @@
         $.each(pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly"), function () {
             $(this).keyup(function (e) {
                 if (e.keyCode === 13) {
+                    var Tienda = pnlDatos.find("[name='Tienda']").val();
+                    var Estilo = pnlDatos.find("[name='Estilo']").val();
+                    var Color = pnlDatos.find("[name='Combinacion']").val();
                     var talla = pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
-                    if (talla <= 0) {
+                    if (talla <= 0 && Estilo !== '' && Color !== '') {
+                        /*REVISAR EXISTENCIAS 1 A UNA 1 */
+                        var disponible = false;
+                        $.getJSON(master_url + 'getExistenciasByIDs', {Tienda: Tienda, Estilo: Estilo, Color: Color}).done(function (data,x,jq) {
+                            /*CHECAR*/
+                            $.each(data[0],function(){
+                                console.log($(this));
+                            });
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                            swal('ERROR', 'HA OCURRIDO UN ERROR AL REVISAR LAS EXISTENCIAS', 'warning');
+                        }).always(function () {
+                            console.log('REVISION TERMINADA PARA LA TIENDA ' + Tienda + ', Estilo ' + Estilo + ', Color/Combinación ' + Color);
+                        });
+                        /*FIN REVISAR EXISTENCIAS*/
+
                         onAgregarExistencias();
                         onAgregarFila();
                         $("[name='Estilo']")[0].selectize.focus();
@@ -356,7 +374,7 @@
                     }).done(function (data, x, jq) {
                         console.log(data);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-pnlDatos.find('#ID').val(data);
+                        pnlDatos.find('#ID').val(data);
                         nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
@@ -568,14 +586,10 @@ pnlDatos.find('#ID').val(data);
 
     function getCombinacionesXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-        $.ajax({
-            url: master_url + 'getCombinacionesXEstilo',
-            type: "POST",
-            dataType: "JSON",
-            data: {
+        $.getJSON(master_url + 'getCombinacionesXEstiloConExistencias', {
                 Estilo: Estilo
             }
-        }).done(function (data, x, jq) {
+        ).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });

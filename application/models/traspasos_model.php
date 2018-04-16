@@ -158,4 +158,30 @@ class traspasos_model extends CI_Model {
         }
     }
 
+    public function getExistenciasByIDs($Tienda, $Estilo, $Color) {
+        try {
+            $this->db->select('E.Ex1      ,E.Ex2      ,E.Ex3      ,E.Ex4
+      ,E.Ex5      ,E.Ex6      ,E.Ex7      ,E.Ex8
+      ,E.Ex9      ,E.Ex10      ,E.Ex11      ,E.Ex12
+      ,E.Ex13      ,E.Ex14      ,E.Ex15      ,E.Ex16
+      ,E.Ex17      ,E.Ex18      ,E.Ex19      ,E.Ex20
+      ,E.Ex21      ,E.Ex22', false);
+            $this->db->from('sz_Existencias AS E');
+            $this->db->where('E.Tienda', $Tienda);
+            $this->db->where('E.Estilo', $Estilo);
+            $this->db->where('E.Color', $Color);
+            $this->db->where_in('E.Estatus', '1');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
