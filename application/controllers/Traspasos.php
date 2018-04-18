@@ -270,7 +270,7 @@ class Traspasos extends CI_Controller {
 
     public function getExistenciasByIDs() {
         try { 
-            print json_encode($this->estilos_model->getExistenciasByIDs($this->input->get('Tienda'),$this->input->get('Estilo'),$this->input->get('Color')));
+            print json_encode($this->traspasos_model->getExistenciasByIDs($this->input->get('Tienda'),$this->input->get('Estilo'),$this->input->get('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

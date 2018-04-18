@@ -269,21 +269,6 @@
                     var Color = pnlDatos.find("[name='Combinacion']").val();
                     var talla = pnlDatosDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
                     if (talla <= 0 && Estilo !== '' && Color !== '') {
-                        /*REVISAR EXISTENCIAS 1 A UNA 1 */
-                        var disponible = false;
-                        $.getJSON(master_url + 'getExistenciasByIDs', {Tienda: Tienda, Estilo: Estilo, Color: Color}).done(function (data,x,jq) {
-                            /*CHECAR*/
-                            $.each(data[0],function(){
-                                console.log($(this));
-                            });
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                            swal('ERROR', 'HA OCURRIDO UN ERROR AL REVISAR LAS EXISTENCIAS', 'warning');
-                        }).always(function () {
-                            console.log('REVISION TERMINADA PARA LA TIENDA ' + Tienda + ', Estilo ' + Estilo + ', Color/Combinación ' + Color);
-                        });
-                        /*FIN REVISAR EXISTENCIAS*/
-
                         onAgregarExistencias();
                         onAgregarFila();
                         $("[name='Estilo']")[0].selectize.focus();
@@ -295,6 +280,7 @@
                 onAutoSumarPares();
             });
         });
+
         //Evento en el select de estilo para traer las tallas y los colores
         pnlDatosDetalle.find("[name='Estilo']").change(function () {
             $("[name='Combinacion']")[0].selectize.clear(true);
@@ -302,6 +288,43 @@
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
         });
+
+        //Evento en el select de estilo para traer las tallas y los colores
+        pnlDatosDetalle.find("[name='Combinacion']").change(function () {
+            /*REVISAR EXISTENCIAS 1 A UNA 1 */
+            var Tienda = pnlDatos.find("[name='dTienda']").val();
+            var Estilo = pnlDatos.find("[name='Estilo']").val();
+            var Color = pnlDatos.find("[name='Combinacion']").val();
+            $.getJSON(master_url + 'getExistenciasByIDs', {Tienda: Tienda, Estilo: Estilo, Color: Color}).done(function (data, x, jq) {
+                /*CHECAR*/
+                var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
+                $.each(data[0], function (k, v) {
+                    $.each(rows.find("input.numbersOnly"), function () {
+                        if (parseInt(v) <= 0 && $(this).attr('name') === k ) {
+                            $(this).prop("disabled", 'disabled');
+                            $(this).prop('placeholder', 0);
+                            $(this).addClass('NoStock');
+                            $(this).removeClass('Stock');
+                            $(this).val('');
+                        } else if (parseInt(v) > 0 && $(this).attr('name') === k) {
+                            $(this).prop("disabled", false);
+                            $(this).prop('placeholder', v);
+                            $(this).addClass('Stock');
+                            $(this).removeClass('NoStock');
+                            $(this).val('');
+                        }
+                    });
+                });
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+                swal('ERROR', 'HA OCURRIDO UN ERROR AL REVISAR LAS EXISTENCIAS', 'warning');
+            }).always(function () {
+                console.log('REVISION TERMINADA PARA LA TIENDA ' + Tienda + ', Estilo ' + Estilo + ', Color/Combinación ' + Color);
+            });
+            /*FIN REVISAR EXISTENCIAS*/
+        });
+
+
         //Evento del boton guardar
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -587,8 +610,8 @@
     function getCombinacionesXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.getJSON(master_url + 'getCombinacionesXEstiloConExistencias', {
-                Estilo: Estilo
-            }
+            Estilo: Estilo
+        }
         ).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatosDetalle.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
@@ -737,3 +760,19 @@
     }
 
 </script>
+<style>
+    .Stock{
+        font-weight: bold;
+        color: #000000;
+    } 
+    .Stock::-webkit-input-placeholder {
+        font-weight: normal;
+        color: #78a864;
+    } 
+    .NoStock {
+        font-weight: bold;
+    } 
+    .NoStock::-webkit-input-placeholder {
+        color: #ff0000;
+    } 
+</style>
