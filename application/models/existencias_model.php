@@ -178,4 +178,25 @@ class existencias_model extends CI_Model {
         }
     }
     
+    public function getExistenciasXEstiloXCombinacion($Estilo, $combinacion) {
+        try {
+            $this->db->select("U.* "
+                    . " ", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.Estilo', $Estilo);
+            $this->db->where('U.Color', $combinacion);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
 }

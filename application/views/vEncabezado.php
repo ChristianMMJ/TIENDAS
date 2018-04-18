@@ -14,7 +14,7 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap CSS -->
-        <link href="<?php print base_url('css/bootstrap_yeti.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('css/bootstrap-r.css') ?>" rel="stylesheet"> 
 
         <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet"> 
 
@@ -28,14 +28,14 @@
 
         <!--selectize control--> 
         <script src="<?php echo base_url(); ?>js/selectize/js/standalone/selectize.min.js"></script>
-        <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.min.css" rel="stylesheet" />
+        <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.css" rel="stylesheet" />
 
         <!-- Validacion forms -->
         <script rel="javascript" type="text/javascript" href="<?php echo base_url(); ?>js/additional-methods.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
 
         <!--Font Awesome Icons-->
-        <link rel="stylesheet" href="<?php print base_url(); ?>css/font-awesome.min.css">
+        <script defer src="<?php print base_url(); ?>js/fontawesome-all.js"></script>
         <link rel="stylesheet" href="<?php print base_url(); ?>css/animate.min.css">
         <!--HoldOn Stupid Accions-->
         <link href="<?php print base_url(); ?>css/HoldOn.min.css" rel="stylesheet">
@@ -66,6 +66,8 @@
     </head>  
 
     <script>
+
+
         var base_url = "<?php print base_url(); ?>";
         $(function () {
 
@@ -115,7 +117,7 @@
 
             $('select').selectize(
                     {
-                        placeholder: 'SELECCIONE UNA OPCIÓN'
+                        //placeholder: 'SELECCIONAR'
                     }
             );
             //Clase que admite solo numeros y un punto decimal

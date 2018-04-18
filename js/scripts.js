@@ -23,7 +23,7 @@ var tableOptions = {
     buttons: [
         {
             extend: 'excelHtml5',
-            text: '<span  data-tooltip="Exportar a Excel"><span class="fa fa-file-excel-o"></span></span>',
+            text: ' <i class="fa fa-file-excel"></i>',
             titleAttr: 'Excel',
             exportOptions: {
                 columns: ':visible'
@@ -33,7 +33,7 @@ var tableOptions = {
         {
 
             extend: 'colvis',
-            text: '<span  data-tooltip="Columnas"><span class="fa fa-columns"></span></span>',
+            text: '<i class="fa fa-columns"></i>',
             titleAttr: 'Seleccionar Columnas',
             exportOptions: {
                 modifier: {

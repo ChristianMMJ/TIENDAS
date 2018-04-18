@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between" id="navPrincipal">
     <a class="navbar-brand" href="<?php print base_url(); ?>">
         <img src="<?php print base_url(); ?>img/LS.png" width="30px">
     </a>
@@ -9,26 +9,34 @@
     <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Compras') ?>">Compras</a>
+                <a class="btn btn-success my-2 my-sm-0 btnSpace" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
+                    <i class="fa fa-hand-holding-usd"></i>  Ventas
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight" href="<?php print base_url('Compras') ?>">
+                    <i class="fa fa-shopping-cart"></i> Compras
+                </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Inventarios
+                <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-list-alt"></i> Inventarios
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
-                  </div>
+                </div>
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Mantenimiento
+                <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-wrench"></i> Mantenimiento
                 </a>
                 <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                     <li class="nav-item dropdown dropdown-submenu">
-                        <a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Generales
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -37,7 +45,7 @@
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TIPOS ESTILO') ?>">Tipos de Estilo</a></li>
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MARCAS') ?>">Otras Marcas Zap</a></li>
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=METODOS PAGO') ?>">Métodos de Pago</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES PAGO') ?>">Condiciones de Pago</a></li>
+                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES DE PAGO') ?>">Condiciones de Pago</a></li>
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
@@ -48,7 +56,6 @@
                              <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=DEFECTOS') ?>">Defectos</a></li>-->
                         </ul>
                     </li>
-
                     <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
@@ -62,18 +69,9 @@
 
                     <!--                    <li><a class="dropdown-item" href="#">Almacenes</a></li> -->
 
-
-
-
-
-
                 </ul>
             </li>
-
-
         </ul>
-
-
         <ul class="navbar-nav navbar-right">
 
             <li class="nav-item dropdown">
@@ -90,9 +88,6 @@
             </li>
         </ul>
 
-
-
-
-
     </div>
 </nav>
+

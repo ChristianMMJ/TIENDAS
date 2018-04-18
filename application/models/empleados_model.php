@@ -32,7 +32,7 @@ class empleados_model extends CI_Model {
 
     public function getEmpleados() {
         try {
-            $this->db->select("U.ID, U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ U.SegundoNombre As Empleado   ", false);
+            $this->db->select("U.ID, CONVERT(VARCHAR(20),U.ID)+'-'+U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ U.SegundoNombre As Empleado   ", false);
             $this->db->from('sz_Empleados AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();

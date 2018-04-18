@@ -15,9 +15,9 @@ class compras_model extends CI_Model {
             $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento ,"
                     
                     . "(CASE WHEN  U.Estatus ='ACTIVO' "
-                    . "THEN CONCAT('<h5><span class=''badge badge-info''>','EN TRANSITO','</span><h5>') "
+                    . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN TRANSITO','</span>') "
                     . "WHEN  U.Estatus ='AFECTADO' "
-                    . "THEN CONCAT('<h5><span class=''badge badge-success''>','ENTRADA','</span></h5>') "
+                    . "THEN CONCAT('<span class=''badge badge-success'' style=''font-size: 15px;''>','ENTRADA','</span>') "
                     . "END) AS Estatus ,"
                     
                     . "T.Clave + '-'+T.RazonSocial AS 'Tienda' ,"

@@ -4,17 +4,17 @@
             <center><img class="mb-4" src="<?php print base_url('img/LS.png'); ?>" alt="" width="72" height="72"></center>
             <form id="frmIngresar" class="form-horizontal ">
                 <div class="form-group">
-                    <input type="email" class="form-control form-control-sm" id="Usuario" name="Usuario" placeholder="Email*" >
+                    <input type="email" class="form-control " id="Usuario" name="Usuario" placeholder="Email*" >
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control form-control-sm" id="Contrasena" name="Contrasena" placeholder="Contraseña*">
+                    <input type="password" class="form-control " id="Contrasena" name="Contrasena" placeholder="Contraseña*">
                 </div>
                 <div align="right">
                     <button id="btnIngresar" type="button" class="btn btn-raised btn-primary">INGRESAR</button>
                     <hr>
                 </div>
-                <div class=" dt-buttons" align="left">
-                    <button id="btnOlvidasteContrasena" type="button"  class="btn btn-default">Olvidaste tu contraseña?</button>
+                <div class="" align="left">
+                    <button id="btnOlvidasteContrasena" type="button"  class="btn btn-warning">Olvidaste tu contraseña?</button>
                 </div>
             </form>
         </div>
