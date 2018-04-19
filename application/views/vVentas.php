@@ -417,20 +417,24 @@
                 var rcantidad = cell.text() !== '' ? cell.text() : cell.find("#RunCantidad").val();
                 cell.html(rcantidad);
             });
-            var cell = $(this).find("td").eq(4);
-            var cells = $(this).find("td");
-            cell.html('<input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="RunCantidad" value="' + cell.text() + '">');
+            var tr = this;
+            var row = $(this);
+            var cell = row.find("td").eq(4); 
+            var index = tblDetalleVenta.row(tr).index();
+            cell.html('<input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="RunCantidad" value="' + getNumberFloat(cell.text()) + '">');
             cell.find("#RunCantidad").focusout(function () {
-                cell.html($(this).val());
-                var cantidad = parseFloat(getNumber(cells.eq(3).text()));
-                cells.eq(5).html("$" + $.number((parseFloat($(this).val()) * cantidad), 2, '.', ','));
+                var data = tblDetalleVenta.row(tr).data();
+                var cantidad = parseFloat((data[5]));
+                tblDetalleVenta.cell(index/*ID FILA*/, 6/*COLUMNA*/).data("$" + $.number($(this).val(), 2, '.', ','));
+                tblDetalleVenta.cell(index/*ID FILA*/, 7/*COLUMNA*/).data("$" + $.number(parseFloat(getNumberFloat(data[6])) * parseFloat(cantidad), 2, '.', ','));
                 onCalcularMontos();
             });
             cell.find("#RunCantidad").keyup(function (e) {
                 if (e.keyCode === 13) {
-                    cell.html($(this).val());
-                    var cantidad = parseFloat(getNumber(cells.eq(3).text()));
-                    cells.eq(5).html("$" + $.number((parseFloat($(this).val()) * cantidad), 2, '.', ','));
+                    var data = tblDetalleVenta.row(tr).data();
+                    var cantidad = parseFloat((data[5]));
+                    tblDetalleVenta.cell(index/*ID FILA*/, 6/*COLUMNA*/).data("$" + $.number($(this).val(), 2, '.', ','));
+                    tblDetalleVenta.cell(index/*ID FILA*/, 7/*COLUMNA*/).data("$" + $.number(parseFloat(getNumberFloat(data[6])) * parseFloat(cantidad), 2, '.', ','));
                     onCalcularMontos();
                 }
             });
@@ -632,6 +636,7 @@
     /*AGREGAR ESTILO-COLOR*/
     var n = 1;
     function onAgregarFila() {
+        console.log('AGREGANDO FILA...');
         n = (n > 0) ? n : 1;
 
         var Estilo = pnlControlesDetalle.find("[name='Estilo']");
@@ -639,23 +644,31 @@
         var Costo = pnlControlesDetalle.find("[name='Precio']");
         var Talla = pnlControlesDetalle.find("[name='Talla']");
         var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
+
         if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
             /*COMPROBAR ESTILO, COMBINACION Y TALLA*/
             var estilo_combinacion_existen = false;
-            $.each(tblDetalleVenta.rows().data(), function () {
-                var xEstilo = $(this)[0];
-                var xCombinacion = $(this)[1];
-                var xTalla = $(this)[4];
+
+            /*BUSCAR FILAS EN EL DATATABLE*/
+            tblDetalleVenta.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                /*DATOS POR FILA*/
+                var data = this.data();
+
+                /*ESTILO, COMBINACION, TALLA*/
+                var xEstilo = data[0];
+                var xCombinacion = data[1];
+                var xTalla = data[4];
+                console.log("\nESTILO " + xEstilo + ", COLOR " + xCombinacion + ", TALLA " + xTalla + "\n");
                 if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val() && xTalla === Talla.val()) {
                     estilo_combinacion_existen = true;
-                    
-                    var NuevaCantidad = parseFloat($(this)[5]) + parseFloat(Cantidad.val());
-                    $(this).find("td").eq(47).text(NuevaCantidad);
-                    $(this).find("td").eq(49).text(parseFloat($(this)[6]) * parseFloat(NuevaCantidad));
+                    var NuevaCantidad = parseFloat(getNumberFloat(data[5]/*CANTIDAD*/)) + parseFloat(Cantidad.val());
+                    tblDetalleVenta.cell(rowIdx/*ID FILA*/, 5/*COLUMNA*/).data(NuevaCantidad);
+                    tblDetalleVenta.cell(rowIdx/*ID FILA*/, 7/*COLUMNA*/).data("$" + $.number(parseFloat(getNumberFloat(data[6])) * parseFloat(NuevaCantidad), 2, '.', ','));
                     return false;
                 }
             });
             /*FIN COMPROBAR ESTILO, COMBINACION Y TALLA*/
+
             /*VALIDAR QUE EXISTA*/
             if (!estilo_combinacion_existen) {
                 tblDetalleVenta.row.add([
@@ -665,7 +678,7 @@
                     Combinacion.find("option:selected").text(),
                     Talla.val(),
                     Cantidad.val(),
-                     $.number(Costo.val(), 2, '.', ','),
+                    "$" + $.number(Costo.val(), 2, '.', ','),
                     "$" + $.number((Cantidad.val() * Costo.val()), 2, '.', ','),
                     0,
                     n
@@ -678,8 +691,8 @@
                 });
                 onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
                 onCalcularMontos();
-
             }
+            onCalcularMontos();
 
         } else {
             onNotify('<span class="fa fa-times fa-lg"></span>', 'DEBE DE ESTABLECER UN TIPO', 'danger');
