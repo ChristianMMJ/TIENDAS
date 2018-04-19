@@ -18,8 +18,11 @@
     <div class="card border-0">
         <div class="card-body text-dark customBackground" > 
             <div class="row">
-                <div class="col-md-8 float-left">
-                    <strong>Traspasos</strong>
+                <div class="col-md-1">
+                    <img src="<?php print base_url(); ?>img/LS.png" width="30px" >
+                </div>
+                <div class="col-md-7 float-left">
+                    <h5>TRASPASOS</h5>
                 </div>
                 <div class="col-md-2 float-right">
                     <div class="custom-control custom-checkbox">
@@ -28,8 +31,8 @@
                     </div>
                 </div>
                 <div class="col-md-2 float-right" align="right">
-                    <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
+                    <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                 </div>
             </div>
             <hr>
@@ -78,63 +81,61 @@
                 </div> 
 
                 <label for="Mayoreo">Tallas</label> 
-                <div class="table-responsive">
-                    <table id="tblTallas" class="table Tallas">
-                        <thead></thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
-                                <td>Pares</td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
-                                <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                    <thead></thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                            <td>Pares</td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
+                            <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
+                            <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <!--DETALLE-->
                 <div class="table-responsive">
                     <table id="tblDetalle" class="table table-sm" width="100%">
@@ -154,15 +155,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row" align="center">
-                    <div class="col-sm-7">
+                <div class="w-100"><br></div>
+                <div class="col-md-12" align="center" style="background-color: #fff ">
+                    <div class="row">
+                        <div class="col-sm-10"></div>
+                        <div class="col-sm-2 text-dark">
+                            Pares<br>
+                            <div id="Pares"><strong>0</strong></div>
+                        </div>
                     </div>
-                    <div class="col-sm-5 text-danger">
-                        PARES
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col-sm-7"></div>
-                    <div id="Pares" class="col-sm-5 text-danger"><strong>0</strong></div>
                 </div>
                 <!--FIN DETALLE-->
             </div>
@@ -183,12 +184,13 @@
     /*DATATABLE GLOBAL*/
     var tblDetalleCompra;
     var tblInicial = {
-        "autoWidth": true,
+        "dom": 'frt',
+        "autoWidth": false,
         "colReorder": true,
-        "displayLength": 20,
+        "displayLength": 500,
         "bLengthChange": false,
         "deferRender": true,
-        "scrollY": 350,
+        "scrollY": 270,
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
@@ -300,7 +302,7 @@
                 var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
                 $.each(data[0], function (k, v) {
                     $.each(rows.find("input.numbersOnly"), function () {
-                        if (parseInt(v) <= 0 && $(this).attr('name') === k ) {
+                        if (parseInt(v) <= 0 && $(this).attr('name') === k) {
                             $(this).prop("disabled", 'disabled');
                             $(this).prop('placeholder', 0);
                             $(this).addClass('NoStock');

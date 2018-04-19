@@ -14,6 +14,7 @@
                     <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
                     <button type="button" class="btn btn-secondary" id="btnClientes"><span class="fa fa-users"></span> CLIENTES</button>
                     <button type="button" class="btn btn-info" id="btnExistencias"><span class="fa fa-table"></span> EXISTENCIAS</button>
+                    <button type="button" class="btn btn-warning" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
                     <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                     <button type="button" class="btn btn-success" id="btnCerrar"><span class="fa fa-dollar-sign"></span> CERRAR VENTA(F2)</button>
                 </div>
@@ -661,7 +662,7 @@
                 console.log("\nESTILO " + xEstilo + ", COLOR " + xCombinacion + ", TALLA " + xTalla + "\n");
                 if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val() && xTalla === Talla.val()) {
                     estilo_combinacion_existen = true;
-                    var NuevaCantidad = parseFloat(getNumberFloat(data[5]/*CANTIDAD*/)) + parseFloat(Cantidad.val());
+                    var NuevaCantidad = parseFloat((data[5]/*CANTIDAD*/)) + parseFloat(Cantidad.val());
                     tblDetalleVenta.cell(rowIdx/*ID FILA*/, 5/*COLUMNA*/).data(NuevaCantidad);
                     tblDetalleVenta.cell(rowIdx/*ID FILA*/, 7/*COLUMNA*/).data("$" + $.number(parseFloat(getNumberFloat(data[6])) * parseFloat(NuevaCantidad), 2, '.', ','));
                     return false;

@@ -19,8 +19,11 @@
     <div class="card border-0">
         <div class="card-body text-dark customBackground" > 
             <div class="row">
-                <div class="col-md-8 float-left">
-                    <strong>Compras</strong>
+                <div class="col-md-1">
+                    <img src="<?php print base_url(); ?>img/LS.png" width="30px" >
+                </div>
+                <div class="col-md-7 float-left">
+                    <h5>COMPRAS</h5>
                 </div>
                 <div class="col-md-2 float-right">
                     <div class="custom-control custom-checkbox" id="dAfecInv">
@@ -29,8 +32,8 @@
                     </div>
                 </div>
                 <div class="col-md-2 float-right" align="right">
-                    <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
+                    <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                 </div>
             </div>
             <hr>
@@ -191,27 +194,35 @@
                     </table>
                 </div>
                 <div class="w-100"><br></div>
-                <div class="row" align="center">
-                    <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-md-2">
+
                     </div>
-                    <div class="col-sm-2 text-danger">
-                        PARES
+                    <div class="col-md-12" align="center" style="background-color: #fff ">
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2 text-dark">
+                                Pares<br>
+                                <div id="Pares"><strong>0</strong></div>
+                            </div>
+                            <div class="col-sm-2 text-info">
+                                Subtotal<br>
+                                <div id="SubTotal"><strong>$0.0</strong></div>
+                            </div>
+                            <div class="col-sm-2 text-warning">
+                                I.V.A<br>
+                                <div id="IVA" ><strong>$0.0</strong></div>
+                            </div>
+                            <div class="col-sm-2 text-success">
+                                Total<br>
+                                <div id="Total" ><strong>$0.0</strong></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-2 text-primary">
-                        SUBTOTAL
+
+                    <div class="col-md-2">
+
                     </div>
-                    <div class="col-sm-2 text-warning">
-                        I.V.A
-                    </div>
-                    <div class="col-sm-2 text-success">
-                        TOTAL
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col-sm-4"></div>
-                    <div id="Pares" class="col-sm-2 text-danger"><strong>0</strong></div>
-                    <div id="SubTotal" class="col-sm-2 text-primary"><strong>$0.0</strong></div>
-                    <div id="IVA" class="col-sm-2 text-warning"><strong>$0.0</strong></div>
-                    <div id="Total" class="col-sm-2 text-success"><strong>$0.0</strong></div>
                 </div>
                 <!--FIN DETALLE-->
             </div>
@@ -233,12 +244,13 @@
     /*DATATABLE GLOBAL*/
     var tblDetalleCompra;
     var tblInicial = {
-        "autoWidth": true,
+        "dom": 'frt',
+        "autoWidth": false,
         "colReorder": true,
-        "displayLength": 18,
+        "displayLength": 500,
         "bLengthChange": false,
         "deferRender": true,
-        "scrollY": 300,
+        "scrollY": 270,
         "scrollCollapse": false,
         "bSort": true,
         "aaSorting": [
