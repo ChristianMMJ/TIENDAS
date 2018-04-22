@@ -39,6 +39,116 @@ class traspasos_model extends CI_Model {
         }
     }
 
+    public function getExistenciasXTiendaXEstiloXColor($TIENDA, $ESTILO, $COLOR) {
+        try {
+            $this->db->select("EX.Ex1       ,EX.Ex2      ,EX.Ex3      ,EX.Ex4      ,EX.Ex5      ,EX.Ex6
+      ,EX.Ex7      ,EX.Ex8      ,EX.Ex9      ,EX.Ex10      ,EX.Ex11      ,EX.Ex12      ,EX.Ex13      ,EX.Ex14
+      ,EX.Ex15      ,EX.Ex16      ,EX.Ex17      ,EX.Ex18      ,EX.Ex19      ,EX.Ex20      ,EX.Ex21      ,EX.Ex22", false);
+            $this->db->from('sz_Existencias AS EX');
+            $this->db->where('EX.Tienda', $TIENDA);
+            $this->db->where('EX.Estilo', $ESTILO);
+            $this->db->where('EX.Color', $COLOR);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+
+    public function getPreciosXTiendaXEstiloXColor($TIENDA, $ESTILO, $COLOR) {
+        try {
+            $this->db->select("EX.Precio, EX.PrecioMenudeo, EX.PrecioMayoreo", false);
+            $this->db->from('sz_Existencias AS EX');
+            $this->db->where('EX.Tienda', $TIENDA);
+            $this->db->where('EX.Estilo', $ESTILO);
+            $this->db->where('EX.Color', $COLOR);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarExistenciaFisica($TIENDA, $ESTILO, $COLOR) {
+        try {
+            $this->db->select("COUNT(*) AS EXISTE", false);
+            $this->db->from('sz_Existencias AS EX');
+            $this->db->where('EX.Tienda', $TIENDA);
+            $this->db->where('EX.Estilo', $ESTILO);
+            $this->db->where('EX.Color', $COLOR);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXEstilo($ESTILO) {
+        try {
+            $this->db->select("S.T1,S.T2,S.T3,S.T4,S.T5,
+                S.T6,S.T7,S.T8,S.T9,S.T10,S.T11,S.T12,S.T13,S.T14,S.T15,
+                S.T16,S.T17,S.T18,S.T19,S.T20,S.T21,S.T22", false);
+            $this->db->from('sz_Estilos AS E');
+            $this->db->join('sz_Series AS S', 'E.Serie = S.ID');
+            $this->db->where('E.ID', $ESTILO);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarExistencias($data) {
+        try {
+            $this->db->insert("sz_Existencias", $data);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarExistencias($Tienda, $Estilo, $Color, $data, $index) {
+        try {
+            $this->db->where('Tienda', $Tienda);
+            $this->db->where('Estilo', $Estilo);
+            $this->db->where('Color', $Color);
+            $this->db->set("Ex$index", $data);
+            $this->db->update("sz_Existencias");
+
+            $str = $this->db->last_query();
+            print $str;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Traspasos", $array);

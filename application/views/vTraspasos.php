@@ -302,14 +302,12 @@
                 var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
                 $.each(data[0], function (k, v) {
                     $.each(rows.find("input.numbersOnly"), function () {
-                        if (parseInt(v) <= 0 && $(this).attr('name') === k) {
-                            $(this).prop("disabled", 'disabled');
+                        if (parseInt(v) <= 0 && $(this).attr('name') === k) { 
                             $(this).prop('placeholder', 0);
                             $(this).addClass('NoStock');
                             $(this).removeClass('Stock');
                             $(this).val('');
-                        } else if (parseInt(v) > 0 && $(this).attr('name') === k) {
-                            $(this).prop("disabled", false);
+                        } else if (parseInt(v) > 0 && $(this).attr('name') === k) { 
                             $(this).prop('placeholder', v);
                             $(this).addClass('Stock');
                             $(this).removeClass('NoStock');
@@ -380,7 +378,7 @@
                             Estilo: row.eq(0).text().replace(/\s+/g, ''),
                             Color: row.eq(1).text().replace(/\s+/g, ''),
                             Talla: row.eq(4).text().replace(/\s+/g, ''),
-                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(6).text().replace(/\s+/g, '') : 0
+                            Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0
                         };
                         //Se mete el objeto al arreglo
                         detalle.push(material);
@@ -686,10 +684,6 @@
                 if (talla > 0) {
                     var par = parseInt($(this).val());
                     if (par > 0) {
-                        console.log('* ROWS *');
-                        console.log('row ' + n);
-                        console.log('row l ' + pnlDatosDetalle.find("#tblTallas > tbody > tr").length);
-                        console.log('* FIN ROWS *');
                         tblDetalleCompra.row.add([
                             Estilo.val(),
                             Combinacion.val(),

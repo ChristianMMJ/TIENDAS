@@ -40,8 +40,8 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
-     public function getTraspasoByID() {
+
+    public function getTraspasoByID() {
         try {
             extract($this->input->post());
             $data = $this->traspasos_model->getTraspasoByID($ID);
@@ -58,7 +58,6 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 
     public function getEstilos() {
         try {
@@ -79,8 +78,9 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getCombinacionesXEstiloConExistencias() {
-        try { 
+        try {
             print json_encode($this->combinaciones_model->getCombinacionesXEstiloConExistencias($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -116,12 +116,13 @@ class Traspasos extends CI_Controller {
                 'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
                 'Estatus' => 'ACTIVO',
-                'Usuario' => $this->session->userdata('USERNAME')
+                'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->traspasos_model->onAgregar($data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
-            foreach ($Detalle as $key => $v) {
+
+            foreach ($Detalle as $k => $v) {
                 $data = array(
                     'Traspaso' => $ID,
                     'Estilo' => $v->Estilo,
@@ -131,84 +132,98 @@ class Traspasos extends CI_Controller {
                     'EsCoTa' => ''
                 );
                 $this->traspasos_model->onAgregarDetalle($data);
+
+                /* SI AFECTA INVENTARIO */
+                if ($this->input->post('AfecInv') > 0) {
+                    /* CONSULTAR EXISTENCIAS EN LA TIENDA ACTUAL/ORIGEN POR ESTILO Y COLOR/COMBINACION */
+                    $existencias = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('dTienda'), $v->Estilo, $v->Color);
+
+                    /* OBTENER SERIE X ESTILO */
+                    $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
+
+                    /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
+                    $index = 1;
+                    $existencia = 0;
+                    $nuevas_existencias = array();
+                    for ($index = 1; $index <= 22; $index++) {
+                        if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias[0]->{"Ex$index"} >= $v->Cantidad && $existencias[0]->{"Ex$index"} > 0) {
+                            print "\nSERIE " . $serie[0]->{"T$index"} . ", TALLA " . $v->Talla . "" . (($serie[0]->{"T$index"} == $v->Talla ) ? ',OK' : '') . ", CANTIDAD REQUERIDA " . $v->Cantidad . ", CANTIDAD DISPONIBLE " . $existencias[0]->{"Ex$index"} . "\n";
+                            $existencia = ($existencias[0]->{"Ex$index"} - $v->Cantidad);
+                            break;
+                        }
+                    }
+                    /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
+                    $this->traspasos_model->onModificarExistencias($this->input->post('dTienda'), $v->Estilo, $v->Color, $existencia, $index);
+
+                    /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA DESTINO */
+                    $existe = $this->traspasos_model->onComprobarExistenciaFisica($this->input->post('Tienda'), $v->Estilo, $v->Color);
+                    if ($existe[0]->EXISTE > 0) {
+                        /* MODIFICAR EXISTENCIA */
+                        /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
+                        $existencias = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('Tienda'), $v->Estilo, $v->Color);
+
+                        /* OBTENER SERIE X ESTILO */
+                        $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
+
+                        /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
+                        $existencia = 0;
+                        $nuevas_existencias = array();
+                        print "\n* EXISTENCIAS TIENDA DESTINO* \n";
+                        for ($index = 1; $index <= 22; $index++) {
+                            if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla) {
+                                print "\nSERIE " . $serie[0]->{"T$index"} . ", TALLA " . $v->Talla . "" . (($serie[0]->{"T$index"} == $v->Talla ) ? ',OK' : '') . ", CANTIDAD AGREGADA " . $v->Cantidad . ", CANTIDAD ACTUAL " . $existencias[0]->{"Ex$index"} . "\n";
+                                $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
+                                $this->traspasos_model->onModificarExistencias($this->input->post('Tienda'), $v->Estilo, $v->Color, $existencia, $index);
+                                break;
+                            }
+                        }
+                        print "\n* FIN EXISTENCIAS TIENDA DESTINO * \n";
+                        /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
+                    } else {
+                        /* OBTENER SERIE X ESTILO */
+                        $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
+
+                        /* AGREGAR REGISTRO DE EXISTENCIA */
+                        /* AGREGAR LAS NUEVAS EXISTENCIAS A LA TIENDA DESTINO */
+                        $data = array(
+                            "Tienda" => $this->input->post('Tienda'),
+                            "Documento" => $this->input->post('DocMov'),
+                            "Estilo" => $v->Estilo,
+                            "Color" => $v->Color,
+                            "Estilo" => $v->Estilo,
+                        );
+
+                        for ($index = 1; $index <= 22; $index++) {
+                            if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla) {
+                                print "\nSERIE " . $serie[0]->{"T$index"} . ", TALLA " . $v->Talla . "" . (($serie[0]->{"T$index"} == $v->Talla ) ? ',OK' : '') . ", CANTIDAD " . $v->Cantidad;
+                                $data["Ex$index"] = $v->Cantidad;
+                            } else {
+                                $data["Ex$index"] = 0;
+                            }
+                        }
+                        $data["Precio"] = 0;
+                        $data["PrecioMenudeo"] = 0;
+                        $data["PrecioMayoreo"] = 0;
+                        $data["DTienda"] = $this->input->post('dTienda');
+                        $data["Estatus"] = 1;
+                        $this->traspasos_model->onAgregarExistencias($data);
+
+                        /* CONSULTAR PRECIOS EN LA TIENDA ACTUAL/ORIGEN POR ESTILO Y COLOR/COMBINACION */
+                        $precios = $this->traspasos_model->getPreciosXTiendaXEstiloXColor($this->input->post('dTienda'), $v->Estilo, $v->Color);
+                        $data = array(
+                            "Precio" => $precios[0]->Precio,
+                            "PrecioMenudeo" => $precios[0]->PrecioMenudeo,
+                            "PrecioMayoreo" => $precios[0]->PrecioMayoreo,
+                        );
+
+                        $this->db->where('Tienda', $this->input->post('Tienda'));
+                        $this->db->where('Estilo', $v->Estilo);
+                        $this->db->where('Color', $v->Color);
+                        $this->db->update("sz_Existencias", $data);
+                    }
+                }
+                /* FIN AFECTA INVENTARIO */
             }
-            /* INSERTA EXISTENCIAS */
-//            if ($this->input->post('AfecInv') === "1") {
-//                $EstatusExistencias = 1;
-//            } else {
-//                $EstatusExistencias = 0;
-//            }
-//
-//            $Existencias = json_decode($this->input->post("Existencias"));
-//            foreach ($Existencias as $key => $v) {
-//                $data = array(
-//                    'Tienda' => $v->Tienda,
-//                    'Documento' => $v->Documento,
-//                    'Estilo' => $v->Estilo,
-//                    'Color' => $v->Color,
-//                    'Ex1' => $v->Ex1,
-//                    'Ex2' => $v->Ex2,
-//                    'Ex3' => $v->Ex3,
-//                    'Ex4' => $v->Ex4,
-//                    'Ex5' => $v->Ex5,
-//                    'Ex6' => $v->Ex6,
-//                    'Ex7' => $v->Ex7,
-//                    'Ex8' => $v->Ex8,
-//                    'Ex9' => $v->Ex9,
-//                    'Ex10' => $v->Ex10,
-//                    'Ex11' => $v->Ex11,
-//                    'Ex12' => $v->Ex12,
-//                    'Ex13' => $v->Ex13,
-//                    'Ex14' => $v->Ex14,
-//                    'Ex15' => $v->Ex15,
-//                    'Ex16' => $v->Ex16,
-//                    'Ex17' => $v->Ex17,
-//                    'Ex18' => $v->Ex18,
-//                    'Ex19' => $v->Ex19,
-//                    'Ex20' => $v->Ex20,
-//                    'Ex21' => $v->Ex21,
-//                    'Ex22' => $v->Ex22,
-//                    'Precio' => $v->Precio,
-//                    'PrecioMenudeo' => $v->PrecioMenudeo,
-//                    'PrecioMayoreo' => $v->PrecioMayoreo,
-//                    'Estatus' => $EstatusExistencias
-//                );
-//
-//                $existe = $this->existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
-//                if (!empty($existe[0])) {
-//
-//                    $dataM = array(
-//                        'Ex1' => $v->Ex1 + $existe[0]->Ex1,
-//                        'Ex2' => $v->Ex2 + $existe[0]->Ex2,
-//                        'Ex3' => $v->Ex3 + $existe[0]->Ex3,
-//                        'Ex4' => $v->Ex4 + $existe[0]->Ex4,
-//                        'Ex5' => $v->Ex5 + $existe[0]->Ex5,
-//                        'Ex6' => $v->Ex6 + $existe[0]->Ex6,
-//                        'Ex7' => $v->Ex7 + $existe[0]->Ex7,
-//                        'Ex8' => $v->Ex8 + $existe[0]->Ex8,
-//                        'Ex9' => $v->Ex9 + $existe[0]->Ex9,
-//                        'Ex10' => $v->Ex10 + $existe[0]->Ex10,
-//                        'Ex11' => $v->Ex11 + $existe[0]->Ex11,
-//                        'Ex12' => $v->Ex12 + $existe[0]->Ex12,
-//                        'Ex13' => $v->Ex13 + $existe[0]->Ex13,
-//                        'Ex14' => $v->Ex14 + $existe[0]->Ex14,
-//                        'Ex15' => $v->Ex15 + $existe[0]->Ex15,
-//                        'Ex16' => $v->Ex16 + $existe[0]->Ex16,
-//                        'Ex17' => $v->Ex17 + $existe[0]->Ex17,
-//                        'Ex18' => $v->Ex18 + $existe[0]->Ex18,
-//                        'Ex19' => $v->Ex19 + $existe[0]->Ex19,
-//                        'Ex20' => $v->Ex20 + $existe[0]->Ex20,
-//                        'Ex21' => $v->Ex21 + $existe[0]->Ex21,
-//                        'Ex22' => $v->Ex22 + $existe[0]->Ex22,
-//                        'Precio' => $v->Precio,
-//                        'PrecioMenudeo' => $v->PrecioMenudeo,
-//                        'PrecioMayoreo' => $v->PrecioMayoreo,
-//                    );
-//                    $this->existencias_model->onModificar($existe[0]->ID, $dataM);
-//                } else {
-//                    $this->existencias_model->onAgregar($data);
-//                }
-//            }
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -269,10 +284,11 @@ class Traspasos extends CI_Controller {
     }
 
     public function getExistenciasByIDs() {
-        try { 
-            print json_encode($this->traspasos_model->getExistenciasByIDs($this->input->get('Tienda'),$this->input->get('Estilo'),$this->input->get('Color')));
+        try {
+            print json_encode($this->traspasos_model->getExistenciasByIDs($this->input->get('Tienda'), $this->input->get('Estilo'), $this->input->get('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
 }
