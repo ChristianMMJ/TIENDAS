@@ -33,7 +33,8 @@
         <!-- Validacion forms -->
         <script rel="javascript" type="text/javascript" href="<?php echo base_url(); ?>js/additional-methods.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
-
+        <!-- Shortcut key -->
+        <script src="<?php echo base_url(); ?>js/ShortCut/shortcut.js"></script>
         <!--Font Awesome Icons-->
         <script defer src="<?php print base_url(); ?>js/fontawesome-all.js"></script>
         <link rel="stylesheet" href="<?php print base_url(); ?>css/animate.min.css">
@@ -71,43 +72,10 @@
         var base_url = "<?php print base_url(); ?>";
         $(function () {
 
-//            $("div.card-body").change(function () {
-//                $.each($(this).find("input.form-control"), function () {
-//                    var e = $(this).parent().find("small.text-danger");
-//                    if ($(this).val() === '' && e.length === 0) {
-//                        $(this).parent().find("label").after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
-//                        $(this).css("border", "1px solid #d01010");
-//                        valido = false;
-//                    } else {
-//                        if ($(this).val() !== '') {
-//                            $(this).css("border", "1px solid #ccc");
-//                            $(this).parent().find("small.text-danger").remove();
-//                            valido = true;
-//                        }
-//                    }
-//                });
-//
-//                $.each($(this).find("select"), function () {
-//                    var e = $(this).parent().find("small.text-danger");
-//                    if ($(this).val() === '' && e.length === 0) {
-//                        $(this).after("<small class=\"text-danger\"> Este campo es obligatorio</small>");
-//                        $(this).parent().find(".selectize-input").css("border", "1px solid #d01010");
-//                        valido = false;
-//                    } else {
-//                        if ($(this).val() !== '') {
-//                            $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
-//                            $(this).parent().find("small.text-danger").remove();
-//                            valido = true;
-//                        }
-//                    }
-//                });
-//            });
 
-            // $(".btn").addClass("animated shake");
+            $('[data-toggle="tooltip"]').tooltip();
             $("table.display").DataTable(tableOptions);
             $('table').css('display', 'block');
-//            $('[data-toggle="tooltip"]').tooltip();
-//            $('[data-toggle="popover"]').popover();
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
@@ -115,11 +83,16 @@
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
 
-            $('select').selectize(
-                    {
-                        //placeholder: 'SELECCIONAR'
-                    }
-            );
+            $("select").not('.NotOpenDropDown').selectize({
+                hideSelected: true,
+                openOnFocus: true
+            });
+
+            $("select").filter('.NotOpenDropDown').selectize({
+                hideSelected: true,
+                openOnFocus: false
+            });
+
             //Clase que admite solo numeros y un punto decimal
             $('.numbersOnly').keypress(function (event) {
                 var charCode = (event.which) ? event.which : event.keyCode;

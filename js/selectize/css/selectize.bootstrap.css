@@ -273,6 +273,9 @@
 .selectize-control.single .selectize-input,
 .selectize-control.single .selectize-input input {
   cursor: pointer;
+   overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
 }
 .selectize-control.single .selectize-input.input-active,
 .selectize-control.single .selectize-input.input-active input {
@@ -283,7 +286,7 @@
   display: block;
   position: absolute;
   top: 50%;
-  right: 17px;
+  right: 8px;
   margin-top: -3px;
   width: 0;
   height: 0;

@@ -1,8 +1,9 @@
-.a.paginate_button {
-    color: #fff !important;
-}
-.a.paginate_active {
-    color: #fff !important;
+
+.input-group-text {
+    height: 22px;
+/*    padding: 0.1rem 0.25rem;*/
+    font-size: 17px;
+    border-radius: 0.25rem;
 }
 
 .btnSpace {
@@ -82,6 +83,7 @@ label, .control-label, .help-block, .checkbox, .radio, .form-control-feedback {
 }
 .selectize-input {
     padding: 0px 7px;
+    padding-right: 18px;
 }
 
 .form-control-sm, .input-group-sm > .form-control, .input-group-sm > .input-group-prepend > .input-group-text, .input-group-sm > .input-group-append > .input-group-text, .input-group-sm > .input-group-prepend > .btn, .input-group-sm > .input-group-append > .btn {

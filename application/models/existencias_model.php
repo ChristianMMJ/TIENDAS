@@ -9,17 +9,46 @@ class existencias_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
-    
-     public function getExistenciasByTienda($Tienda) {
+
+    public function getExistenciasByTienda($Tienda) {
         try {
             $this->db->select("U.ID, E.Clave +'-'+ E.Descripcion AS 'Estilo' , C.Clave +'-'+ c.Descripcion AS 'Color' "
                     . "", false);
             $this->db->from('sz_Existencias AS U');
-             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
-             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->where_in('U.Tienda', $Tienda);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getExistenciasByEstiloByColor($Estilo, $Color) {
+        try {
+            $this->db->select("U.ID,  T.Clave + '-'+T.RazonSocial AS 'Tienda', E.Clave +'-'+ E.Descripcion AS 'Estilo' , C.Clave +'-'+ c.Descripcion AS 'Color' "
+                    . "", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->where_in('U.Estatus', '1');
+            if ($Estilo !== '') {
+                $this->db->where('U.Estilo', $Estilo);
+            }
+            if ($Color !== '') {
+                $this->db->where('U.Color', $Color);
+            }
+
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -53,8 +82,8 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
-    public function onComprobarExistenciasTempXDoc($ID,$Tienda, $Estilo, $Color) {
+
+    public function onComprobarExistenciasTempXDoc($ID, $Tienda, $Estilo, $Color) {
         try {
             $this->db->select("E.*", false);
             $this->db->from('sz_Existencias AS E');
@@ -75,7 +104,6 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
 
     public function onAgregar($array) {
         try {
@@ -121,8 +149,8 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
-    public function onEliminarExistenciaTemp($ID,$Tienda,$Estilo,$Color) {
+
+    public function onEliminarExistenciaTemp($ID, $Tienda, $Estilo, $Color) {
         try {
             $this->db->set('Estatus', '0');
             $this->db->where('Documento', $ID);
@@ -143,9 +171,9 @@ class existencias_model extends CI_Model {
                     . "C.Clave + '-'+C.Descripcion AS NombreColor "
                     . " ", false);
             $this->db->from('sz_Existencias AS U');
-             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
-             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*
@@ -159,7 +187,7 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getExistenciaByDocumento($ID) {
         try {
             $this->db->select("U.* ", false);
@@ -177,7 +205,7 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getExistenciasXEstiloXCombinacion($Estilo, $combinacion) {
         try {
             $this->db->select("U.* "
@@ -198,5 +226,5 @@ class existencias_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
 }

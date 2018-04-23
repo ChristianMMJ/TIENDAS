@@ -18,7 +18,7 @@
 </div>
 <!--MODAL EXISTENCIAS--> 
 <!--Confirmacion-->
-<div class="modal fade modal-fullscreen" id="mdlInfoExixtencia" tabindex="-1" role="dialog">
+<div class="modal fade modal-fullscreen" id="mdlInfoExistencia" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,7 +105,6 @@
         handleEnter();
     });
     function getExistenciasByTienda(Tienda) {
-        console.log(Tienda);
         temp = 0;
         HoldOn.open({
             theme: "sk-bounce",
@@ -165,14 +164,24 @@
                             }
                         }).done(function (data, x, jq) {
                             getSerieXEstilo(data[0].Estilo);
-                            $('#mdlInfoExixtencia').find("input").val("");
-                            $('#mdlInfoExixtencia').find("#DatosTienda").text(data[0].NombreTienda);
-                            $('#mdlInfoExixtencia').find("#DatosEstilo").text(data[0].NombreEstilo);
-                            $('#mdlInfoExixtencia').find("#DatosColor").text(data[0].NombreColor);
+                            $('#mdlInfoExistencia').find("input").val("");
+                            $('#mdlInfoExistencia').find("#DatosTienda").text(data[0].NombreTienda);
+                            $('#mdlInfoExistencia').find("#DatosEstilo").text(data[0].NombreEstilo);
+                            $('#mdlInfoExistencia').find("#DatosColor").text(data[0].NombreColor);
                             $.each(data[0], function (k, v) {
-                                $('#mdlInfoExixtencia').find("[name='" + k + "']").val(v);
+                                if (parseInt(v) <= 0) {
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", 'disabled');
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('NoStock');
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('Stock');
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val('0');
+                                } else if (parseInt(v) > 0) {
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", false);
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('Stock');
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('NoStock');
+                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val(v);
+                                }
                             });
-                            $('#mdlInfoExixtencia').modal('show');
+                            $('#mdlInfoExistencia').modal('show');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -213,7 +222,7 @@
             }
         }).done(function (data, x, jq) {
             $.each(data[0], function (k, v) {
-                $('#mdlInfoExixtencia').find("[name='" + k + "']").val(v);
+                $('#mdlInfoExistencia').find("[name='" + k + "']").val(v);
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -240,3 +249,13 @@
     }
 
 </script>
+<style>
+    .Stock{
+        font-weight: bold;
+        color: #78a864;
+    } 
+    .NoStock {
+        font-weight: bold;
+        color: #ff0000;
+    } 
+</style>

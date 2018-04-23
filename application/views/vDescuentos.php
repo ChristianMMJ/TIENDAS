@@ -2,9 +2,9 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Gestión de Lineas</legend>
+                <legend class="float-left">Gestión de Descuentos</legend>
             </div>
-            <div class="col-sm-6 float-right" align="right"> 
+            <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
@@ -13,16 +13,15 @@
         </div>
     </div>
 </div>
-
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark"> 
-            <form id="frmNuevo">
 
+            <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
-                        <legend class="float-left">Lineas</legend>
+                        <legend class="float-left">Descuentos</legend>
                     </div>
                     <div class="col-md-7 float-right">
 
@@ -38,7 +37,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Clave">Clave*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required >
+                        <input type="text" maxlength="25" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
                         <label for="Descripcion">Descripción*</label>  
@@ -46,31 +45,49 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-sm">
+                        <label for="Porcentaje">Porcentaje*</label> 
+                        <input type="text" id="Porcentaje" name="Porcentaje" maxlength="4" class="form-control form-control-sm numbersOnly" required>
+                    </div> 
+                    <div class="col-sm">
+                        <label for="Tienda">Tienda*</label>
+                        <select class="form-control form-control-sm required" name="Tienda"> 
+                            <option value=""></option>  
+                        </select>
+                    </div>
+
+                </div> 
 
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
+                        <select class="form-control form-control-sm required"  name="Estatus"> 
                             <option value=""></option>  
                             <option>ACTIVO</option>
                             <option>INACTIVO</option> 
                         </select>
                     </div>
-                </div> 
+                </div>
+
             </form>
         </div> 
     </div> 
 </div>
-
 <!--SCRIPT-->
 <script>
-    var master_url = base_url + 'index.php/Lineas/';
+    var master_url = base_url + 'index.php/Descuentos/';
     var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
+    /*DEFINIR VARIABLES PARA LA SELECCION DE ARCHIVOS*/
+    var Archivo = pnlDatos.find("#Foto");
+    var btnArchivo = pnlDatos.find("#btnArchivo");
+
     var nuevo = true;
+
     $(document).ready(function () {
 
         btnGuardar.click(function () {
@@ -93,6 +110,7 @@
                     }).always(function () {
                         HoldOn.close();
                     });
+
                 } else {
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -104,18 +122,21 @@
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
-                        nuevo = false;
                         getRecords();
+                        nuevo = false;
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
                     });
+
                 }
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
+
         });
+
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -131,11 +152,11 @@
             pnlDatos.addClass('d-none');
             nuevo = true;
         });
-
+        /*CALLS*/
         getRecords();
+        getTiendas();
         handleEnter();
     });
-
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -147,32 +168,24 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            $("#tblRegistros").html(getTable('tblLineas', data));
+            $("#tblRegistros").html(getTable('tblDescuentos', data));
 
-            $('#tblLineas tfoot th').each(function () {
+            $('#tblDescuentos tfoot th').each(function () {
                 $(this).html('');
             });
-            var thead = $('#tblLineas thead th');
-            var tfoot = $('#tblLineas tfoot th');
-            thead.eq(0).addClass("d-none");
-            tfoot.eq(0).addClass("d-none");
-            $.each($.find('#tblLineas tbody tr'), function (k, v) {
-                var td = $(v).find("td");
-                td.eq(0).addClass("d-none");
-            });
-            var tblSelected = $('#tblLineas').DataTable(tableOptions);
-            $('#tblLineas_filter input[type=search]').focus();
+            var tblSelected = $('#tblDescuentos').DataTable(tableOptions);
+            $('#tblDescuentos_filter input[type=search]').focus();
 
-            $('#tblLineas tbody').on('click', 'tr', function () {
+            $('#tblDescuentos tbody').on('click', 'tr', function () {
 
-                $("#tblLineas tbody tr").removeClass("success");
+                $("#tblDescuentos tbody tr").removeClass("success");
                 $(this).addClass("success");
                 var dtm = tblSelected.row(this).data();
                 temp = parseInt(dtm[0]);
             });
 
-            $('#tblLineas tbody').on('dblclick', 'tr', function () {
-                $("#tblLineas tbody tr").removeClass("success");
+            $('#tblDescuentos tbody').on('dblclick', 'tr', function () {
+                $("#tblCatalogos tbody tr").removeClass("success");
                 $(this).addClass("success");
                 var id = this.id;
                 var index = $.inArray(id, selected);
@@ -189,24 +202,29 @@
                         message: "CARGANDO DATOS..."
                     });
                     $.ajax({
-                        url: master_url + 'getLineaByID',
+                        url: master_url + 'getDescuentoByID',
                         type: "POST",
                         dataType: "JSON",
                         data: {
                             ID: temp
                         }
                     }).done(function (data, x, jq) {
+                        var dtm = data[0];
 
                         pnlDatos.find("input").val("");
                         $.each(pnlDatos.find("select"), function (k, v) {
                             pnlDatos.find("select")[k].selectize.clear(true);
                         });
                         $.each(data[0], function (k, v) {
-                            pnlDatos.find("[name='" + k + "']").val(v);
-                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            if (k !== 'Foto') {
+                                pnlDatos.find("[name='" + k + "']").val(v);
+                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                }
+
                             }
                         });
+                       
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
                         $(':input:text:enabled:visible:first').focus();
@@ -227,6 +245,24 @@
                         that.search(this.value).draw();
                     }
                 });
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getTiendas() {
+
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getTiendas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
