@@ -182,7 +182,7 @@
     var currentDate = new Date();
     var nuevo = true;
     /*DATATABLE GLOBAL*/
-    var tblDetalleCompra;
+    var tblDetalleTraspaso;
     var tblInicial = {
         "dom": 'frt',
         "autoWidth": false,
@@ -249,6 +249,14 @@
         }
     };
     $(document).ready(function () {
+        onComprobarExistencias();
+        pnlDatos.find("#AfecInv").change(function () {
+            if ($(this)[0].checked) {
+                swal('ATENCIÓN', 'ESTA ACCIÓN AFECTARÁ EL INVENTARIO', 'warning');
+                onBeep(2);
+            }
+        });
+
         //Verificar Tienda no sea igual a dTienda
         pnlDatos.find("[name='Tienda']").change(function () {
             if ($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue()) {
@@ -278,6 +286,30 @@
                         $("[name='Combinacion']")[0].selectize.clear(true);
                         $("[name='Combinacion']")[0].selectize.clearOptions();
                     }
+                } else {
+                    var ex = parseInt($(this).prop("placeholder"));
+                    var cs = $(this);
+                    if (ex > 0) {
+                        if (cs.val() === '') {
+                            cs.trigger('change');
+                        } else {
+                            if (cs.val() > ex) {
+                                swal({
+                                    title: 'ATENCIÓN',
+                                    text: 'NO TIENE EXISTENCIAS SUFICIENTES, SOLO CUENTA CON ' + ex + ' DISPONIBLES',
+                                    icon: 'warning'
+                                }).then((result) => {
+                                    if (result) {
+                                        cs.val('');
+                                        cs.focus();
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        swal('ATENCIÓN', 'NO CUENTA CON EXISTENCIAS EN ESTA TALLA', 'warning');
+                        cs.val('');
+                    }
                 }
                 onAutoSumarPares();
             });
@@ -302,12 +334,12 @@
                 var rows = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
                 $.each(data[0], function (k, v) {
                     $.each(rows.find("input.numbersOnly"), function () {
-                        if (parseInt(v) <= 0 && $(this).attr('name') === k) { 
+                        if (parseInt(v) <= 0 && $(this).attr('name') === k) {
                             $(this).prop('placeholder', 0);
                             $(this).addClass('NoStock');
                             $(this).removeClass('Stock');
                             $(this).val('');
-                        } else if (parseInt(v) > 0 && $(this).attr('name') === k) { 
+                        } else if (parseInt(v) > 0 && $(this).attr('name') === k) {
                             $(this).prop('placeholder', v);
                             $(this).addClass('Stock');
                             $(this).removeClass('NoStock');
@@ -333,7 +365,7 @@
                 if (!nuevo) {
                     /*AGREGAR DETALLE*/
                     var detalle = [];
-                    tblDetalleCompra.destroy();
+                    tblDetalleTraspaso.destroy();
                     pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                         var row = $(this).find("td");
                         var material = {
@@ -363,13 +395,13 @@
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
-                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                        tblDetalleTraspaso = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                     });
                 } else {
                     /*AGREGAR DETALLE*/
                     var detalle = [];
                     //Destruye la instancia de datatable
-                    tblDetalleCompra.destroy();
+                    tblDetalleTraspaso.destroy();
                     //Iteramos en la tabla natural
                     pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                         var row = $(this).find("td");
@@ -404,7 +436,7 @@
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
-                        tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                        tblDetalleTraspaso = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                     });
                 }
             } else {
@@ -413,10 +445,10 @@
         });
         btnNuevo.click(function () {
             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                tblDetalleCompra.destroy();
+                tblDetalleTraspaso.destroy();
                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
             }
-            tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+            tblDetalleTraspaso = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
@@ -437,6 +469,7 @@
         });
         getRecords();
         getEstilos();
+        getTiendasConExistencias();
         getTiendas();
         handleEnter();
     });
@@ -490,13 +523,8 @@
                             theme: "sk-bounce",
                             message: "CARGANDO DATOS..."
                         });
-                        $.ajax({
-                            url: master_url + 'getTraspasoByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
+                        $.getJSON(master_url + 'getTraspasoByID', {
+                            ID: temp
                         }).done(function (data, x, jq) {
                             pnlDatos.find("input").val("");
                             $.each(pnlDatos.find("select"), function (k, v) {
@@ -510,15 +538,15 @@
                                 }
                             });
                             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                                tblDetalleCompra.destroy();
+                                tblDetalleTraspaso.destroy();
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
                             }
-                            tblDetalleCompra = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                            tblDetalleTraspaso = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                             n = 1;
                             /*DETALLE*/
                             $.getJSON(master_url + 'getTraspasoDetalleByID', {ID: temp}).done(function (data, x, jq) {
                                 $.each(data, function (k, v) {
-                                    tblDetalleCompra.row.add([
+                                    tblDetalleTraspaso.row.add([
                                         v.IdEstilo,
                                         v.IdColor,
                                         v.Estilo,
@@ -578,6 +606,18 @@
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getTiendasConExistencias() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.getJSON(master_url + 'getTiendasConExistencias').done(function (data, x, jq) {
+            $.each(data, function (k, v) {
                 pnlDatos.find("[name='dTienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
         }).fail(function (x, y, z) {
@@ -669,13 +709,16 @@
 
         /*COMPROBAR ESTILO Y COMBINACION*/
         var estilo_combinacion_existen = false;
-        $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
-            var cells = $(this).find("td");
-            if (cells.eq(0).text() === Estilo.val() && cells.eq(1).text() === Combinacion.val()) {
+        $.each(tblDetalleTraspaso.rows().data(), function () {
+            var xEstilo = $(this)[1];
+            var xCombinacion = $(this)[2];
+            if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val()) {
                 estilo_combinacion_existen = true;
+                console.log('* EXISTEN *')
                 return false;
             }
         });
+
         /*FIN COMPROBAR ESTILO Y COMBINACION*/
         /*VALIDAR ESTILO Y COMBINACION*/
         if (!estilo_combinacion_existen) {
@@ -684,7 +727,7 @@
                 if (talla > 0) {
                     var par = parseInt($(this).val());
                     if (par > 0) {
-                        tblDetalleCompra.row.add([
+                        tblDetalleTraspaso.row.add([
                             Estilo.val(),
                             Combinacion.val(),
                             Estilo.find("option:selected").text(),
@@ -747,7 +790,6 @@
         var pares = 0;
         $.each(pnlDatosDetalle.find("#tblDetalle > tbody > tr"), function () {
             var cells = $(this).find("td");
-            console.log(cells);
             pares += parseInt(cells.eq(3).text());
         });
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
@@ -755,6 +797,10 @@
         }
     }
 
+    function onComprobarExistencias() {
+        console.log('COMPROBANDO...');
+        setTimeout(onComprobarExistencias, 15000);
+    }
 </script>
 <style>
     .Stock{
