@@ -13,21 +13,22 @@ class traspasos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento , "
-                    . "U.dTienda as 'De Tienda', "
-                    . "U.Tienda as 'A Tienda', "
-                    . "(CASE WHEN  U.Estatus ='ACTIVO' "
+            $this->db->select("T.ID, ISNULL(T.DocMov,'') AS Documento , "
+                    . "OTI.RazonSocial as 'De Tienda', "
+                    . "DTI.RazonSocial as 'A Tienda', "
+                    . "(CASE WHEN  T.Estatus ='ACTIVO' "
                     . "THEN CONCAT('<h5><span class=''badge badge-info''>','ACTIVO','</span><h5>') "
-                    . "WHEN  U.Estatus ='AFECTADO' "
+                    . "WHEN  T.Estatus ='AFECTADO' "
                     . "THEN CONCAT('<h5><span class=''badge badge-success''>','AFECTADO','</span></h5>') "
                     . "END) AS Estatus ,"
-                    . "U.FechaMov as 'Fecha Movimiento', "
-                    . "US.Usuario AS 'Usuario' "
-                    . " ", false);
-            $this->db->from('sz_Traspasos AS U');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("U.DocMov", "ASC");
+                    . "T.FechaMov as 'Fecha Movimiento', T.Registro AS Registro,"
+                    . "US.Usuario AS 'Usuario'",false);
+            $this->db->from('sz_Traspasos AS T');
+            $this->db->join('sz_Usuarios AS US', 'T.Usuario = US.ID', 'left');
+            $this->db->join('sz_Tiendas AS OTI', 'OTI.ID = T.dTienda', 'left');
+            $this->db->join('sz_Tiendas AS DTI', 'DTI.ID = T.Tienda', 'left');
+            $this->db->where_in('T.Estatus', 'ACTIVO');
+            $this->db->order_by("T.DocMov", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -206,10 +207,10 @@ class traspasos_model extends CI_Model {
 
     public function getTraspasoByID($ID) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_Traspasos AS U');
-            $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select('T.*', false);
+            $this->db->from('sz_Traspasos AS T');
+            $this->db->where('T.ID', $ID);
+            $this->db->where_in('T.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -225,15 +226,14 @@ class traspasos_model extends CI_Model {
 
     public function getTraspasoDetalleByID($ID) {
         try {
-            $this->db->select('CD.ID AS ID, CD.Estilo AS IdEstilo, CD.Color AS IdColor,'
+            $this->db->select('TD.Estilo as IdEstilo, TD.Color as IdColor, '
                     . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
-                    . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
-                    . 'CD.Talla AS Talla,'
-                    . 'CD.Cantidad AS Cantidad ', false);
-            $this->db->from('sz_TraspasosDetalle AS CD');
-            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
-            $this->db->where('CD.Compra', $ID);
+                    . 'CONCAT(C.ID,\'-\', C.Descripcion) AS Color, '
+                    . 'TD.Talla AS Talla, TD.Cantidad AS Cantidad, TD.ID', false);
+            $this->db->from('sz_TraspasosDetalle AS TD');
+            $this->db->join('sz_Estilos AS E', 'TD.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'TD.Color = C.ID');
+            $this->db->where('TD.Traspaso', $ID);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

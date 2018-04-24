@@ -32,11 +32,7 @@ class Traspasos extends CI_Controller {
 
     public function getRecords() {
         try {
-            extract($this->input->post());
-
-
-            $data = $this->traspasos_model->getRecords();
-            print json_encode($data);
+            print json_encode($this->traspasos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -123,7 +119,9 @@ class Traspasos extends CI_Controller {
                 'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
                 'Estatus' => 'ACTIVO',
-                'Usuario' => $this->session->userdata('ID')
+                'Usuario' => $this->session->userdata('ID'),
+                'Registro' => Date('d/m/Y h:i:s a'),
+                'AfectaInventario' => ($this->input->post('AfecInv') > 0) ? 1 : 0
             );
             $ID = $this->traspasos_model->onAgregar($data);
             /* DETALLE */
@@ -272,7 +270,8 @@ class Traspasos extends CI_Controller {
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
                 'Proveedor' => ($this->input->post('Proveedor') !== NULL) ? $this->input->post('Proveedor') : NULL,
                 'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
-                'Estatus' => 'ACTIVO'
+                'Estatus' => 'ACTIVO',
+                'AfectaInventario' => ($this->input->post('AfecInv') > 0) ? 1 : 0
             );
             $this->compras_model->onModificar($ID, $data);
             /* DETALLE */
