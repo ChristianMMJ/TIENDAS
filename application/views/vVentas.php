@@ -366,42 +366,6 @@
         "bSort": true
     };
 
-    function ondescontarExistenciasRenglon() {
-        var Estilo = pnlControlesDetalle.find("[name='Estilo']");
-        var Color = pnlControlesDetalle.find("[name='Combinacion']");
-        var CantidadCaptura = pnlControlesDetalle.find("[name='Cantidad']").val();//Cantidad a descontar
-        var TallaCapturada = pnlControlesDetalle.find("[name='Talla']").val();//Verificar que talla
-        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
-        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
-        var existenciaFinal = 0;
-        var existenciaActual = 0;
-        var PosicionActualiza = "";
-        $.each(tallas.find("input.numbersOnly"), function () {
-            if (parseFloat(TallaCapturada) === parseFloat($(this).val())) {
-                existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
-                PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
-                existenciaFinal = parseFloat(existenciaActual) - parseFloat(CantidadCaptura);
-
-                $.ajax({
-                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
-                    type: "POST",
-                    data: {
-                        Estilo: Estilo.val(),
-                        Color: Color.val()
-                    }
-                }).done(function (data, x, jq) {
-                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-
-
-            }
-        });
-    }
-
     $(document).ready(function () {
         //Aqui devolver existencias y mandarle dialogo de confimacion
         shortcut.add("F2", function () {
@@ -453,7 +417,7 @@
             {
                 //Agregar renglon Detalle
                 onAgregarFila(IdMov);
-                ondescontarExistenciasRenglon();
+                onSacarExistenciasInventario();
                 //Limpiar los campos del detalle
                 limpiarCampos();
 
@@ -568,7 +532,12 @@
             getSerieXEstilo($(this).val());
             getFotoXEstilo($(this).val());
         });
-        //Evento para traer colores en existencias
+        //Obtiene las existencias del inventario
+        pnlControlesDetalle.find("[name='Combinacion']").change(function () {
+            getExistenciasXEstiloXCombinacion(pnlControlesDetalle.find("[name='Estilo']").val(), pnlControlesDetalle.find("[name='Combinacion']").val());
+
+        });
+        //Evento para traer colores en modal de existencias
         $('#mdlInfoExistencia').find("[name='EstiloEx']").change(function () {
             $('#mdlInfoExistencia').find("input").val("");
             $('#mdlInfoExistencia').find("[name='ColorEx']")[0].selectize.clear(true);
@@ -580,11 +549,6 @@
             var EstiloEx = $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.getValue();
             getExistenciasByEstiloByColor(EstiloEx, $(this).val());
             $('#tblExistencias input[type=search]').focus();
-        });
-        //Obtiene las existencias del inventario
-        pnlControlesDetalle.find("[name='Combinacion']").change(function () {
-            getExistenciasXEstiloXCombinacion(pnlControlesDetalle.find("[name='Estilo']").val(), pnlControlesDetalle.find("[name='Combinacion']").val());
-
         });
         //Evento modal para inicializar el foco
         $('#mdlInfoExistencia').on('shown.bs.modal', function () {
@@ -886,8 +850,33 @@
                     $(this).addClass("success");
                     var cells = $(this).find("td");
                     var cellEstilo = cells.eq(1).text();
+                    var cellCombinacion = cells.eq(2).text();
                     getFotoXEstilo(parseInt(cellEstilo));
+                    getSerieXEstilo(parseInt(cellEstilo));
+                    getExistenciasXEstiloXCombinacion(parseInt(cellEstilo), parseInt(cellCombinacion));
+
                 });
+
+//                pnlDatosDetalle.find('#tblRegistrosDetalle tbody tr').on('click', 'td:eq(11)', function () {
+//                    var cells = $(this).parent().find("td");
+//                    var cellEstilo = cells.eq(1).text();
+//                    var cellCombinacion = cells.eq(2).text();
+//                    var cellTalla = cells.eq(5).text();
+//                    var cellCantidad = cells.eq(6).text();
+//
+//
+//                    getFotoXEstilo(parseInt(cellEstilo));
+//                    getSerieXEstilo(parseInt(cellEstilo));
+//                    getExistenciasXEstiloXCombinacionBorrar(parseInt(cellEstilo), parseInt(cellCombinacion),cellTalla,cellCantidad);
+//
+//
+////                    $(document).ajaxComplete(function () {
+////                        onRegresarExistenciasInventario(cellEstilo, cellCombinacion, cellTalla, cellCantidad);
+////                    });
+//
+//                    
+//                });
+
                 //Evento Doble Click Editar precio
                 pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('dblclick', 'tr', function () {
                     var cells = $(this).find("td");
@@ -945,7 +934,6 @@
                     });
                     cell.find("#RunCantidad").focus();
                 });
-
                 onCalcularMontos();
             } else {
                 pnlDatosDetalle.find("#RegistrosDetalle").html("");
@@ -1000,7 +988,10 @@
                     $(this).addClass("success");
                     var cells = $(this).find("td");
                     var cellEstilo = cells.eq(1).text();
+                    var cellCombinacion = cells.eq(2).text();
                     getFotoXEstilo(parseInt(cellEstilo));
+                    getSerieXEstilo(parseInt(cellEstilo));
+                    getExistenciasXEstiloXCombinacion(parseInt(cellEstilo), parseInt(cellCombinacion));
                 });
                 //Evento Doble Click Editar precio
                 onCalcularMontos();
@@ -1015,36 +1006,116 @@
         });
     }
 
-    function onEliminarDetalle(IDX, ID) {
-        swal({
-            buttons: ["Cancelar", "Aceptar"],
-            title: 'Estas Seguro?',
-            text: "Esta acción no se puede revertir",
-            icon: "warning",
-            dangerMode: true
-        }).then((result) => {
-            if (result) {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "ELIMINANDO REGISTRO..."
-                });
+    function onRegresarExistenciasInventario(Estilo, Color, Talla, Cantidad) {
+
+        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
+        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+        var existenciaFinal = 0;
+        var existenciaActual = 0;
+        var PosicionActualiza = "";
+        $.each(tallas.find("input.numbersOnly"), function () {
+
+            if (parseFloat(Talla) === parseFloat($(this).val())) {
+                existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
+                PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
+                existenciaFinal = parseFloat(existenciaActual) + parseFloat(Cantidad);
+
+
+                console.log('ac' + existenciaActual + 'pos' + PosicionActualiza + 'can' + existenciaFinal);
+
+//                $.ajax({
+//                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
+//                    type: "POST",
+//                    data: {
+//                        Estilo: Estilo,
+//                        Color: Color,
+//                        Posicion: PosicionActualiza,
+//                        ExistenciaNueva: existenciaFinal
+//                    }
+//                }).done(function (data, x, jq) {
+//                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
+//                }).fail(function (x, y, z) {
+//                    console.log(x, y, z);
+//                }).always(function () {
+//                    HoldOn.close();
+//                });
+            }
+        });
+    }
+
+    function onSacarExistenciasInventario() {
+        var Estilo = pnlControlesDetalle.find("[name='Estilo']");
+        var Color = pnlControlesDetalle.find("[name='Combinacion']");
+        var CantidadCaptura = pnlControlesDetalle.find("[name='Cantidad']").val();//Cantidad a descontar
+        var TallaCapturada = pnlControlesDetalle.find("[name='Talla']").val();//Verificar que talla
+        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
+        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+        var existenciaFinal = 0;
+        var existenciaActual = 0;
+        var PosicionActualiza = "";
+        $.each(tallas.find("input.numbersOnly"), function () {
+            if (parseFloat(TallaCapturada) === parseFloat($(this).val())) {
+                existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
+                PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
+                existenciaFinal = parseFloat(existenciaActual) - parseFloat(CantidadCaptura);
+
                 $.ajax({
-                    url: master_url + 'onEliminarDetalle',
+                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
                     type: "POST",
                     data: {
-                        ID: IDX
+                        Estilo: Estilo.val(),
+                        Color: Color.val(),
+                        Posicion: PosicionActualiza,
+                        ExistenciaNueva: existenciaFinal
                     }
                 }).done(function (data, x, jq) {
-                    getDetallebyID(ID);
-                    onCalcularMontos();
+                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 }).always(function () {
                     HoldOn.close();
                 });
+
+
             }
         });
     }
+
+    function onEliminarDetalle(IDX, ID, Estilo, Color, Talla, Cantidad) {
+
+        //getSerieXEstilo(parseInt(Estilo));
+        //getExistenciasXEstiloXCombinacion(parseInt(Estilo), parseInt(Color));
+
+//        swal({
+//            buttons: ["Cancelar", "Aceptar"],
+//            title: 'Estas Seguro?',
+//            text: "Esta acción no se puede revertir",
+//            icon: "warning",
+//            dangerMode: true
+//        }).then((result) => {
+//            if (result) {
+//                HoldOn.open({
+//                    theme: "sk-bounce",
+//                    message: "ELIMINANDO REGISTRO..."
+//                });
+//                $.ajax({
+//                    url: master_url + 'onEliminarDetalle',
+//                    type: "POST",
+//                    data: {
+//                        ID: IDX
+//                    }
+//                }).done(function (data, x, jq) {
+//                    getDetallebyID(ID);
+//                    onCalcularMontos();
+//                }).fail(function (x, y, z) {
+//                    console.log(x, y, z);
+//                }).always(function () {
+//                    HoldOn.close();
+//                });
+//            }
+//        });
+    }
+
 
     function onCalcularMontos() {
         var pares = 0;
@@ -1139,6 +1210,44 @@
                 pnlControlesDetalle.find('#rExistencias').find("input").addClass('NoStock').val("0");
                 pnlControlesDetalle.find("[name='Precio']").val("");
             }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+    
+     function getExistenciasXEstiloXCombinacionBorrar(Estilo, Combinacion,Talla, Cantidad) {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getExistenciasXEstiloXCombinacion',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo,
+                Combinacion: Combinacion
+            }
+        }).done(function (data, x, jq) {
+            if (data.length > 0) {
+                var existencias = data[0];
+                pnlControlesDetalle.find("[name='Precio']").val(existencias.PrecioMenudeo);
+                $.each(data[0], function (k, v) {
+                    if (parseInt(v) <= 0) {
+                        pnlControlesDetalle.find("[name='" + k + "']").addClass('NoStock');
+                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('Stock');
+                        pnlControlesDetalle.find("[name='" + k + "']").val('0');
+                    } else if (parseInt(v) > 0) {
+                        pnlControlesDetalle.find("[name='" + k + "']").addClass('Stock');
+                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('NoStock');
+                        pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                    }
+                });
+            } else {
+                pnlControlesDetalle.find('#rExistencias').find("input").val("0");
+                pnlControlesDetalle.find('#rExistencias').find("input").addClass('NoStock').val("0");
+                pnlControlesDetalle.find("[name='Precio']").val("");
+            }
+            onRegresarExistenciasInventario(Estilo, Combinacion, Talla, Cantidad);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

@@ -128,8 +128,17 @@ class ventas_model extends CI_Model {
                     . "  '$'+ CONVERT(varchar, CAST(VD.Subtotal AS money), 1) AS Sub, "
                     . 'VD.PorcentajeDesc AS PorDesc,'
                     //Eliminar
+                    . "'<span class=''fa fa-trash-alt''></span>' AS Eliminar "
+//                    . "'<span class=''fa fa-trash-alt'' "
+//                    . "onclick=''onEliminarDetalle('+      "
+//                    . "REPLACE(LTRIM(REPLACE(VD.ID, '0', ' ')), ' ', '0') +','+  "
+//                    . "REPLACE(LTRIM(REPLACE(VD.Venta, '0', ' ')), ' ', '0') +','+ "
+//                    . "REPLACE(LTRIM(REPLACE(VD.Estilo, '0', ' ')), ' ', '0') +','+ "
+//                    . "REPLACE(LTRIM(REPLACE(VD.Color, '0', ' ')), ' ', '0') +','+ "
+//                    . "REPLACE(LTRIM(REPLACE(VD.Talla, '0', ' ')), ' ', '0') +','+ "
+//                    . "REPLACE(LTRIM(REPLACE(VD.Cantidad, '0', ' ')), ' ', '0')      "
+//                    . "+')  ''></span>' AS Eliminar "
                     
-                    . "'<span class=''fa fa-trash-alt'' onclick=''onEliminarDetalle('+ REPLACE(LTRIM(REPLACE(VD.ID, '0', ' ')), ' ', '0')+','+  REPLACE(LTRIM(REPLACE(VD.Venta, '0', ' ')), ' ', '0')  +')  ''></span>' AS Eliminar "
                     . " "
                     . '', false);
             $this->db->from('sz_VentasDetalle AS VD');

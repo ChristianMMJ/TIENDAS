@@ -140,8 +140,10 @@ class Ventas extends CI_Controller {
     public function onModifcarExistenciaXEstiloXColorXTienda() {
         try {
 
-            extract($this->input->post());
-            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($Estilo, $Color, $CantidadNueva);
+            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), 
+                    $this->input->post('Color'), 
+                    $this->input->post('Posicion'),
+                    $this->input->post('ExistenciaNueva'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
