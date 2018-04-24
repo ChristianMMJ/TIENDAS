@@ -8,6 +8,7 @@ class traspasos_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        date_default_timezone_set('America/Mexico_City');
     }
 
     public function getRecords() {
@@ -43,7 +44,7 @@ class traspasos_model extends CI_Model {
         try {
             $this->db->select("EX.Ex1       ,EX.Ex2      ,EX.Ex3      ,EX.Ex4      ,EX.Ex5      ,EX.Ex6
       ,EX.Ex7      ,EX.Ex8      ,EX.Ex9      ,EX.Ex10      ,EX.Ex11      ,EX.Ex12      ,EX.Ex13      ,EX.Ex14
-      ,EX.Ex15      ,EX.Ex16      ,EX.Ex17      ,EX.Ex18      ,EX.Ex19      ,EX.Ex20      ,EX.Ex21      ,EX.Ex22", false);
+      ,EX.Ex15      ,EX.Ex16      ,EX.Ex17      ,EX.Ex18      ,EX.Ex19      ,EX.Ex20      ,EX.Ex21      ,EX.Ex22, EX.Precio, EX.PrecioMenudeo, EX.PrecioMayoreo", false);
             $this->db->from('sz_Existencias AS EX');
             $this->db->where('EX.Tienda', $TIENDA);
             $this->db->where('EX.Estilo', $ESTILO);
@@ -60,7 +61,6 @@ class traspasos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
 
     public function getPreciosXTiendaXEstiloXColor($TIENDA, $ESTILO, $COLOR) {
         try {
@@ -230,7 +230,7 @@ class traspasos_model extends CI_Model {
                     . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad ', false);
-            $this->db->from('sz_CompraDetalle AS CD');
+            $this->db->from('sz_TraspasosDetalle AS CD');
             $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
             $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
             $this->db->where('CD.Compra', $ID);
@@ -287,6 +287,25 @@ class traspasos_model extends CI_Model {
              */
             $str = $this->db->last_query();
 //        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTiendasConExistencias() {
+        try {
+            $this->db->select("T.ID, T.Clave+'-'+ T.RazonSocial AS 'Tienda'  ", false);
+            $this->db->from('sz_Tiendas AS T');
+            $this->db->join('sz_Existencias AS E', 'E.Tienda = T.ID');
+            $this->db->where_in('T.Estatus', 'ACTIVO');
+            $this->db->group_by(array('T.ID', 'T.Clave', 'T.RazonSocial'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
