@@ -352,10 +352,12 @@
                 swal('ERROR', 'HA OCURRIDO UN ERROR AL REVISAR LAS EXISTENCIAS', 'warning');
             }).always(function () {
                 console.log('REVISION TERMINADA PARA LA TIENDA ' + Tienda + ', Estilo ' + Estilo + ', Color/Combinación ' + Color);
+                if (pnlDatosDetalle.find("[name='Estilo']").val() !== '' && pnlDatosDetalle.find("[name='Combinacion']").val() !== '') {
+                    comprobar = true;
+                }
             });
             /*FIN REVISAR EXISTENCIAS*/
         });
-
 
         //Evento del boton guardar
         btnGuardar.click(function () {
@@ -473,6 +475,7 @@
         getTiendas();
         handleEnter();
     });
+
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -710,15 +713,13 @@
         /*COMPROBAR ESTILO Y COMBINACION*/
         var estilo_combinacion_existen = false;
         $.each(tblDetalleTraspaso.rows().data(), function () {
-            var xEstilo = $(this)[1];
-            var xCombinacion = $(this)[2];
+            var xEstilo = $(this)[0];
+            var xCombinacion = $(this)[1];
             if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val()) {
                 estilo_combinacion_existen = true;
-                console.log('* EXISTEN *')
                 return false;
             }
         });
-
         /*FIN COMPROBAR ESTILO Y COMBINACION*/
         /*VALIDAR ESTILO Y COMBINACION*/
         if (!estilo_combinacion_existen) {
@@ -742,10 +743,17 @@
                     }
                 }
             });
-            onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+            swal({
+                icon: 'success',
+                title: 'ÉXITO',
+                text: 'REGISTROS AGREGADOS',
+                timer: 2500
+            });
+            onBeep(1);
             onCalcularMontos();
         } else {
-            onNotify('<span class="fa fa-times fa-lg"></span>', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'danger');
+            swal('ATENCIÓN', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'warning');
+            onBeep(2);
         }
         /*VALIDAR ESTILO Y COMBINACION*/
 
@@ -796,9 +804,11 @@
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
         }
     }
-
+    var comprobar = false;
     function onComprobarExistencias() {
-        console.log('COMPROBANDO...');
+        if (comprobar) {
+            console.log('COMPROBANDO Estilo y Color/Combinacion ');
+        }
         setTimeout(onComprobarExistencias, 15000);
     }
 </script>
