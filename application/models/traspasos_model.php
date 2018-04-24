@@ -143,7 +143,7 @@ class traspasos_model extends CI_Model {
             $this->db->update("sz_Existencias");
 
             $str = $this->db->last_query();
-            print $str;
+//            print $str;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

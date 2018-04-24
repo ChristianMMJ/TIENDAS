@@ -128,47 +128,12 @@ class Traspasos extends CI_Controller {
             $ID = $this->traspasos_model->onAgregar($data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
-
             foreach ($Detalle as $k => $v) {
-                $data = array(
-                    'Traspaso' => $ID,
-                    'Estilo' => $v->Estilo,
-                    'Color' => $v->Color,
-                    'Talla' => $v->Talla,
-                    'Cantidad' => $v->Cantidad,
-                    'EsCoTa' => '',
-                    'Registro' => Date('d/m/Y h:i:s a')
-                );
-                $this->traspasos_model->onAgregarDetalle($data);
 
                 /* SI AFECTA INVENTARIO */
                 if ($this->input->post('AfecInv') > 0) {
-
-                    /* OBTENER SERIE X ESTILO */
-//                    $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
-
-                    /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
-//                    $existencia = 0;
-//                    for ($index = 1; $index <= 22; $index++) {
-//                        /* CONSULTAR EXISTENCIAS EN LA TIENDA ACTUAL/ORIGEN POR ESTILO Y COLOR/COMBINACION */
-//                        $existencias = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('dTienda'), $v->Estilo, $v->Color);
-//
-//                        if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias[0]->{"Ex$index"} >= $v->Cantidad && $existencias[0]->{"Ex$index"} > 0) {
-//                            print "\nSERIE " . $serie[0]->{"T$index"} . ", TALLA " . $v->Talla . "" . (($serie[0]->{"T$index"} == $v->Talla ) ? ',OK' : '')
-//                                    . ", CANTIDAD REQUERIDA " . $v->Cantidad . ", CANTIDAD DISPONIBLE " . $existencias[0]->{"Ex$index"} . "\n";
-//                            $existencia = ($existencias[0]->{"Ex$index"} - $v->Cantidad);
-//                            /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
-//                            $this->traspasos_model->onModificarExistencias($this->input->post('dTienda'), $v->Estilo, $v->Color, $existencia, $index);
-//                        }
-//                    }
-
-
                     /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA DESTINO */
                     $existe = $this->traspasos_model->onComprobarExistenciaFisica($this->input->post('Tienda'), $v->Estilo, $v->Color);
-                    print "EXISTE EN TIENDA " . $this->input->post('Tienda') . ", ESTILO " . $v->Estilo . ", Color " . $v->Color . "\n";
-                    print "\n";
-                    print_r($existe);
-                    print "\n";
 
                     if ($existe[0]->EXISTE > 0) {
                         /* MODIFICAR EXISTENCIA */
@@ -178,17 +143,12 @@ class Traspasos extends CI_Controller {
 
                         /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
                         $existencia = 0;
-                        print "\n* EXISTENCIAS TIENDA DESTINO* \n";
                         for ($index = 1; $index <= 22; $index++) {
 
                             /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
                             $existencias = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('Tienda'), $v->Estilo, $v->Color);
                             /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
                             $existencias_disponibles = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('dTienda'), $v->Estilo, $v->Color);
-                            if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla) {
-                                print "* EXISTENCIAS DISPONIBLES EN LA TALLA $index *\n";
-                                print_r($existencias_disponibles);
-                            }
 
                             if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_disponibles[0]->{"Ex$index"} > 0) {
                                 /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
@@ -215,11 +175,20 @@ class Traspasos extends CI_Controller {
                                 $update->where('Estilo', $v->Estilo);
                                 $update->where('Color', $v->Color);
                                 $update->update("sz_Existencias", $data);
+                                /* AGREGAR UN REGISTRO EN EL DETALLE DEL TRASPASO */
+                                $data = array(
+                                    'Traspaso' => $ID,
+                                    'Estilo' => $v->Estilo,
+                                    'Color' => $v->Color,
+                                    'Talla' => $v->Talla,
+                                    'Cantidad' => $v->Cantidad,
+                                    'EsCoTa' => '',
+                                    'Registro' => Date('d/m/Y h:i:s a')
+                                );
+                                $this->traspasos_model->onAgregarDetalle($data);
                                 break;
                             }
                         }
-                        print "\n* FIN EXISTENCIAS TIENDA DESTINO * \n";
-                        /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
                     } else {
                         /* OBTENER SERIE X ESTILO */
                         $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
@@ -243,7 +212,6 @@ class Traspasos extends CI_Controller {
                             $existencias = $this->traspasos_model->getExistenciasXTiendaXEstiloXColor($this->input->post('Tienda'), $v->Estilo, $v->Color);
 
                             if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_origen[0]->{"Ex$index"} > 0) {
-                                print "\nSERIE " . $serie[0]->{"T$index"} . ", TALLA " . $v->Talla . "" . (($serie[0]->{"T$index"} == $v->Talla ) ? ',OK' : '') . ", CANTIDAD " . $v->Cantidad . "\n";
                                 $data["Ex$index"] = $v->Cantidad;
                                 /* RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
                                 $existencia = ($existencias_origen[0]->{"Ex$index"} - $v->Cantidad);
@@ -273,6 +241,17 @@ class Traspasos extends CI_Controller {
                         $this->db->where('Estilo', $v->Estilo);
                         $this->db->where('Color', $v->Color);
                         $this->db->update("sz_Existencias", $data);
+                        /* AGREGAR UN REGISTRO EN EL DETALLE DEL TRASPASO */
+                        $data = array(
+                            'Traspaso' => $ID,
+                            'Estilo' => $v->Estilo,
+                            'Color' => $v->Color,
+                            'Talla' => $v->Talla,
+                            'Cantidad' => $v->Cantidad,
+                            'EsCoTa' => '',
+                            'Registro' => Date('d/m/Y h:i:s a')
+                        );
+                        $this->traspasos_model->onAgregarDetalle($data);
                     }
                 }
                 /* FIN AFECTA INVENTARIO */
