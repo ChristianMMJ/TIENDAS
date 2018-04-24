@@ -251,7 +251,7 @@ var tableOptionsMiniTables = {
 function getTable(tblname, data) {
     var column = '';
     var i = 0;
-    var div = "<div class=\" \">";
+    var div = "";
     div = "<table id=\"" + tblname + "\" class=\" table table-sm  \"  width=\"100%\">";
     //Create header
     div += "<thead>";
@@ -277,7 +277,7 @@ function getTable(tblname, data) {
     div += column;
     div += "</tr></tfoot>";
     div += "</table>";
-    div += "</div>";
+    div += "";
     return div;
 }
 function getExt(filename) {

@@ -9,7 +9,26 @@ class ventas_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
-
+    
+    public function onCrearFolio($Tp){
+        try {
+             $this->db->select('MAX(U.FolioTienda) As FolioTienda ', false);
+            $this->db->from('sz_Ventas AS U');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.TipoDoc',$Tp);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+        //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        }
+    
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Ventas", $array);
@@ -74,11 +93,13 @@ class ventas_model extends CI_Model {
         }
     }
 
-    public function getVentaByID($ID) {
+    public function getVentaByFolioTiendaByTipoDocByTienda($FolioTienda, $TipoDoc) {
         try {
             $this->db->select('U.*', false);
             $this->db->from('sz_Ventas AS U');
-            $this->db->where('U.ID', $ID);
+            $this->db->where('U.FolioTienda', $FolioTienda);
+            $this->db->where('U.TipoDoc', $TipoDoc);
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -107,6 +128,7 @@ class ventas_model extends CI_Model {
                     . "  '$'+ CONVERT(varchar, CAST(VD.Subtotal AS money), 1) AS Sub, "
                     . 'VD.PorcentajeDesc AS PorDesc,'
                     //Eliminar
+                    
                     . "'<span class=''fa fa-trash-alt'' onclick=''onEliminarDetalle('+ REPLACE(LTRIM(REPLACE(VD.ID, '0', ' ')), ' ', '0')+','+  REPLACE(LTRIM(REPLACE(VD.Venta, '0', ' ')), ' ', '0')  +')  ''></span>' AS Eliminar "
                     . " "
                     . '', false);

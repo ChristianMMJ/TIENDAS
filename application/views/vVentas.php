@@ -94,15 +94,16 @@
         <div id="pnlDatos" >
             <!--ACCIONES-->
             <div class="row">
-                <div class="col-md-4 float-left">
+                <div class="col-md-5 float-left">
                     <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
                 </div>
-                <div class="col-md-8 float-right" align="right">
-                    <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
-<!--                    <button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
-                    <button type="button" class="btn btn-warning" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
-                    <button type="button" class="btn btn-success" id="btnCerrar"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F2)</button>
+                <div class="col-md-7 float-right" align="right">
+                    <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-info btn-sm" id="btnBuscar"><span class="fa fa-search"></span> BUSCAR (F2)</button>
+                    <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
+                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
+                    <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnCerrar"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F11)</button>
                 </div>
             </div>
             <hr>
@@ -118,8 +119,8 @@
                             <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
                         </div>
                         <div class="col-12 col-md-1">
-                            <label for="DocMov">No.*</label>  
-                            <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" name="DocMov" disabled="">
+                            <label for="FolioTienda">No.*</label>  
+                            <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" id="FolioTienda" name="FolioTienda" disabled="">
                         </div>
                         <div class="col-12 col-md-3">
                             <label for="Cliente">Cliente* (F9) Actualizar</label>
@@ -132,7 +133,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3">  
                             <label for="Vendedor">Vendedor*</label>
                             <select class="form-control form-control-sm required"  name="Vendedor"> 
                                 <option value=""></option>  
@@ -207,7 +208,7 @@
                     <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
                 </div>
                 <div class="col-12 col-md-1 col-sm-1">
-                    <button  class="btn btn-primary" id="btnAgregarDetalle" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
+                    <button  class="btn btn-primary btn-sm" id="btnAgregarDetalle" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
@@ -276,8 +277,10 @@
             <!--DETALLE-->
             <div class="row">
                 <div class=" col-md-9 ">
-                    <div class="table-responsive " id="RegistrosDetalle">
+                    <div class="row">
+                        <div class="table-responsive" id="RegistrosDetalle">
 
+                        </div>
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
                         <div class="row">
@@ -327,9 +330,11 @@
     var pnlControlesDetalle = $("#pnlControlesDetalle");
     var pnlTablero = $("#pnlTablero");
     var btnGuardar = pnlDatos.find("#btnGuardar");
-    var btnCancelar = pnlDatos.find("#btnCancelar");
+    var btnSalir = pnlDatos.find("#btnSalir");
     var btnExistencias = $("#btnExistencias");
-    var btnEliminar = $("#btnEliminar");
+    var btnCerrar = $("#btnCerrar");
+    var btnBuscar = $("#btnBuscar");
+    var btnCancelarVenta = $("#btnCancelarVenta");
     var currentDate = new Date();
     var nuevo = true;
     var IdMov = 0;
@@ -361,8 +366,47 @@
         "bSort": true
     };
 
+    function ondescontarExistenciasRenglon() {
+        var Estilo = pnlControlesDetalle.find("[name='Estilo']");
+        var Color = pnlControlesDetalle.find("[name='Combinacion']");
+        var CantidadCaptura = pnlControlesDetalle.find("[name='Cantidad']").val();//Cantidad a descontar
+        var TallaCapturada = pnlControlesDetalle.find("[name='Talla']").val();//Verificar que talla
+        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
+        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+        var existenciaFinal = 0;
+        var existenciaActual = 0;
+        var PosicionActualiza = "";
+        $.each(tallas.find("input.numbersOnly"), function () {
+            if (parseFloat(TallaCapturada) === parseFloat($(this).val())) {
+                existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
+                PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
+                existenciaFinal = parseFloat(existenciaActual) - parseFloat(CantidadCaptura);
+
+                $.ajax({
+                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
+                    type: "POST",
+                    data: {
+                        Estilo: Estilo.val(),
+                        Color: Color.val()
+                    }
+                }).done(function (data, x, jq) {
+                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+
+
+            }
+        });
+    }
+
     $(document).ready(function () {
         //Aqui devolver existencias y mandarle dialogo de confimacion
+        shortcut.add("F2", function () {
+            btnBuscar.trigger('click');
+        });
         shortcut.add("F5", function () {
             location.reload();
         });
@@ -370,15 +414,13 @@
             getClientes();
         });
         shortcut.add("ESC", function () {
-            btnCancelar.trigger('click');
+            btnSalir.trigger('click');
         });
         shortcut.add("Ctrl+E", function () {
             btnExistencias.trigger('click');
         });
 
-        getDetallebyID('1');
         //Inicializar Componentes
-        existencias = [];
         pnlDatos.find("input").val("");
         $.each(pnlDatos.find("select"), function (k, v) {
             pnlDatos.find("select")[k].selectize.clear(true);
@@ -388,24 +430,30 @@
         pnlDatos.find('#TipoDoc').val('2');
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
-        btnGuardar.removeClass('d-none');
         nuevo = true;
+        //getRecords();
+        getNuevoFolio();
+        getEstilos();
+        getClientes();
+        getDescuentos();
+        getMetodosPago();
+        getVendedores();
+        handleEnter();
         //Inserta Detalle y guarda el movimiento
-        pnlControlesDetalle.find("#btnAgregarDetalle").keyup(function () {
+        pnlControlesDetalle.find("#btnAgregarDetalle").click(function () {
             var Estilo = pnlControlesDetalle.find("[name='Estilo']");
             var Color = pnlControlesDetalle.find("[name='Combinacion']");
             var Talla = pnlControlesDetalle.find("[name='Talla']");
             var Precio = pnlControlesDetalle.find("[name='Precio']");
             var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
 
-            if (Estilo.val() !== '' && Color.val() !== ''
-                    && Talla.val() !== '' && Precio.val() !== '' && Cantidad.val() !== ''
-                    && Cantidad.val() > 0 && Precio.val() > 0
+            if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
+                    && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0
                     )
             {
-//            onAgregarExistencias();
                 //Agregar renglon Detalle
                 onAgregarFila(IdMov);
+                ondescontarExistenciasRenglon();
                 //Limpiar los campos del detalle
                 limpiarCampos();
 
@@ -496,7 +544,7 @@
             if (!CantidadValida) {
                 swal({
                     title: 'INFO',
-                    text: 'No Existen existencias en esta talla',
+                    text: 'No existen existencias en esta talla',
                     icon: 'warning'
                 }).then((result) => {
                     if (result) {
@@ -507,7 +555,6 @@
 
             }
         });
-
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar 
         pnlControlesDetalle.find("[name='Precio']").blur(function () {
             pnlControlesDetalle.find("#btnAgregarDetalle").trigger('click');
@@ -543,7 +590,71 @@
         $('#mdlInfoExistencia').on('shown.bs.modal', function () {
             $(':input:text:enabled:visible:first').focus();
         });
+        //Cuando pierde el foco despues de buscar
+        pnlDatos.find("input[name='FolioTienda']").focusout(function () {
+            pnlDatos.find("input[name='FolioTienda']").prop("disabled", true);
+        });
+        pnlDatos.find("input[name='FolioTienda']").keydown(function (e) {
+            if (e.keyCode === 13) {
+                var FolioTienda = $(this).val();
+                var TipoDoc = pnlDatos.find("input[name='TipoDoc']").val();
+                if (FolioTienda !== "" && TipoDoc !== "") {
+                    nuevo = false;
+                    HoldOn.open({
+                        theme: "sk-bounce",
+                        message: "CARGANDO DATOS..."
+                    });
+                    $.ajax({
+                        url: master_url + 'getVentaByFolioTiendaByTipoDocByTienda',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            FolioTienda: FolioTienda,
+                            TipoDoc: TipoDoc
+                        }
+                    }).done(function (data, x, jq) {
+                        pnlDatos.find("input").val("");
+                        $.each(pnlDatos.find("select"), function (k, v) {
+                            pnlDatos.find("select")[k].selectize.clear(true);
+                        });
+                        $.each(data[0], function (k, v) {
+                            pnlDatos.find("[name='" + k + "']").val(v);
+                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            }
+                        });
+                        if (data[0].Estatus === 'BORRADOR') {
+                            $('#Encabezado').remove('disabledForms');
+                            pnlControlesDetalle.removeClass('disabledForms');
+                            btnCerrar.removeClass('d-none');
+                            btnCancelarVenta.removeClass('d-none');
+                            /*DETALLE*/
+                            getDetallebyID(data[0].ID);
+                            /*FIN DETALLE*/
+                        } else {
+                            btnCerrar.addClass('d-none');
+                            btnCancelarVenta.addClass('d-none');
+                            $('#Encabezado').addClass('disabledForms');
+                            pnlControlesDetalle.addClass('disabledForms');
+                            /*DETALLE*/
+                            getDetalleDisabledbyID(data[0].ID);
+                            /*FIN DETALLE*/
+                        }
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'ASEGURATE DE LLENAR EL TP', 'danger');
+                }
+            }
+        });
         //Evento botones
+        btnBuscar.click(function () {
+            pnlDatos.find("input[name='FolioTienda']").prop("disabled", false);
+            pnlDatos.find("input[name='FolioTienda']").focus();
+        });
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -576,9 +687,12 @@
                         processData: false,
                         data: f
                     }).done(function (data, x, jq) {
-                        IdMov = parseInt(data);
+                        var Folios = JSON.parse(data);
+                        IdMov = parseInt(Folios.ID);
                         nuevo = false;
-                        pnlDatos.find('#ID').val(data);
+                        btnCancelarVenta.removeClass('d-none');
+                        pnlDatos.find('#ID').val(Folios.ID);
+                        pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -591,14 +705,14 @@
             }
 
         });
-        btnCancelar.click(function () {
+        btnSalir.click(function () {
             $(location).attr('href', base_url);
         });
-        btnEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
+        btnCancelarVenta.click(function () {
+            if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 swal({
                     title: "Confirmar",
-                    text: "Deseas eliminar el registro?",
+                    text: "Deseas cancelar la venta?",
                     icon: "warning",
                     buttons: ["Cancelar", "Aceptar"],
                     dangerMode: true
@@ -615,12 +729,7 @@
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-                            if (data === '1') {
-                                swal("Hecho", "El registro se ha eliminado!", 'success')
-                                getRecords();
-                            } else {
-                                swal("Error al borrar registro!", "El movimiento ya afectó el inventario", "info");
-                            }
+
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -629,7 +738,7 @@
                     }
                 });
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                swal("INFO", "LA VENTA NO EXISTE", 'warning');
             }
         });
         btnExistencias.click(function () {
@@ -637,13 +746,7 @@
             $('#mdlInfoExistencia').modal('show');
 
         });
-        //getRecords();
-        getEstilos();
-        getClientes();
-        getDescuentos();
-        getMetodosPago();
-        getVendedores();
-        handleEnter();
+
     });
 
     function limpiarCampos() {
@@ -781,6 +884,9 @@
                 pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('click', 'tr', function () {
                     $("#tblRegistrosDetalle tbody tr").removeClass("success");
                     $(this).addClass("success");
+                    var cells = $(this).find("td");
+                    var cellEstilo = cells.eq(1).text();
+                    getFotoXEstilo(parseInt(cellEstilo));
                 });
                 //Evento Doble Click Editar precio
                 pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('dblclick', 'tr', function () {
@@ -840,6 +946,63 @@
                     cell.find("#RunCantidad").focus();
                 });
 
+                onCalcularMontos();
+            } else {
+                pnlDatosDetalle.find("#RegistrosDetalle").html("");
+            }
+            HoldOn.close();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+
+        });
+    }
+
+    function getDetalleDisabledbyID(IDX) {
+        HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
+        $.ajax({
+            url: master_url + 'getDetallebyID',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                ID: IDX
+            }
+        }).done(function (data, x, jq) {
+            if (data.length > 0) {
+                pnlDatosDetalle.find("#RegistrosDetalle").html(getTable('tblRegistrosDetalle', data));
+                $('#tblRegistrosDetalle tfoot th').each(function () {
+                    $(this).html('');
+                });
+                var thead = $('#tblRegistrosDetalle thead th');
+                var tfoot = $('#tblRegistrosDetalle tfoot th');
+                thead.eq(0).addClass("d-none");
+                tfoot.eq(0).addClass("d-none");
+                thead.eq(1).addClass("d-none");
+                tfoot.eq(1).addClass("d-none");
+                thead.eq(2).addClass("d-none");
+                tfoot.eq(2).addClass("d-none");
+                thead.eq(10).addClass("d-none");
+                tfoot.eq(10).addClass("d-none");
+                thead.eq(11).addClass("d-none");
+                tfoot.eq(11).addClass("d-none");
+                $.each($('#tblRegistrosDetalle tbody tr'), function (k, v) {
+                    var td = $(v).find("td");
+                    td.eq(0).addClass("d-none");
+                    td.eq(1).addClass("d-none");
+                    td.eq(2).addClass("d-none");
+                    td.eq(10).addClass("d-none");
+                    td.eq(11).addClass("d-none");
+                });
+                pnlDatosDetalle.find("#tblRegistrosDetalle").DataTable(tblInicial);
+                //Sombreado de la fila
+                pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('click', 'tr', function () {
+                    $("#tblRegistrosDetalle tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var cells = $(this).find("td");
+                    var cellEstilo = cells.eq(1).text();
+                    getFotoXEstilo(parseInt(cellEstilo));
+                });
+                //Evento Doble Click Editar precio
                 onCalcularMontos();
             } else {
                 pnlDatosDetalle.find("#RegistrosDetalle").html("");
@@ -1026,10 +1189,6 @@
     }
 
     function getFotoXEstilo(Estilo) {
-        HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
-        });
         $.ajax({
             url: master_url + 'getEstiloByID',
             type: "POST",
@@ -1055,7 +1214,6 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
 
@@ -1097,6 +1255,9 @@
     }
 
     function getClientes() {
+        pnlDatos.find("[name='Cliente']")[0].selectize.close();
+        pnlDatos.find("[name='Cliente']")[0].selectize.clear(true);
+        pnlDatos.find("[name='Cliente']")[0].selectize.clearOptions();
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getClientes',
@@ -1163,6 +1324,24 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Vendedor']")[0].selectize.addOption({text: v.Empleado, value: v.ID});
             });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getNuevoFolio() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getNuevoFolio',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                TipoDoc: pnlDatos.find("[name='TipoDoc']").val()
+            }
+        }).done(function (data, x, jq) {
+            pnlDatos.find("[name='FolioTienda']").val(data);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

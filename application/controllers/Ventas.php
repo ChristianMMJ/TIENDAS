@@ -31,8 +31,8 @@ class Ventas extends CI_Controller {
             $this->load->view('vFooter');
         }
     }
-    
-     public function onEliminarDetalle() {
+
+    public function onEliminarDetalle() {
         try {
             extract($this->input->post());
             $this->ventas_model->onEliminarDetalle($ID);
@@ -41,12 +41,35 @@ class Ventas extends CI_Controller {
         }
     }
 
+    public function getNuevoFolio() {
+        try {
+            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TipoDoc'));
+            $Folio = $Datos[0]->FolioTienda;
+            if (empty($Folio)) {
+                $Folio = 1;
+            } else {
+                $Folio = $Folio + 1;
+            }
+
+            print $Folio;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
+            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TipoDoc'));
+            $Folio = $Datos[0]->FolioTienda;
+            if (empty($Folio)) {
+                $Folio = 1;
+            } else {
+                $Folio = $Folio + 1;
+            }
             $data = array(
                 'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
                 'Tienda' => $this->session->userdata('TIENDA'),
-                'FolioTienda' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('FolioTienda') : NULL,
+                'FolioTienda' => $Folio,
                 'Cliente' => ($this->input->post('Cliente') !== NULL) ? $this->input->post('Cliente') : NULL,
                 'Vendedor' => ($this->input->post('Vendedor') !== NULL) ? $this->input->post('Vendedor') : NULL,
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
@@ -57,7 +80,12 @@ class Ventas extends CI_Controller {
                 'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->ventas_model->onAgregar($data);
-            print $ID;
+            $dataCliente = array(
+                'ID' => $ID,
+                'FolioTienda' => $Folio
+            );
+            //print $ID;
+            echo json_encode($dataCliente);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,9 +103,24 @@ class Ventas extends CI_Controller {
                 'Descuento' => ($this->input->post('Descuento') !== NULL) ? $this->input->post('Descuento') : NULL,
                 'Subtotal' => ($this->input->post('Subtotal') !== NULL) ? $this->input->post('Subtotal') : NULL,
                 'PorcentajeDesc' => ($this->input->post('PorcentajeDesc') !== NULL) ? $this->input->post('PorcentajeDesc') : NULL
-                
             );
             $this->ventas_model->onAgregarDetalle($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificar() {
+        try {
+            $data = array(
+                'Tienda' => $this->session->userdata('TIENDA'),
+                'Cliente' => ($this->input->post('Cliente') !== NULL) ? $this->input->post('Cliente') : NULL,
+                'Vendedor' => ($this->input->post('Vendedor') !== NULL) ? $this->input->post('Vendedor') : NULL,
+                'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
+                'MetodoPago' => ($this->input->post('MetodoPago') !== NULL) ? $this->input->post('MetodoPago') : NULL,
+                'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL
+            );
+            $this->ventas_model->onModificar($ID, $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -89,6 +132,26 @@ class Ventas extends CI_Controller {
             extract($this->input->post());
             unset($_POST['ID']);
             $this->ventas_model->onModificarDetalle($ID, $this->input->post());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModifcarExistenciaXEstiloXColorXTienda() {
+        try {
+
+            extract($this->input->post());
+            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($Estilo, $Color, $CantidadNueva);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getVentaByFolioTiendaByTipoDocByTienda() {
+        try {
+            extract($this->input->post());
+            $data = $this->ventas_model->getVentaByFolioTiendaByTipoDocByTienda($FolioTienda, $TipoDoc);
+            print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
