@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Estado">Estado</label>   
-                        <select class="form-control form-control-sm required"  id="Estado" name="Estado" required=""> 
+                        <select class="form-control form-control-sm "  id="Estado" name="Estado" > 
                             <option value=""></option>
                             <option value="Aguascalientes">Aguascalientes</option>
                             <option value="Baja California">Baja California</option>
@@ -142,8 +142,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <label for="RegimenFiscal">Regimen Fiscal*</label>
-                        <select class="form-control form-control-sm required"  name="RegimenFiscal" required=""> 
+                        <label for="RegimenFiscal">Regimen Fiscal</label>
+                        <select class="form-control form-control-sm"  name="RegimenFiscal" > 
                             <option value=""></option>  
                         </select>
                     </div>

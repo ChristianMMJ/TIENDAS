@@ -14,9 +14,9 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap CSS -->
-        <link href="<?php print base_url('css/bootstrap-r.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('css/bootstrap-r.css') ?>" rel="stylesheet">
 
-        <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet">
 
         <!--DataTables Plugin-->
         <link rel="stylesheet" href="<?php echo base_url(); ?>js/tabletools/master/DataTables/datatables.min.css">
@@ -26,7 +26,7 @@
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/JSZip-3.1.3/jszip.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/Buttons-1.5.1/js/buttons.html5.min.js" type="text/javascript"></script>
 
-        <!--selectize control--> 
+        <!--selectize control-->
         <script src="<?php echo base_url(); ?>js/selectize/js/standalone/selectize.min.js"></script>
         <link href="<?php echo base_url(); ?>js/selectize/css/selectize.bootstrap.css" rel="stylesheet" />
 
@@ -45,7 +45,8 @@
         <script src="<?php print base_url(); ?>js/pace.min.js"></script>
         <link href="<?php print base_url(); ?>css/pace.css" rel="stylesheet" />
         <!--Masked number format money etc-->
-        <script src="<?php print base_url(); ?>js/jquery.maskedinput.min.js"></script>
+        <script src="<?php print base_url(); ?>js/jquery.maskMoney.min.js"></script>
+
         <!--Modales simplificados-->
         <script src="<?php print base_url(); ?>js/sweetalert.min.js"></script>
         <!--Notifiers-->
@@ -60,18 +61,18 @@
         <script src="<?php echo base_url(); ?>js/jnumber/jquery.number.min.js"></script>
 
         <!-- Custom styles for this template -->
-        <link href="<?php print base_url('css/style.css') ?>" rel="stylesheet"> 
+        <link href="<?php print base_url('css/style.css') ?>" rel="stylesheet">
 
         <!-- Custom scripts for this template -->
         <script src="<?php echo base_url(); ?>js/scripts.js"></script>
-    </head>  
+    </head>
 
     <script>
 
 
         var base_url = "<?php print base_url(); ?>";
         $(function () {
-
+            $('.money').maskMoney({prefix: '$', allowNegative: false, thousands: ',', decimal: '.', affixesStay: false});
 
             $('[data-toggle="tooltip"]').tooltip();
             $("table.display").DataTable(tableOptions);
@@ -82,17 +83,14 @@
             $('a[data-toggle="collapse"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
-
             $("select").not('.NotOpenDropDown').selectize({
                 hideSelected: true,
                 openOnFocus: true
             });
-
             $("select").filter('.NotOpenDropDown').selectize({
                 hideSelected: true,
                 openOnFocus: false
             });
-
             //Clase que admite solo numeros y un punto decimal
             $('.numbersOnly').keypress(function (event) {
                 var charCode = (event.which) ? event.which : event.keyCode;
@@ -101,13 +99,11 @@
                         (charCode !== 46 || $(this).val().indexOf('.') !== -1) && // “.” CHECK DOT, AND ONLY ONE.
                         (charCode < 48 || charCode > 57))
                     return false;
-
                 return true;
             });
             $('.modal').on('shown.bs.modal', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
-
             //Esto se hace para que ejecute el validador de campos
             $('[data-provide="datepicker"]').on('changeDate', function (ev) {
 //               $(this).valid();
@@ -117,15 +113,11 @@
                 autoclose: true,
                 todayHighlight: true
             });
-
-
             /*Mensajes de jquery validate*/
             jQuery.validator.messages.required = 'Este campo es obligatorio';
             jQuery.validator.messages.number = 'Este campo debe ser numérico';
             jQuery.validator.messages.email = 'Correo no válido';
-
         });
-
         function onNotify(span, message, type) {
             $.notify({
                 title: span,
@@ -150,7 +142,6 @@
             var selects = $('#' + p).find("div.card-body").find("select.required").length;
             var valid_inputs = 0;
             var valid_selects = 0;
-
             $.each($('#' + p).find("div.card-body").find("input.form-control:required"), function () {
                 var e = $(this).parent().find("small.text-danger");
                 if ($(this).val() === '' && e.length === 0) {
@@ -179,7 +170,6 @@
                     }
                 }
             });
-
             if (valid_inputs === inputs && valid_selects === selects) {
                 valido = true;
             }
@@ -187,7 +177,7 @@
 
         /*
          * @function onBeep
-         * 
+         *
          * @constructor
          *
          * @param {media} indice

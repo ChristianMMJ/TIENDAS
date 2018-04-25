@@ -1,3 +1,47 @@
+<!--MODAL CERRAR VENTA-->
+<div class="modal fade" id="mdlCerrarVenta" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CERRAR VENTA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 text-center" >
+                        <h5 for="TOTAL" class="text-info">TOTAL A PAGAR:</h5>
+                        <strong><legend for="TOTAL" class="text-info" id="Importe"></legend></strong>
+                        <h6 for="TOTAL" class="text-info" id="ImporteLetra"></h6>
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h5 for="PAGO" class="text-success">PAGO CLIENTE:</h5>
+                        <input type="text" placeholder="$ 0.00" class="form-control numbersOnly text-success input-lg money" id="Pago" name="Pago" maxlength="10" >
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h5 for="CAMBIO" class="text-warning">CAMBIO:</h5>
+                        <strong><legend for="TOTAL" class="text-warning" id="Cambio">$ 0.00</legend></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-raised btn-primary d-none" id="btnFinVenta">ACEPTAR</button>
+                <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal">REGRESAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--MODAL EXISTENCIAS GENERALES-->
 <div class="modal fade modal-fullscreen" id="mdlInfoExistencia" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -12,19 +56,19 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <label for="Estilo">Estilo*</label>
-                        <select class="form-control form-control-sm required"  name="EstiloEx"> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="EstiloEx">
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-sm-6" >
                         <label for="Color">Color*</label>
-                        <select class="form-control form-control-sm required"  name="ColorEx"> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="ColorEx">
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
 
-                <label for="Mayoreo">Tallas</label> 
+                <label for="Mayoreo">Tallas</label>
                 <div style="overflow-x:auto; white-space: nowrap; ">
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1">
                     <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2">
@@ -89,7 +133,7 @@
 </div>
 
 <div class="card border-0">
-    <div class="card-body text-dark" > 
+    <div class="card-body text-dark" >
         <!--ENCABEZADO-->
         <div id="pnlDatos" >
             <!--ACCIONES-->
@@ -103,7 +147,7 @@
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
                     <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
-                    <button type="button" class="btn btn-success btn-sm" id="btnCerrar"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F11)</button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F11)</button>
                 </div>
             </div>
             <hr>
@@ -115,39 +159,38 @@
                             <input type="text" class="" id="ID" name="ID"  >
                         </div>
                         <div class="col-12 col-md-1"
-                             <label for="TipoDoc">Tp*</label>  
+                             <label for="TipoDoc">Tp*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
                         </div>
                         <div class="col-12 col-md-1">
-                            <label for="FolioTienda">No.*</label>  
+                            <label for="FolioTienda">No.*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" id="FolioTienda" name="FolioTienda" disabled="">
                         </div>
                         <div class="col-12 col-md-3">
                             <label for="Cliente">Cliente* (F9) Actualizar</label>
                             <div class="input-group mb-3">
-                                <select class="form-control form-control-sm required"  name="Cliente"> 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm required" id="Cliente" name="Cliente">
+                                    <option value=""></option>
                                 </select>
                                 <div class="input-group-prepend">
                                     <a href="<?php print base_url('Clientes') ?>" target="_blank" class="input-group-text text-dark" data-toggle="tooltip" data-placement="top" title="Ver Clientes"><i class="fa fa-users"></i></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-3">  
-                            <label for="Vendedor">Vendedor*</label>
-                            <select class="form-control form-control-sm required"  name="Vendedor"> 
-                                <option value=""></option>  
-                            </select>
-                        </div>
                         <div class="col-12 col-md-2">
-                            <label for="FechaMov">Fecha</label>  
+                            <label for="FechaMov">Fecha</label>
                             <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                         </div>
-
                         <div class="col-12 col-md-2">
                             <label for="MetodoPago">Método de Pago*</label>
-                            <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago"> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label for="Vendedor">Vendedor</label>
+                            <select class="form-control form-control-sm required"  name="Vendedor">
+                                <option value=""></option>
                             </select>
                         </div>
                     </div>
@@ -159,12 +202,12 @@
             <div class="row">
                 <div class="col-12 col-md-2 col-sm-2 d-none" id="dDescuento">
                     <label for="Descuento" class="text-danger">Descuentos</label>
-                    <select class="form-control form-control-sm NotOpenDropDown"  name="Descuento"> 
-                        <option value=""></option>  
+                    <select class="form-control form-control-sm NotOpenDropDown"  name="Descuento">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <label for="CodigoBarras">Código Barras</label> 
+                    <label for="CodigoBarras">Código Barras</label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control form-control-sm numbersOnly"  name="CodigoBarras"  >
                         <div class="input-group-prepend">
@@ -175,8 +218,8 @@
                 <div class="col-12 col-md-2 col-sm-2">
                     <label for="Estilo">Estilo</label>
                     <div class="input-group mb-3">
-                        <select class="form-control form-control-sm "  name="Estilo"> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm "  name="Estilo">
+                            <option value=""></option>
                         </select>
                         <span class="input-group-prepend">
                             <span class="input-group-text text-dark" id="btnExistencias" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
@@ -185,26 +228,26 @@
                         </span>
                     </div>
                     <!-- <label for="Estilo">Estilo</label>
-                                        <select class="form-control form-control-sm "  name="Estilo"> 
-                                            <option value=""></option>  
+                                        <select class="form-control form-control-sm "  name="Estilo">
+                                            <option value=""></option>
                                         </select>-->
                 </div>
                 <div class="col-12 col-md-2 col-sm-2">
                     <label for="Combinacion">Color*</label>
-                    <select class="form-control form-control-sm "  name="Combinacion"> 
-                        <option value=""></option>  
+                    <select class="form-control form-control-sm "  name="Combinacion">
+                        <option value=""></option>
                     </select>
                 </div>
                 <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Talla">Talla</label>  
+                    <label for="Talla">Talla</label>
                     <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
                 </div>
                 <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Cantidad">Cant.</label>  
+                    <label for="Cantidad">Cant.</label>
                     <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
                 </div>
                 <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Precio">Precio</label> 
+                    <label for="Precio">Precio</label>
                     <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
                 </div>
                 <div class="col-12 col-md-1 col-sm-1">
@@ -215,7 +258,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <label for="">Tallas y Existencias (Ctrl+E para ver en otras tiendas)</label> 
+                    <label for="">Tallas y Existencias (Ctrl+E para ver en otras tiendas)</label>
                     <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
                         <thead></thead>
                         <tbody>
@@ -310,7 +353,7 @@
 
                 </div>
                 <div class="col-md-3">
-                    <label for="">Foto del Artículo</label> 
+                    <label for="">Foto del Artículo</label>
                     <div id="VistaPrevia" >
                         <img src="<?php echo base_url(); ?>img/camera.png" class="img-thumbnail img-fluid"/>
                     </div>
@@ -332,9 +375,11 @@
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnSalir = pnlDatos.find("#btnSalir");
     var btnExistencias = $("#btnExistencias");
-    var btnCerrar = $("#btnCerrar");
+    var btnCerrarVenta = $("#btnCerrarVenta");
     var btnBuscar = $("#btnBuscar");
     var btnCancelarVenta = $("#btnCancelarVenta");
+    var btnFinVenta = $("#btnFinVenta");
+
     var currentDate = new Date();
     var nuevo = true;
     var IdMov = 0;
@@ -344,11 +389,12 @@
     var tblInicial = {
         "dom": 'frt',
         "autoWidth": false,
+        "displayLength": 500,
         "colReorder": true,
         "bLengthChange": false,
         "deferRender": true,
         "scrollY": 220,
-        "scrollCollapse": false,
+        "scrollCollapse": true,
         "bSort": true,
         "aaSorting": [
             [0, 'desc']/*ID*/
@@ -368,6 +414,9 @@
 
     $(document).ready(function () {
         //Aqui devolver existencias y mandarle dialogo de confimacion
+        shortcut.add("F11", function () {
+            btnCerrarVenta.trigger('click');
+        });
         shortcut.add("F2", function () {
             btnBuscar.trigger('click');
         });
@@ -392,6 +441,7 @@
         $(':input:text:enabled:visible:first').focus();
         pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
         pnlDatos.find('#TipoDoc').val('2');
+
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
@@ -403,6 +453,79 @@
         getMetodosPago();
         getVendedores();
         handleEnter();
+
+
+        //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
+        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
+            if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
+                onCalcularMontos();
+            }
+        });
+        //Cuando pierde el foco despues de buscar
+        pnlDatos.find("input[name='FolioTienda']").focusout(function () {
+            pnlDatos.find("input[name='FolioTienda']").prop("disabled", true);
+        });
+        pnlDatos.find("input[name='FolioTienda']").keydown(function (e) {
+            if (e.keyCode === 13) {
+                var FolioTienda = $(this).val();
+                var TipoDoc = pnlDatos.find("input[name='TipoDoc']").val();
+                if (FolioTienda !== "" && TipoDoc !== "") {
+                    nuevo = false;
+                    HoldOn.open({
+                        theme: "sk-bounce",
+                        message: "CARGANDO DATOS..."
+                    });
+                    $.ajax({
+                        url: master_url + 'getVentaByFolioTiendaByTipoDocByTienda',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            FolioTienda: FolioTienda,
+                            TipoDoc: TipoDoc
+                        }
+                    }).done(function (data, x, jq) {
+                        if (data.length > 0) {
+                            IdMov = data[0].ID;
+                            pnlDatos.find("input").val("");
+                            $.each(pnlDatos.find("select"), function (k, v) {
+                                pnlDatos.find("select")[k].selectize.clear(true);
+                            });
+                            $.each(data[0], function (k, v) {
+                                pnlDatos.find("[name='" + k + "']").val(v);
+                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                }
+                            });
+                            if (data[0].Estatus === 'BORRADOR') {
+                                $('#Encabezado').remove('disabledForms');
+                                pnlControlesDetalle.removeClass('disabledForms');
+                                btnCerrarVenta.removeClass('d-none');
+                                btnCancelarVenta.removeClass('d-none');
+                                /*DETALLE*/
+                                getDetallebyID(data[0].ID);
+                                /*FIN DETALLE*/
+                            } else {
+                                btnCerrarVenta.addClass('d-none');
+                                btnCancelarVenta.addClass('d-none');
+                                $('#Encabezado').addClass('disabledForms');
+                                pnlControlesDetalle.addClass('disabledForms');
+                                /*DETALLE*/
+                                getDetalleDisabledbyID(data[0].ID);
+                                /*FIN DETALLE*/
+                            }
+                        } else {
+                            swal('INFO', 'NO EXISTE EL FOLIO', 'info');
+                        }
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'ASEGURATE DE LLENAR EL TP', 'danger');
+                }
+            }
+        });
         //Inserta Detalle y guarda el movimiento
         pnlControlesDetalle.find("#btnAgregarDetalle").click(function () {
             var Estilo = pnlControlesDetalle.find("[name='Estilo']");
@@ -412,15 +535,10 @@
             var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
 
             if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
-                    && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0
-                    )
+                    && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0)
             {
-                //Agregar renglon Detalle
-                onAgregarFila(IdMov);
-                onSacarExistenciasInventario();
-                //Limpiar los campos del detalle
-                limpiarCampos();
-
+                //Guarda Movimiento
+                btnGuardar.trigger('click');
             } else {
                 swal({
                     title: 'INFO',
@@ -431,16 +549,6 @@
                         $("[name='Cantidad']").focus();
                     }
                 });
-            }
-        });
-        //Campo que guarda el movimiento para que pueda guardarse el detalle
-        pnlDatos.find("#MetodoPago").change(function () {
-            btnGuardar.trigger('click');
-        });
-        //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
-            if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
-                onCalcularMontos();
             }
         });
         //Validaciones tallas
@@ -519,7 +627,7 @@
 
             }
         });
-        //Evento que controla la insercion de filas a la tabla cuando se termina de capturar 
+        //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
         pnlControlesDetalle.find("[name='Precio']").blur(function () {
             pnlControlesDetalle.find("#btnAgregarDetalle").trigger('click');
         });
@@ -550,68 +658,24 @@
             getExistenciasByEstiloByColor(EstiloEx, $(this).val());
             $('#tblExistencias input[type=search]').focus();
         });
-        //Evento modal para inicializar el foco
+        //Evento modales para inicializar el foco
         $('#mdlInfoExistencia').on('shown.bs.modal', function () {
             $(':input:text:enabled:visible:first').focus();
         });
-        //Cuando pierde el foco despues de buscar
-        pnlDatos.find("input[name='FolioTienda']").focusout(function () {
-            pnlDatos.find("input[name='FolioTienda']").prop("disabled", true);
+        //Evento modal para inicializar el foco
+        $('#mdlCerrarVenta').on('shown.bs.modal', function () {
+            $('#mdlCerrarVenta').find('#Pago').focus();
         });
-        pnlDatos.find("input[name='FolioTienda']").keydown(function (e) {
-            if (e.keyCode === 13) {
-                var FolioTienda = $(this).val();
-                var TipoDoc = pnlDatos.find("input[name='TipoDoc']").val();
-                if (FolioTienda !== "" && TipoDoc !== "") {
-                    nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.ajax({
-                        url: master_url + 'getVentaByFolioTiendaByTipoDocByTienda',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            FolioTienda: FolioTienda,
-                            TipoDoc: TipoDoc
-                        }
-                    }).done(function (data, x, jq) {
-                        pnlDatos.find("input").val("");
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.clear(true);
-                        });
-                        $.each(data[0], function (k, v) {
-                            pnlDatos.find("[name='" + k + "']").val(v);
-                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                            }
-                        });
-                        if (data[0].Estatus === 'BORRADOR') {
-                            $('#Encabezado').remove('disabledForms');
-                            pnlControlesDetalle.removeClass('disabledForms');
-                            btnCerrar.removeClass('d-none');
-                            btnCancelarVenta.removeClass('d-none');
-                            /*DETALLE*/
-                            getDetallebyID(data[0].ID);
-                            /*FIN DETALLE*/
-                        } else {
-                            btnCerrar.addClass('d-none');
-                            btnCancelarVenta.addClass('d-none');
-                            $('#Encabezado').addClass('disabledForms');
-                            pnlControlesDetalle.addClass('disabledForms');
-                            /*DETALLE*/
-                            getDetalleDisabledbyID(data[0].ID);
-                            /*FIN DETALLE*/
-                        }
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'ASEGURATE DE LLENAR EL TP', 'danger');
-                }
+        //Validar pago cliente
+        $('#mdlCerrarVenta').find("#Pago").keyup(function () {
+            var Precio = getNumberFloat($(this).val());
+            if ($(this).val() !== '' && Precio >= ImporteTotal) {
+                var Cambio = Precio - ImporteTotal;
+                $('#mdlCerrarVenta').find("#btnFinVenta").removeClass('d-none');
+                $('#mdlCerrarVenta').find('#Cambio').text('$ ' + $.number(Cambio, 2, '.', ','));
+            } else {
+                $('#mdlCerrarVenta').find("#btnFinVenta").addClass('d-none');
+                $('#mdlCerrarVenta').find('#Cambio').text('$ ' + $.number(0, 2, '.', ','));
             }
         });
         //Evento botones
@@ -628,6 +692,10 @@
                 });
                 var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
+                    //                    for (var pair of f.entries()) {
+                    //                        console.log(pair[0] + ', ' + pair[1]);
+                    //                    }
+
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -637,6 +705,11 @@
                         data: f
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        //Agregar renglon Detalle
+                        onAgregarFila(IdMov);
+                        onSacarExistenciasInventario();
+                        //Limpiar los campos del detalle
+                        limpiarCampos();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -658,6 +731,11 @@
                         pnlDatos.find('#ID').val(Folios.ID);
                         pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        //Agregar renglon Detalle
+                        onAgregarFila(IdMov);
+                        onSacarExistenciasInventario();
+                        //Limpiar los campos del detalle
+                        limpiarCampos();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -671,6 +749,34 @@
         });
         btnSalir.click(function () {
             $(location).attr('href', base_url);
+        });
+        btnCerrarVenta.click(function () {
+            if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
+                $('#mdlCerrarVenta').modal('show');
+                $('#mdlCerrarVenta').find('#Importe').text('$' + $.number(ImporteTotal, 2, '.', ','));
+                $('#mdlCerrarVenta').find('#ImporteLetra').text('(' + NumeroALetras(ImporteTotal) + ')');
+            } else {
+                swal('INFO', 'NO EXISTE LA VENTA', 'info');
+            }
+
+        });
+        btnFinVenta.click(function () {
+            $.ajax({
+                url: master_url + 'onModificarEstatus',
+                type: "POST",
+                data: {
+                    ID: IdMov,
+                    Estatus: 'CERRADA'
+                }
+            }).done(function (data, x, jq) {
+                $('#mdlCerrarVenta').modal('hide');
+                location.reload();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+                HoldOn.close();
+            });
+
         });
         btnCancelarVenta.click(function () {
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
@@ -687,7 +793,7 @@
                             message: "CARGANDO DATOS..."
                         });
                         $.ajax({
-                            url: master_url + 'onEliminar',
+                            url: master_url + 'onCancelar',
                             type: "POST",
                             data: {
                                 ID: temp
@@ -708,7 +814,6 @@
         btnExistencias.click(function () {
             getEstilosExt();
             $('#mdlInfoExistencia').modal('show');
-
         });
 
     });
@@ -718,12 +823,10 @@
         $("[name='Estilo']")[0].selectize.clear(true);
         $("[name='Combinacion']")[0].selectize.clear(true);
         $("[name='Combinacion']")[0].selectize.clearOptions();
-        $("[name='Precio']").val('');
-        $("[name='Cantidad']").val('');
-        $("[name='Talla']").val('');
-        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr");
-        $.each(tallas.find("input.numbersOnly"), function () {
+        $.each(pnlControlesDetalle.find("input"), function () {
+
             $(this).val('');
+
         });
     }
     /*AGREGAR ESTILO-COLOR*/
@@ -845,10 +948,10 @@
                 });
                 pnlDatosDetalle.find("#tblRegistrosDetalle").DataTable(tblInicial);
                 //Sombreado de la fila
-                pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('click', 'tr', function () {
+                pnlDatosDetalle.find('#tblRegistrosDetalle tbody tr').on('click', 'td:not(:eq(11))', function () {
                     $("#tblRegistrosDetalle tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var cells = $(this).find("td");
+                    $(this).parent().addClass("success");
+                    var cells = $(this).parent().find("td");
                     var cellEstilo = cells.eq(1).text();
                     var cellCombinacion = cells.eq(2).text();
                     getFotoXEstilo(parseInt(cellEstilo));
@@ -856,27 +959,49 @@
                     getExistenciasXEstiloXCombinacion(parseInt(cellEstilo), parseInt(cellCombinacion));
 
                 });
+                //Boton de borrar
+                pnlDatosDetalle.find('#tblRegistrosDetalle tbody tr').on('click', 'td:eq(11)', function () {
+                    $("#tblRegistrosDetalle tbody tr").removeClass("success");
+                    $(this).parent().addClass("success");
+                    var cells = $(this).parent().find("td");
+                    var IDX = cells.eq(0).text();
+                    var cellEstilo = cells.eq(1).text();
+                    var cellCombinacion = cells.eq(2).text();
+                    var cellTalla = cells.eq(5).text();
+                    var cellCantidad = cells.eq(6).text();
 
-//                pnlDatosDetalle.find('#tblRegistrosDetalle tbody tr').on('click', 'td:eq(11)', function () {
-//                    var cells = $(this).parent().find("td");
-//                    var cellEstilo = cells.eq(1).text();
-//                    var cellCombinacion = cells.eq(2).text();
-//                    var cellTalla = cells.eq(5).text();
-//                    var cellCantidad = cells.eq(6).text();
-//
-//
-//                    getFotoXEstilo(parseInt(cellEstilo));
-//                    getSerieXEstilo(parseInt(cellEstilo));
-//                    getExistenciasXEstiloXCombinacionBorrar(parseInt(cellEstilo), parseInt(cellCombinacion),cellTalla,cellCantidad);
-//
-//
-////                    $(document).ajaxComplete(function () {
-////                        onRegresarExistenciasInventario(cellEstilo, cellCombinacion, cellTalla, cellCantidad);
-////                    });
-//
-//                    
-//                });
+                    getFotoXEstilo(parseInt(cellEstilo));
+                    getSerieXEstilo(parseInt(cellEstilo));
 
+                    swal({
+                        buttons: ["Cancelar", "Aceptar"],
+                        title: 'Estas Seguro?',
+                        text: "Esta acción no se puede revertir",
+                        icon: "warning",
+                        dangerMode: true
+                    }).then((result) => {
+                        if (result) {
+                            HoldOn.open({
+                                theme: "sk-bounce",
+                                message: "ELIMINANDO REGISTRO..."
+                            });
+                            getExistenciasXEstiloXCombinacionBorrar(parseInt(cellEstilo), parseInt(cellCombinacion), cellTalla, cellCantidad);
+                            $.ajax({
+                                url: master_url + 'onEliminarDetalle',
+                                type: "POST",
+                                data: {
+                                    ID: IDX
+                                }
+                            }).done(function (data, x, jq) {
+                                getDetallebyID(IdMov);
+                                onCalcularMontos();
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
+                            });
+                        }
+                    });
+                });
                 //Evento Doble Click Editar precio
                 pnlDatosDetalle.find('#tblRegistrosDetalle tbody').on('dblclick', 'tr', function () {
                     var cells = $(this).find("td");
@@ -1020,25 +1145,22 @@
                 PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
                 existenciaFinal = parseFloat(existenciaActual) + parseFloat(Cantidad);
 
-
-                console.log('ac' + existenciaActual + 'pos' + PosicionActualiza + 'can' + existenciaFinal);
-
-//                $.ajax({
-//                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
-//                    type: "POST",
-//                    data: {
-//                        Estilo: Estilo,
-//                        Color: Color,
-//                        Posicion: PosicionActualiza,
-//                        ExistenciaNueva: existenciaFinal
-//                    }
-//                }).done(function (data, x, jq) {
-//                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
-//                }).fail(function (x, y, z) {
-//                    console.log(x, y, z);
-//                }).always(function () {
-//                    HoldOn.close();
-//                });
+                $.ajax({
+                    url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
+                    type: "POST",
+                    data: {
+                        Estilo: Estilo,
+                        Color: Color,
+                        Posicion: PosicionActualiza,
+                        ExistenciaNueva: existenciaFinal
+                    }
+                }).done(function (data, x, jq) {
+                    limpiarCampos();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
             }
         });
     }
@@ -1069,7 +1191,7 @@
                         ExistenciaNueva: existenciaFinal
                     }
                 }).done(function (data, x, jq) {
-                    existencias.find('td').eq($(this).parent().index()).find("input").val(existenciaFinal);
+
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 }).always(function () {
@@ -1080,43 +1202,7 @@
             }
         });
     }
-
-    function onEliminarDetalle(IDX, ID, Estilo, Color, Talla, Cantidad) {
-
-        //getSerieXEstilo(parseInt(Estilo));
-        //getExistenciasXEstiloXCombinacion(parseInt(Estilo), parseInt(Color));
-
-//        swal({
-//            buttons: ["Cancelar", "Aceptar"],
-//            title: 'Estas Seguro?',
-//            text: "Esta acción no se puede revertir",
-//            icon: "warning",
-//            dangerMode: true
-//        }).then((result) => {
-//            if (result) {
-//                HoldOn.open({
-//                    theme: "sk-bounce",
-//                    message: "ELIMINANDO REGISTRO..."
-//                });
-//                $.ajax({
-//                    url: master_url + 'onEliminarDetalle',
-//                    type: "POST",
-//                    data: {
-//                        ID: IDX
-//                    }
-//                }).done(function (data, x, jq) {
-//                    getDetallebyID(ID);
-//                    onCalcularMontos();
-//                }).fail(function (x, y, z) {
-//                    console.log(x, y, z);
-//                }).always(function () {
-//                    HoldOn.close();
-//                });
-//            }
-//        });
-    }
-
-
+    var ImporteTotal = 0;
     function onCalcularMontos() {
         var pares = 0;
         var descuento = 0;
@@ -1125,7 +1211,11 @@
             pares += parseFloat(getNumber($(this).find("td").eq(6).text()));
             descuento += parseFloat(getNumber($(this).find("td").eq(8).text()));
             total += parseFloat(getNumber($(this).find("td").eq(9).text()));
+
         });
+        //Seteamos la variableGlobalDelTotal
+        ImporteTotal = total;
+        onModificarImporte(IdMov, ImporteTotal);
         if (pnlDatosDetalle.find("#tblRegistrosDetalle > tbody > tr").length >= 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#Descuento").find("strong").text('$' + $.number(descuento, 2, '.', ','));
@@ -1138,6 +1228,23 @@
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(0, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number((total), 2, '.', ','));
         }
+
+    }
+
+    function onModificarImporte(ID, ImporteTotal) {
+        $.ajax({
+            url: master_url + 'onModificarImporte',
+            type: "POST",
+            data: {
+                ID: ID,
+                Importe: ImporteTotal
+            }
+        }).done(function (data, x, jq) {
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
     }
 
     function getSerieXEstilo(Estilo) {
@@ -1216,8 +1323,8 @@
             HoldOn.close();
         });
     }
-    
-     function getExistenciasXEstiloXCombinacionBorrar(Estilo, Combinacion,Talla, Cantidad) {
+
+    function getExistenciasXEstiloXCombinacionBorrar(Estilo, Combinacion, Talla, Cantidad) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getExistenciasXEstiloXCombinacion',
@@ -1251,7 +1358,6 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
 
@@ -1376,6 +1482,7 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Cliente']")[0].selectize.addOption({text: v.Nombre, value: v.ID});
             });
+            pnlDatos.find("[name='Cliente']")[0].selectize.setValue('1');
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -1416,10 +1523,12 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='MetodoPago']")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
+            pnlDatos.find("[name='MetodoPago']")[0].selectize.setValue('145');
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
             HoldOn.close();
+
         });
     }
 
@@ -1564,9 +1673,9 @@
     .Stock{
         font-weight: bold;
         color: #78a864;
-    } 
+    }
     .NoStock {
         font-weight: bold;
         color: #ff0000;
-    } 
+    }
 </style>

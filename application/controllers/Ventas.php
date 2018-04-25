@@ -113,14 +113,35 @@ class Ventas extends CI_Controller {
     public function onModificar() {
         try {
             $data = array(
-                'Tienda' => $this->session->userdata('TIENDA'),
                 'Cliente' => ($this->input->post('Cliente') !== NULL) ? $this->input->post('Cliente') : NULL,
                 'Vendedor' => ($this->input->post('Vendedor') !== NULL) ? $this->input->post('Vendedor') : NULL,
                 'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
                 'MetodoPago' => ($this->input->post('MetodoPago') !== NULL) ? $this->input->post('MetodoPago') : NULL,
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL
             );
-            $this->ventas_model->onModificar($ID, $data);
+            $this->ventas_model->onModificar($this->input->post('ID'), $data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarImporte() {
+        try {
+            $data = array(
+                'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL
+            );
+            $this->ventas_model->onModificar($this->input->post('ID'), $data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarEstatus() {
+        try {
+            $data = array(
+                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
+            );
+            $this->ventas_model->onModificar($this->input->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -140,10 +161,7 @@ class Ventas extends CI_Controller {
     public function onModifcarExistenciaXEstiloXColorXTienda() {
         try {
 
-            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), 
-                    $this->input->post('Color'), 
-                    $this->input->post('Posicion'),
-                    $this->input->post('ExistenciaNueva'));
+            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
