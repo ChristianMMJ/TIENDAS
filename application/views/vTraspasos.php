@@ -399,7 +399,7 @@
                             pnlDatos.find('#dAfecInv').addClass('disabledForms');
                             pnlDatos.find('#Encabezado').addClass('disabledForms');
                             pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
-                            btnGuardar.addClass('d-none'); 
+                            btnGuardar.addClass('d-none');
                         }
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
@@ -465,6 +465,10 @@
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
             pnlDatos.find("input").val("");
+            btnGuardar.removeClass('d-none');
+            pnlDatos.find('#dAfecInv').removeClass('disabledForms');
+            pnlDatos.find('#Encabezado').removeClass('disabledForms');
+            pnlDatos.find('#ControlesDetalle').removeClass('disabledForms');
             pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
             pnlDatos.find('#AfecInv').prop('checked', false);
             $.each(pnlDatos.find("select"), function (k, v) {
@@ -550,7 +554,7 @@
                                 pnlDatos.find('#dAfecInv').addClass('disabledForms');
                                 pnlDatos.find('#Encabezado').addClass('disabledForms');
                                 pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
-                                btnGuardar.addClass('d-none'); 
+                                btnGuardar.addClass('d-none');
                             }
                             $.each(data[0], function (k, v) {
                                 pnlDatos.find("[name='" + k + "']").val(v);
@@ -591,7 +595,10 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             pnlDatosDetalle.removeClass("d-none");
-                            $(':input:text:enabled:visible:first').focus();
+
+                            if (!pnlDatos.find("#AfecInv")[0].checked) {
+                                $(':input:text:enabled:visible:first').focus();
+                            }
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
