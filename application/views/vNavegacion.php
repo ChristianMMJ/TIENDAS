@@ -8,53 +8,66 @@
 
     <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="btn btn-success my-2 my-sm-0 btnSpace" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
-                    <i class="fa fa-hand-holding-usd"></i>  Ventas
-                </a>
-            </li>
 
-            <li class="nav-item">
-                <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight" href="<?php print base_url('Compras') ?>">
-                    <i class="fa fa-shopping-cart"></i> Compras
-                </a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-list-alt"></i> Inventarios
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
-                </div>
-            </li>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
+                ?>
+                <li class="nav-item">
+                    <a class="btn btn-success my-2 my-sm-0 btnSpace" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
+                        <i class="fa fa-hand-holding-usd"></i>  Ventas
+                    </a>
+                </li>
+            <?php } ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                ?>
+                <li class="nav-item">
+                    <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight" href="<?php print base_url('Compras') ?>">
+                        <i class="fa fa-shopping-cart"></i> Compras
+                    </a>
+                </li>
+            <?php } ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-list-alt"></i> Inventarios
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
+                    </div>
+                </li>
+            <?php } ?>
 
             <li class="nav-item dropdown">
                 <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-wrench"></i> Mantenimiento
                 </a>
                 <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-                    <li class="nav-item dropdown dropdown-submenu">
-                        <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Generales
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=REGIMENES FISCALES') ?>">Regimenes Fiscales</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TEMPORADAS') ?>">Temporadas</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TIPOS ESTILO') ?>">Tipos de Estilo</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MARCAS') ?>">Otras Marcas Zap</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=METODOS PAGO') ?>">Métodos de Pago</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES DE PAGO') ?>">Condiciones de Pago</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
-                            <!-- 
-                            <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=BANCOS') ?>">Bancos</a></li>
-                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TRASPORTES') ?>">Trasnportes</a></li>
-                             <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=DEFECTOS') ?>">Defectos</a></li>-->
-                        </ul>
-                    </li>
+
+                    <?php
+                    if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
+                        ?>
+                        <li class="nav-item dropdown dropdown-submenu">
+                            <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Generales
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=REGIMENES FISCALES') ?>">Regimenes Fiscales</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TEMPORADAS') ?>">Temporadas</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TIPOS ESTILO') ?>">Tipos de Estilo</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MARCAS') ?>">Otras Marcas Zap</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=METODOS PAGO') ?>">Métodos de Pago</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES DE PAGO') ?>">Condiciones de Pago</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
+                            </ul>
+                        </li>
+                    <?php } ?>
                     <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
                     <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>

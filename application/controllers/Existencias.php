@@ -18,10 +18,16 @@ class Existencias extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vExistencias');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vExistencias');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -38,7 +44,7 @@ class Existencias extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getTiendas() {
         try {
             extract($this->input->post());
@@ -48,7 +54,7 @@ class Existencias extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getSerieXEstilo() {
         try {
             extract($this->input->post());
@@ -58,7 +64,7 @@ class Existencias extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getExistenciaByID() {
         try {
             extract($this->input->post());

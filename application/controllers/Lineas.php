@@ -14,10 +14,16 @@ class Lineas extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vLineas');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vLineas');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -47,8 +53,6 @@ class Lineas extends CI_Controller {
         }
     }
 
-
-
     public function onAgregar() {
         try {
             $data = array(
@@ -56,7 +60,7 @@ class Lineas extends CI_Controller {
                 'Descripcion' => ($this->input->post('Descripcion') !== NULL) ? $this->input->post('Descripcion') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $ID= $this->lineas_model->onAgregar($data);
+            $ID = $this->lineas_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

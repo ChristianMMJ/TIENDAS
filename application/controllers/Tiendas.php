@@ -13,10 +13,16 @@ class Tiendas extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vTiendas');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vTiendas');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -64,7 +70,7 @@ class Tiendas extends CI_Controller {
                 'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $ID=$this->tiendas_model->onAgregar($data);
+            $ID = $this->tiendas_model->onAgregar($data);
 
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Tiendas/';

@@ -14,10 +14,16 @@ class Combinaciones extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vCombinaciones');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vCombinaciones');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -65,7 +71,7 @@ class Combinaciones extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
                 'Estilo' => ($this->input->post('Estilo') !== NULL) ? $this->input->post('Estilo') : NULL
             );
-            $ID=$this->combinaciones_model->onAgregar($data);
+            $ID = $this->combinaciones_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -76,7 +82,7 @@ class Combinaciones extends CI_Controller {
         try {
             extract($this->input->post());
             $DATA = array(
-                 'Clave' => ($this->input->post('Clave') !== NULL) ? $this->input->post('Clave') : NULL,
+                'Clave' => ($this->input->post('Clave') !== NULL) ? $this->input->post('Clave') : NULL,
                 'Descripcion' => ($this->input->post('Descripcion') !== NULL) ? $this->input->post('Descripcion') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
                 'Estilo' => ($this->input->post('Estilo') !== NULL) ? $this->input->post('Estilo') : NULL

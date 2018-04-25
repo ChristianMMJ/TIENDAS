@@ -14,10 +14,16 @@ class Usuarios extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vUsuarios');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vUsuarios');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -33,7 +39,7 @@ class Usuarios extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getTiendas() {
         try {
             $data = $this->tiendas_model->getTiendas();
@@ -64,7 +70,7 @@ class Usuarios extends CI_Controller {
                 'Registro' => Date('d/m/Y h:i:s a'),
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL
             );
-            $ID=$this->usuario_model->onAgregar($data);
+            $ID = $this->usuario_model->onAgregar($data);
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Usuarios/';
             $master_url = $URL_DOC . '/';
@@ -107,7 +113,7 @@ class Usuarios extends CI_Controller {
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL
             );
             $this->usuario_model->onModificar($ID, $DATA);
-            
+
             /* MODIFICAR FOTO */
             if ($_FILES["Foto"]["tmp_name"] !== "") {
                 $URL_DOC = 'uploads/Usuarios';

@@ -13,10 +13,16 @@ class Series extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vSeries');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vSeries');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -75,7 +81,6 @@ class Series extends CI_Controller {
                 'T20' => ($this->input->post('T20') !== NULL) ? $this->input->post('T20') : 0,
                 'T21' => ($this->input->post('T21') !== NULL) ? $this->input->post('T21') : 0,
                 'T22' => ($this->input->post('T22') !== NULL) ? $this->input->post('T22') : 0
-                
             );
             $ID = $this->series_model->onAgregar($data);
             echo $ID;

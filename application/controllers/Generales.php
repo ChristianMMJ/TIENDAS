@@ -14,10 +14,16 @@ class Generales extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vGenerales');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vGenerales');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -58,7 +64,7 @@ class Generales extends CI_Controller {
                 'Valor_Text' => ($this->input->post('Valor_Text') !== NULL) ? $this->input->post('Valor_Text') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $ID=$this->generales_model->onAgregar($data);
+            $ID = $this->generales_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

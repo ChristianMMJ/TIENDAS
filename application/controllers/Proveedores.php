@@ -14,10 +14,16 @@ class Proveedores extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vProveedores');
-            $this->load->view('vFooter');
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vProveedores');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -44,7 +50,7 @@ class Proveedores extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getProveedorByID() {
         try {
             extract($this->input->post());
@@ -75,11 +81,10 @@ class Proveedores extends CI_Controller {
                 'LimiteCredito' => ($this->input->post('LimiteCredito') !== NULL) ? $this->input->post('LimiteCredito') : 0,
                 'PlazoPagos' => ($this->input->post('PlazoPagos') !== NULL) ? $this->input->post('PlazoPagos') : 0,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
-                
             );
-            $ID=$this->proveedores_model->onAgregar($data);
+            $ID = $this->proveedores_model->onAgregar($data);
             print $ID;
-            /*SUBIR FOTO*/ 
+            /* SUBIR FOTO */
             $URL_DOC = 'uploads/Proveedores/';
             $master_url = $URL_DOC . '/';
             if (isset($_FILES["Foto"]["name"])) {
@@ -102,8 +107,7 @@ class Proveedores extends CI_Controller {
                     $this->proveedores_model->onModificar($ID, $DATA);
                 }
             }
-            /*FIN SUBIR FOTO*/
-            
+            /* FIN SUBIR FOTO */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -132,7 +136,7 @@ class Proveedores extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->proveedores_model->onModificar($ID, $DATA);
-            
+
             /* MODIFICAR FOTO */
             if ($_FILES["Foto"]["tmp_name"] !== "") {
                 $URL_DOC = 'uploads/Proveedores';
