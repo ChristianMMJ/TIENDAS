@@ -5,10 +5,8 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
                 ?>
@@ -42,15 +40,14 @@
                 </li>
             <?php } ?>
 
-            <li class="nav-item dropdown">
-                <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-wrench"></i> Mantenimiento
-                </a>
-                <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-
-                    <?php
-                    if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
-                        ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-wrench"></i> Mantenimiento
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink"> 
                         <li class="nav-item dropdown dropdown-submenu">
                             <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Generales
@@ -67,26 +64,23 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
                             </ul>
                         </li>
-                    <?php } ?>
-                    <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Clientes') ?>">Clientes</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
-                    <div class="dropdown-divider" ></div>
-                    <li><a class="dropdown-item" href="<?php print base_url('Estilos') ?>">Estilos</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Lineas') ?>">Lineas</a></li>                           
-                    <li><a class="dropdown-item" href="<?php print base_url('Combinaciones') ?>">Colores</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Series') ?>">Series</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('Descuentos') ?>">Descuentos</a></li>
-
-                    <!--                    <li><a class="dropdown-item" href="#">Almacenes</a></li> -->
-
-                </ul>
-            </li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Clientes') ?>">Clientes</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
+                        <div class="dropdown-divider" ></div>
+                        <li><a class="dropdown-item" href="<?php print base_url('Estilos') ?>">Estilos</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Lineas') ?>">Lineas</a></li>                           
+                        <li><a class="dropdown-item" href="<?php print base_url('Combinaciones') ?>">Colores</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Series') ?>">Series</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Descuentos') ?>">Descuentos</a></li>
+                        <!--                    <li><a class="dropdown-item" href="#">Almacenes</a></li> -->
+                    </ul>
+                </li>
+            <?php } ?>
         </ul>
         <ul class="navbar-nav navbar-right">
-
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Bienvenido : <?php echo $this->session->userdata('USERNAME') ?>
@@ -97,10 +91,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('Login/onSalir'); ?>">Salir</a>
                 </div>
-
             </li>
         </ul>
-
     </div>
 </nav>
-
