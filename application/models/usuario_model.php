@@ -30,7 +30,7 @@ class usuario_model extends CI_Model {
 
     public function getAcceso($USUARIO, $CONTRASENA) {
         try {
-            $this->db->select('U.*,T.*', false);
+            $this->db->select('U.*,T.RazonSocial', false);
             $this->db->from('sz_Usuarios AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where('U.Usuario', $USUARIO);
@@ -41,7 +41,7 @@ class usuario_model extends CI_Model {
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//        print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

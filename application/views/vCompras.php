@@ -17,11 +17,8 @@
 <!--GUARDAR-->
 <div class="d-none" id="pnlDatos">
     <div class="card border-0">
-        <div class="card-body text-dark customBackground" > 
+        <div class="card-body text-dark customBackground" >
             <div class="row">
-                <div class="col-md-1">
-                    <img src="<?php print base_url(); ?>img/LS.png" width="30px" >
-                </div>
                 <div class="col-md-7 float-left">
                     <h5>COMPRAS</h5>
                 </div>
@@ -31,7 +28,7 @@
                         <label class="custom-control-label" for="AfecInv">Afecta Inv. Tienda</label>
                     </div>
                 </div>
-                <div class="col-md-2 float-right" align="right">
+                <div class="col-md-3 float-right" align="right">
                     <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
                     <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                 </div>
@@ -45,26 +42,26 @@
                         </div>
                         <div class="col-sm-4">
                             <label for="Tienda">Tienda*</label>
-                            <select class="form-control form-control-sm required"  name="Tienda"> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm required"  name="Tienda">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <label for="Proveedor">Proveedor*</label>
-                            <select class="form-control form-control-sm required"  name="Proveedor"> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm required"  name="Proveedor">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-1">
-                            <label for="TipoDoc">Tp*</label>  
+                            <label for="TipoDoc">Tp*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
                         </div>
                         <div class="col-sm-2">
-                            <label for="FechaMov">Fecha Mov.</label>  
+                            <label for="FechaMov">Fecha Mov.</label>
                             <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                         </div>
                         <div class="col-sm-2">
-                            <label for="DocMov">Docto.*</label>  
+                            <label for="DocMov">Docto.*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" name="DocMov" required >
                         </div>
                     </div>
@@ -77,42 +74,42 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="Estilo">Estilo*</label>
-                            <select class="form-control form-control-sm "  name="Estilo" required=""> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm "  name="Estilo" required="">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <label for="Combinacion">Color*</label>
-                            <select class="form-control form-control-sm "  name="Combinacion" required=""> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm "  name="Combinacion" required="">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-1">
-                            <label for="PrecioMov">Costo*</label>  
+                            <label for="PrecioMov">Costo*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" maxlength="9" name="PrecioMov" >
                         </div>
                         <div class="col-sm-1">
-                            <label for="Clave">% Men.</label> 
+                            <label for="Clave">% Men.</label>
                             <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="Men"  >
                         </div>
                         <div class="col-sm-1">
-                            <label for="Clave">% May.</label> 
+                            <label for="Clave">% May.</label>
                             <input type="text" class="form-control form-control-sm numbersOnly " disabled="" id="" name="May"  >
                         </div>
                         <div class="col-sm-1">
-                            <label for="Menudeo">$ Men.</label>  
+                            <label for="Menudeo">$ Men.</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" name="Menudeo" disabled="">
                         </div>
                         <div class="col-sm-1">
-                            <label for="Mayoreo">$ May.</label>  
+                            <label for="Mayoreo">$ May.</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" name="Mayoreo" disabled="">
                         </div>
-                    </div> 
+                    </div>
 
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="Mayoreo">Tallas</label> 
+                            <label for="Mayoreo">Tallas</label>
                             <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
                                 <thead></thead>
                                 <tbody>
@@ -687,7 +684,7 @@
                             });
                             /*FIN DETALLE*/
 
-                            //Validar que este afectado 
+                            //Validar que este afectado
                             if (data[0].Estatus === 'AFECTADO') {
                                 pnlDatos.find('#AfecInv').prop('checked', true);
                                 pnlDatos.find('#dAfecInv').addClass('disabledForms');
