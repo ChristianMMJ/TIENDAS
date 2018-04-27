@@ -16,7 +16,7 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
 
             <form id="frmNuevo">
                 <div class="row">
@@ -36,46 +36,46 @@
                         <input type="text" class="" id="ID" name="ID" >
                     </div>
                     <div class="col-sm">
-                        <label for="Usuario">Usuario*</label>  
+                        <label for="Usuario">Usuario*</label>
                         <input type="text" class="form-control form-control-sm" id="Usuario" name="Usuario" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Contrasena">Contraseña*</label>  
+                        <label for="Contrasena">Contraseña*</label>
                         <input type="password" class="form-control form-control-sm" id="Contrasena" name="Contrasena" required >
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Correo">Correo*</label> 
+                        <label for="Correo">Correo*</label>
                         <input type="email" id="Correo" name="Correo" class="form-control form-control-sm" placeholder="lobo@lobo.com.mx" required>
-                    </div> 
+                    </div>
                     <div class="col-sm">
                         <label for="Tienda">Tienda*</label>
-                        <select class="form-control form-control-sm required" name="Tienda"> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required" name="Tienda">
+                            <option value=""></option>
                         </select>
                     </div>
 
-                </div> 
+                </div>
 
                 <div class="row">
                     <div class="col-sm">
                         <label for="Tipo">Tipo</label>
                         <select class="form-control form-control-sm required" name="Tipo">
-                            <option value=""></option>  
+                            <option value=""></option>
+                            <option value="SISTEMAS">SISTEMAS</option>
                             <option value="ADMINISTRADOR">ADMINISTRADOR</option>
                             <option value="GERENTE">GERENTE</option>
-                            <option value="CAJERO">CAJERO</option>
                             <option value="VENDEDOR">VENDEDOR</option>
                         </select>
                     </div>
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"  name="Estatus"> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="Estatus">
+                            <option value=""></option>
                             <option>ACTIVO</option>
-                            <option>INACTIVO</option> 
+                            <option>INACTIVO</option>
                         </select>
                     </div>
                 </div>
@@ -95,8 +95,8 @@
                 </div>
                 <!-- FIN FOTO -->
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 <!--SCRIPT-->
 <script>

@@ -101,6 +101,7 @@
                                     <th scope="col" class="d-none">Orden</th>
                                     <th scope="col" class="d-none">CatID</th>
                                     <th scope="col" class="">Categoría</th>
+                                    <th scope="col" ></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -298,6 +299,7 @@
                             }).always(function () {
                                 HoldOn.close();
                                 tblDetalleGasto = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                                detalle_eliminado = [];
                             });
                         }
                     } else {
@@ -431,7 +433,8 @@
                                         v.ID,
                                         n,
                                         v.Categoria,
-                                        v.CatNombre
+                                        v.CatNombre,
+                                        ''
                                     ]).draw(false);
                                     n += 1;
                                 });
@@ -509,7 +512,8 @@
                     0,
                     n,
                     Categoria.val(),
-                    Categoria.find("option:selected").text()
+                    Categoria.find("option:selected").text(),
+                    '<span class="fa fa-trash" onclick="onEliminarFila(this)"></span>'
                 ]).draw(false);
                 n += 1;
                 onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
@@ -546,6 +550,12 @@
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(0, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
+    }
+
+    var detalle_eliminado = [];
+    function onEliminarFila(e) {
+        tblDetalleGasto.row($(e).parent().parent()).remove().draw();
+        onCalcularMontos();
     }
 
 </script>

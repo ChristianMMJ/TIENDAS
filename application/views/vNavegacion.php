@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "CAJERO", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item">
                     <a class="btn btn-success my-2 my-sm-0 btnSpace btn-sm" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
@@ -17,7 +17,7 @@
                 </li>
             <?php } ?>
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item">
                     <a class="btn btn-danger my-2 my-sm-0 btnSpace btn-sm" href="<?php print base_url('Gastos') ?>">
@@ -26,7 +26,7 @@
                 </li>
             <?php } ?>
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item">
                     <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight btn-sm" href="<?php print base_url('Compras') ?>">
@@ -35,7 +35,7 @@
                 </li>
             <?php } ?>
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
                     <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,7 +50,7 @@
             <?php } ?>
 
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
                     <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
