@@ -5,7 +5,8 @@
                 <legend class="float-left">Gestión de Gastos</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
+                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
+                <button type="button" class="btn btn-primary" id="btnEliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar""><span class="fa fa-trash"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -149,6 +150,7 @@
     var pnlControlesDetalle = $("#pnlControlesDetalle");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
+    var btnEliminar = $("#btnEliminar");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var currentDate = new Date();
@@ -339,6 +341,41 @@
             pnlDatosDetalle.addClass('d-none');
             nuevo = true;
         });
+        btnEliminar.click(function () {
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                swal({
+                    title: "Confirmar",
+                    text: "Deseas eliminar el registro?",
+                    icon: "warning",
+                    buttons: ["Cancelar", "Aceptar"],
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
+                        });
+                        $.ajax({
+                            url: master_url + 'onEliminar',
+                            type: "POST",
+                            data: {
+                                ID: temp
+                            }
+                        }).done(function (data, x, jq) {
+                            getRecords();
+                            swal("Hecho", "El registro se ha eliminado!", 'success');
+
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    }
+                });
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+            }
+        });
         getRecords();
         getCategoriasGastos();
         handleEnter();
@@ -468,6 +505,8 @@
                         }
                     });
                 });
+            } else {
+                $("#tblRegistros").html('');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
