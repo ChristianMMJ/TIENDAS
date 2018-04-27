@@ -13,6 +13,9 @@ class Login extends CI_Controller {
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if ($this->session->userdata['Tipo'] === 'VENDEDOR') {
+                if ($this->session->userdata['Ventas'] === 0) {
+                    $this->session->set_userdata("Ventas", 1);
+                }
                 $this->load->view('vEncabezado');
                 $this->load->view('vVentas');
                 $this->load->view('vFooter');

@@ -139,8 +139,7 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-<!--                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>-->
-                    <?php echo var_dump($this->session); ?>
+                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
@@ -417,8 +416,11 @@
         "scrollCollapse": false,
         "bSort": true
     };
+    var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
 
     $(document).ready(function () {
+
+
         //Aqui devolver existencias y mandarle dialogo de confimacion
         shortcut.add("F1", function () {
             btnCerrarVenta.trigger('click');
@@ -432,7 +434,6 @@
         shortcut.add("F9", function () {
             getClientes();
         });
-
         shortcut.add("ESC", function () {
             btnSalir.trigger('click');
         });
@@ -445,7 +446,7 @@
         $.each(pnlDatos.find("select"), function (k, v) {
             pnlDatos.find("select")[k].selectize.clear(true);
         });
-        $(':input:text:enabled:visible:first').focus();
+
         pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
         pnlDatos.find('#TipoDoc').val('2');
 
@@ -453,6 +454,7 @@
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
 
+        onValidarPantallaCompleta();
         getNuevoFolio();
         getEstilos();
         getClientes();
@@ -1708,6 +1710,29 @@
         }).always(function () {
             HoldOn.close();
         });
+    }
+
+    function onValidarPantallaCompleta() {
+        if (ValidaPantallaCompleta === '1') {
+            $.ajax({
+                url: master_url + 'onCambiarSesion',
+                type: "POST"
+            }).done(function (data, x, jq) {
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+            });
+            swal({
+                text: "BIENVENIDO"
+            }).then((result) => {
+                if (result) {
+                    toggleFullScreen();
+                    $(':input:text:enabled:visible:first').focus();
+                }
+            });
+        } else {
+            $(':input:text:enabled:visible:first').focus();
+        }
     }
 
 </script>

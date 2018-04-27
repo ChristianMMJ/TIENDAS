@@ -23,7 +23,10 @@ class Ventas extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
 
-            $this->session->set_userdata("Ventas", 1);
+            if ($this->session->userdata['Ventas'] === 0) {
+                $this->session->set_userdata("Ventas", 1);
+            }
+
 
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
@@ -38,6 +41,14 @@ class Ventas extends CI_Controller {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
             $this->load->view('vFooter');
+        }
+    }
+
+    public function onCambiarSesion() {
+        try {
+            $this->session->set_userdata("Ventas", 3);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
         }
     }
 
@@ -108,7 +119,7 @@ class Ventas extends CI_Controller {
                 'ID' => $ID,
                 'FolioTienda' => $Folio
             );
-            //print $ID;
+//print $ID;
             echo json_encode($dataCliente);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

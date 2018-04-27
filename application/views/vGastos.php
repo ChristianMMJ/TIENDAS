@@ -246,6 +246,7 @@
             onAgregarFila();
         });
         btnGuardar.click(function () {
+            isValid('pnlDatos');
             swal({
                 buttons: ["Cancelar", "Aceptar"],
                 title: 'Estas Seguro?',
@@ -309,7 +310,7 @@
                     }
                 }
             });
-            isValid('pnlDatos');
+
 
         });
         btnNuevo.click(function () {
