@@ -62,7 +62,7 @@ class Generales extends CI_Controller {
                 'Special' => ($this->input->post('Special') !== NULL) ? $this->input->post('Special') : NULL,
                 'Valor_Num' => ($this->input->post('Valor_Num') !== NULL) ? $this->input->post('Valor_Num') : NULL,
                 'Valor_Text' => ($this->input->post('Valor_Text') !== NULL) ? $this->input->post('Valor_Text') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
+                'Estatus' => 'ACTIVO'
             );
             $ID = $this->generales_model->onAgregar($data);
             print $ID;

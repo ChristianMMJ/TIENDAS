@@ -11,7 +11,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
                 ?>
                 <li class="nav-item">
-                    <a class="btn btn-success my-2 my-sm-0 btnSpace" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
+                    <a class="btn btn-success my-2 my-sm-0 btnSpace btn-sm" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
                         <i class="fa fa-hand-holding-usd"></i>  Ventas
                     </a>
                 </li>
@@ -20,7 +20,16 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
                 ?>
                 <li class="nav-item">
-                    <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight" href="<?php print base_url('Compras') ?>">
+                    <a class="btn btn-danger my-2 my-sm-0 btnSpace btn-sm" href="<?php print base_url('Gastos') ?>">
+                        <i class="fa fa-external-link-alt"></i>  Gastos
+                    </a>
+                </li>
+            <?php } ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+                ?>
+                <li class="nav-item">
+                    <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight btn-sm" href="<?php print base_url('Compras') ?>">
                         <i class="fa fa-shopping-cart"></i> Compras
                     </a>
                 </li>
@@ -29,7 +38,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-list-alt"></i> Inventarios
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -44,10 +53,10 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-wrench"></i> Mantenimiento
                     </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink"> 
+                    <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <li class="nav-item dropdown dropdown-submenu">
                             <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Generales
@@ -62,6 +71,8 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=DEFECTOS') ?>">Defectos</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CATEGORIAS GASTOS') ?>">Categorías Gastos</a></li>
                             </ul>
                         </li>
                         <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
@@ -71,7 +82,7 @@
                         <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
                         <div class="dropdown-divider" ></div>
                         <li><a class="dropdown-item" href="<?php print base_url('Estilos') ?>">Estilos</a></li>
-                        <li><a class="dropdown-item" href="<?php print base_url('Lineas') ?>">Lineas</a></li>                           
+                        <li><a class="dropdown-item" href="<?php print base_url('Lineas') ?>">Lineas</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Combinaciones') ?>">Colores</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Series') ?>">Series</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Descuentos') ?>">Descuentos</a></li>
