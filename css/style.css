@@ -21,6 +21,10 @@ div.datatable-wide {
     padding-right: 0;
 }
 
+html{
+    background-color: rgb(188, 205, 212);
+}
+
 body{
     background-color: rgb(188, 205, 212);
     line-height: 1.4;

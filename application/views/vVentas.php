@@ -139,16 +139,17 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
+<!--                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>-->
+                    <?php echo var_dump($this->session); ?>
                 </div>
                 <div class="col-md-7 float-right" align="right">
-                    <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
                     <button type="button" class="btn btn-info btn-sm d-none" id="btnFullScreen">FS</button>
                     <button type="button" class="btn btn-info btn-sm" id="btnBuscar"><span class="fa fa-search"></span> BUSCAR (F2)</button>
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
                     <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
-                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F11)</button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F12)</button>
                 </div>
             </div>
             <hr>
@@ -419,7 +420,7 @@
 
     $(document).ready(function () {
         //Aqui devolver existencias y mandarle dialogo de confimacion
-        shortcut.add("F11", function () {
+        shortcut.add("F1", function () {
             btnCerrarVenta.trigger('click');
         });
         shortcut.add("F2", function () {
@@ -431,6 +432,7 @@
         shortcut.add("F9", function () {
             getClientes();
         });
+
         shortcut.add("ESC", function () {
             btnSalir.trigger('click');
         });
@@ -458,6 +460,7 @@
         getMetodosPago();
         getVendedores();
         handleEnter();
+
 
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
         pnlDatos.find("input[name='TipoDoc']").keyup(function () {
@@ -752,7 +755,18 @@
 
         });
         btnSalir.click(function () {
-            $(location).attr('href', base_url);
+            HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
+            $.ajax({
+                url: master_url + 'onConsultarAcceso',
+                type: "POST"
+            }).done(function (data, x, jq) {
+                $(location).attr('href', base_url);
+                HoldOn.close();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+
+            });
         });
         btnCerrarVenta.click(function () {
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
@@ -825,11 +839,11 @@
                             pnlDatos.find('#Encabezado').addClass('disabledForms');
                             pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
                             btnCancelarVenta.addClass("d-none");
-                            btnCerrarVenta.addClass("d-none"); 
+                            btnCerrarVenta.addClass("d-none");
                             HoldOn.close();
                             swal("SE HA CANCELADO LA VENTA ", {
                                 icon: "success",
-                            }); 
+                            });
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {

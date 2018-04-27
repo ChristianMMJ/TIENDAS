@@ -12,9 +12,15 @@ class Login extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vNavegacion');
-            $this->load->view('vFooter');
+            if ($this->session->userdata['Tipo'] === 'VENDEDOR') {
+                $this->load->view('vEncabezado');
+                $this->load->view('vVentas');
+                $this->load->view('vFooter');
+            } else {
+                $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
+                $this->load->view('vFooter');
+            }
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
@@ -32,11 +38,10 @@ class Login extends CI_Controller {
                     'PASSWORD' => $data[0]->Contrasena,
                     'TIENDA' => $data[0]->Tienda,
                     'TIENDA_NOMBRE' => $data[0]->RazonSocial,
-//                    'Nombre' => $data[0]->Nombre,
-//                    'Apellidos' => $data[0]->Apellidos,
                     'ID' => $data[0]->ID,
                     'LOGGED' => TRUE,
                     'Tipo' => $data[0]->Tipo,
+                    'Ventas' => 0
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);
@@ -63,8 +68,9 @@ class Login extends CI_Controller {
 
     public function onSalir() {
         try {
-            $array_items = array('USERNAME', 'PASSWORD', 'LOGGED');
+            $array_items = array('USERNAME', 'PASSWORD', 'LOGGED', 'TIENDA', 'TIENDA_NOMBRE', 'ID', 'Tipo', 'Ventas');
             $this->session->unset_userdata($array_items);
+            $this->session->sess_destroy();
             header('Location: ' . base_url());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

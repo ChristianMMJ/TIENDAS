@@ -20,8 +20,12 @@ class Ventas extends CI_Controller {
     }
 
     public function index() {
+
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
+
+            $this->session->set_userdata("Ventas", 1);
+
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
                 $this->load->view('vVentas');
                 $this->load->view('vFooter');
@@ -34,6 +38,21 @@ class Ventas extends CI_Controller {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
             $this->load->view('vFooter');
+        }
+    }
+
+    public function onConsultarAcceso() {
+        try {
+            if ($this->session->userdata['Tipo'] === 'VENDEDOR') {
+                $array_items = array('USERNAME', 'PASSWORD', 'LOGGED', 'TIENDA', 'TIENDA_NOMBRE', 'ID', 'Tipo', 'Ventas');
+                $this->session->unset_userdata($array_items);
+                $this->session->sess_destroy();
+                header('Location: ' . base_url());
+            } else {
+                header('Location: ' . base_url());
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
         }
     }
 
@@ -329,7 +348,7 @@ class Ventas extends CI_Controller {
             foreach ($Detalle as $key => $v) {
                 /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA */
                 $existe = $this->ventas_model->onComprobarExistenciaFisica($Tienda, $v->Estilo, $v->Color);
-                PRINT "\nEXISTE EN LA TIENDA $Tienda EL ESTILO " . $v->Estilo . ", COLOR " . $v->Color . ": " . $existe[0]->EXISTE."\n";
+                PRINT "\nEXISTE EN LA TIENDA $Tienda EL ESTILO " . $v->Estilo . ", COLOR " . $v->Color . ": " . $existe[0]->EXISTE . "\n";
                 if ($existe[0]->EXISTE > 0) {
 
                     /* OBTENER SERIE X ESTILO */

@@ -54,7 +54,7 @@
                 ?>
                 <li class="nav-item dropdown">
                     <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-wrench"></i> Mantenimiento
+                        <i class="fa fa-wrench"></i> Catálogos
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <li class="nav-item dropdown dropdown-submenu">
