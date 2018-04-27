@@ -143,6 +143,7 @@
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-info btn-sm d-none" id="btnFullScreen">FS</button>
                     <button type="button" class="btn btn-info btn-sm" id="btnBuscar"><span class="fa fa-search"></span> BUSCAR (F2)</button>
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
@@ -327,7 +328,9 @@
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
                         <div class="row">
-                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2">
+                                Registros<br>
+                                <div id="Registros"><strong>0</strong></div></div>
                             <div class="col-sm-2 text-dark">
                                 Pares<br>
                                 <div id="Pares"><strong>0</strong></div>
@@ -379,6 +382,8 @@
     var btnBuscar = $("#btnBuscar");
     var btnCancelarVenta = $("#btnCancelarVenta");
     var btnFinVenta = $("#btnFinVenta");
+
+    var btnFullScreen = pnlDatos.find("#btnFullScreen");
 
     var currentDate = new Date();
     var nuevo = true;
@@ -445,7 +450,7 @@
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
-        //getRecords();
+
         getNuevoFolio();
         getEstilos();
         getClientes();
@@ -453,7 +458,6 @@
         getMetodosPago();
         getVendedores();
         handleEnter();
-
 
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
         pnlDatos.find("input[name='TipoDoc']").keyup(function () {
@@ -782,7 +786,7 @@
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 swal({
                     title: "Confirmar",
-                    text: "Deseas cancelar la venta?",
+                    text: "Deseas cancelar la venta? *Este proceso afectará las existencias en la tienda*",
                     icon: "warning",
                     buttons: ["Cancelar", "Aceptar"],
                     dangerMode: true
@@ -790,23 +794,49 @@
                     if (willDelete) {
                         HoldOn.open({
                             theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
+                            message: "CANCELANDO..."
                         });
+                        var detalle = [];
+                        /*OBTENER TODAS LAS FILAS*/
+                        $.each(tblDetalleVenta.rows().data(), function () {
+                            /*ID 0| IdEstilo 1| IdColor 2| Estilo 3| Color 4| Talla 5| Cantidad 6| Precio 7| Desc 8| Sub 9| PorDesc 10| Eliminar 11*/
+                            var row = $(this);
+                            detalle.push({
+                                ID: row[0],
+                                Estilo: row[1],
+                                Color: row[2],
+                                Talla: row[5],
+                                Cantidad: row[6]
+                            });
+                        });
+                        var f = new FormData();
+                        f.append('ID', pnlDatos.find("#ID").val());
+                        f.append('Detalle', JSON.stringify(detalle));
                         $.ajax({
-                            url: master_url + 'onCancelar',
+                            url: master_url + 'onCancelarVenta',
                             type: "POST",
-                            data: {
-                                ID: temp
-                            }
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: f
                         }).done(function (data, x, jq) {
-
+                            console.log(data);
+                            pnlDatos.find('#dAfecInv').addClass('disabledForms');
+                            pnlDatos.find('#Encabezado').addClass('disabledForms');
+                            pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
+                            btnCancelarVenta.addClass("d-none");
+                            btnCerrarVenta.addClass("d-none"); 
+                            HoldOn.close();
+                            swal("SE HA CANCELADO LA VENTA ", {
+                                icon: "success",
+                            }); 
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
                             HoldOn.close();
                         });
                     }
-                });
+                });/*FIN SWAL*/
             } else {
                 swal("INFO", "LA VENTA NO EXISTE", 'warning');
             }
@@ -815,7 +845,6 @@
             getEstilosExt();
             $('#mdlInfoExistencia').modal('show');
         });
-
     });
 
     function limpiarCampos() {
@@ -824,9 +853,7 @@
         $("[name='Combinacion']")[0].selectize.clear(true);
         $("[name='Combinacion']")[0].selectize.clearOptions();
         $.each(pnlControlesDetalle.find("input"), function () {
-
             $(this).val('');
-
         });
     }
     /*AGREGAR ESTILO-COLOR*/
@@ -946,7 +973,7 @@
                     td.eq(10).addClass("d-none");
 
                 });
-                pnlDatosDetalle.find("#tblRegistrosDetalle").DataTable(tblInicial);
+                tblDetalleVenta = pnlDatosDetalle.find("#tblRegistrosDetalle").DataTable(tblInicial);
                 //Sombreado de la fila
                 pnlDatosDetalle.find('#tblRegistrosDetalle tbody tr').on('click', 'td:not(:eq(11))', function () {
                     $("#tblRegistrosDetalle tbody tr").removeClass("success");
@@ -1217,6 +1244,7 @@
         ImporteTotal = total;
         onModificarImporte(IdMov, ImporteTotal);
         if (pnlDatosDetalle.find("#tblRegistrosDetalle > tbody > tr").length >= 1) {
+            pnlDatosDetalle.find("#Registros").find("strong").text(pnlDatosDetalle.find("#tblRegistrosDetalle > tbody > tr").length);
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#Descuento").find("strong").text('$' + $.number(descuento, 2, '.', ','));
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));

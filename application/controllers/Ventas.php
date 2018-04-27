@@ -20,7 +20,6 @@ class Ventas extends CI_Controller {
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR"))) {
                 $this->load->view('vEncabezado');
@@ -307,6 +306,50 @@ class Ventas extends CI_Controller {
             extract($this->input->post());
             $data = $this->tiendas_model->getTiendas();
             print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCancelarVenta() {
+        try {
+            /* OBTENER LA TIENDA DEL USUARIO ACTUAL */
+            $Tienda = $this->session->userdata('TIENDA');
+
+            /* CANCELAR VENTA */
+            $update = $this->db;
+            $update->where('ID', $this->input->post("ID"));
+            $update->update("sz_Ventas", array('Estatus' => 'CANCELADO'));
+            /* FIN CANCELAR VENTA */
+
+            /* OBTENER EL DETALLE DE LAS EXISTENCIAS */
+            $Detalle = json_decode($this->input->post("Detalle"));
+
+            /* DEVOLVER LAS EXISTENCIAS A SU REGISTRO CORRESPONDIENTE */
+            foreach ($Detalle as $key => $v) {
+                /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA */
+                $existe = $this->ventas_model->onComprobarExistenciaFisica($Tienda, $v->Estilo, $v->Color);
+                PRINT "\nEXISTE EN LA TIENDA $Tienda EL ESTILO " . $v->Estilo . ", COLOR " . $v->Color . ": " . $existe[0]->EXISTE."\n";
+                if ($existe[0]->EXISTE > 0) {
+
+                    /* OBTENER SERIE X ESTILO */
+                    $serie = $this->ventas_model->getSerieXEstilo($v->Estilo);
+
+                    for ($index = 1; $index <= 22; $index++) {
+                        /* OBTENER LAS EXISTENCIAS POR TIENDA, ESTILO Y COLOR/COMBINACION */
+                        $existencias = $this->ventas_model->getExistenciasXTiendaXEstiloXColor($Tienda, $v->Estilo, $v->Color);
+
+                        if ($serie[0]->{"T$index"} > 0 &&
+                                $serie[0]->{"T$index"} == $v->Talla) {
+                            /* SUMAR LA CANTIDAD EN LA TALLA A LA TIENDA */
+                            $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
+                            /* AGREGAR EXISTENCIAS A LA TIENDA */
+                            $this->ventas_model->onModificarExistencias($Tienda, $v->Estilo, $v->Color, $existencia, $index);
+                        }
+                    }
+                }
+                /* FIN DEVOLVER LAS EXISTENCIAS A SU REGISTRO CORRESPONDIENTE */
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

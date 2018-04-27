@@ -9,26 +9,26 @@ class ventas_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
-    
-    public function onCrearFolio($Tp){
+
+    public function onCrearFolio($Tp) {
         try {
-             $this->db->select('MAX(U.FolioTienda) As FolioTienda ', false);
+            $this->db->select('MAX(U.FolioTienda) As FolioTienda ', false);
             $this->db->from('sz_Ventas AS U');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->where('U.TipoDoc',$Tp);
+            $this->db->where('U.TipoDoc', $Tp);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-        //print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-        }
-    
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Ventas", $array);
@@ -122,7 +122,6 @@ class ventas_model extends CI_Model {
                     . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
                     . 'VD.Talla AS Talla,'
                     . 'VD.Cantidad AS Cantidad,'
-                    
                     . "  ''+ CONVERT(varchar, CAST(VD.Precio AS money), 1) AS Precio, "
                     . "  '$'+ CONVERT(varchar, CAST(VD.Descuento AS money), 1) AS 'Desc', "
                     . "  '$'+ CONVERT(varchar, CAST(VD.Subtotal AS money), 1) AS Sub, "
@@ -138,7 +137,6 @@ class ventas_model extends CI_Model {
 //                    . "REPLACE(LTRIM(REPLACE(VD.Talla, '0', ' ')), ' ', '0') +','+ "
 //                    . "REPLACE(LTRIM(REPLACE(VD.Cantidad, '0', ' ')), ' ', '0')      "
 //                    . "+')  ''></span>' AS Eliminar "
-                    
                     . " "
                     . '', false);
             $this->db->from('sz_VentasDetalle AS VD');
@@ -172,6 +170,83 @@ class ventas_model extends CI_Model {
              */
             $str = $this->db->last_query();
 //            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getExistenciasXTiendaXEstiloXColor($TIENDA, $ESTILO, $COLOR) {
+        try {
+            $this->db->select("EX.Ex1       ,EX.Ex2      ,EX.Ex3      ,EX.Ex4      ,EX.Ex5      ,EX.Ex6
+      ,EX.Ex7      ,EX.Ex8      ,EX.Ex9      ,EX.Ex10      ,EX.Ex11      ,EX.Ex12      ,EX.Ex13      ,EX.Ex14
+      ,EX.Ex15      ,EX.Ex16      ,EX.Ex17      ,EX.Ex18      ,EX.Ex19      ,EX.Ex20      ,EX.Ex21      ,EX.Ex22, EX.Precio, EX.PrecioMenudeo, EX.PrecioMayoreo", false);
+            $this->db->from('sz_Existencias AS EX');
+            $this->db->where('EX.Tienda', $TIENDA);
+            $this->db->where('EX.Estilo', $ESTILO);
+            $this->db->where('EX.Color', $COLOR);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXEstilo($ESTILO) {
+        try {
+            $this->db->select("S.T1,S.T2,S.T3,S.T4,S.T5,
+                S.T6,S.T7,S.T8,S.T9,S.T10,S.T11,S.T12,S.T13,S.T14,S.T15,
+                S.T16,S.T17,S.T18,S.T19,S.T20,S.T21,S.T22", false);
+            $this->db->from('sz_Estilos AS E');
+            $this->db->join('sz_Series AS S', 'E.Serie = S.ID');
+            $this->db->where('E.ID', $ESTILO);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarExistencias($Tienda, $Estilo, $Color, $data, $index) {
+        try {
+            $this->db->where('Tienda', $Tienda);
+            $this->db->where('Estilo', $Estilo);
+            $this->db->where('Color', $Color);
+            $this->db->set("Ex$index", $data);
+            $this->db->update("sz_Existencias");
+
+            $str = $this->db->last_query();
+//            print $str;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarExistenciaFisica($TIENDA, $ESTILO, $COLOR) {
+        try {
+            $this->db->select("COUNT(*) AS EXISTE", false);
+            $this->db->from('sz_Existencias AS EX');
+            $this->db->where('EX.Tienda', $TIENDA);
+            $this->db->where('EX.Estilo', $ESTILO);
+            $this->db->where('EX.Color', $COLOR);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
