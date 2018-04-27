@@ -5,7 +5,7 @@
                 <legend class="float-left">Gestión de Clientes</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
+                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -16,7 +16,7 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
@@ -35,30 +35,30 @@
                         <input type="text" class="" id="ID" name="ID" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Clave">Clave*</label>  
+                        <label for="Clave">Clave*</label>
                         <input type="text" class=" form-control form-control-sm " maxlength="50" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
-                        <label for="RazonSocial">Razon Social*</label>  
+                        <label for="RazonSocial">Razon Social*</label>
                         <input type="text" class=" form-control form-control-sm" maxlength="500" id="RazonSocial" name="RazonSocial" required >
                     </div>
                     <div class="col-sm">
-                        <label for="RFC">RFC*</label>  
+                        <label for="RFC">RFC*</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="15" id="RFC" name="RFC" required >
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="col-sm">
-                        <label for="Direccion">Dirección*</label>  
+                        <label for="Direccion">Dirección*</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="150"  id="Direccion" name="Direccion" required >
                     </div>
                     <div class="col-sm">
-                        <label for="NoExt">Num. Ext*</label>  
+                        <label for="NoExt">Num. Ext*</label>
                         <input type="text" class="form-control form-control-sm" maxlength="10"  id="NoExt" name="NoExt"  required>
                     </div>
                     <div class="col-sm">
-                        <label for="NoInt">Num. Int.</label>  
+                        <label for="NoInt">Num. Int.</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="10"  id="NoInt" name="NoInt"  >
                     </div>
 
@@ -66,16 +66,16 @@
                 <div class="row">
 
                     <div class="col-sm">
-                        <label for="Colonia">Colonia</label>  
+                        <label for="Colonia">Colonia</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Colonia" name="Colonia"  >
                     </div>
                     <div class="col-sm">
-                        <label for="Ciudad">Ciudad</label>  
+                        <label for="Ciudad">Ciudad</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Ciudad" name="Ciudad"  >
                     </div>
                     <div class="col-sm">
-                        <label for="Estado">Estado</label>   
-                        <select class="form-control form-control-sm "  id="Estado" name="Estado" > 
+                        <label for="Estado">Estado</label>
+                        <select class="form-control form-control-sm "  id="Estado" name="Estado" >
                             <option value=""></option>
                             <option value="Aguascalientes">Aguascalientes</option>
                             <option value="Baja California">Baja California</option>
@@ -114,50 +114,50 @@
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Pais">País</label>  
+                        <label for="Pais">País</label>
                         <input type="text" class="form-control form-control-sm"  maxlength="60"  id="Colonia" name="Colonia"  >
                     </div>
                     <div class="col-sm">
-                        <label for="CP">Código Postal</label>  
+                        <label for="CP">Código Postal</label>
                         <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"  id="CP" name="CP"  >
                     </div>
                     <div class="col-sm">
-                        <label for="Telefono">Teléfono</label>  
+                        <label for="Telefono">Teléfono</label>
                         <input type="tel" class="form-control form-control-sm"  maxlength="15"  id="Telefono" name="Telefono"  >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Correo">Correo</label>  
+                        <label for="Correo">Correo</label>
                         <input type="email" class="form-control form-control-sm"  maxlength="60"  id="Correo" name="Correo"  >
                     </div>
                     <div class="col-sm">
-                        <label for="LimiteCredito">Límite de Crédito</label>  
+                        <label for="LimiteCredito">Límite de Crédito</label>
                         <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"  id="LimiteCredito" name="LimiteCredito"  >
                     </div>
                     <div class="col-sm">
-                        <label for="PlazoPagos">Plazo Pagos</label>  
+                        <label for="PlazoPagos">Plazo Pagos</label>
                         <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"  id="PlazoPagos" name="PlazoPagos"  >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="RegimenFiscal">Regimen Fiscal</label>
-                        <select class="form-control form-control-sm"  name="RegimenFiscal" > 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm"  name="RegimenFiscal" >
+                            <option value=""></option>
                         </select>
                     </div>
-                </div> 
+                </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="Estatus" required="">
+                            <option value=""></option>
                             <option>ACTIVO</option>
-                            <option>INACTIVO</option> 
+                            <option>INACTIVO</option>
                         </select>
                     </div>
-                </div> 
+                </div>
                 <!-- FOTO -->
                 <div for="" align="center">
                     <br>
@@ -173,8 +173,8 @@
                 </div>
                 <!-- FIN FOTO -->
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 <!--SCRIPT-->
 <script>

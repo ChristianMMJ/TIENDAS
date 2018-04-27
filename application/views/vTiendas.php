@@ -8,7 +8,7 @@
                 <?php
                 if (in_array($this->session->userdata["Tipo"], array("SISTEMAS"))) {
                     ?>
-                    <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
+                    <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
                 <?php } ?>
             </div>
         </div>
