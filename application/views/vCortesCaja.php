@@ -193,10 +193,10 @@
                         <table id="tblDetalle" class="table table-sm" width="100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">Folio Venta</th>
+                                    <th scope="col">Documento</th>
                                     <th scope="col">Fecha</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">SubTotal</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Importe</th>
                                     <th scope="col" class="d-none">IDR</th>
                                 </tr>
                             </thead>
@@ -235,10 +235,10 @@
         "deferRender": true,
         "scrollY": 220,
         "scrollCollapse": true,
-        "bSort": true,
-        "aaSorting": [
-            [0, 'asc']/*ID*/
-        ],
+        "bSort": false,
+//        "aaSorting": [
+//            [0, 'asc']/*ID*/
+//        ],
         "columnDefs": [
             {
                 "targets": [4],
@@ -385,7 +385,8 @@
                                 var row = $(this).find("td");
                                 //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
                                 var material = {
-                                    ID: row.eq(4).text().replace(/\s+/g, '')
+                                    ID: row.eq(4).text().replace(/\s+/g, ''),
+                                    Tipo: row.eq(2).text().replace(/\s+/g, '')
                                 };
                                 //Se mete el objeto al arreglo
                                 detalle.push(material);
@@ -447,7 +448,7 @@
             $.getJSON(master_url + 'getDetalleNuevo', {}).done(function (data, x, jq) {
                 $.each(data, function (k, v) {
                     tblDetalleCorteCaja.row.add([
-                        v.Folio,
+                        v.Documento,
                         v.Fecha,
                         v.Cliente,
                         "$" + $.number(v.Importe, 2, '.', ','),
@@ -567,6 +568,7 @@
                             }
                         }).done(function (data, x, jq) {
                             pnlDatos.find("input").val("");
+
                             btnGuardar.addClass('d-none');
                             $('#Encabezado').addClass('disabledForms');
                             $.each(pnlDatos.find("select"), function (k, v) {
@@ -583,18 +585,24 @@
                                 tblDetalleCorteCaja.destroy();
                                 pnlDatosDetalle.find("#tblDetalle > tbody").html("");
                             }
+                            var Saldo = parseFloat(data[0].Saldo);
                             tblDetalleCorteCaja = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                             /*DETALLE*/
+                            var TotalTabla = 0;
                             $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data, x, jq) {
                                 $.each(data, function (k, v) {
                                     tblDetalleCorteCaja.row.add([
-                                        v.Folio,
+                                        v.Documento,
                                         v.Fecha,
                                         v.Cliente,
                                         "$" + $.number(v.Importe, 2, '.', ','),
                                         v.ID
                                     ]).draw(false);
+                                    //Calcular Diferencia
+                                    TotalTabla += parseFloat(v.Importe);
                                 });
+                                var Diferencia = parseFloat(Saldo) - parseFloat(TotalTabla);
+                                pnlDatos.find("#Diferencia").find("strong").text('$' + $.number(Diferencia, 2, '.', ','));
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {

@@ -13,20 +13,18 @@ class compras_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento ,"
-                    
                     . "(CASE WHEN  U.Estatus ='ACTIVO' "
                     . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN TRANSITO','</span>') "
                     . "WHEN  U.Estatus ='AFECTADO' "
                     . "THEN CONCAT('<span class=''badge badge-success'' style=''font-size: 15px;''>','ENTRADA','</span>') "
                     . "END) AS Estatus ,"
-                    
                     . "T.Clave + '-'+T.RazonSocial AS 'Tienda' ,"
                     . "U.FechaMov as 'Fecha Movimiento ', "
                     . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Compras AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->where_in('U.Estatus', array('AFECTADO','ACTIVO'));
+            $this->db->where_in('U.Estatus', array('AFECTADO', 'ACTIVO'));
             $this->db->order_by("U.DocMov", "ASC");
             $query = $this->db->get();
             /*

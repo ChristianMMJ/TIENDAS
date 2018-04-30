@@ -260,6 +260,7 @@
                             message: "GUARDANDO DATOS..."
                         });
                         var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
+
                         if (nuevo) {
                             /*AGREGAR DETALLE*/
                             var detalle = [];
@@ -282,6 +283,7 @@
                             });
                             //Convertimos a cadena el objeto en formato json
                             f.append('Detalle', JSON.stringify(detalle));
+                            f.append('Importe', ImporteTotal);
                             $.ajax({
                                 url: master_url + 'onAgregar',
                                 type: "POST",
@@ -575,11 +577,16 @@
         pnlControlesDetalle.find('#Concepto').focus();
     }
 
+
+
+    var ImporteTotal = 0;
     function onCalcularMontos() {
         var total = 0.0;
         $.each(tblDetalleGasto.rows().data(), function () {
             total += getNumberFloat($(this)[3]);
         });
+        //Seteamos la variableGlobalDelTotal
+        ImporteTotal = total;
         if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }

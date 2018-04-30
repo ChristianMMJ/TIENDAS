@@ -55,10 +55,28 @@ class cortesCaja_model extends CI_Model {
         }
     }
 
-    public function onModificarDetalle($ID, $DATA) {
+    public function onModificarGastos($ID, $DATA) {
+        try {
+            $this->db->where('ID', $ID);
+            $this->db->update("sz_Gastos", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarVentas($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
             $this->db->update("sz_Ventas", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarDiversos($ID, $DATA) {
+        try {
+            $this->db->where('ID', $ID);
+            $this->db->update("sz_Diversos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,6 +87,26 @@ class cortesCaja_model extends CI_Model {
             $this->db->where('CorteCaja', $ID);
             $this->db->set('CorteCaja', 'NULL', false);
             $this->db->update("sz_Ventas");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarCorteCajaGastos($ID) {
+        try {
+            $this->db->where('CorteCaja', $ID);
+            $this->db->set('CorteCaja', 'NULL', false);
+            $this->db->update("sz_Gastos");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarCorteCajaDiversos($ID) {
+        try {
+            $this->db->where('CorteCaja', $ID);
+            $this->db->set('CorteCaja', 'NULL', false);
+            $this->db->update("sz_Diversos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,17 +143,44 @@ class cortesCaja_model extends CI_Model {
 
     public function getDetalleNuevo() {
         try {
-            $this->db->select(" U.FolioTienda AS Folio,U.FechaCreacion AS Fecha, CT.RazonSocial AS 'Cliente', U.Importe  ,U.ID ", false);
-            $this->db->from('sz_Ventas AS U');
-            $this->db->join('sz_Clientes AS CT', 'U.Cliente = CT.ID', 'left');
-            $this->db->where('U.Estatus', 'CERRADA');
-            $this->db->where('U.CorteCaja IS NULL');
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->order_by('U.FolioTienda', 'ASC');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
+            $query = $this->db->query("
+SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, 'VENTA: '+ CT.RazonSocial AS Cliente,V.Importe, V.ID
+FROM sz_Ventas V
+left join sz_Clientes CT ON CT.ID = v.Cliente
+WHERE V.Estatus = 'CERRADA'
+AND V.CorteCaja IS NULL
+AND V.Tienda = " . $this->session->userdata('TIENDA') . "
+
+UNION
+
+SELECT G.DocMov AS Documento, G.FechaCreacion AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
+FROM sz_Gastos G
+WHERE G.Estatus = 'ACTIVO'
+AND G.CorteCaja IS NULL
+AND G.Tienda = " . $this->session->userdata('TIENDA') . "
+
+UNION
+
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, D.Importe, D.ID
+FROM sz_Diversos D
+WHERE D.Estatus = 'ACTIVO'
+AND D.CorteCaja IS NULL
+AND D.Concepto ='ENTRADA'
+AND D.Tienda = " . $this->session->userdata('TIENDA') . "
+
+UNION
+
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, -D.Importe, D.ID
+FROM sz_Diversos D
+WHERE D.Estatus = 'ACTIVO'
+AND D.CorteCaja IS NULL
+AND D.Concepto ='RETIRO'
+AND D.Tienda = " . $this->session->userdata('TIENDA') . "
+
+
+
+ORDER BY FechaCreacion DESC ");
+
             $str = $this->db->last_query();
             $data = $query->result();
             return $data;
@@ -126,17 +191,44 @@ class cortesCaja_model extends CI_Model {
 
     public function getDetalleByID($ID) {
         try {
-            $this->db->select(" U.FolioTienda AS Folio,U.FechaCreacion AS Fecha, CT.RazonSocial AS 'Cliente', U.Importe  ,U.ID ", false);
-            $this->db->from('sz_Ventas AS U');
-            $this->db->join('sz_Clientes AS CT', 'U.Cliente = CT.ID', 'left');
-            $this->db->where_in('U.Estatus', 'CERRADA');
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->where('U.CorteCaja', $ID);
-            $this->db->order_by('U.FolioTienda', 'ASC');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
+            $query = $this->db->query("
+SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, 'VENTA: '+ CT.RazonSocial AS Cliente,V.Importe, V.ID
+FROM sz_Ventas V
+left join sz_Clientes CT ON CT.ID = v.Cliente
+WHERE V.Estatus = 'CERRADA'
+AND V.CorteCaja = " . $ID . "
+AND V.Tienda = " . $this->session->userdata('TIENDA') . "
+
+
+UNION
+
+SELECT G.DocMov AS Documento, G.FechaCreacion AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
+FROM sz_Gastos G
+WHERE G.Estatus = 'ACTIVO'
+AND G.CorteCaja = " . $ID . "
+AND G.Tienda = " . $this->session->userdata('TIENDA') . "
+
+UNION
+
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, D.Importe, D.ID
+FROM sz_Diversos D
+WHERE D.Estatus = 'ACTIVO'
+AND D.CorteCaja = " . $ID . "
+AND D.Concepto ='ENTRADA'
+AND D.Tienda = " . $this->session->userdata('TIENDA') . "
+
+UNION
+
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, -D.Importe, D.ID
+FROM sz_Diversos D
+WHERE D.Estatus = 'ACTIVO'
+AND D.CorteCaja = " . $ID . "
+AND D.Concepto ='RETIRO'
+AND D.Tienda = " . $this->session->userdata('TIENDA') . "
+
+
+ORDER BY FechaCreacion DESC ");
+
             $str = $this->db->last_query();
             $data = $query->result();
             return $data;

@@ -71,8 +71,6 @@ class CortesCaja extends CI_Controller {
 
     public function onAgregar() {
         try {
-
-
             $data = array(
                 'Tienda' => $this->session->userdata('TIENDA'),
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
@@ -87,7 +85,19 @@ class CortesCaja extends CI_Controller {
                 $data = array(
                     'CorteCaja' => $ID
                 );
-                $this->cortesCaja_model->onModificarDetalle($v->ID, $data);
+
+                if ($v->Tipo === 'GASTO') {
+                    $this->cortesCaja_model->onModificarGastos($v->ID, $data);
+                }
+
+                if (strpos($v->Tipo, 'ENTRADA') !== false) {
+                    $this->cortesCaja_model->onModificarDiversos($v->ID, $data);
+                }
+                if (strpos($v->Tipo, 'RETIRO') !== false) {
+                    $this->cortesCaja_model->onModificarDiversos($v->ID, $data);
+                } else {
+                    $this->cortesCaja_model->onModificarVentas($v->ID, $data);
+                }
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -99,6 +109,8 @@ class CortesCaja extends CI_Controller {
             extract($this->input->post());
             $this->cortesCaja_model->onEliminar($ID);
             $this->cortesCaja_model->onEliminarCorteCajaVentas($ID);
+            $this->cortesCaja_model->onEliminarCorteCajaGastos($ID);
+            $this->cortesCaja_model->onEliminarCorteCajaDiversos($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

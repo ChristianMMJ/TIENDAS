@@ -15,6 +15,7 @@ class gastos_model extends CI_Model {
             $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento ,"
                     . "T.Clave + '-'+T.RazonSocial AS 'Tienda' ,"
                     . "U.FechaMov as 'Fecha Movimiento ', "
+                    . "'<strong>$'+CONVERT(varchar, CAST(U.Importe AS money), 1)+'</strong>' AS Importe , "
                     . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Gastos AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
