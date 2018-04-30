@@ -148,7 +148,7 @@
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
                     <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
-                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F12)</button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> CERRAR VENTA (F1)</button>
                 </div>
             </div>
             <hr>
@@ -391,6 +391,11 @@
     var currentDate = new Date();
     var nuevo = true;
     var IdMov = 0;
+    var AddCodigoBarras = false;
+    var EstiloCB = 0;
+    var ColorCB = 0;
+    var TallaCB = 0;
+    var PrecioCB = 0;
 
     /*DATATABLE GLOBAL*/
     var tblDetalleVenta;
@@ -595,6 +600,44 @@
                 }
             }
         });
+
+        //Agrega con codigo barras
+        pnlControlesDetalle.find("[name='CodigoBarras']").blur(function () {
+
+            EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
+            ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
+            TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
+
+            if (EstiloCB > 0 && ColorCB > 0 && TallaCB > 0) {
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                $.ajax({
+                    url: master_url + 'getExistenciasXEstiloXCombinacion',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        Estilo: EstiloCB,
+                        Combinacion: ColorCB
+                    }
+                }).done(function (data, x, jq) {
+                    if (data.length > 0) {
+                        var existencias = data[0];
+                        PrecioCB = existencias.PrecioMenudeo;
+                        AddCodigoBarras = true;
+
+                        btnGuardar.trigger('click');
+                        $("[name='CodigoBarras']").val('');
+                        $("[name='CodigoBarras']").focus();
+
+                    } else {
+                    }
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        });
+
         //Inserta Detalle y guarda el movimiento
         pnlControlesDetalle.find("#btnAgregarDetalle").click(function () {
             var Estilo = pnlControlesDetalle.find("[name='Estilo']");
@@ -606,6 +649,7 @@
             if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
                     && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0)
             {
+                AddCodigoBarras = false;
                 //Guarda Movimiento
                 btnGuardar.trigger('click');
             } else {
@@ -775,7 +819,12 @@
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         //Agregar renglon Detalle
-                        onAgregarFila(IdMov);
+                        if (AddCodigoBarras) {
+                            onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                        } else {
+                            onAgregarFila(IdMov);
+                        }
+
                         onSacarExistenciasInventario();
                         //Limpiar los campos del detalle
                         limpiarCampos();
@@ -801,7 +850,11 @@
                         pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         //Agregar renglon Detalle
-                        onAgregarFila(IdMov);
+                        if (AddCodigoBarras) {
+                            onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                        } else {
+                            onAgregarFila(IdMov);
+                        }
                         onSacarExistenciasInventario();
                         //Limpiar los campos del detalle
                         limpiarCampos();
@@ -932,7 +985,7 @@
             $(this).val('');
         });
     }
-    /*AGREGAR ESTILO-COLOR*/
+    /*AGREGAR DETALLE NORMAL*/
     function onAgregarFila(MovID) {
         var Estilo = pnlControlesDetalle.find("[name='Estilo']");
         var Combinacion = pnlControlesDetalle.find("[name='Combinacion']");
@@ -992,6 +1045,90 @@
                 frm.append('Precio', Costo.val());
                 frm.append('Descuento', descuentoCalculado);
                 frm.append('Subtotal', ((Cantidad.val() * Costo.val()) - descuentoCalculado));
+                frm.append('PorcentajeDesc', Desc.val());
+
+                $.ajax({
+                    url: master_url + 'onAgregarDetalle',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: frm
+                }).done(function (data, x, jq) {
+                    getDetallebyID(MovID);
+                    HoldOn.close();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        } else {
+            onNotify('<span class="fa fa-times fa-lg"></span>', 'DEBE DE ESTABLECER UN TIPO', 'danger');
+            pnlDatos.find("input[name='TipoDoc']").focus();
+        }
+    }
+
+    /*AGREGAR DETALLE CB*/
+    function onAgregarFilaCB(MovID, Estilo, Combinacion, Talla, Costo) {
+        var Estilo = Estilo;
+        var Combinacion = Combinacion;
+        var Costo = Costo;
+        var Desc = pnlControlesDetalle.find("[name='Descuento']");
+        var Talla = Talla;
+        var Cantidad = 1;
+        if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
+            /*COMPROBAR ESTILO, COMBINACION Y TALLA*/
+            var estilo_combinacion_existen = false;
+            if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
+                $.each(pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr"), function () {
+                    var idDetalle = $(this).find("td").eq(0).text();
+                    var estilo = $(this).find("td").eq(1).text();
+                    var combinacion = $(this).find("td").eq(2).text();
+                    var talla = $(this).find("td").eq(5).text();
+                    var CantidadActual = $(this).find("td").eq(6).text();
+                    var Precio = $(this).find("td").eq(7).text();
+                    var PorcenDesc = $(this).find("td").eq(10).text();
+                    if (parseFloat(estilo) === parseFloat(Estilo) && parseFloat(combinacion) === parseFloat(Combinacion) && parseFloat(talla) === parseFloat(Talla)) {
+                        estilo_combinacion_existen = true;
+                        //Actualizar Cantidad
+                        var CantidadNueva = parseFloat(Cantidad) + parseFloat(CantidadActual);
+                        var DescuentoNuevo = (parseFloat(Precio) * (PorcenDesc / 100)) * CantidadNueva;
+                        var SubtotalNueva = parseFloat(Precio) * parseFloat(CantidadNueva) - DescuentoNuevo;
+
+                        $.ajax({
+                            url: master_url + 'onModificarDetalle',
+                            type: "POST",
+                            data: {
+                                ID: idDetalle,
+                                Cantidad: CantidadNueva,
+                                Descuento: DescuentoNuevo,
+                                Subtotal: SubtotalNueva
+                            }
+                        }).done(function (data, x, jq) {
+                            getDetallebyID(MovID);
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                        return false;
+                    }
+                });
+            }
+            /*VALIDAR QUE EXISTA*/
+            if (!estilo_combinacion_existen) {
+                var descuentoCalculado = 0;
+                descuentoCalculado = (Costo * (Desc.val() / 100)) * Cantidad;
+                var frm = new FormData();
+                frm.append('Venta', MovID);
+                frm.append('Estilo', Estilo);
+                frm.append('Color', Combinacion);
+                frm.append('Talla', Talla);
+                frm.append('Cantidad', Cantidad);
+                frm.append('Precio', Costo);
+                frm.append('Descuento', descuentoCalculado);
+                frm.append('Subtotal', ((Cantidad * Costo) - descuentoCalculado));
                 frm.append('PorcentajeDesc', Desc.val());
 
                 $.ajax({
@@ -1949,10 +2086,10 @@
             onNotify('<span class="fa fa-exclamation fa-lg"></span>', tf, 'danger');
         }
     }
-    
+
     function onSeleccionarTodos()
     {
-       mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']") = true;
+        mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']") = true;
     }
 </script>
 <style>
