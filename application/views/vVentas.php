@@ -143,7 +143,7 @@
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
-                    <button type="button" class="btn btn-info btn-sm d-none" id="btnFullScreen">FS</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnDevolucion"><span class="fa fa-arrow-left"></span> DEVOLUCIÓN</button>
                     <button type="button" class="btn btn-info btn-sm" id="btnBuscar"><span class="fa fa-search"></span> BUSCAR (F2)</button>
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
@@ -383,6 +383,9 @@
     var btnCancelarVenta = $("#btnCancelarVenta");
     var btnFinVenta = $("#btnFinVenta");
 
+    var btnDevolucion = pnlDatos.find("#btnDevolucion");
+    var mdlDevolucion = $("#mdlDevolucion");
+
     var btnFullScreen = pnlDatos.find("#btnFullScreen");
 
     var currentDate = new Date();
@@ -417,9 +420,66 @@
         "bSort": true
     };
     var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
+    var btnCancelarAtras = mdlDevolucion.find("#btnCancelarAtras");
+    var btnSiguiente = mdlDevolucion.find("#btnSiguiente");
 
     $(document).ready(function () {
+        btnSiguiente.click(function () {
+            var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
+            if (dt.length > 0) {
+                $.each(dt, function (k, v) {
 
+                });
+            } else {
+                swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
+                onBeep(2);
+            }
+        });
+
+        mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('click', 'tr', function () {
+            mdlDevolucion.find("#tblDevolucionesDetalle  tbody  tr").removeClass("success");
+            $(this).addClass("success");
+            var row_data = tblDevolucionesDetalle.row(this).data();
+        });
+
+        mdlDevolucion.find('#tblDevoluciones > tbody').on('click', 'tr', function () {
+            mdlDevolucion.find("#tblDevoluciones  tbody  tr").removeClass("success");
+            $(this).addClass("success");
+            var row_data = tblDevoluciones.row(this).data();
+        });
+        mdlDevolucion.find('#tblDevoluciones > tbody').on('dblclick', 'tr', function () {
+            mdlDevolucion.find("#tblDevoluciones  tbody  tr").removeClass("success");
+            $(this).addClass("success");
+            var row_data = tblDevoluciones.row(this).data();
+        });
+
+        btnCancelarAtras.click(function () {
+            mdlDevolucion.find('#FechaInicial').parent().removeClass("d-none");
+            mdlDevolucion.find('#FechaFinal').parent().removeClass("d-none");
+            mdlDevolucion.find("#Devoluciones").removeClass("d-none");
+            mdlDevolucion.find("#btnBuscarPorFechas").removeClass("d-none");
+            mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
+            mdlDevolucion.find("#btnSiguiente").addClass("d-none");
+            mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
+            mdlDevolucion.find("#SubtotaPie").addClass("d-none");
+            btnCancelarAtras.addClass('d-none');
+            mdlDevolucion.find("#FechaInicial").removeClass('d-none');
+            mdlDevolucion.find("#FechaFinal").removeClass('d-none');
+            getVentasDevolucion();
+        });
+
+        mdlDevolucion.on('shown.bs.modal', function () {
+            getVentasDevolucion();
+            mdlDevolucion.find("#FechaInicial").removeClass('d-none');
+            mdlDevolucion.find("#FechaFinal").removeClass('d-none');
+            btnCancelarAtras.addClass('d-none');
+            mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
+            mdlDevolucion.find("#SubtotaPie").addClass("d-none");
+        });
+
+        btnDevolucion.click(function () {
+            mdlDevolucion.modal('show');
+        });
 
         //Aqui devolver existencias y mandarle dialogo de confimacion
         shortcut.add("F1", function () {
@@ -1734,7 +1794,166 @@
             $(':input:text:enabled:visible:first').focus();
         }
     }
+    var tblDevoluciones;
+    function getVentasDevolucion() {
 
+        mdlDevolucion.find("#Devoluciones").removeClass("d-none");
+        mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
+        if ($.fn.DataTable.isDataTable('#tblDevoluciones')) {
+            mdlDevolucion.find('#tblDevoluciones').DataTable().destroy();
+        }
+        HoldOn.open({
+            theme: 'sk-bounce',
+            message: 'CARGANDO...'
+        });
+        $.getJSON(base_url + 'index.php/Devoluciones/getVentas').done(function (data) {
+            var rows;
+            $.each(data, function (k, v) {
+                rows += '<tr>';
+                rows += '<td>' + v.ID + '</td>';
+                rows += '<td>' + v.TIENDA + '</td>';
+                rows += '<td>' + v.FOLIO + '</td>';
+                rows += '<td>' + v.CLIENTE + '</td>';
+                rows += '<td>' + v["FECHA DE CREACION"] + '</td>';
+                rows += '<td>' + v.IMPORTE + '</td>';
+                rows += '<td>' + v.ACCIONES + '</td>';
+                rows += '</tr>';
+            });
+            mdlDevolucion.find('#tblDevoluciones > tbody').html(rows);
+            tblDevoluciones = mdlDevolucion.find('#tblDevoluciones').DataTable(tableOptions);
+            tblDevoluciones.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    var tblDevolucionesDetalle;
+    function getVentaXID(e) {
+        var tr = $(e).parent().parent();
+        btnCancelarAtras.removeClass('d-none');
+        mdlDevolucion.find("#SubtotalEncabezado").removeClass("d-none");
+        mdlDevolucion.find("#SubtotaPie").removeClass("d-none");
+        HoldOn.open({
+            theme: 'sk-bounce',
+            message: 'CARGANDO...'
+        });
+        $.getJSON(base_url + 'index.php/Devoluciones/getVentaXID', {ID: parseInt(tr.find("td ").eq(0).text())}).done(function (data) {
+            mdlDevolucion.find('#DevolucionesDetalle').removeClass("d-none");
+            mdlDevolucion.find('#FechaInicial').parent().addClass("d-none");
+            mdlDevolucion.find('#FechaFinal').parent().addClass("d-none");
+            mdlDevolucion.find('#Devoluciones').addClass("d-none");
+            mdlDevolucion.find('#btnBuscarPorFechas').addClass("d-none");
+            mdlDevolucion.find('#btnSiguiente').removeClass("d-none");
+            if ($.fn.DataTable.isDataTable('#tblDevoluciones')) {
+                mdlDevolucion.find('#tblDevoluciones').DataTable().destroy();
+            }
+            if ($.fn.DataTable.isDataTable('#tblDevolucionesDetalle')) {
+                mdlDevolucion.find('#tblDevolucionesDetalle').DataTable().destroy();
+            }
+            var rows;
+            $.each(data, function (k, v) {
+                rows += '<tr>';
+                rows += '<td>' + v.ID + '</td>';
+                rows += '<td>' + v.ESTILO + '</td>';
+                rows += '<td>' + v.COLOR + '</td>';
+                rows += '<td>' + v.TALLA + '</td>';
+                rows += '<td>' + v.CANTIDAD + '</td>';
+                rows += '<td>' + v.PRECIO + '</td>';
+                rows += '<td>' + v.DESCUENTO + '</td>';
+                rows += '<td>' + v.SUBTOTAL + '</td>';
+                rows += '<td><label class="btn btn-warning"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>';
+                rows += '</tr>';
+            });
+            mdlDevolucion.find('#tblDevolucionesDetalle > tbody').html(rows);
+            tblDevolucionesDetalle = mdlDevolucion.find('#tblDevolucionesDetalle').DataTable({
+                "dom": 'frt',
+                "autoWidth": false,
+                "colReorder": true,
+                "displayLength": 500,
+                "bLengthChange": false,
+                "deferRender": true,
+                "scrollCollapse": false,
+                "bSort": true,
+                "aaSorting": [
+                    [0, 'desc']/*ID*/
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }],
+                language: {
+                    processing: "Proceso en curso...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ Elementos",
+                    info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
+                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
+                    infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
+                    infoPostFix: "",
+                    loadingRecords: "Procesando los datos...",
+                    zeroRecords: "No se encontro nada.",
+                    emptyTable: "No existen datos en la tabla.",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "&Uacute;ltimo"
+                    },
+                    aria: {
+                        sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": Habilitado para ordenar la columna en orden descendente"
+                    },
+                    buttons: {
+                        copyTitle: 'Registros copiados a portapapeles',
+                        copyKeys: 'Copiado con teclas clave.',
+                        copySuccess: {
+                            _: ' %d Registros copiados',
+                            1: ' 1 Registro copiado'
+                        }
+                    }
+                }
+            }
+            );
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+            onCalcularMontoDevuelto();
+        });
+    }
+
+    function onCalcularMontoDevuelto() {
+        var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
+        var total_devuelto = 0.0;
+        $.each(dt, function () {
+            var tr = $(this).parent().parent();
+            var xrow = tblDevolucionesDetalle.row(tr).data();
+            total_devuelto += getNumberFloat($(xrow[7]).text());
+        });
+        var tf = '$' + $.number(total_devuelto, 2, '.', ',');
+        mdlDevolucion.find("#SubtotalEncabezado h1").text(tf);
+        mdlDevolucion.find("#SubtotaPie h1").text(tf);
+        if (total_devuelto > 0) {
+            onNotify('<span class="fa fa-check fa-lg"></span>', tf, 'success');
+        } else {
+            onNotify('<span class="fa fa-exclamation fa-lg"></span>', tf, 'danger');
+        }
+    }
+    
+    function onSeleccionarTodos()
+    {
+       mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']") = true;
+    }
 </script>
 <style>
     .Stock{

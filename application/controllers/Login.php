@@ -17,6 +17,7 @@ class Login extends CI_Controller {
                     $this->session->set_userdata("Ventas", 1);
                 }
                 $this->load->view('vEncabezado');
+                $this->load->view('vDevoluciones');
                 $this->load->view('vVentas');
                 $this->load->view('vFooter');
             } else {

@@ -30,6 +30,7 @@ class Ventas extends CI_Controller {
 
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
+                $this->load->view('vDevoluciones');
                 $this->load->view('vVentas');
                 $this->load->view('vFooter');
             } else {
