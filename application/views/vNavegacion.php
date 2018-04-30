@@ -19,6 +19,21 @@
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-cut"></i>  Caja
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('CortesCaja') ?>">Corte de Caja</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Entradas de Dinero</a>
+                        <a class="dropdown-item" href="#">Salidas de Dinero</a>
+                    </div>
+                </li>
+            <?php } ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
+                ?>
                 <li class="nav-item">
                     <a class="btn btn-danger my-2 my-sm-0 btnSpace btn-sm" href="<?php print base_url('Gastos') ?>">
                         <i class="fa fa-external-link-alt"></i>  Gastos
