@@ -159,7 +159,7 @@ class Compras extends CI_Controller {
                     'Talla' => $v->Talla,
                     'Cantidad' => $v->Cantidad,
                     'Subtotal' => $v->Subtotal,
-                    'EsCoTa' => ''
+                    'EsCoTa' => $v->EsCoTa
                 );
                 $this->compras_model->onAgregarDetalle($data);
             }

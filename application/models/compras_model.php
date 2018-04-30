@@ -129,7 +129,8 @@ class compras_model extends CI_Model {
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad,'
                     . 'CD.Precio AS Precio,'
-                    . 'CD.Subtotal AS SubTotal', false);
+                    . 'CD.Subtotal AS SubTotal,'
+                    . 'CD.EsCoTa', false);
             $this->db->from('sz_CompraDetalle AS CD');
             $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
             $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');

@@ -184,6 +184,7 @@
                                 <th scope="col">SubTotal</th>
                                 <th scope="col" class="d-none">IDR</th>
                                 <th scope="col" class="">Orden</th>
+                                <th scope="col" class="d-none">EsCoTa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -271,6 +272,11 @@
             },
             {
                 "targets": [9],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [10],
                 "visible": false,
                 "searchable": false
             }],
@@ -453,7 +459,8 @@
                                     Precio: row.eq(6).text().replace(/\s+/g, '').replace(/,/g, "").replace("$", ""),
                                     Talla: row.eq(4).text().replace(/\s+/g, ''),
                                     Cantidad: (row.eq(5).text().replace(/\s+/g, '') !== '') ? row.eq(5).text().replace(/\s+/g, '') : 0,
-                                    Subtotal: (row.eq(7).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(7).text()) : 0
+                                    Subtotal: (row.eq(7).text().replace(/\s+/g, '') !== '') ? getNumberFloat(row.eq(7).text()) : 0,
+                                    EsCoTa: row.eq(10).text().replace(/\s+/g, '')
                                 };
                                 //Se mete el objeto al arreglo
                                 detalle.push(material);
@@ -570,6 +577,10 @@
         handleEnter();
     });
 
+    function padLeft(nr, n, str) {
+        return Array(n - String(nr).length + 1).join(str || '0') + nr;
+    }
+
     var agregado = false;
     function onComprobarEstiloCombinacion(e, c) {
         $.each(tblDetalleCompra.rows().data(), function () {
@@ -672,7 +683,8 @@
                                         "$" + $.number(v.Precio, 2, '.', ','),
                                         "$" + $.number(v.SubTotal, 2, '.', ','),
                                         v.ID,
-                                        n
+                                        n,
+                                        v.EsCoTa
                                     ]).draw(false);
                                     n += 1;
                                 });
@@ -855,7 +867,6 @@
                     var xCombinacion = $(this)[2];
                     if (xEstilo === Estilo.val() && xCombinacion === Combinacion.val()) {
                         estilo_combinacion_existen = true;
-                        console.log('* EXISTEN *')
                         return false;
                     }
                 });
@@ -874,7 +885,13 @@
                                     && Combinacion.find("option:selected").text() !== '') {
                                 var par = parseInt($(this).val());
                                 if (par > 0) {
+                                    var cbTalla = talla;
+                                    if (cbTalla.length <= 2) {
+                                        cbTalla = padLeft(talla, 4);
+                                    }
 
+                                    var EsCoTa;
+                                    EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 2) + '' + cbTalla;
                                     tblDetalleCompra.row.add([
                                         Estilo.val(),
                                         Combinacion.val(),
@@ -885,7 +902,8 @@
                                         "$" + $.number(Costo.val(), 2, '.', ','),
                                         "$" + $.number((par * Costo.val()), 2, '.', ','),
                                         0,
-                                        n
+                                        n,
+                                        EsCoTa
                                     ]).draw(false);
                                     $(this).val('');
                                     n += 1;
