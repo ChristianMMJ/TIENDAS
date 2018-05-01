@@ -169,4 +169,37 @@ class compras_model extends CI_Model {
         }
     }
 
+    /* Reportes */
+
+    public function getDetalleEtiquetas($ID) {
+        try {
+            $this->db->select('CD.ID AS ID, '
+                    . 'COMS.FechaMov As Fecha,'
+                    . 'T.RazonSocial As Tienda,'
+                    . 'CD.Estilo AS IdEstilo, '
+                    . 'CD.Color AS IdColor,'
+                    . 'E.Clave AS Estilo,'
+                    . 'C.Descripcion AS Color,'
+                    . 'CD.Talla AS Talla,'
+                    . 'CD.Cantidad AS Cantidad,'
+                    . 'CD.EsCoTa', false);
+            $this->db->from('sz_CompraDetalle AS CD');
+            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
+            $this->db->join('sz_Compras AS COMS', 'CD.Compra = COMS.ID');
+            $this->db->join('sz_Tiendas AS T', 'COMS.Tienda = T.ID');
+            $this->db->where('CD.Compra', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

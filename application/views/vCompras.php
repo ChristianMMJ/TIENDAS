@@ -19,18 +19,19 @@
     <div class="card border-0">
         <div class="card-body text-dark customBackground" >
             <div class="row">
-                <div class="col-md-7 float-left">
+                <div class="col-md-4 float-left">
                     <h5>COMPRAS</h5>
                 </div>
-                <div class="col-md-2 float-right">
+                <div class="col-md-4 float-right">
                     <div class="custom-control custom-checkbox" id="dAfecInv">
                         <input type="checkbox" class="custom-control-input" id="AfecInv" >
                         <label class="custom-control-label" for="AfecInv">Afecta Inv. Tienda</label>
                     </div>
                 </div>
-                <div class="col-md-3 float-right" align="right">
-                    <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
+                <div class="col-md-4 float-right" align="right">
+                    <button type="button" onclick="onImprimirEtiquetas()" class="btn btn-info btn-sm" id="btnImprimitEtiquetas"><span class="fa fa-barcode"></span> IMPRIMIR ETIQUETAS</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                 </div>
             </div>
             <hr>
@@ -311,7 +312,33 @@
             }
         }
     };
+
+    function onImprimirEtiquetas() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'onImprimirEtiquetas',
+            type: "POST",
+            data: {ID: pnlDatos.find('#ID').val()}
+        }).done(function (data, x, jq) {
+            //console.log(data);
+            if (data.length > 0) {
+                onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                window.open(data, '_blank');
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN DATOS PARA EL REPORTE', 'danger');
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
     $(document).ready(function () {
+
+
+
+
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
         pnlDatos.find("input[name='TipoDoc']").keyup(function () {
             if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
@@ -487,7 +514,6 @@
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
                                 onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                                nuevo = false;
                                 getRecords();
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);

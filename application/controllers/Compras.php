@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class Compras extends CI_Controller {
 
@@ -13,6 +14,7 @@ class Compras extends CI_Controller {
         $this->load->model('proveedores_model');
         $this->load->model('combinaciones_model');
         $this->load->model('existencias_model');
+        $this->load->helper('reportes_helper');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -33,6 +35,83 @@ class Compras extends CI_Controller {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');
             $this->load->view('vFooter');
+        }
+    }
+
+    public function onImprimirEtiquetas() {
+        try {
+            $pdf = new PDF_Code128('L', 'mm', array(75/* ANCHO */, 50/* ALTURA */));
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetAutoPageBreak(false, 2);
+
+            $Detalle = $this->compras_model->getDetalleEtiquetas($this->input->post('ID'));
+            if (!empty($Detalle)) {
+                foreach ($Detalle as $i => $data) {
+                    $cont = 1;
+                    while ($cont <= $data->Cantidad) {
+                        $pdf->AddPage();
+                        //Code128(float x, float y, string code, float w, float h)
+                        $pdf->Code128(10, 35, $data->EsCoTa, 55, 10);
+                        $pdf->SetY(45);
+                        $pdf->SetX(25);
+                        $pdf->SetFont('Arial', '', 9);
+                        $pdf->Write(5, $data->EsCoTa);
+
+                        /* Talla */
+                        $pdf->SetFont('Arial', '', 9);
+                        $pdf->SetXY(40, 28);
+                        $pdf->Cell(4, 5, 'Talla: ', 0, 0, 'L');
+
+                        $pdf->SetFont('Arial', 'B', 19);
+                        $pdf->SetXY(51, 28);
+                        $pdf->Cell(4, 5, $data->Talla, 0, 0, 'L');
+
+                        /* Estilo */
+                        $pdf->SetFont('Arial', '', 9);
+                        $pdf->SetXY(40, 21);
+                        $pdf->Cell(4, 5, 'Estilo: ', 0, 0, 'L');
+
+                        $pdf->SetFont('Arial', 'B', 17);
+                        $pdf->SetXY(51, 21);
+                        $pdf->Cell(4, 5, $data->Estilo, 0, 0, 'L');
+
+                        /* Color */
+                        $pdf->SetFont('Arial', 'BI', 9);
+                        $pdf->SetXY(3, 28);
+                        $pdf->Cell(4, 5, $data->Color, 0, 0, 'L');
+
+                        /* Fecha */
+                        $pdf->SetFont('Arial', '', 7);
+                        $pdf->SetXY(59, 2);
+                        $pdf->Cell(4, 3, $data->Fecha, 0, 0, 'L');
+
+                        /* Tienda */
+                        $pdf->SetFont('Arial', 'BI', 7);
+                        $pdf->SetXY(2, 2);
+                        $pdf->Cell(4, 3, $data->Tienda, 0, 0, 'L');
+
+                        /* Logo Empresa */
+                        $pdf->Image(base_url() . 'img/LS.png', 8, 8, 18);
+
+                        $cont++;
+                    }
+                }
+            }
+
+            $path = 'uploads/Reportes/CodigosBarras';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE ETIQUETAS " . date("Y-m-d His");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/CodigosBarras/')) {
+
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
         }
     }
 
