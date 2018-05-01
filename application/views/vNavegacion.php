@@ -59,6 +59,8 @@
                         <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Reimpresión de Etiquetas</a>
                     </div>
                 </li>
             <?php } ?>
