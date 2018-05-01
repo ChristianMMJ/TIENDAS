@@ -427,14 +427,80 @@
     var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
     var btnCancelarAtras = mdlDevolucion.find("#btnCancelarAtras");
     var btnSiguiente = mdlDevolucion.find("#btnSiguiente");
+    var paso = 1;
+    var btnFinalizarDevolucion = mdlDevolucion.find("#btnFinalizar");
 
     $(document).ready(function () {
+
+        btnFinalizarDevolucion.click(function () {
+            console.log(tblDetalleParaIntercambio.rows().count());
+            console.log(tblDetalleParaIntercambio.rows().data().length);
+        });
+
         btnSiguiente.click(function () {
             var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
             if (dt.length > 0) {
-                $.each(dt, function (k, v) {
 
-                });
+                if ($.fn.DataTable.isDataTable('#tblDetalleParaIntercambio')) {
+                    mdlDevolucion.find('#tblDetalleParaIntercambio').DataTable().destroy();
+                }
+                mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
+                mdlDevolucion.find("#DetalleParaIntercambio").removeClass("d-none");
+                mdlDevolucion.find("#ResumenDevolucionesDetalle").addClass("d-none");
+                mdlDevolucion.find("#ResumenDetalleParaIntercambio").removeClass("d-none");
+                mdlDevolucion.find("#btnFinalizar").removeClass("d-none");
+                btnSiguiente.addClass("d-none");
+                paso = 3;
+                tblDetalleParaIntercambio = mdlDevolucion.find('#tblDetalleParaIntercambio').DataTable({
+                    "dom": 'frt',
+                    "autoWidth": false,
+                    "colReorder": true,
+                    "displayLength": 500,
+                    "bLengthChange": false,
+                    "deferRender": true,
+                    "scrollCollapse": false,
+                    "bSort": true,
+                    "aaSorting": [
+                        [0, 'desc']/*ID*/
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        }],
+                    language: {
+                        processing: "Proceso en curso...",
+                        search: "Buscar:",
+                        lengthMenu: "Mostrar _MENU_ Elementos",
+                        info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
+                        infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
+                        infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
+                        infoPostFix: "",
+                        loadingRecords: "Procesando los datos...",
+                        zeroRecords: "No se encontro nada.",
+                        emptyTable: "No existen datos en la tabla.",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "&Uacute;ltimo"
+                        },
+                        aria: {
+                            sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": Habilitado para ordenar la columna en orden descendente"
+                        },
+                        buttons: {
+                            copyTitle: 'Registros copiados a portapapeles',
+                            copyKeys: 'Copiado con teclas clave.',
+                            copySuccess: {
+                                _: ' %d Registros copiados',
+                                1: ' 1 Registro copiado'
+                            }
+                        }
+                    }
+                }
+                );
             } else {
                 swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
                 onBeep(2);
@@ -459,30 +525,39 @@
         });
 
         btnCancelarAtras.click(function () {
-            mdlDevolucion.find('#FechaInicial').parent().removeClass("d-none");
-            mdlDevolucion.find('#FechaFinal').parent().removeClass("d-none");
-            mdlDevolucion.find("#Devoluciones").removeClass("d-none");
-            mdlDevolucion.find("#btnBuscarPorFechas").removeClass("d-none");
-            mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
-            mdlDevolucion.find("#btnSiguiente").addClass("d-none");
-            mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
-            mdlDevolucion.find("#SubtotaPie").addClass("d-none");
-            btnCancelarAtras.addClass('d-none');
-            mdlDevolucion.find("#FechaInicial").removeClass('d-none');
-            mdlDevolucion.find("#FechaFinal").removeClass('d-none');
-            getVentasDevolucion();
-        });
+            switch (paso) {
+                case 1:
+                    paso = 1;
+                    onCancelarDevolucion();
+                    break;
+                case 2:
+                    onCancelarDevolucion();
+                    break;
+                case 3:
+                    mdlDevolucion.find("#DevolucionesDetalle").removeClass("d-none");
+                    mdlDevolucion.find("#DetalleParaIntercambio").addClass("d-none");
+                    mdlDevolucion.find("#ResumenDevolucionesDetalle").removeClass("d-none");
+                    mdlDevolucion.find("#ResumenDetalleParaIntercambio").addClass("d-none");
+                    mdlDevolucion.find("#btnFinalizar").addClass("d-none");
+                    btnSiguiente.removeClass("d-none");
+                    paso = 2;
+                    break;
 
+            }
+        });
         mdlDevolucion.on('shown.bs.modal', function () {
-            getVentasDevolucion();
             mdlDevolucion.find("#FechaInicial").removeClass('d-none');
             mdlDevolucion.find("#FechaFinal").removeClass('d-none');
             btnCancelarAtras.addClass('d-none');
             mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
             mdlDevolucion.find("#SubtotaPie").addClass("d-none");
+            paso = 1;
+            onCancelarDevolucion();
         });
 
         btnDevolucion.click(function () {
+            mdlDevolucion.find("#Todos").parent().addClass("d-none");
+            mdlDevolucion.find("#Todos")[0].checked = false;
             mdlDevolucion.modal('show');
         });
 
@@ -753,6 +828,85 @@
             getSerieXEstilo($(this).val());
             getFotoXEstilo($(this).val());
         });
+        //Eventos en el select de estilo para traer las tallas y los colores
+        mdlDevolucion.find("[name='Combinacion']").change(function () {
+
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+            $.ajax({
+                url: master_url + 'getExistenciasXEstiloXCombinacion',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    Estilo: mdlDevolucion.find("[name='Estilo']").val(),
+                    Combinacion: $(this).val()
+                }
+            }).done(function (data, x, jq) {
+                if (data.length > 0) {
+                    var existencias = data[0];
+                    mdlDevolucion.find("[name='Precio']").val(existencias.PrecioMenudeo);
+                    $.each(data[0], function (k, v) {
+                        if (parseInt(v) <= 0) {
+                            mdlDevolucion.find("[name='" + k + "']").addClass('NoStock');
+                            mdlDevolucion.find("[name='" + k + "']").removeClass('Stock');
+                            mdlDevolucion.find("[name='" + k + "']").val('0');
+                        } else if (parseInt(v) > 0) {
+                            mdlDevolucion.find("[name='" + k + "']").addClass('Stock');
+                            mdlDevolucion.find("[name='" + k + "']").removeClass('NoStock');
+                            mdlDevolucion.find("[name='" + k + "']").val(v);
+                        }
+                    });
+                } else {
+                    mdlDevolucion.find('#rExistencias').find("input").val("0");
+                    mdlDevolucion.find('#rExistencias').find("input").addClass('NoStock').val("0");
+                    mdlDevolucion.find("[name='Precio']").val("");
+                }
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+                HoldOn.close();
+            });
+        });
+        //Eventos en el select de estilo para traer las tallas y los colores
+        mdlDevolucion.find("[name='Estilo']").change(function () {
+
+            mdlDevolucion.find("[name='Combinacion']")[0].selectize.clear(true);
+            mdlDevolucion.find("[name='Combinacion']")[0].selectize.clearOptions();
+            var EstiloID = $(this).val();
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+            $.ajax({
+                url: master_url + 'getCombinacionesXEstilo',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    Estilo: EstiloID
+                }
+            }).done(function (data, x, jq) {
+                $.each(data, function (k, v) {
+                    mdlDevolucion.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                });
+                mdlDevolucion.find("[name='Combinacion']")[0].selectize.open();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+                $.ajax({
+                    url: master_url + 'getSerieXEstilo',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        Estilo: EstiloID
+                    }
+                }).done(function (data, x, jq) {
+                    $.each(data[0], function (k, v) {
+                        mdlDevolucion.find("[name='" + k + "']").val(v);
+                    });
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+//            getSerieXEstilo($(this).val()); 
+            });
+        });
         //Obtiene las existencias del inventario
         pnlControlesDetalle.find("[name='Combinacion']").change(function () {
             getExistenciasXEstiloXCombinacion(pnlControlesDetalle.find("[name='Estilo']").val(), pnlControlesDetalle.find("[name='Combinacion']").val());
@@ -957,7 +1111,7 @@
                             btnCerrarVenta.addClass("d-none");
                             HoldOn.close();
                             swal("SE HA CANCELADO LA VENTA ", {
-                                icon: "success",
+                                icon: "success"
                             });
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
@@ -1682,6 +1836,7 @@
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlControlesDetalle.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                mdlDevolucion.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1974,11 +2129,15 @@
     }
 
     var tblDevolucionesDetalle;
+    var tblDetalleParaIntercambio;
+
     function getVentaXID(e) {
         var tr = $(e).parent().parent();
         btnCancelarAtras.removeClass('d-none');
         mdlDevolucion.find("#SubtotalEncabezado").removeClass("d-none");
         mdlDevolucion.find("#SubtotaPie").removeClass("d-none");
+        mdlDevolucion.find("#Todos").parent().removeClass("d-none");
+        mdlDevolucion.find("#ResumenDevolucionesDetalle").removeClass("d-none");
         HoldOn.open({
             theme: 'sk-bounce',
             message: 'CARGANDO...'
@@ -2087,9 +2246,35 @@
         }
     }
 
-    function onSeleccionarTodos()
+    function onSeleccionarTodos(e)
     {
-        mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']") = true;
+        var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']");
+        $.each(dt, function () {
+            $(this)[0].checked = $(e)[0].checked;
+        });
+        onCalcularMontoDevuelto();
+    }
+
+    function onCancelarDevolucion() {
+        mdlDevolucion.find("#Todos")[0].checked = false;
+        mdlDevolucion.find("#Todos").parent().addClass("d-none");
+        mdlDevolucion.find('#FechaInicial').parent().removeClass("d-none");
+        mdlDevolucion.find('#FechaFinal').parent().removeClass("d-none");
+        mdlDevolucion.find("#Devoluciones").removeClass("d-none");
+        mdlDevolucion.find("#btnBuscarPorFechas").removeClass("d-none");
+        mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
+        mdlDevolucion.find("#DetalleParaIntercambio").addClass("d-none");
+        mdlDevolucion.find("#btnSiguiente").addClass("d-none");
+        mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
+        mdlDevolucion.find("#SubtotaPie").addClass("d-none");
+        btnCancelarAtras.addClass('d-none');
+        mdlDevolucion.find("#FechaInicial").removeClass('d-none');
+        mdlDevolucion.find("#FechaFinal").removeClass('d-none');
+        mdlDevolucion.find("#ResumenDevolucionesDetalle").addClass("d-none");
+        mdlDevolucion.find("#ResumenDetalleParaIntercambio").addClass("d-none");
+        mdlDevolucion.find("#btnFinalizar").addClass("d-none");
+        getVentasDevolucion();
+        paso = 1;
     }
 </script>
 <style>
