@@ -433,8 +433,46 @@
     $(document).ready(function () {
 
         btnFinalizarDevolucion.click(function () {
-            console.log(tblDetalleParaIntercambio.rows().count());
-            console.log(tblDetalleParaIntercambio.rows().data().length);
+            if (tblDetalleParaIntercambio.rows().data().length > 0) {
+                var detalle = [];
+                $.each(tblDetalleParaIntercambio.rows().data(), function () {
+                    var row = $(this);
+                    detalle.push(
+                            {
+                                Estilo: row[0],
+                                Color: row[2],
+                                Talla: row[4],
+                                Cantidad: row[5],
+                                Precio: getNumberFloat(row[6]),
+                                Subtotal: getNumberFloat(row[7])
+                            }
+                    );
+                });
+                /*FINALIZAR DEVOLUCION*/
+                var f = new FormData();
+                f.append('Venta', mdlDevolucion.find("#Venta").val());
+                f.append('Detalle', JSON.stringify(detalle));
+                $.ajax({
+                    url: master_url + 'onDevolucion',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    console.log('* LOG DEVOLUCION*');
+                    console.log(data);
+                    console.log('* FIN LOG DEVOLUCION*');
+                    swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'ES NECESARIO AGREGAR UN REGISTRO', 'warning');
+            }
         });
 
         btnSiguiente.click(function () {
@@ -466,6 +504,11 @@
                     "columnDefs": [
                         {
                             "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": [2],
                             "visible": false,
                             "searchable": false
                         }],
@@ -505,6 +548,51 @@
                 swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
                 onBeep(2);
             }
+        });
+
+
+        //Validaciones tallas
+        mdlDevolucion.find("[name='Talla']").blur(function () {
+            //Verificar que los combos de estilo y color esten llenos
+            if (mdlDevolucion.find("[name='Estilo']").val() !== "" && mdlDevolucion.find("[name='Combinacion']").val() !== "") {
+                var tallaCaptura = $(this).val();
+                var tallaValida = false;
+                $.each(mdlDevolucion.find("#tblTallas > tbody > tr").find("input.numbersOnly").filter(':enabled'), function () {
+                    var talla = mdlDevolucion.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
+                    if (parseFloat(talla) > 0) {
+                        if (parseFloat(tallaCaptura) === parseFloat(talla)) {
+                            tallaValida = true;
+                            return false;
+                        } else {
+                            tallaValida = false;
+                        }
+                    }
+                });
+                if (!tallaValida) {
+                    swal({
+                        title: 'INFO',
+                        text: 'Introduce una talla válida',
+                        icon: 'warning'
+                    }).then((result) => {
+                        if (result) {
+                            mdlDevolucion.find("[name='Talla']").val('');
+                            mdlDevolucion.find("[name='Talla']").focus();
+                        }
+                    });
+                }
+            } else {
+                swal({
+                    title: 'INFO',
+                    text: 'Introduce un estilo y color',
+                    icon: 'warning'
+                }).then((result) => {
+                    if (result) {
+                        mdlDevolucion.find("[name='Talla']").val('');
+                        mdlDevolucion.find("[name='Estilo']")[0].selectize.focus();
+                    }
+                });
+            }
+
         });
 
         mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('click', 'tr', function () {
@@ -813,6 +901,43 @@
                     }
                 });
 
+            }
+        });
+        //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
+        mdlDevolucion.find("[name='Precio']").blur(function () {
+            var Precio = parseFloat(mdlDevolucion.find("[name='Precio']").val());
+            var Cantidad = parseFloat(mdlDevolucion.find("[name='Cantidad']").val());
+            var subtotal = Precio * Cantidad;
+
+            /*VERIFICAR MONTOS*/
+            var total_cubierto = 0.0;
+            $.each(tblDetalleParaIntercambio.rows().data(), function () {
+                total_cubierto += getNumberFloat($(this)[7]);
+            });
+            var monto_a_cubrir = getNumberFloat(mdlDevolucion.find("#SubtotaPie h1").text());
+            total_cubierto += subtotal;
+
+            if (total_cubierto <= monto_a_cubrir) {
+                tblDetalleParaIntercambio.row.add([
+                    mdlDevolucion.find("[name='Estilo']").val(),
+                    mdlDevolucion.find("[name='Estilo']").text(),
+                    mdlDevolucion.find("[name='Combinacion']").val(),
+                    mdlDevolucion.find("[name='Combinacion']").text(),
+                    mdlDevolucion.find("[name='Talla']").val(),
+                    Cantidad,
+                    "$" + $.number(Precio, 2, '.', ','),
+                    "$" + $.number(subtotal, 2, '.', ','),
+                    '<button type="button" class="btn btn-outline-danger" onclick="onRemoverElegido(this)"><span class="fa fa-trash fa-2x"></span></button>'
+                ]).draw(false);
+                total_cubierto = 0;
+                $.each(tblDetalleParaIntercambio.rows().data(), function () {
+                    total_cubierto += getNumberFloat($(this)[7]);
+                });
+                var tf = '$' + $.number(total_cubierto, 2, '.', ',');
+                mdlDevolucion.find("#TotalCubierto h1").text(tf);
+            } else {
+                swal('ATENCIÓN', 'NO PUEDE EXCEDER EL MONTO DE LA DEVOLUCIÓN', 'warning');
+                onBeep(2);
             }
         });
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
@@ -2133,16 +2258,18 @@
 
     function getVentaXID(e) {
         var tr = $(e).parent().parent();
+        var IDVTA = parseInt(tr.find("td").eq(0).text());
         btnCancelarAtras.removeClass('d-none');
         mdlDevolucion.find("#SubtotalEncabezado").removeClass("d-none");
         mdlDevolucion.find("#SubtotaPie").removeClass("d-none");
         mdlDevolucion.find("#Todos").parent().removeClass("d-none");
+        mdlDevolucion.find("#Venta").val(IDVTA);
         mdlDevolucion.find("#ResumenDevolucionesDetalle").removeClass("d-none");
         HoldOn.open({
             theme: 'sk-bounce',
             message: 'CARGANDO...'
         });
-        $.getJSON(base_url + 'index.php/Devoluciones/getVentaXID', {ID: parseInt(tr.find("td ").eq(0).text())}).done(function (data) {
+        $.getJSON(base_url + 'index.php/Devoluciones/getVentaXID', {ID: IDVTA}).done(function (data) {
             mdlDevolucion.find('#DevolucionesDetalle').removeClass("d-none");
             mdlDevolucion.find('#FechaInicial').parent().addClass("d-none");
             mdlDevolucion.find('#FechaFinal').parent().addClass("d-none");
@@ -2158,15 +2285,16 @@
             var rows;
             $.each(data, function (k, v) {
                 rows += '<tr>';
-                rows += '<td>' + v.ID + '</td>';
-                rows += '<td>' + v.ESTILO + '</td>';
-                rows += '<td>' + v.COLOR + '</td>';
-                rows += '<td>' + v.TALLA + '</td>';
-                rows += '<td>' + v.CANTIDAD + '</td>';
-                rows += '<td>' + v.PRECIO + '</td>';
-                rows += '<td>' + v.DESCUENTO + '</td>';
-                rows += '<td>' + v.SUBTOTAL + '</td>';
-                rows += '<td><label class="btn btn-warning"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>';
+                rows += '<td>' + v.ID + '</td>';/*0*/
+                rows += '<td>' + v.ESTILO + '</td>';/*1*/
+                rows += '<td>' + v.COLOR + '</td>';/*2*/
+                rows += '<td>' + v.TALLA + '</td>';/*3*/
+                rows += '<td>' + v.CANTIDAD + '</td>';/*4*/
+                rows += '<td>' + v.PRECIO + '</td>';/*5*/
+                rows += '<td>' + v.DESCUENTO + '</td>';/*6*/
+                rows += '<td>' + v.SUBTOTAL + '</td>';/*7*/
+                rows += '<td><label class="btn btn-warning"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>';/*8*/
+
                 rows += '</tr>';
             });
             mdlDevolucion.find('#tblDevolucionesDetalle > tbody').html(rows);
@@ -2183,6 +2311,11 @@
                     [0, 'desc']/*ID*/
                 ],
                 "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    },
                     {
                         "targets": [0],
                         "visible": false,
@@ -2256,6 +2389,7 @@
     }
 
     function onCancelarDevolucion() {
+        mdlDevolucion.find("#Venta").val('');
         mdlDevolucion.find("#Todos")[0].checked = false;
         mdlDevolucion.find("#Todos").parent().addClass("d-none");
         mdlDevolucion.find('#FechaInicial').parent().removeClass("d-none");
@@ -2275,6 +2409,20 @@
         mdlDevolucion.find("#btnFinalizar").addClass("d-none");
         getVentasDevolucion();
         paso = 1;
+    }
+
+    function onRemoverElegido(e) {
+        var tr = $(e).parent().parent();
+        console.log($(e).parent());
+        console.log(tr);
+
+        tblDetalleParaIntercambio.row($(e).parents('tr')).remove().draw();
+        var total_cubierto = 0;
+        $.each(tblDetalleParaIntercambio.rows().data(), function () {
+            total_cubierto += getNumberFloat($(this)[7]);
+        });
+        var tf = '$' + $.number(total_cubierto, 2, '.', ',');
+        mdlDevolucion.find("#TotalCubierto h1").text(tf);
     }
 </script>
 <style>

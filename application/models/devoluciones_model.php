@@ -41,7 +41,7 @@ class devoluciones_model extends CI_Model {
     
     public function getVentaXID($ID) {
         try {
-            $this->db->select("VD.ID AS ID, "
+            $this->db->select("VD.ID AS ID,VD.Estilo AS ESTILO_ID, VD.Color AS COLOR_ID, "
                     . "CONCAT(E.Clave,' - ',E.Descripcion) AS ESTILO,"
                     . "CONCAT(C.ID,' - ',C.Descripcion) AS COLOR,"
                     . "VD.Talla AS TALLA,"
@@ -49,6 +49,25 @@ class devoluciones_model extends CI_Model {
                     . "CONCAT('<strong class=\"text-primary\">$',CONVERT(varchar, CAST(VD.Precio AS money), 1),'</strong>') AS PRECIO,"
                     . "CONCAT('<strong class=\"text-danger\">$',CONVERT(varchar, CAST(VD.Descuento AS money), 1),'</strong>') AS DESCUENTO,"
                     . "CONCAT('<strong class=\"text-success\">$',CONVERT(varchar, CAST(VD.Subtotal AS money), 1),'</strong>') AS SUBTOTAL", false);
+            $this->db->from('sz_VentasDetalle AS VD');  
+            $this->db->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left');
+            $this->db->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left');
+            $this->db->where('VD.Venta',$ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getVentabyID($ID) {
+        try {
+            $this->db->select("VD.*", false);
             $this->db->from('sz_VentasDetalle AS VD');  
             $this->db->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left');
             $this->db->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left');
