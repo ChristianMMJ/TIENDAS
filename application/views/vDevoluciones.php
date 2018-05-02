@@ -9,33 +9,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                
                 <div class="row">
-                    <div class="col-12 d-none" > 
+                    <div class="col-12 d-none" >
                         <input type="text" id="Venta" name="Venta" readonly="" class="form-control">
                     </div>
-                </div>
-                <div class="row d-none"> 
-                    <div class="col-4" >
-                        <label for="FechaInicial">Desde*</label>
-                        <input type="text" class="form-control form-control-sm" id="FechaInicial" maxlength="1" name="FechaInicial" placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="" >
+                </div>               
+                <div id="Pasos" class="row">
+                    <div class="col-2 d-none" align="left">
+                        <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtrasHead'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
                     </div>
-                    <div class="col-4" >
-                        <label for="FechaFinal">Hasta*</label>
-                        <input type="text" class="form-control form-control-sm" id="FechaFinal" maxlength="1" name="FechaFinal" placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="" >
+                    <div class="col-8 d-none"> 
+                        <h1>Paso 1 de 3: Seleccionar la venta</h1>
                     </div>
-                    <div class="col-4" >
-                        <button type="button" class="btn btn-info btn-sm" id="btnBuscarPorFechas"><span class="fa fa-search"></span> (CTRL + D)</button>   
+                    <div class="col-8 d-none"> 
+                        <h1>Paso 2 de 3: Seleccionar productos a devolver</h1>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-4" > 
+                    <div class="col-12 d-none"> 
+                        <h1>Paso 3 de 3: Seleccionar productos a entregar</h1>
                     </div>
-                    <div class="col-4" align="center">
-
-                    </div>
-                    <div class="col-4" align="right">
-                        <button type='button' class="btn btn-success btn-sm  d-none" id='btnSiguiente'>SIGUIENTE <span class="fa fa-arrow-right"></span></button>
+                    <div class="col-2" align="right">
+                        <button type='button' class="btn btn-success btn-sm  d-none" id='btnSiguiente'><span class="fa fa-arrow-right"></span><br>SIGUIENTE</button>
                     </div>
                 </div>
                 <!--VENTAS-->
@@ -67,13 +60,12 @@
                     </table>
                 </div> 
                 <!--SUBTOTAL DETALLE VENTA-->
-
                 <div id="ResumenDevolucionesDetalle" class="row">
                     <div class="col-4"></div>
                     <div id="SubtotalEncabezado" align='center' class="col-4">
                         <h1 class="text-success">$0.0</h1>
                     </div>
-                    <div class="col-4" align="center">
+                    <div class="col-4" align="right">
                         <label class="btn btn-warning"><input type="checkbox" autocomplete="off" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)"> <br>Todos</label>
                     </div>
                 </div>
@@ -111,14 +103,6 @@
                 <!--FIN SUBTOTAL DETALLE VENTA--> 
                 <!--ARTICULOS A ESCOGER-->
                 <div id="ResumenDetalleParaIntercambio" class="row d-none">
-                    <div id="SubtotaPie" class="col-6" align="center">
-                        <h3><strong class="text-danger">* Monto a cubrir *</strong></h3>
-                        <h1 class="text-success">$ 0.0</h1>
-                    </div>
-                    <div id="TotalCubierto" class="col-6" align="center">
-                        <h3><strong class="text-danger">* Monto cubierto *</strong></h3>
-                        <h1 class="text-success">$ 0.0</h1>
-                    </div>
                     <div class="col-3">
                         <label for="Estilo">Estilo</label>
                         <div class="input-group mb-3">
@@ -150,62 +134,66 @@
                         <label for="Precio">Precio</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
                     </div> 
-                <div class="col-sm-12" align="center">
-                    <label for="">Tallas y Existencias</label>
-                    <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
-                        <thead></thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
-                            </tr>
-                            <tr class="disabledForms" id="rExistencias">
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> 
+                    <div class="col-sm-12" align="center">
+                        <label for="">Tallas y Existencias</label>
+                        <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                                </tr>
+                                <tr class="disabledForms" id="rExistencias">
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="TieneTP" class="col-12">
+                        <input type="text" id="VentaTP" name="VentaTP" class="form-control d-none" readonly="">
+                        <strong class="text-danger">*Movimientos con I.V.A*</strong>
+                    </div>
                 </div>
                 <div id="DetalleParaIntercambio" class="table-responsive d-none">
                     <table id="tblDetalleParaIntercambio" class="table table-bordered table-striped table-hover" style="width:100%">
@@ -238,13 +226,37 @@
                         </tfoot>
                     </table>
                 </div>
+                <!--TOTALES-->
+                <div id="ResumenDetalleParaIntercambioTotales" class="row d-none">
+                    <div id="SubtotaPie" class="col-3" align="center">
+                        <p class="text-danger">* Monto devolución *</p>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubierto" class="col-2" align="center">
+                        <p class="text-info">* Subtotal *</p>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubiertoIVA" class="col-2" align="center">
+                        <p class="text-warning">* I.V.A *</p>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubiertoTotal" class="col-2" align="center">
+                        <p class="text-primary">* Total *</p>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalDiferencia" class="col-3" align="center">
+                        <p class="text-success">* Diferencia a cobrar *</p>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                </div>
+                <!--FIN TOTALES-->
             </div>
             <div class="modal-footer">    
                 <div class="col-6">
-                    <button type='button' class="btn btn-danger btn-sm d-none" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span> CANCELAR</button>
+                    <button type='button' class="btn btn-danger btn-sm d-none" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
                 </div>
                 <div class="col-6" align="right">
-                    <button type='button' class="btn btn-primary btn-sm  d-none" id='btnFinalizar'>FINALIZAR <span class="fa fa-check"></span></button>
+                    <button type='button' class="btn btn-primary btn-sm  d-none" id='btnFinalizar'><span class="fa fa-check"></span><br> FINALIZAR</button>
                 </div>
             </div>
         </div>

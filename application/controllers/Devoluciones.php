@@ -49,14 +49,16 @@ class Devoluciones extends CI_Controller {
 
     public function onDevolucion() {
         try {
-            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TipoDoc'));
+            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TP'));
             $vta = $this->devoluciones_model->getVentabyID($this->input->post('Venta'));
+            /* GENERAR VENTA */
             $Folio = $Datos[0]->FolioTienda;
             if (empty($Folio)) {
                 $Folio = 1;
             } else {
                 $Folio = $Folio + 1;
             }
+            $diff = $this->input->post('DiferenciaACobrar');
             $data = array(
                 'TipoDoc' => $vta[0]->TipoDoc,
                 'Tienda' => $this->session->userdata('TIENDA'),
@@ -67,12 +69,12 @@ class Devoluciones extends CI_Controller {
                 'FechaMov' => Date('d/m/Y h:i:s a'),
                 'MetodoPago' => 0,
                 'Estatus' => 'DEVOLUCION',
-                'Importe' => 0,
+                'Importe' => ($diff > 0) ? $diff : 0,
                 'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->ventas_model->onAgregar($data);
 
-            /* DETALLE */
+            /* DETALLE DE LA VENTA */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $data = array(
@@ -83,8 +85,8 @@ class Devoluciones extends CI_Controller {
                     'Cantidad' => $v->Cantidad,
                     'Subtotal' => $v->Subtotal,
                     'Descuento' => 0,
-                    'Precio' =>  $v->Precio,
-                    'PorcentajeDesc' =>  0
+                    'Precio' => $v->Precio,
+                    'PorcentajeDesc' => 0
                 );
                 $this->ventas_model->onAgregarDetalle($data);
             }
