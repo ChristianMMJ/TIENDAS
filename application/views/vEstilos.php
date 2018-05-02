@@ -16,8 +16,8 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
-            <form id="frmNuevo"> 
+        <div class="card-body text-dark">
+            <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
                         <legend class="float-left">Estilos</legend>
@@ -28,11 +28,11 @@
                         <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
                         <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
                     </div>
-                </div> 
+                </div>
                 <div class="row"><!--START ROW-->
                     <div class="d-none">
                         <input type="text" class="" id="ID" name="ID" required >
-                    </div> 
+                    </div>
                     <div class="col-md has-success">
                         <label for="Clave">Clave*</label>
                         <input type="text" class="form-control form-control-sm " placeholder="" id="Clave" name="Clave" required="">
@@ -44,42 +44,42 @@
 
                     <div class="col-md">
                         <label for="Genero">Género</label>
-                        <select class="form-control form-control-sm required"   name="Genero"> 
-                            <option value=""></option>  
-                            <option value="MASCULINO">MASCULINO</option>   
-                            <option value="FEMENINO">FEMENINO</option>   
+                        <select class="form-control form-control-sm required"   name="Genero">
+                            <option value=""></option>
+                            <option value="MASCULINO">MASCULINO</option>
+                            <option value="FEMENINO">FEMENINO</option>
                         </select>
-                    </div> 
+                    </div>
                     <div class="col-md">
                         <label for="Tipo">Tipo de Estilo*</label>
-                        <select class="form-control form-control-sm required"   name="TipoEstilo" required="">  
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"   name="TipoEstilo" required="">
+                            <option value=""></option>
                         </select>
                     </div>
 
                     <div class="w-100"></div> <!--SALTO-->
                     <div class="col-md">
                         <label for="Linea">Linea*</label>
-                        <select class="form-control form-control-sm required"   name="Linea" required="">  
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"   name="Linea" required="">
+                            <option value=""></option>
                         </select>
-                    </div>  
+                    </div>
                     <div class="col-md">
                         <label for="Serie">Serie*</label>
-                        <select class="form-control form-control-sm required"  name="Serie" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="Serie" required="">
+                            <option value=""></option>
                         </select>
-                    </div>  
+                    </div>
                     <div class="col-md">
                         <label for="Temporada">Temporada*</label>
-                        <select class="form-control form-control-sm required"   name="Temporada" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"   name="Temporada" required="">
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-md">
                         <label for="Marca">Marca*</label>
-                        <select class="form-control form-control-sm required"   name="Marca" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"   name="Marca" required="">
+                            <option value=""></option>
                         </select>
                     </div>
 
@@ -100,10 +100,10 @@
 
                     <div class="col-md-3">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"   name="Estatus" required=""> 
-                            <option value=""></option>  
-                            <option value="ACTIVO">ACTIVO</option>   
-                            <option value="INACTIVO">INACTIVO</option>   
+                        <select class="form-control form-control-sm required"   name="Estatus" required="">
+                            <option value=""></option>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
 
@@ -123,8 +123,8 @@
                 </div>
                 <!-- FIN FOTO -->
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 <!--SCRIPT-->
 <script>
@@ -180,6 +180,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
                         getRecords();
                     }).fail(function (x, y, z) {
@@ -441,10 +442,9 @@
 
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
-        $('#Foto').trigger('blur');
-        $('#Foto').on('blur', function (e) {
-            $('#Foto').val('');
-        });
+        $('#Foto').attr("type", "text");
+        $('#Foto').val('N');
+
     }
 
     function printImg(url) {

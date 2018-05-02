@@ -432,11 +432,8 @@
     }
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
-        $('#Foto').trigger('blur');
-        $('#Foto').on('blur', function (e) {
-            $('#Foto').val('');
-        });
-    }
+        $('#Foto').attr("type", "text");
+        $('#Foto').val('N');
 
 </script>
 

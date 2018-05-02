@@ -179,7 +179,7 @@ class compras_model extends CI_Model {
                     . 'CD.Estilo AS IdEstilo, '
                     . 'CD.Color AS IdColor,'
                     . 'E.Clave AS Estilo,'
-                    . 'C.Descripcion AS Color,'
+                    . "C.Clave+' '+C.Descripcion AS Color,"
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad,'
                     . 'CD.EsCoTa', false);

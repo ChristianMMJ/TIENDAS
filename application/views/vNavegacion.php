@@ -26,7 +26,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="<?php print base_url('CortesCaja') ?>">Corte de Caja</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?php print base_url('Diversos') ?>">Diversos</a>
+                        <a class="dropdown-item" href="<?php print base_url('Diversos') ?>">Movimientos Diversos</a>
                     </div>
                 </li>
             <?php } ?>

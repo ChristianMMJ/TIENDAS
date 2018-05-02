@@ -1,12 +1,15 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
+
 class estilos_model extends CI_Model {
+
     public function __construct() {
         parent::__construct();
     }
-   
+
     public function getRecords() {
         try {
             $this->db->select("E.ID, "
@@ -17,7 +20,7 @@ class estilos_model extends CI_Model {
                     . "ELSE L.Clave+'-'+L.Descripcion END AS Linea "
                     . " ", false);
             $this->db->from('sz_Estilos AS E');
-            $this->db->join('sz_Lineas AS L','E.Linea = L.ID','left');
+            $this->db->join('sz_Lineas AS L', 'E.Linea = L.ID', 'left');
             $this->db->where_in('E.Estatus', array('ACTIVO'));
             $query = $this->db->get();
             /*
@@ -30,9 +33,9 @@ class estilos_model extends CI_Model {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
-    
-     public function getEstilos() {
+    }
+
+    public function getEstilos() {
         try {
             $this->db->select("U.ID, U.Clave, U.Clave+'-'+U.Descripcion AS Descripcion ", false);
             $this->db->from('sz_Estilos AS U');
@@ -48,7 +51,7 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Estilos", $array);
@@ -60,6 +63,7 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
@@ -69,6 +73,7 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
@@ -79,6 +84,7 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getEstiloByID($ID) {
         try {
             $this->db->select('E.*', false);
@@ -97,12 +103,12 @@ class estilos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
-      public function getSerieXEstilo($Estilo) {
+
+    public function getSerieXEstilo($Estilo) {
         try {
-            $this->db->select("S.* ", false);
+            $this->db->select("S.*, E.Clave AS ClaveEstilo", false);
             $this->db->from('sz_Estilos AS E');
-            $this->db->join('sz_Series AS S','E.Serie = S.ID','left');
+            $this->db->join('sz_Series AS S', 'E.Serie = S.ID', 'left');
             $this->db->where('E.ID', $Estilo);
             $query = $this->db->get();
             /*
@@ -115,7 +121,6 @@ class estilos_model extends CI_Model {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
-     
-    
+    }
+
 }

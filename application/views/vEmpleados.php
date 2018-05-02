@@ -16,7 +16,7 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
@@ -49,61 +49,61 @@
                         <div class="row">
                             <div class="col-sm">
                                 <label for="Tienda">Tienda*</label>
-                                <select class="form-control form-control-sm required"  name="Tienda" required=""> 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm required"  name="Tienda" required="">
+                                    <option value=""></option>
                                 </select>
                             </div>
-                        </div> 
+                        </div>
                         <div class="row">
                             <div class="col-sm">
-                                <label for="PrimerNombre">Nombre 1*</label>  
+                                <label for="PrimerNombre">Nombre 1*</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="50" name="PrimerNombre" required >
                             </div>
                             <div class="col-sm">
-                                <label for="SegundoNombre">Nombre 2</label>  
+                                <label for="SegundoNombre">Nombre 2</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="50"  name="SegundoNombre"  >
                             </div>
                             <div class="col-sm">
-                                <label for="ApellidoP">Apellido P*</label>  
+                                <label for="ApellidoP">Apellido P*</label>
                                 <input type="text" class=" form-control form-control-sm " maxlength="50" name="ApellidoP" required >
                             </div>
                             <div class="col-sm">
-                                <label for="ApellidoM">Apellido M*</label>  
+                                <label for="ApellidoM">Apellido M*</label>
                                 <input type="text" class=" form-control form-control-sm" maxlength="50"  name="ApellidoM" required >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
-                                <label for="RFC">RFC*</label>  
+                                <label for="RFC">RFC*</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="15"  name="RFC" required >
                             </div>
                             <div class="col-sm">
-                                <label for="Direccion">Dirección*</label>  
+                                <label for="Direccion">Dirección*</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="150" name="Direccion" required >
                             </div>
                             <div class="col-sm">
-                                <label for="NoExt">Num. Ext*</label>  
+                                <label for="NoExt">Num. Ext*</label>
                                 <input type="text" class="form-control form-control-sm" maxlength="10"   name="NoExt"  required>
                             </div>
                             <div class="col-sm">
-                                <label for="NoInt">Num. Int.</label>  
+                                <label for="NoInt">Num. Int.</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="10"  name="NoInt"  >
                             </div>
 
-                        </div> 
+                        </div>
                         <div class="row">
 
                             <div class="col-sm">
-                                <label for="Colonia">Colonia</label>  
+                                <label for="Colonia">Colonia</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="60" name="Colonia" required >
                             </div>
                             <div class="col-sm">
-                                <label for="Ciudad">Ciudad</label>  
+                                <label for="Ciudad">Ciudad</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="60"  name="Ciudad" required >
                             </div>
                             <div class="col-sm">
-                                <label for="Estado">Estado</label>   
-                                <select class="form-control form-control-sm required"  name="Estado" required=""> 
+                                <label for="Estado">Estado</label>
+                                <select class="form-control form-control-sm required"  name="Estado" required="">
                                     <option value=""></option>
                                     <option value="Aguascalientes">Aguascalientes</option>
                                     <option value="Baja California">Baja California</option>
@@ -140,191 +140,191 @@
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="CP">Código Postal</label>  
+                                <label for="CP">Código Postal</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"  name="CP"  required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <label for="Telefono">Teléfono</label>  
+                                <label for="Telefono">Teléfono</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"   name="Telefono"  >
                             </div>
                             <div class="col-sm-3">
-                                <label for="Celular">Celular</label>  
+                                <label for="Celular">Celular</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="15"   name="Celular"  >
                             </div>
                             <div class="col-sm-3">
                                 <label for="EstadoCivil">Estado Civil*</label>
-                                <select class="form-control form-control-sm"  name="EstadoCivil" > 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm"  name="EstadoCivil" >
+                                    <option value=""></option>
                                     <option>SOLTERO</option>
-                                    <option>CASADO</option> 
-                                    <option>COMPROMETIDO</option> 
-                                    <option>DIVORCIADO</option> 
-                                    <option>VIUDO</option> 
+                                    <option>CASADO</option>
+                                    <option>COMPROMETIDO</option>
+                                    <option>DIVORCIADO</option>
+                                    <option>VIUDO</option>
                                 </select>
                             </div>
                             <div class="col-sm-3">
                                 <label for="Genero">Género</label>
-                                <select class="form-control form-control-sm"  name="Genero" > 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm"  name="Genero" >
+                                    <option value=""></option>
                                     <option>MASCULINO</option>
-                                    <option>FEMENINO</option> 
+                                    <option>FEMENINO</option>
                                 </select>
                             </div>
-                        </div> 
+                        </div>
                         <div class="row">
                             <div class="col-sm">
-                                <label for="FechaIngreso">Fecha Ingreso</label>  
+                                <label for="FechaIngreso">Fecha Ingreso</label>
                                 <input type="text" class="form-control form-control-sm" name="FechaIngreso"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                             </div>
                             <div class="col-sm">
-                                <label for="FechaNacimiento">Fecha Nacimiento</label>  
+                                <label for="FechaNacimiento">Fecha Nacimiento</label>
                                 <input type="text" class="form-control form-control-sm" name="FechaNacimiento"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                             </div>
                             <div class="col-sm">
-                                <label for="NoIMSS">No. IMSS</label>  
+                                <label for="NoIMSS">No. IMSS</label>
                                 <input type="text" class="form-control form-control-sm"  maxlength="12"   name="NoIMSS"  >
                             </div>
                             <div class="col-sm">
-                                <label for="CtaBancaria">Cta o Tarjeta</label>  
+                                <label for="CtaBancaria">Cta o Tarjeta</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="16"   name="CtaBancaria"  >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
                                 <label for="TipoSalario">Tipo de Sueldo*</label>
-                                <select class="form-control form-control-sm required"  name="TipoSalario" required=""> 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm required"  name="TipoSalario" required="">
+                                    <option value=""></option>
                                     <option value="1">1 - FIJO</option>
-                                    <option value="2">2 - VENTA</option> 
-                                    <option value="3">3 - AMBAS</option> 
-                                </select> 
+                                    <option value="2">2 - VENTA</option>
+                                    <option value="3">3 - AMBAS</option>
+                                </select>
                             </div>
                             <div class="col-sm">
                                 <label for="FormaPagoNomina">Forma Pago Nómina*</label>
-                                <select class="form-control form-control-sm"  name="FormaPagoNomina" required=""> 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm"  name="FormaPagoNomina" required="">
+                                    <option value=""></option>
                                     <option value="1">1 - TARJETA</option>
-                                    <option value="2">2 - SIN TARJETA</option> 
-                                </select> 
+                                    <option value="2">2 - SIN TARJETA</option>
+                                </select>
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="col-sm">
                                 <label for="Estatus">Estatus*</label>
-                                <select class="form-control form-control-sm required"  name="Estatus" required=""> 
-                                    <option value=""></option>  
+                                <select class="form-control form-control-sm required"  name="Estatus" required="">
+                                    <option value=""></option>
                                     <option>ACTIVO</option>
-                                    <option>INACTIVO</option> 
+                                    <option>INACTIVO</option>
                                 </select>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="Datos2">
                         <br>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="SalarioDiario">Sueldo Diario</label>  
+                                <label for="SalarioDiario">Sueldo Diario</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="SalarioDiario"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="SalarioFiscal">Sueldo Fiscal</label>  
+                                <label for="SalarioFiscal">Sueldo Fiscal</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="SalarioFiscal"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PorcentajeVtaSem">% Vta Sem Per</label>  
+                                <label for="PorcentajeVtaSem">% Vta Sem Per</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PorcentajeVtaSem"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PorcentajeVtaSemGlobal">% Vta Sem Glo</label>  
+                                <label for="PorcentajeVtaSemGlobal">% Vta Sem Glo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PorcentajeVtaSemGlobal"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PorcentajeVtaMens">% Vta Men Per</label>  
+                                <label for="PorcentajeVtaMens">% Vta Men Per</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PorcentajeVtaMens"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PorcentajeVtaMensGlobal">% Vta Men Glo</label>  
+                                <label for="PorcentajeVtaMensGlobal">% Vta Men Glo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PorcentajeVtaMensGlobal"  >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="DescIMSS">IMSS</label>  
+                                <label for="DescIMSS">IMSS</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="DescIMSS"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="DescImpuesto">Impuesto</label>  
+                                <label for="DescImpuesto">Impuesto</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="DescImpuesto"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="DescInfonavit">Infonavit</label>  
+                                <label for="DescInfonavit">Infonavit</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="DescInfonavit"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="Fonacot">Fonacot</label>  
+                                <label for="Fonacot">Fonacot</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="Fonacot"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="Ahorro">Ahorro</label>  
+                                <label for="Ahorro">Ahorro</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="Ahorro"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PrimaDominical">Pri. Dominical</label>  
+                                <label for="PrimaDominical">Pri. Dominical</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="PrimaDominical"  >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="SalarioNeto">Sueldo Neto</label>  
+                                <label for="SalarioNeto">Sueldo Neto</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="SalarioNeto"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="NoFiscal">No. Fiscal</label>  
+                                <label for="NoFiscal">No. Fiscal</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="NoFiscal"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="Prestamo">Préstamo</label>  
+                                <label for="Prestamo">Préstamo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="Prestamo"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="AbonoPrestamo">Abono Préstamo</label>  
+                                <label for="AbonoPrestamo">Abono Préstamo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="AbonoPrestamo"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="SaldoPrestamo">Saldo Préstamo</label>  
+                                <label for="SaldoPrestamo">Saldo Préstamo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="SaldoPrestamo"  >
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="Beneficiario">Beneficiario</label>  
+                                <label for="Beneficiario">Beneficiario</label>
                                 <input type="text" class="form-control form-control-sm "  maxlength="80" name="Beneficiario"  >
                             </div>
                             <div class="col-sm-4">
-                                <label for="ParentescoBeneficiario">Parentesco</label>  
+                                <label for="ParentescoBeneficiario">Parentesco</label>
                                 <input type="text" class="form-control form-control-sm "  maxlength="50" name="ParentescoBeneficiario"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="PorcentajeBeneficio">% Porcentaje Beneficio</label>  
+                                <label for="PorcentajeBeneficio">% Porcentaje Beneficio</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="4" name="PorcentajeBeneficio"  >
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <label for="ZapTiendaEmpleado">Zap. Vend.</label>  
+                                <label for="ZapTiendaEmpleado">Zap. Vend.</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleado"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="ZapTiendaEmpleadoPagos">Zap. Vend. Pago</label>  
+                                <label for="ZapTiendaEmpleadoPagos">Zap. Vend. Pago</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleadoPagos"  >
                             </div>
                             <div class="col-sm-2">
-                                <label for="ZapTiendaEmpleadoSaldo">Zap. Vend. Saldo</label>  
+                                <label for="ZapTiendaEmpleadoSaldo">Zap. Vend. Saldo</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="10" name="ZapTiendaEmpleadoSaldo"  >
                             </div>
 
@@ -349,8 +349,8 @@
                 </div>
         </div>
         </form>
-    </div> 
-</div> 
+    </div>
+</div>
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Empleados/';
@@ -396,7 +396,7 @@
             Archivo.trigger('click');
         });
         /*Validacion Sueldo*/
-         pnlDatos.find("[name='TipoSalario']").change(function () {
+        pnlDatos.find("[name='TipoSalario']").change(function () {
             if ($(this).val().trim() === '2') {
                 $("[name='SalarioFiscal']").addClass("disabledForms");
                 $("[name='SalarioDiario']").addClass("disabledForms");
@@ -405,7 +405,7 @@
                 $("[name='SalarioDiario']").removeClass("disabledForms");
             }
         });
-        //Valida RFC 
+        //Valida RFC
         pnlDatos.find("[name='RFC']").blur(function () {
             var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
             var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
@@ -458,8 +458,8 @@
                         nuevo = false;
                         temp = data;
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-pnlDatos.find('#ID').val(data);
-nuevo=false;
+                        pnlDatos.find('#ID').val(data);
+                        nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -627,10 +627,8 @@ nuevo=false;
     }
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
-        $('#Foto').trigger('blur');
-        $('#Foto').on('blur', function (e) {
-            $('#Foto').val('');
-        });
+        $('#Foto').attr("type", "text");
+        $('#Foto').val('N');
     }
 
 </script>

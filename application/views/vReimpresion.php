@@ -129,14 +129,13 @@
                         var TallaF = (tallaCaptura.length <= 2) ? padLeft(tallaCaptura, 4) : tallaCaptura;
                         var EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 2) + '' + TallaF;
                         var renglonEt = {
-                            Estilo: Estilo.find("option:selected").text(),
+                            Estilo: ClaveEstilo,
                             Color: Combinacion.find("option:selected").text(),
                             Cantidad: cantidadCaptura,
-                            Talla: TallaF,
+                            Talla: tallaCaptura,
                             EsCoTa: EsCoTa
                         };
                         etiquetas.push(renglonEt);
-
                     }
                 }
             });
@@ -150,7 +149,6 @@
                 processData: false,
                 data: f
             }).done(function (data, x, jq) {
-                console.log(data);
                 if (data.length > 0) {
                     onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
                     window.open(data, '_blank');
@@ -208,6 +206,7 @@
         });
     }
 
+    var ClaveEstilo = 0;
     function getSerieXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -219,6 +218,7 @@
             }
         }).done(function (data, x, jq) {
             var cont = 1;
+            ClaveEstilo = data[0].ClaveEstilo;
             $.each(data[0], function (k, v) {
                 if (parseInt(v) <= 0) {
                     //Quita la letra T para saber la cantidad
