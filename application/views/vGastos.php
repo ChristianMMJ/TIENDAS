@@ -237,7 +237,7 @@
             if ($(this).val().length > 0) {
                 btnAgregarDetalle.trigger('click');
             } else {
-                swal('INFO', 'DEBES DE CAPTURAR UN PRECIO', 'info');
+                swal('INFO', 'DEBES DE CAPTURAR UN CANTIDAD', 'info');
             }
         });
 

@@ -33,6 +33,33 @@ class existencias_model extends CI_Model {
         }
     }
 
+    public function getUbicacionesByTienda() {
+        try {
+            $this->db->select("U.ID, E.Clave +'-'+ E.Descripcion AS 'Estilo' , "
+                    . "C.Clave +'-'+ c.Descripcion AS 'Color', "
+                    . "ISNULL(Loc1,'') AS 'Ubicación 1', "
+                    . "ISNULL(Loc2,'') AS 'Ubicación 2', "
+                    . "ISNULL(Loc3,'') AS 'Ubicación 3' "
+                    . "", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->where_in('U.Estatus', '1');
+            $this->db->where_in('U.Tienda', $this->session->userdata('TIENDA'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getExistenciasByEstiloByColor($Estilo, $Color) {
         try {
             $this->db->select("U.ID,  T.Clave + '-'+T.RazonSocial AS 'Tienda', E.Clave +'-'+ E.Descripcion AS 'Estilo' , C.Clave +'-'+ c.Descripcion AS 'Color' "

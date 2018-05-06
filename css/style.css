@@ -145,7 +145,7 @@ table thead tr{
 }
 
 .table tr:hover{
-    background-color: #eee !important;
+    background-color: #2C3E50 !important;
 }
 
 .table-hover>tbody>tr.success:hover>td,
@@ -153,7 +153,8 @@ table thead tr{
 .table-hover>tbody>tr:hover>.success,
 .table-hover>tbody>tr>td.success:hover,
 .table-hover>tbody>tr>th.success:hover {
-    background-color: #eee;
+    background-color: #2C3E50 ;
+    color: #fff;
 }
 
 .table>tbody>tr>td.success,
@@ -164,8 +165,8 @@ table thead tr{
 .table>tfoot>tr.success>td,
 .table>tbody>tr.success>th,
 .table>tfoot>tr.success>th {
-    background-color: #eee;
-    color: #000;
+    background-color: #2C3E50 ;
+    color: #fff;
 }
 
 

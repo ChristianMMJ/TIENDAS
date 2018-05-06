@@ -57,8 +57,9 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
+                        <a class="dropdown-item" href="<?php print base_url('CapturaInventarios') ?>">Captura de Inventario Físico</a>
+                        <a class="dropdown-item" href="<?php print base_url('Ubicaciones') ?>">Ubicaciones en Tienda</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Reimpresión de Etiquetas</a>
                     </div>

@@ -123,4 +123,45 @@ class estilos_model extends CI_Model {
         }
     }
 
+    public function getEncabezadoSerieXEstilo($Estilo) {
+        try {
+            $this->db->select("S.T1, "
+                    . "S.T2,"
+                    . "S.T3,"
+                    . "S.T4,"
+                    . "S.T5,"
+                    . "S.T6,"
+                    . "S.T7,"
+                    . "S.T8,"
+                    . "S.T9,"
+                    . "S.T10,"
+                    . "S.T11,"
+                    . "S.T12,"
+                    . "S.T13,"
+                    . "S.T14,"
+                    . "S.T15,"
+                    . "S.T16,"
+                    . "S.T17,"
+                    . "S.T18,"
+                    . "S.T19,"
+                    . "S.T20,"
+                    . "S.T21,"
+                    . "S.T22"
+                    . "", false);
+            $this->db->from('sz_Estilos AS E');
+            $this->db->join('sz_Series AS S', 'E.Serie = S.ID', 'left');
+            $this->db->where('E.ID', $Estilo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

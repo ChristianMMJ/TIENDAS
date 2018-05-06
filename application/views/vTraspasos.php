@@ -16,12 +16,9 @@
 <!--GUARDAR-->
 <div class="d-none" id="pnlDatos">
     <div class="card border-0">
-        <div class="card-body text-dark customBackground" > 
+        <div class="card-body text-dark customBackground" >
             <div class="row">
-                <div class="col-md-1">
-                    <img src="<?php print base_url(); ?>img/LS.png" width="30px" >
-                </div>
-                <div class="col-md-7 float-left">
+                <div class="col-md-8 float-left">
                     <h5>TRASPASOS</h5>
                 </div>
                 <div class="col-md-2 float-right">
@@ -31,8 +28,8 @@
                     </div>
                 </div>
                 <div class="col-md-2 float-right" align="right">
-                    <button type="button" class="btn btn-danger" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnCancelar"><span class="fa fa-window-close"></span> SALIR</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save"></span> GUARDAR</button>
                 </div>
             </div>
             <hr>
@@ -44,22 +41,22 @@
                         </div>
                         <div class="col-sm-4">
                             <label for="Tienda">De Tienda*</label>
-                            <select class="form-control form-control-sm required"  name="dTienda"> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm required"  name="dTienda">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-4">
                             <label for="Tienda">A Tienda*</label>
-                            <select class="form-control form-control-sm required"  name="Tienda"> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm required"  name="Tienda">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-2">
-                            <label for="FechaMov">Fecha Mov.</label>  
+                            <label for="FechaMov">Fecha Mov.</label>
                             <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
                         </div>
                         <div class="col-sm-2">
-                            <label for="DocMov">Docto.*</label>  
+                            <label for="DocMov">Docto.*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly " maxlength="10" name="DocMov" required >
                         </div>
                     </div>
@@ -71,19 +68,19 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="Estilo">Estilo*</label>
-                            <select class="form-control form-control-sm "  name="Estilo" required=""> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm "  name="Estilo" required="">
+                                <option value=""></option>
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <label for="Combinacion">Color*</label>
-                            <select class="form-control form-control-sm "  name="Combinacion" required=""> 
-                                <option value=""></option>  
+                            <select class="form-control form-control-sm "  name="Combinacion" required="">
+                                <option value=""></option>
                             </select>
                         </div>
-                    </div> 
+                    </div>
 
-                    <label for="Mayoreo">Tallas</label> 
+                    <label for="Mayoreo">Tallas</label>
                     <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
                         <thead></thead>
                         <tbody>
@@ -138,8 +135,8 @@
                                 <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
                             </tr>
                         </tbody>
-                    </table> 
-                </div> 
+                    </table>
+                </div>
                 <!--DETALLE-->
                 <div class="table-responsive">
                     <table id="tblDetalle" class="table table-sm" width="100%">
@@ -841,15 +838,15 @@
     .Stock{
         font-weight: bold;
         color: #000000;
-    } 
+    }
     .Stock::-webkit-input-placeholder {
         font-weight: normal;
         color: #78a864;
-    } 
+    }
     .NoStock {
         font-weight: bold;
-    } 
+    }
     .NoStock::-webkit-input-placeholder {
         color: #ff0000;
-    } 
+    }
 </style>
