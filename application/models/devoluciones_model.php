@@ -17,7 +17,7 @@ class devoluciones_model extends CI_Model {
                     . "V.FechaCreacion AS \"FECHA DE CREACION\", "
                     . "CONCAT('<strong class=\"text-success\">$',CONVERT(varchar, CAST(V.Importe AS money), 1),'</strong>') AS IMPORTE,"
                     . "CONCAT('<button type=\"button\" class=\"btn btn-outline-danger\" onclick=\"getVentaXID(this)\">',"
-                    . "'<span class=\"fa fa-eye\"></span><br><strong>Seleccionar</strong></button>') AS ACCIONES", false);
+                    . "'<span class=\"fa fa-check\"></span><br><strong>Seleccionar</strong></button>') AS ACCIONES", false);
             $this->db->from('sz_Ventas AS V');
             $this->db->join('sz_Tiendas AS T', 'V.Tienda = T.ID', 'left');
             $this->db->join('sz_Clientes AS C', 'V.Cliente = C.ID', 'left');
@@ -69,11 +69,9 @@ class devoluciones_model extends CI_Model {
     }
     public function getVentabyID($ID) {
         try {
-            $this->db->select("VD.*", false);
-            $this->db->from('sz_VentasDetalle AS VD');  
-            $this->db->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left');
-            $this->db->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left');
-            $this->db->where('VD.Venta',$ID);
+            $this->db->select("V.*", false);
+            $this->db->from('sz_Ventas AS V');   
+            $this->db->where('V.Venta',$ID);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

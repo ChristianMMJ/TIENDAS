@@ -6,6 +6,7 @@ class Devoluciones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        date_default_timezone_set('America/Mexico_City');
         $this->load->model('devoluciones_model');
         $this->load->model('ventas_model');
     }
@@ -64,7 +65,7 @@ class Devoluciones extends CI_Controller {
                 'Tienda' => $this->session->userdata('TIENDA'),
                 'FolioTienda' => $Folio,
                 'Cliente' => $vta[0]->Cliente,
-                'Vendedor' => $this->session->session->userdata('ID'),
+                'Vendedor' => $this->session->userdata('ID'),
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
                 'FechaMov' => Date('d/m/Y h:i:s a'),
                 'MetodoPago' => 0,
@@ -73,7 +74,6 @@ class Devoluciones extends CI_Controller {
                 'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->ventas_model->onAgregar($data);
-
             /* DETALLE DE LA VENTA */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
@@ -94,5 +94,4 @@ class Devoluciones extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 }

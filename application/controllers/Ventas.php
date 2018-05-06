@@ -6,6 +6,7 @@ class Ventas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        date_default_timezone_set('America/Mexico_City');
         $this->load->library('session');
         $this->load->model('estilos_model');
         $this->load->model('tiendas_model');
@@ -16,18 +17,13 @@ class Ventas extends CI_Controller {
         $this->load->model('empleados_model');
         $this->load->model('descuentos_model');
         $this->load->model('ventas_model');
-        date_default_timezone_set('America/Mexico_City');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-
             if ($this->session->userdata['Ventas'] === 0) {
                 $this->session->set_userdata("Ventas", 1);
             }
-
-
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
                 $this->load->view('vDevoluciones');
@@ -196,7 +192,6 @@ class Ventas extends CI_Controller {
 
     public function onModifcarExistenciaXEstiloXColorXTienda() {
         try {
-
             $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

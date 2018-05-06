@@ -190,7 +190,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="TieneTP" class="col-12">
+                    <div id="TieneTP" class="col-12" align="center">
                         <input type="text" id="VentaTP" name="VentaTP" class="form-control d-none" readonly="">
                         <strong class="text-danger">*Movimientos con I.V.A*</strong>
                     </div>

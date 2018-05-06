@@ -1,4 +1,4 @@
-<!--MODAL CERRAR VENTA-->
+destr<!--MODAL CERRAR VENTA-->
 <div class="modal fade" id="mdlCerrarVenta" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -436,6 +436,7 @@
         btnCancelarAtrasHead.click(function () {
             btnCancelarAtras.trigger('click');
         });
+        
         btnFinalizarDevolucion.click(function () {
             if (tblDetalleParaIntercambio.rows().data().length > 0) {
                 /*DETALLE DEVUELTO*/
@@ -444,11 +445,8 @@
                 $.each(dt, function () {
                     var tr = $(this).parent().parent();
                     var row = tblDevolucionesDetalle.row(tr).data();
-                    
                     detalle_devuelto.push({
-                        ID: row[0],
-                        Talla: row[3],
-                        Cantidad: row[4]
+                        ID: row[0], Talla: row[3], Cantidad: row[4]
                     });
                 });
                 /*DETALLE SELECCIONADO*/
@@ -458,10 +456,8 @@
                     console.log(row);
                     detalle.push(
                             {
-                                Estilo: row[0],
-                                Color: row[2],
-                                Talla: row[4],
-                                Cantidad: row[5],
+                                Estilo: row[0], Color: row[2],
+                                Talla: row[4], Cantidad: row[5],
                                 Precio: getNumberFloat(row[6]),
                                 Subtotal: getNumberFloat(row[7])
                             }
@@ -470,7 +466,7 @@
                 console.log('* DETALLE DEVUELTO *');
                 console.log(detalle_devuelto);
                 console.log('* FIN DETALLE DEVUELTO *');
-                console.log('* DETALLE ENTREGADO*');
+                console.log('* DETALLE ENTREGADO *');
                 console.log(detalle);
                 console.log('* FIN DETALLE ENTREGADO *');
                 /*FINALIZAR DEVOLUCION*/
@@ -484,34 +480,42 @@
                 f.append('IVA', getNumberFloat(mdlDevolucion.find("#TotalCubiertoIVA strong").text()));
                 f.append('Total', getNumberFloat(mdlDevolucion.find("#TotalCubiertoTotal strong").text()));
                 f.append('DiferenciaACobrar', getNumberFloat(mdlDevolucion.find("#TotalDiferencia strong").text()));
-                $.ajax({
-                    url: base_url + 'index.php/Devoluciones/onDevolucion',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: f
-                }).done(function (data, x, jq) {
-                    console.log('* LOG DEVOLUCION*');
-                    console.log(data);
-                    console.log('* FIN LOG DEVOLUCION*');
-                    swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
+                /*$.ajax({
+                 url: base_url + 'index.php/Devoluciones/onDevolucion',
+                 type: "POST",
+                 cache: false,
+                 contentType: false,
+                 processData: false,
+                 data: f
+                 }).done(function (data, x, jq) {
+                 console.log('* LOG DEVOLUCION*');
+                 console.log(data);
+                 console.log('* FIN LOG DEVOLUCION*');
+                 swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
+                 }).fail(function (x, y, z) {
+                 console.log(x, y, z);
+                 }).always(function () {
+                 HoldOn.close();
+                 });*/
             } else {
                 onBeep(2);
                 swal('ATENCIÓN', 'ES NECESARIO AGREGAR UN REGISTRO', 'warning');
             }
         });
+        
         btnSiguiente.click(function () {
             var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
             if (dt.length > 0) {
                 if ($.fn.DataTable.isDataTable('#tblDetalleParaIntercambio')) {
                     mdlDevolucion.find('#tblDetalleParaIntercambio').DataTable().destroy();
                 }
+                mdlDevolucion.find("[name='Estilo']").val('');
+                mdlDevolucion.find("[name='Combinacion']").val('');
+                mdlDevolucion.find("[name='Estilo']")[0].selectize.clear(true);
+                mdlDevolucion.find("[name='Combinacion']")[0].selectize.clear(true);
+                mdlDevolucion.find("[name='Talla']").val('');
+                mdlDevolucion.find("[name='Cantidad']").val('');
+                mdlDevolucion.find("[name='Precio']").val('');
                 mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
                 mdlDevolucion.find("#DetalleParaIntercambio").removeClass("d-none");
                 mdlDevolucion.find("#ResumenDevolucionesDetalle").addClass("d-none");
@@ -576,14 +580,14 @@
                             }
                         }
                     }
-                }
-                );
+                });
                 tblDetalleParaIntercambio.clear().draw();
             } else {
                 swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
                 onBeep(2);
             }
         });
+        
         //Validaciones tallas
         mdlDevolucion.find("[name='Talla']").blur(function () {
             //Verificar que los combos de estilo y color esten llenos
@@ -629,22 +633,29 @@
             }
 
         });
+        
         mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('click', 'tr', function () {
             mdlDevolucion.find("#tblDevolucionesDetalle  tbody  tr").removeClass("success");
             $(this).addClass("success");
-            var row_data = tblDevolucionesDetalle.row(this).data();
         });
+        
         mdlDevolucion.find('#tblDevoluciones > tbody').on('click', 'tr', function () {
             mdlDevolucion.find("#tblDevoluciones  tbody  tr").removeClass("success");
             $(this).addClass("success");
             var row_data = tblDevoluciones.row(this).data();
         });
+        
         mdlDevolucion.find('#tblDevoluciones > tbody').on('dblclick', 'tr', function () {
             mdlDevolucion.find("#tblDevoluciones  tbody  tr").removeClass("success");
             $(this).addClass("success");
             var row_data = tblDevoluciones.row(this).data();
         });
+        
         btnCancelarAtras.click(function () {
+            console.log('*paso*');
+            console.log(paso);
+            console.log('*fin paso*');
+            
             switch (paso) {
                 case 1:
                     paso = 1;
@@ -674,8 +685,7 @@
                     pasos.eq(2).addClass('d-none');
                     pasos.eq(3).addClass('d-none');
                     pasos.eq(2).removeClass('d-none');
-                    var tf = '$' + $.number(0, 2, '.', ',');
-                    mdlDevolucion.find("#SubtotaPie strong").text(tf);
+                    var tf = '$' + $.number(0, 2, '.', ','); 
                     mdlDevolucion.find("#TotalCubierto strong").text(tf);
                     mdlDevolucion.find("#TotalDiferencia strong").text(tf);
                     mdlDevolucion.find("#TotalCubiertoIVA strong").text(tf); /*I.V.A*/
@@ -684,6 +694,7 @@
                     break;
             }
         });
+        
         mdlDevolucion.on('shown.bs.modal', function () {
             var pasos = mdlDevolucion.find("#Pasos div");
             pasos.eq(2).addClass('d-none');
@@ -699,6 +710,7 @@
             paso = 1;
             onCancelarDevolucion();
         });
+        
         btnDevolucion.click(function () {
             mdlDevolucion.find("#Todos").parent().addClass("d-none");
             mdlDevolucion.find("#Todos")[0].checked = false;
@@ -710,6 +722,7 @@
             mdlDevolucion.find("#Pasos div.d-none").eq(1).removeClass('d-none');
             mdlDevolucion.modal('show');
         });
+        
         //Aqui devolver existencias y mandarle dialogo de confimacion
         shortcut.add("F1", function () {
             btnCerrarVenta.trigger('click');
