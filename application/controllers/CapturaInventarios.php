@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class CapturaInventarios extends CI_Controller {
 
@@ -11,6 +12,8 @@ class CapturaInventarios extends CI_Controller {
         $this->load->model('estilos_model');
         $this->load->model('combinaciones_model');
         $this->load->model('existencias_model');
+        $this->load->helper('reportes_helper');
+        $this->load->helper('file');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -61,6 +64,18 @@ class CapturaInventarios extends CI_Controller {
         }
     }
 
+    public function onModificarEstatus() {
+        try {
+            extract($this->input->post());
+            $DATA = array(
+                'Estatus' => 'FINALIZADO'
+            );
+            $this->existenciasCaptura_Model->onModificarEstatus($Mes, $Ano, $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
             extract($this->input->post());
@@ -74,7 +89,17 @@ class CapturaInventarios extends CI_Controller {
     public function getExistenciasXEstiloXCombinacion() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion);
+            $data = $this->existenciasCaptura_Model->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion, $Mes, $Ano);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstatusInicial() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getEstatusInicial($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -85,6 +110,36 @@ class CapturaInventarios extends CI_Controller {
         try {
             extract($this->input->post());
             $data = $this->existenciasCaptura_Model->getExistenciasCapturaByMesByAno($Ano, $Mes);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getExistenciasCapturaFinalizadaByMesByAno() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getExistenciasCapturaFinalizadaByMesByAno($Ano, $Mes);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTotalDama() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getTotalDama($Ano, $Mes);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTotalCaballero() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getTotalCaballero($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -116,6 +171,24 @@ class CapturaInventarios extends CI_Controller {
             extract($this->input->post());
             $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
             print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminar() {
+        try {
+            extract($this->input->post());
+            $this->existenciasCaptura_Model->onEliminar($Mes, $Ano);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarRegistro() {
+        try {
+            extract($this->input->post());
+            $this->existenciasCaptura_Model->onEliminarRegistro($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
