@@ -82,6 +82,8 @@
                                 <th>DESCUENTO</th> 
                                 <th>SUBTOTAL</th> 
                                 <th>ACCION</th> 
+                                <th>ESTILO_ID</th> 
+                                <th>COLOR_ID</th> 
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -96,6 +98,8 @@
                                 <th>DESCUENTO</th> 
                                 <th>SUBTOTAL</th> 
                                 <th>ACCION</th> 
+                                <th>ESTILO_ID</th> 
+                                <th>COLOR_ID</th> 
                             </tr>
                         </tfoot>
                     </table>
@@ -103,6 +107,19 @@
                 <!--FIN SUBTOTAL DETALLE VENTA--> 
                 <!--ARTICULOS A ESCOGER-->
                 <div id="ResumenDetalleParaIntercambio" class="row d-none">
+                    <div class="col-2" align="center">     
+                        <label class="btn btn-outline-success">
+                            <input type="checkbox" autocomplete="off" id="btnActivarCodigoDevolucion" name="btnActivarCodigoDevolucion">
+                         <br><span class="fa fa-barcode fa-2x"></span>
+                        </label>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" id="CodigoBarrasDevolucion" name="CodigoBarrasDevolucion" class="form-control" placeholder="000123456">
+                    </div>
+                    <div class="col-2">     
+                        <button type='button' class="btn btn-primary btn-sm" id='btnBuscarCodigoDevolucion'><span class="fa fa-search"></span> BUSCAR CÓDIGO</button>
+                    </div>
+                    <div class="w-100 d-none d-md-block"></div>
                     <div class="col-3">
                         <label for="Estilo">Estilo</label>
                         <div class="input-group mb-3">
