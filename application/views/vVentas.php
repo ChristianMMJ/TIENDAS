@@ -635,8 +635,8 @@
 
         });
 
-        mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('click', 'tr', function () {
-            mdlDevolucion.find("#tblDevolucionesDetalle  tbody  tr").removeClass("success");
+        mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('dblclick', 'tr', function () { 
+            mdlDevolucion.find("#tblDevolucionesDetalle > tbody  tr").removeClass("success");
             $(this).addClass("success");
         });
 
@@ -2562,6 +2562,9 @@
         if (LeerCodigoDevolucion) {
             mdlDevolucion.find("#CodigoBarrasDevolucion").focus();
         }
+    }
+    function onEditarCantidadADevolver(e) {
+        
     }
 </script>
 <style>

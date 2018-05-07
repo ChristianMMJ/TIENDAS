@@ -380,6 +380,7 @@
                         };
                         detalle.push(material);
                     });
+                    f.append('ID', pnlDatos.find("#ID").val());
                     f.append('Detalle', JSON.stringify(detalle));
                     f.append('Existencias', JSON.stringify(existencias));
                     f.append('AfecInv', pnlDatos.find("#AfecInv")[0].checked ? 1 : 0);
@@ -546,7 +547,7 @@
                             });
                             pnlDatos.find('#AfecInv').prop('checked', false);
                             pnlDatos.find("#AfecInv")[0].checked = data[0].AfectaInventario;
-
+                            pnlDatos.find("#ID").val(data[0].ID);
                             if (pnlDatos.find("#AfecInv")[0].checked) {
                                 pnlDatos.find('#dAfecInv').addClass('disabledForms');
                                 pnlDatos.find('#Encabezado').addClass('disabledForms');

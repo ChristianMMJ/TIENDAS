@@ -107,11 +107,13 @@
                 <!--FIN SUBTOTAL DETALLE VENTA--> 
                 <!--ARTICULOS A ESCOGER-->
                 <div id="ResumenDetalleParaIntercambio" class="row d-none">
-                    <div class="col-2" align="center">     
-                        <label class="btn btn-outline-success">
-                            <input type="checkbox" autocomplete="off" id="btnActivarCodigoDevolucion" name="btnActivarCodigoDevolucion">
-                         <br><span class="fa fa-barcode fa-2x"></span>
-                        </label>
+                    <div class="col-2" align="center">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" autocomplete="off" id="btnActivarCodigoDevolucion" name="btnActivarCodigoDevolucion" class="form-control">
+                                <br><strong>Código de barras</strong>
+                            </label>
+                        </div>
                     </div>
                     <div class="col-8">
                         <input type="text" id="CodigoBarrasDevolucion" name="CodigoBarrasDevolucion" class="form-control" placeholder="000123456">
@@ -139,7 +141,7 @@
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-2"> 
+                    <div class="col-2">
                         <label for="Talla">Talla</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
                     </div> 
