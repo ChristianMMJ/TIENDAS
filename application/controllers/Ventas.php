@@ -405,7 +405,7 @@ class Ventas extends CI_Controller {
 
             /* FIN ENCABEZADO */
             /* DETALLE */
-            $detalle = $this->ventas_model->getVentaDetalleByID(1);
+            $detalle = $this->ventas_model->getVentaDetalleByID($this->input->post('ID'));
             $pdf->SetFont('Arial', '', 5);
             $Y = $pdf->GetY();
             $af = 2.5;
