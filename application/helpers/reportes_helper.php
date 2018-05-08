@@ -242,3 +242,85 @@ class PDF_Code128 extends FPDF {
     }
 
 }
+
+class PDFIF extends FPDF {
+
+    function Header() {
+        /* ENCABEZADO */
+        $image = "lsbck.png";
+        $this->Image('img/' . $image, /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 35, /* ALTO */ 17.5);
+        $this->SetAutoPageBreak(false);
+        $this->SetFont('Arial', 'B', 9);
+        $this->SetY(5);
+        $this->SetX(110);
+        $this->Cell(110, 4, utf8_decode("REPORTE DE INVENTARIO FÍSICO"), 0/* BORDE */, 1, 'L');
+        $this->SetY(5);
+        $this->SetX(245);
+        $this->SetFont('Arial', 'B', 7.5);
+        $this->Cell(100, 4, utf8_decode("Fecha. " . Date('d/m/Y')), 0/* BORDE */, 1, 'L');
+    }
+
+    function Footer() {
+        $this->SetY(-8);
+        $this->SetFont('Arial', 'I', 9);
+
+        $this->SetX(12);
+        $this->Cell(60, 7, 'Gerente Administrativo', 0/* BORDE */, 0/* FILL */, 'C');
+        $this->SetX(12);
+        $this->Line(/* Izq-X */10, /* Top-Y */ $this->GetY(), /* Largo */ 72, $this->GetY());
+
+        $this->SetX(87.5);
+        $this->Cell(60, 7, 'Gerente de Tienda', 0/* BORDE */, 0/* FILL */, 'C');
+        $this->Line(/* Izq-X */87.5, /* Top-Y */ $this->GetY(), /* Largo */ 147.5, $this->GetY());
+
+        $this->AliasNbPages('{totalPages}');
+        // Select Arial italic 8
+        $this->SetFont('Arial', 'I', 7);
+        // Print centered page number
+        $this->SetTextColor(0, 0, 0);
+        $this->SetX(220.5);
+        $this->Cell(60, 7, utf8_decode('PÁGINA ' . $this->PageNo() . ' DE {totalPages}'), 0, 0, 'R');
+    }
+
+}
+
+class PDFDI extends FPDF {
+
+    function Header() {
+        /* ENCABEZADO */
+        $image = "lsbck.png";
+        $this->Image('img/' . $image, /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 35, /* ALTO */ 17.5);
+        $this->SetAutoPageBreak(false);
+        $this->SetFont('Arial', 'B', 9);
+        $this->SetY(5);
+        $this->SetX(110);
+        $this->Cell(110, 4, utf8_decode("REPORTE DE DIFERENCIAS EN INVENTARIO"), 0/* BORDE */, 1, 'L');
+        $this->SetY(5);
+        $this->SetX(245);
+        $this->SetFont('Arial', 'B', 7.5);
+        $this->Cell(100, 4, utf8_decode("Fecha. " . Date('d/m/Y')), 0/* BORDE */, 1, 'L');
+    }
+
+    function Footer() {
+        $this->SetY(-8);
+        $this->SetFont('Arial', 'I', 9);
+
+        $this->SetX(12);
+        $this->Cell(60, 7, 'Gerente Administrativo', 0/* BORDE */, 0/* FILL */, 'C');
+        $this->SetX(12);
+        $this->Line(/* Izq-X */10, /* Top-Y */ $this->GetY(), /* Largo */ 72, $this->GetY());
+
+        $this->SetX(87.5);
+        $this->Cell(60, 7, 'Gerente de Tienda', 0/* BORDE */, 0/* FILL */, 'C');
+        $this->Line(/* Izq-X */87.5, /* Top-Y */ $this->GetY(), /* Largo */ 147.5, $this->GetY());
+
+        $this->AliasNbPages('{totalPages}');
+        // Select Arial italic 8
+        $this->SetFont('Arial', 'I', 7);
+        // Print centered page number
+        $this->SetTextColor(0, 0, 0);
+        $this->SetX(220.5);
+        $this->Cell(60, 7, utf8_decode('PÁGINA ' . $this->PageNo() . ' DE {totalPages}'), 0, 0, 'R');
+    }
+
+}

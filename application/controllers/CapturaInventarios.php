@@ -194,4 +194,190 @@ class CapturaInventarios extends CI_Controller {
         }
     }
 
+    public function onImprimirInv() {
+        extract($this->input->post());
+
+        $Series = $this->existenciasCaptura_Model->getSerieReporteExistencias($Mes, $Ano);
+        if (!empty($Series)) {
+            $Encabezado = $Series[0];
+            $pdf = new PDFIF('L', 'mm', array(215.9, 279.4));
+            $pdf->AliasNbPages();
+            $pdf->SetAutoPageBreak(false, 10);
+            $pdf->AddPage();
+
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->SetY(10);
+            $pdf->SetX(110);
+            $pdf->Cell(110, 4, utf8_decode($this->session->userdata('TIENDA_NOMBRE')), 0/* BORDE */, 1, 'L');
+            $Y = 25;
+            foreach ($Series as $i => $v) {
+                $Datos = $this->existenciasCaptura_Model->getReporteCapturaInvByMesByAno($Mes, $Ano, $v->Serie);
+                $pdf->SetY($Y);
+                $pdf->SetX(50);
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->SetFillColor(225, 225, 234);
+
+                $Cont = 1;
+                while ($Cont <= 22) {
+                    if ($Cont === 22) {
+                        $pdf->Cell(8, 3, ($v->{"T$Cont"} > 0) ? $v->{"T$Cont"} : '', 1, 0, 'C', true);
+                    } else {
+                        $pdf->Cell(8, 3, ($v->{"T$Cont"} > 0) ? $v->{"T$Cont"} : '', 1, 0, 'C', true);
+                    }
+                    $Cont++;
+                }
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $pdf->Cell(15, 3, utf8_decode('Total'), 0, 1, 'L');
+
+                //Estilos por serie
+                foreach ($Datos as $i => $ev) {
+                    $pdf->SetX(5);
+                    $pdf->SetFont('Arial', 'B', 6.5);
+                    $pdf->Cell(11, 4, $ev->Estilo, 0, 0, 'L');
+
+                    //Existencias físicas
+                    $contT = 1;
+                    $Total = 0;
+                    $pdf->SetX(50);
+                    while ($contT <= 22) {
+                        $pdf->SetFont('Arial', '', 6);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->Cell(8, 3, ($ev->{"Ex$contT"} > 0) ? $ev->{"Ex$contT"} : '', 1, 0, 'C');
+                        $Total += $ev->{"Ex$contT"};
+                        $contT++;
+                    }
+                    $pdf->SetFont('Arial', 'BI', 6.5);
+                    $pdf->Cell(15, 3, utf8_decode($Total . ' Pares'), 0, 1, 'L');
+                }
+                $Y = $pdf->GetY() + 3;
+            }
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventarios';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE DE INVENTARIO" . date("Y-m-d His");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventarios/')) {
+
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onImprimirDiferencias() {
+
+        $Series = $this->existenciasCaptura_Model->getSerieReporteExistencias($this->input->post('Mes'), $this->input->post('Ano'));
+        if (!empty($Series)) {
+            $pdf = new PDFDI('L', 'mm', array(215.9, 279.4));
+            $pdf->AliasNbPages();
+            $pdf->SetAutoPageBreak(false, 10);
+            $pdf->AddPage();
+
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->SetY(10);
+            $pdf->SetX(110);
+            $pdf->Cell(110, 4, utf8_decode($this->session->userdata('TIENDA_NOMBRE')), 0/* BORDE */, 1, 'L');
+
+            $Y = 25;
+
+            foreach ($Series as $i => $v) {
+                $Datos = $this->existenciasCaptura_Model->getReporteDiferenciasInvByMesByAno($this->input->post('Mes'), $this->input->post('Ano'), $v->Serie);
+                $pdf->SetY($Y);
+                $pdf->SetX(45);
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetFillColor(225, 225, 234);
+                $contTa = 1;
+                while ($contTa <= 22) {
+                    if ($contTa === 22) {
+                        $pdf->Cell(8, 3, ($v->{"T$contTa"} > 0) ? $v->{"T$contTa"} : '', 1, 0, 'C', true);
+                    } else {
+                        $pdf->Cell(8, 3, ($v->{"T$contTa"} > 0) ? $v->{"T$contTa"} : '', 1, 0, 'C', true);
+                    }
+                    $contTa++;
+                }
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $pdf->Cell(15, 3, utf8_decode('Total'), 0, 1, 'L');
+
+                //Estilos por serie
+                foreach ($Datos as $i => $ev) {
+                    $pdf->SetX(5);
+                    $pdf->SetFont('Arial', 'B', 7);
+                    $pdf->SetTextColor(0, 0, 0);
+                    $pdf->Cell(11, 3, $ev->Estilo, 0, 0, 'L');
+
+                    //Existencias físicas
+                    $contT = 1;
+                    $pdf->SetX(45);
+                    $TotalT = 0;
+                    while ($contT <= 22) {
+                        $pdf->SetFont('Arial', '', 6);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->Cell(8, 3, ($ev->{"Ex$contT"} > 0) ? $ev->{"Ex$contT"} : '', 1, 0, 'C');
+                        $TotalT += $ev->{"Ex$contT"};
+                        $contT++;
+                    }
+                    $pdf->SetFont('Arial', 'I', 6);
+                    $pdf->Cell(15, 3, utf8_decode($TotalT . ' En Físico'), 0, 1, 'L');
+
+                    //Existencias en sistemas
+                    $contE = 1;
+                    $pdf->SetX(45);
+                    $TotalE = 0;
+                    while ($contE <= 22) {
+                        $pdf->SetFont('Arial', '', 6);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->Cell(8, 3, ($ev->{"Exi$contE"} > 0) ? $ev->{"Exi$contE"} : '', 1, 0, 'C');
+                        $TotalE += $ev->{"Ex$contE"};
+                        $contE++;
+                    }
+                    $pdf->SetFont('Arial', 'I', 6);
+                    $pdf->Cell(15, 3, utf8_decode($TotalE . ' En Sistema'), 0, 1, 'L');
+
+                    //Diferencias
+                    $pdf->SetX(45);
+                    $cont = 1;
+                    $TotalD = 0;
+                    while ($cont <= 22) {
+                        if (($ev->{"Exi$cont"} - $ev->{"Ex$cont"}) > 0) {
+                            $pdf->SetFont('Arial', 'B', 6);
+                            $pdf->SetTextColor(255, 0, 0);
+                            $pdf->Cell(8, 3, $ev->{"Exi$cont"} - $ev->{"Ex$cont"}, 1, 0, 'C');
+                        } else {
+                            $pdf->Cell(8, 3, '', 1, 0, 'C');
+                        }
+                        $TotalD += $ev->{"Exi$cont"} - $ev->{"Ex$cont"};
+                        $cont++;
+                    }
+                    $pdf->SetFont('Arial', 'BI', 6);
+                    $pdf->SetTextColor(255, 0, 0);
+                    $pdf->Cell(15, 3, utf8_decode($TotalD . ' Diferencia(s)'), 0, 1, 'L');
+
+                    $Y = $pdf->GetY() + 3;
+                    $pdf->SetY($Y);
+                }
+                $Y = $pdf->GetY() + 4;
+            }
+
+            $pdf->SetTextColor(0, 0, 0);
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventarios';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE DIFERENCIAS" . date("Y-m-d His");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventarios/')) {
+
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
 }

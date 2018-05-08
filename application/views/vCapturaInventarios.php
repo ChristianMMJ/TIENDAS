@@ -26,9 +26,9 @@
             <div class="col-md-7 float-right" align="right">
 
                 <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR </button>
-                <button type="button" class="btn btn-primary btn-sm d-none" id="btnFinalizar"><span class="fa fa-check "></span> FIN. CAPTURA</button>
+                <button type="button"  class="btn btn-primary btn-sm d-none" id="btnFinalizar"><span class="fa fa-check "></span> FIN. CAPTURA</button>
                 <button type="button" onclick="onImprimirInv()"  class="btn btn-info btn-sm d-none" id="btnImpInv"><span class="fa fa-print "></span> IMP. INVENTARIO</button>
-                <button type="button" class="btn btn-warning  btn-sm d-none" id="btnImpDif"><span class="fa fa-print "></span> IMP. DIFERENCIAS</button>
+                <button type="button" onclick="onImprimirDiferencias()" class="btn btn-warning  btn-sm d-none" id="btnImpDif"><span class="fa fa-print "></span> IMP. DIFERENCIAS</button>
                 <button type="button" class="btn btn-success  btn-sm d-none" id="btnActInvFisAct"><span class="fa fa-pencil-alt"></span> ACTUALIZAR INV. FISICO A INV. ACTUAL</button>
 <!--                <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>-->
             </div>
@@ -589,6 +589,30 @@
         getEstilos();
         handleEnter();
     });
+
+    function onImprimirDiferencias() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'onImprimirDiferencias',
+            type: "POST",
+            data: {
+                Mes: MesE,
+                Ano: AnoE
+            }
+        }).done(function (data, x, jq) {
+            console.log(data);
+            if (data.length > 0) {
+                onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                window.open(data, '_blank');
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN DATOS PARA EL REPORTE', 'danger');
+            }
+            HoldOn.close();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+    }
 
     function onImprimirInv() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});

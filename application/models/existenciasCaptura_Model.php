@@ -39,6 +39,186 @@ class existenciasCaptura_Model extends CI_Model {
         }
     }
 
+    public function getSerieReporteExistencias($Mes, $Ano) {
+        try {
+            $this->db->select(''
+                    . 'Se.ID AS Serie,'
+                    . "Se.T1, "
+                    . "Se.T2, "
+                    . "Se.T3, "
+                    . "Se.T4, "
+                    . "Se.T5, "
+                    . "Se.T6, "
+                    . "Se.T7, "
+                    . "Se.T8, "
+                    . "Se.T9, "
+                    . "Se.T10, "
+                    . "Se.T11, "
+                    . "Se.T12, "
+                    . "Se.T13, "
+                    . "Se.T14, "
+                    . "Se.T15, "
+                    . "Se.T16, "
+                    . "Se.T17, "
+                    . "Se.T18, "
+                    . "Se.T19, "
+                    . "Se.T20, "
+                    . "Se.T21, "
+                    . "Se.T22 "
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.Mes', $Mes);
+            $this->db->where('U.Ano', $Ano);
+            $this->db->order_by('Se.ID', 'ASC');
+            $this->db->group_by(array('Se.ID', "Se.T1", "Se.T2", "Se.T3", "Se.T4", "Se.T5"
+                , "Se.T6", "Se.T7", "Se.T8", "Se.T9", "Se.T10", "Se.T11", "Se.T12", "Se.T13"
+                , "Se.T14", "Se.T15", "Se.T16", "Se.T17", "Se.T18", "Se.T19", "Se.T20", "Se.T21"
+                , "Se.T22"));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getReporteCapturaInvByMesByAno($Mes, $Ano, $Serie) {
+        try {
+            $this->db->select('U.ID AS ID, '
+                    . 'U.Estilo AS IdEstilo, '
+                    . 'U.Color AS IdColor,'
+                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . 'Se.ID AS Serie,'
+                    . "CONVERT(VARCHAR(10),Se.PuntoInicial)+ ' AL '+ CONVERT(VARCHAR(10),Se.PuntoFinal) AS NombreSerie ,"
+                    . "U.Ex1, "
+                    . "U.Ex2, "
+                    . "U.Ex3, "
+                    . "U.Ex4, "
+                    . "U.Ex5, "
+                    . "U.Ex6, "
+                    . "U.Ex7, "
+                    . "U.Ex8, "
+                    . "U.Ex9, "
+                    . "U.Ex10, "
+                    . "U.Ex11, "
+                    . "U.Ex12, "
+                    . "U.Ex13, "
+                    . "U.Ex14, "
+                    . "U.Ex15, "
+                    . "U.Ex16, "
+                    . "U.Ex17, "
+                    . "U.Ex18, "
+                    . "U.Ex19, "
+                    . "U.Ex20, "
+                    . "U.Ex21, "
+                    . "U.Ex22"
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
+            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.Mes', $Mes);
+            $this->db->where('U.Ano', $Ano);
+            $this->db->where('E.Serie', $Serie);
+            $this->db->order_by('Se.ID', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getReporteDiferenciasInvByMesByAno($Mes, $Ano, $Serie) {
+        try {
+            $this->db->select('U.ID AS ID, '
+                    . 'U.Estilo AS IdEstilo, '
+                    . 'U.Color AS IdColor,'
+                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . 'Se.ID AS Serie,'
+                    . "CONVERT(VARCHAR(10),Se.PuntoInicial)+ ' AL '+ CONVERT(VARCHAR(10),Se.PuntoFinal) AS NombreSerie ,"
+                    . "U.Ex1, "
+                    . "U.Ex2, "
+                    . "U.Ex3, "
+                    . "U.Ex4, "
+                    . "U.Ex5, "
+                    . "U.Ex6, "
+                    . "U.Ex7, "
+                    . "U.Ex8, "
+                    . "U.Ex9, "
+                    . "U.Ex10, "
+                    . "U.Ex11, "
+                    . "U.Ex12, "
+                    . "U.Ex13, "
+                    . "U.Ex14, "
+                    . "U.Ex15, "
+                    . "U.Ex16, "
+                    . "U.Ex17, "
+                    . "U.Ex18, "
+                    . "U.Ex19, "
+                    . "U.Ex20, "
+                    . "U.Ex21, "
+                    . "U.Ex22,"
+                    . "Ex.Ex1 AS Exi1 ,"
+                    . "Ex.Ex2 AS Exi2 ,"
+                    . "Ex.Ex3 AS Exi3 ,"
+                    . "Ex.Ex4 AS Exi4 ,"
+                    . "Ex.Ex5 AS Exi5 ,"
+                    . "Ex.Ex6 AS Exi6,"
+                    . "Ex.Ex7 AS Exi7 ,"
+                    . "Ex.Ex8 AS Exi8 ,"
+                    . "Ex.Ex9 AS Exi9 ,"
+                    . "Ex.Ex10 AS Exi10 ,"
+                    . "Ex.Ex11 AS Exi11 ,"
+                    . "Ex.Ex12 AS Exi12 ,"
+                    . "Ex.Ex13 AS Exi13 ,"
+                    . "Ex.Ex14 AS Exi14 ,"
+                    . "Ex.Ex15 AS Exi15 ,"
+                    . "Ex.Ex16 AS Exi16 ,"
+                    . "Ex.Ex17 AS Exi17 ,"
+                    . "Ex.Ex18 AS Exi18 ,"
+                    . "Ex.Ex19 AS Exi19 ,"
+                    . "Ex.Ex20 AS Exi20 ,"
+                    . "Ex.Ex21 AS Exi21 ,"
+                    . "Ex.Ex22 AS Exi22"
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
+            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->join('sz_Existencias AS Ex', 'U.Estilo = Ex.Estilo and U.Color = Ex.Color and U.Tienda = Ex.Tienda ', 'left');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.Mes', $Mes);
+            $this->db->where('U.Ano', $Ano);
+            $this->db->where('E.Serie', $Serie);
+            $this->db->order_by('Se.ID', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstatusInicial($Ano, $Mes) {
         try {
             $this->db->select('U.Estatus AS Estatus '
@@ -88,8 +268,8 @@ class existenciasCaptura_Model extends CI_Model {
         try {
             $this->db->select('U.ID AS ID, '
                     . 'U.Estilo AS IdEstilo, '
-                    . 'U.Color AS IdColor,'
-                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . 'U.Color AS IdColor, '
+                    . 'CONCAT(E.Clave, \'-\',C.Descripcion) AS Estilo, '
                     . "Ex1, "
                     . "Ex2, "
                     . "Ex3, "
