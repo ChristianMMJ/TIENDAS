@@ -154,6 +154,18 @@ class existencias_model extends CI_Model {
         }
     }
 
+    public function onActualizarExistenciasActualesVsFisico($Tienda, $Estilo, $Color, $DATA) {
+        try {
+            $this->db->where('Tienda', $Tienda);
+            $this->db->where('Estilo', $Estilo);
+            $this->db->where('Color', $Color);
+            $this->db->update("sz_Existencias", $DATA);
+//            print $str = $this->db->last_query();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModifcarExistenciaXEstiloXColorXTienda($Estilo, $Color, $Posicion, $CantidadNueva) {
         try {
             $DATA = array(

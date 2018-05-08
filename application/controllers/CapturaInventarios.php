@@ -194,6 +194,40 @@ class CapturaInventarios extends CI_Controller {
         }
     }
 
+    public function onActualizarInvFisAct() {
+        /* ACTUALIZA INV EXISTENCIAS */
+        extract($this->input->post());
+        $ExistenciasCaptura = $this->existenciasCaptura_Model->onActualizarInvFisAct($Mes, $Ano);
+
+        foreach ($ExistenciasCaptura as $key => $v) {
+            $data = array(
+                'Ex1' => $v->Ex1,
+                'Ex2' => $v->Ex2,
+                'Ex3' => $v->Ex3,
+                'Ex4' => $v->Ex4,
+                'Ex5' => $v->Ex5,
+                'Ex6' => $v->Ex6,
+                'Ex7' => $v->Ex7,
+                'Ex8' => $v->Ex8,
+                'Ex9' => $v->Ex9,
+                'Ex10' => $v->Ex10,
+                'Ex11' => $v->Ex11,
+                'Ex12' => $v->Ex12,
+                'Ex13' => $v->Ex13,
+                'Ex14' => $v->Ex14,
+                'Ex15' => $v->Ex15,
+                'Ex16' => $v->Ex16,
+                'Ex17' => $v->Ex17,
+                'Ex18' => $v->Ex18,
+                'Ex19' => $v->Ex19,
+                'Ex20' => $v->Ex20,
+                'Ex21' => $v->Ex21,
+                'Ex22' => $v->Ex22
+            );
+            $this->existencias_model->onActualizarExistenciasActualesVsFisico($v->Tienda, $v->Estilo, $v->Color, $data);
+        }
+    }
+
     public function onImprimirInv() {
         extract($this->input->post());
 

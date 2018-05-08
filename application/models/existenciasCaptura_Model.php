@@ -39,6 +39,52 @@ class existenciasCaptura_Model extends CI_Model {
         }
     }
 
+    public function onActualizarInvFisAct($Mes, $Ano) {
+        try {
+            $this->db->select('U.ID AS ID, '
+                    . 'U.Estilo AS Estilo, '
+                    . 'U.Color AS Color,'
+                    . 'U.Tienda AS Tienda,'
+                    . "Ex1, "
+                    . "Ex2, "
+                    . "Ex3, "
+                    . "Ex4, "
+                    . "Ex5, "
+                    . "Ex6, "
+                    . "Ex7, "
+                    . "Ex8, "
+                    . "Ex9, "
+                    . "Ex10, "
+                    . "Ex11, "
+                    . "Ex12, "
+                    . "Ex13, "
+                    . "Ex14, "
+                    . "Ex15, "
+                    . "Ex16, "
+                    . "Ex17, "
+                    . "Ex18, "
+                    . "Ex19, "
+                    . "Ex20, "
+                    . "Ex21, "
+                    . "Ex22"
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('U.Mes', $Mes);
+            $this->db->where('U.Ano', $Ano);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getSerieReporteExistencias($Mes, $Ano) {
         try {
             $this->db->select(''

@@ -29,7 +29,7 @@
                 <button type="button"  class="btn btn-primary btn-sm d-none" id="btnFinalizar"><span class="fa fa-check "></span> FIN. CAPTURA</button>
                 <button type="button" onclick="onImprimirInv()"  class="btn btn-info btn-sm d-none" id="btnImpInv"><span class="fa fa-print "></span> IMP. INVENTARIO</button>
                 <button type="button" onclick="onImprimirDiferencias()" class="btn btn-warning  btn-sm d-none" id="btnImpDif"><span class="fa fa-print "></span> IMP. DIFERENCIAS</button>
-                <button type="button" class="btn btn-success  btn-sm d-none" id="btnActInvFisAct"><span class="fa fa-pencil-alt"></span> ACTUALIZAR INV. FISICO A INV. ACTUAL</button>
+                <button type="button" onclick="onActualizarInvFisAct()" class="btn btn-success  btn-sm d-none" id="btnActInvFisAct"><span class="fa fa-pencil-alt"></span> ACTUALIZAR INV. FISICO A INV. ACTUAL</button>
 <!--                <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>-->
             </div>
         </div>
@@ -216,6 +216,37 @@
     };
     var tblDetalleCaptura;
     var EstatusFinalizado = false;
+
+    function onActualizarInvFisAct() {
+        swal({
+            title: "Estas Seguro?",
+            text: "Esta Accion ya no se podrá revertir",
+            icon: "info",
+            buttons: ["Cancelar", "Aceptar"],
+            dangerMode: false
+        }).then((willDelete) => {
+            if (willDelete) {
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                $.ajax({
+                    url: master_url + 'onActualizarInvFisAct',
+                    type: "POST",
+                    data: {
+                        Mes: MesE,
+                        Ano: AnoE
+                    }
+                }).done(function (data, x, jq) {
+                    swal('Info', 'Existencias Actualizadas', 'success');
+                    HoldOn.close();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                });
+            }
+        }); /*FIN SWAL*/
+
+
+
+    }
 
     $(document).ready(function () {
         var mes = currentDate.getUTCMonth() + 1;
