@@ -139,10 +139,11 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
+                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5> 
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
+                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnTicket"><span class="fa fa-ticket-alt"></span> TICKET (SHIFT+T)</button>
                     <button type="button" class="btn btn-primary btn-sm" id="btnDevolucion"><span class="fa fa-arrow-left"></span> DEVOLUCIÓN</button>
                     <button type="button" class="btn btn-info btn-sm" id="btnBuscar"><span class="fa fa-search"></span> BUSCAR (F2)</button>
                     <!--<button type="button" class="btn btn-info" ><span class="fa fa-table"></span> EXISTENCIAS</button>-->
@@ -430,8 +431,27 @@
     var paso = 1;
     var btnFinalizarDevolucion = mdlDevolucion.find("#btnFinalizar");
     var btnCancelarAtrasHead = mdlDevolucion.find("#btnCancelarAtrasHead");
+    var btnTicket = $("#btnTicket");
 
     $(document).ready(function () {
+
+        btnTicket.click(function () {
+            var Venta = parseInt(pnlDatos.find("#ID").val());
+            if (Venta > 0) {
+                $.post(master_url + 'getTicketXVenta', {ID: Venta}).done(function (data,x,jq) {
+                  console.log(data)
+                    window.open(data, '_blank');
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'NO HA ESTABLECIDO UN FOLIO PARA LA VENTA', 'warning');
+            }
+        });
+
         onComprobarScaneoDevolucion();
         btnCancelarAtrasHead.click(function () {
             btnCancelarAtras.trigger('click');
@@ -635,7 +655,7 @@
 
         });
 
-        mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('dblclick', 'tr', function () { 
+        mdlDevolucion.find('#tblDevolucionesDetalle > tbody').on('dblclick', 'tr', function () {
             mdlDevolucion.find("#tblDevolucionesDetalle > tbody  tr").removeClass("success");
             $(this).addClass("success");
         });
@@ -728,6 +748,9 @@
         shortcut.add("F1", function () {
             btnCerrarVenta.trigger('click');
         });
+        shortcut.add("Shift+T", function () {
+            btnTicket.trigger('click');
+        });
         shortcut.add("F2", function () {
             btnBuscar.trigger('click');
         });
@@ -807,6 +830,7 @@
                                 pnlControlesDetalle.removeClass('disabledForms');
                                 btnCerrarVenta.removeClass('d-none');
                                 btnCancelarVenta.removeClass('d-none');
+                                btnTicket.removeClass("d-none");
                                 /*DETALLE*/
                                 getDetallebyID(data[0].ID);
                                 /*FIN DETALLE*/
@@ -2564,7 +2588,7 @@
         }
     }
     function onEditarCantidadADevolver(e) {
-        
+
     }
 </script>
 <style>

@@ -110,6 +110,30 @@ class devoluciones_model extends CI_Model {
         }
     }
 
+    public function onAgregarDevolucion($array) {
+        try {
+            $this->db->insert("sz_Devoluciones", $array);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarDevolucionDetalle($array) {
+        try {
+            $this->db->insert("sz_DevolucionesDetalle", $array);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getSerieXEstilo($ESTILO) {
         try {
             $this->db->select("S.T1,S.T2,S.T3,S.T4,S.T5,
