@@ -124,7 +124,7 @@ class ventas_model extends CI_Model {
             $this->db->join('sz_Clientes AS C', 'V.Cliente = C.ID');
             $this->db->join('sz_Empleados AS E', 'V.Tienda = E.ID');
             $this->db->where('V.ID', $ID);
-            $this->db->where('V.Tipo', 'V');
+//            $this->db->where('V.Tipo', 'V');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
