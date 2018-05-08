@@ -47,7 +47,7 @@ class devoluciones_model extends CI_Model {
                     . "CONCAT(C.ID,' - ',C.Descripcion) AS COLOR,"
                     . "VD.Talla AS TALLA,"
                     . "VD.Cantidad AS CANTIDAD,"
-                    . "CONCAT('<strong class=\"text-primary\">$',CONVERT(varchar, CAST(VD.Precio AS money), 1),'</strong>') AS PRECIO,"
+                    . "CONCAT('<strong class=\"text-warning\">$',CONVERT(varchar, CAST(VD.Precio AS money), 1),'</strong>') AS PRECIO,"
                     . "CONCAT('<strong class=\"text-danger\">$',CONVERT(varchar, CAST(VD.Descuento AS money), 1),'</strong>') AS DESCUENTO,"
                     . "CONCAT('<strong class=\"text-success\">$',CONVERT(varchar, CAST(VD.Subtotal AS money), 1),'</strong>') AS SUBTOTAL", false);
             $this->db->from('sz_VentasDetalle AS VD');
@@ -101,6 +101,30 @@ class devoluciones_model extends CI_Model {
     public function onAgregarDetalle($array) {
         try {
             $this->db->insert("sz_VentasDetalle", $array);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarDevolucion($array) {
+        try {
+            $this->db->insert("sz_Devoluciones", $array);
+            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $row = $query->row_array();
+//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
+            return $row['IDL'];
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarDevolucionDetalle($array) {
+        try {
+            $this->db->insert("sz_DevolucionesDetalle", $array);
             $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";

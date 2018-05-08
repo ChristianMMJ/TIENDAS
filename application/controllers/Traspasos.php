@@ -236,16 +236,15 @@ class Traspasos extends CI_Controller {
 
                         /* CONSULTAR PRECIOS EN LA TIENDA ACTUAL/ORIGEN POR ESTILO Y COLOR/COMBINACION */
                         $precios = $this->traspasos_model->getPreciosXTiendaXEstiloXColor($this->input->post('dTienda'), $v->Estilo, $v->Color);
-                        $data = array(
-                            "Precio" => $precios[0]->Precio,
-                            "PrecioMenudeo" => $precios[0]->PrecioMenudeo,
-                            "PrecioMayoreo" => $precios[0]->PrecioMayoreo,
-                        );
+
 
                         $this->db->where('Tienda', $this->input->post('Tienda'));
                         $this->db->where('Estilo', $v->Estilo);
                         $this->db->where('Color', $v->Color);
-                        $this->db->update("sz_Existencias", $data);
+                        $this->db->set('Precio', $$precios[0]->Precio);
+                        $this->db->set('PrecioMenudeo', $$precios[0]->PrecioMenudeo);
+                        $this->db->set('PrecioMayoreo', $$precios[0]->PrecioMayoreo);
+                        $this->db->update("sz_Existencias");
                         /* AGREGAR UN REGISTRO EN EL DETALLE DEL TRASPASO */
                         $data = array(
                             'Traspaso' => $ID,
@@ -286,13 +285,13 @@ class Traspasos extends CI_Controller {
                 'DocMov' => ($this->input->post('DocMov') !== NULL) ? $this->input->post('DocMov') : NULL,
                 'AfectaInventario' => ($this->input->post('AfecInv') > 0) ? 1 : 0
             );
-            $ID = $this->traspasos_model->onModificar($data);
+            $this->traspasos_model->onModificar($this->input->post('ID'), $data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $k => $v) {
                 /* SI AFECTA INVENTARIO */
                 if ($this->input->post('AfecInv') > 0) {
-                     /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA DESTINO */
+                    /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA DESTINO */
                     $existe = $this->traspasos_model->onComprobarExistenciaFisica($this->input->post('Tienda'), $v->Estilo, $v->Color);
                     /* INICIO EXISTE */
                     if ($existe[0]->EXISTE > 0) {
@@ -338,7 +337,7 @@ class Traspasos extends CI_Controller {
                                 break;
                             }
                         }
-                    }else {/* FIN EXISTE */
+                    } else {/* FIN EXISTE */
 
                         /* OBTENER SERIE X ESTILO */
                         $serie = $this->traspasos_model->getSerieXEstilo($v->Estilo);
@@ -415,4 +414,5 @@ class Traspasos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

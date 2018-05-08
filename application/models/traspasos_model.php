@@ -227,7 +227,7 @@ class traspasos_model extends CI_Model {
     public function getTraspasoDetalleByID($ID) {
         try {
             $this->db->select('TD.Estilo as IdEstilo, TD.Color as IdColor, '
-                    . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
+                    . 'CONCAT(E.Clave,\' -\',TD.ID,\' -\',E.Descripcion) AS Estilo,'
                     . 'CONCAT(C.ID,\'-\', C.Descripcion) AS Color, '
                     . 'TD.Talla AS Talla, TD.Cantidad AS Cantidad, TD.ID', false);
             $this->db->from('sz_TraspasosDetalle AS TD');

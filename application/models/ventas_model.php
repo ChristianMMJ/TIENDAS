@@ -113,6 +113,52 @@ class ventas_model extends CI_Model {
         }
     }
 
+    public function getVentaByID($ID) {
+        try {
+            $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR, 
+	   V.FechaCreacion AS FECHA_DE_CREACION, V.FechaMov AS FECHA_MOV, V.MetodoPago AS METODO_PAGO, V.Estatus
+      ,V.Importe      ,V.Usuario      ,V.Tipo, T.RazonSocial AS TIENDA, 
+      CONCAT(T.Direccion,\' #\', T.NoExt,\', \',T.Colonia,\' \', T.Ciudad,\', \', T.Estado,\' C.P \',T.CP) AS DIRECCION', false);
+            $this->db->from('sz_Ventas AS V');
+            $this->db->join('sz_Tiendas AS T', 'V.Tienda = T.ID');
+            $this->db->join('sz_Clientes AS C', 'V.Cliente = C.ID');
+            $this->db->join('sz_Empleados AS E', 'V.Tienda = E.ID');
+            $this->db->where('V.ID', $ID);
+//            $this->db->where('V.Tipo', 'V');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getVentaDetalleByID($ID) {
+        try {
+            $this->db->select('CONCAT(ES.Clave,\' \',ES.Descripcion,\' \',CO.Descripcion,\' \',VD.Talla) AS ESCOTA,      VD.Cantidad AS CANTIDAD      ,VD.Precio AS PRECIO
+      ,VD.Descuento AS DESCUENTO      ,VD.Subtotal AS SUBTOTAL      ,VD.PorcentajeDesc AS PORCENTAJE_DESCUENTO ', false);
+            $this->db->from('sz_VentasDetalle AS VD');
+            $this->db->join('sz_Estilos AS ES', 'VD.Estilo = ES.ID');
+            $this->db->join('sz_Combinaciones AS CO', 'VD.Color = CO.ID');
+            $this->db->where('VD.Venta', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getDetalleByID($ID) {
         try {
             $this->db->select('VD.ID AS ID, '

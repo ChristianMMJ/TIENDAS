@@ -50,7 +50,7 @@ class Devoluciones extends CI_Controller {
 
     public function onDevolucion() {
         /*
-         *   ALTER TABLE [ZAP].[dbo].[sz_Ventas] ADD Tipo VARCHAR(15) NOT NULL DEFAULT 'VENTA';
+         *   ALTER TABLE [ZAP].[dbo].[sz_Ventas] ADD Tipo VARCHAR(5) NOT NULL DEFAULT 'V';
          */
         try {
             $Datos = $this->ventas_model->onCrearFolio($this->input->post('TP'));
@@ -62,7 +62,6 @@ class Devoluciones extends CI_Controller {
             } else {
                 $Folio = $Folio + 1;
             }
-            var_dump($this->input->post());
             $diff = $this->input->post('DiferenciaACobrar');
             $data = array(
                 'TipoDoc' => $vta[0]->TipoDoc,
@@ -73,12 +72,28 @@ class Devoluciones extends CI_Controller {
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),
                 'FechaMov' => Date('d/m/Y h:i:s a'),
                 'MetodoPago' => 0,
-                'Estatus' => 'DEVOLUCION',
+                'Estatus' => 'CERRADA',
                 'Importe' => ($diff > 0) ? $diff : 0,
                 'Usuario' => $this->session->userdata('ID'),
-                'Tipo' => 'DEVOLUCION'
+                'Tipo' => 'D'
             );
             $ID = $this->devoluciones_model->onAgregar($data);
+            $data = array(
+                'Venta' => $ID,
+                'TipoDoc' => $vta[0]->TipoDoc,
+                'Tienda' => $this->session->userdata('TIENDA'),
+                'FolioTienda' => $Folio,
+                'Cliente' => $vta[0]->Cliente,
+                'Vendedor' => $this->session->userdata('ID'),
+                'FechaCreacion' => Date('d/m/Y h:i:s a'),
+                'FechaMov' => Date('d/m/Y h:i:s a'),
+                'MetodoPago' => 0,
+                'Estatus' => 'CERRADA',
+                'Importe' => ($diff > 0) ? $diff : 0,
+                'Usuario' => $this->session->userdata('ID'),
+                'Tipo' => 'D'
+            );
+            $IDD = $this->devoluciones_model->onAgregarDevolucion($data);
 
             /* DETALLE DE LA VENTA DEVUELTO */
             $DetalleDevuelto = json_decode($this->input->post("DetalleDevuelto"));
@@ -143,6 +158,18 @@ class Devoluciones extends CI_Controller {
                             'PorcentajeDesc' => 0
                         );
                         $this->devoluciones_model->onAgregarDetalle($data);
+                        $data = array(
+                            'Devolucion' => $IDD,
+                            'Estilo' => $v->Estilo,
+                            'Color' => $v->Color,
+                            'Talla' => $v->Talla,
+                            'Cantidad' => $v->Cantidad,
+                            'Subtotal' => $v->Subtotal,
+                            'Descuento' => 0,
+                            'Precio' => $v->Precio,
+                            'PorcentajeDesc' => 0
+                        );
+                        $this->devoluciones_model->onAgregarDevolucionDetalle($data);
                         break;
                     }
                 }
