@@ -382,7 +382,8 @@
     var btnCerrarVenta = $("#btnCerrarVenta");
     var btnBuscar = $("#btnBuscar");
     var btnCancelarVenta = $("#btnCancelarVenta");
-    var btnFinVenta = $("#btnFinVenta");
+    var mdlCerrarVenta = $("#mdlCerrarVenta");
+    var btnFinVenta = mdlCerrarVenta.find("#btnFinVenta");
 
     var btnDevolucion = pnlDatos.find("#btnDevolucion");
     var mdlDevolucion = $("#mdlDevolucion");
@@ -1222,7 +1223,7 @@
                     //                    for (var pair of f.entries()) {
                     //                        console.log(pair[0] + ', ' + pair[1]);
                     //                    }
-
+                    
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -1297,6 +1298,7 @@
 
             });
         });
+        
         btnCerrarVenta.click(function () {
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 $('#mdlCerrarVenta').modal('show');
@@ -1307,13 +1309,17 @@
             }
 
         });
+        
         btnFinVenta.click(function () {
             $.ajax({
                 url: master_url + 'onModificarEstatus',
                 type: "POST",
                 data: {
                     ID: IdMov,
-                    Estatus: 'CERRADA'
+                    Estatus: 'CERRADA',
+                    SuPago: mdlCerrarVenta.find("#Pago").val(),
+                    Cambio: getNumberFloat(mdlCerrarVenta.find("#Cambio").text()),
+                    ImporteEnLetra: mdlCerrarVenta.find("#ImporteLetra h6").text();
                 }
             }).done(function (data, x, jq) {
                 $('#mdlCerrarVenta').modal('hide');

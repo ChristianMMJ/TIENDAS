@@ -111,7 +111,8 @@ class Ventas extends CI_Controller {
                 'MetodoPago' => ($this->input->post('MetodoPago') !== NULL) ? $this->input->post('MetodoPago') : NULL,
                 'Estatus' => 'BORRADOR',
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL,
-                'Usuario' => $this->session->userdata('ID')
+                'Usuario' => $this->session->userdata('ID'),
+                'SuPago' => $this->input->post('SuPago')
             );
             $ID = $this->ventas_model->onAgregar($data);
             $dataCliente = array(
@@ -173,7 +174,9 @@ class Ventas extends CI_Controller {
     public function onModificarEstatus() {
         try {
             $data = array(
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
+                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
+                'SuPago' => ($this->input->post('SuPago') !== NULL) ? $this->input->post('SuPago') : NULL,
+                'ImporteEnLetra' => ($this->input->post('ImporteEnLetra') !== NULL) ? $this->input->post('ImporteEnLetra') : NULL
             );
             $this->ventas_model->onModificar($this->input->post('ID'), $data);
         } catch (Exception $exc) {
@@ -390,29 +393,36 @@ class Ventas extends CI_Controller {
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(false);
             /* ENCABEZADO */
+            $url = "./uploads/Tiendas/$e->TIENDA_ID/" . $e->FOTO_TIENDA;
+            $pdf->Image($url, 27.5, 2, /* ANCHO */ 21, /* ALTO */ 21);
             $pdf->SetFont('Arial', 'B', 8);
-            $pdf->SetXY(0/* X */, 0/* Y */);
+            $pdf->SetY(23);
+            $pdf->SetX(1/* X */);
             $pdf->Cell(75, 4, $e->TIENDA, 0/* BORDE */, 1, 'C');
             $pdf->SetFont('Arial', '', 6);
-            $pdf->SetXY(0/* X */, 5/* Y */);
-            $pdf->MultiCell(75, 2, $e->DIRECCION, 0/* BORDE */, 'C');
-            $pdf->SetXY(1/* X */, 6/* Y */);
-            $pdf->Cell(25, 4, "Folio: " . $e->FOLIO, 0/* BORDE */, 1, 'L');
-            $pdf->SetXY(26/* X */, 6/* Y */);
-            $pdf->Cell(37.5, 4, $e->FECHA_DE_CREACION, 0/* BORDE */, 1, 'L');
-            $pdf->SetXY(0/* X */, 9/* Y */);
-            $pdf->Cell(75, 2, '*   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   ', 0/* BORDE */, 1, 'L');
-            /* FIN ENCABEZADO */
-            
+            $pdf->SetXY(1/* X */, 27.5/* Y */);
+            $pdf->MultiCell(75, 2, "No Venta: " . $e->FOLIO, 0/* BORDE */, 'C');
+            $pdf->SetXY(1/* X */, 30/* Y */);
+            $pdf->Cell(25, 4, $e->DIRECCION, 0/* BORDE */, 1, 'L');
+
+            $pdf->SetXY(0/* X */, 33/* Y */);
+
+            $pdf->Line(/* Izq-X */2, /* Top-Y */ $pdf->GetY() + 1.5, /* Largo */ 72, $pdf->GetY() + 1.5); /* FIN ENCABEZADO */
+
             /* DETALLE */
-            $detalle = $this->ventas_model->getVentaDetalleByID(1);
+            $detalle = $this->ventas_model->getVentaDetalleByID($this->input->post('ID'));
             $pdf->SetFont('Arial', '', 5);
-            $Y = $pdf->GetY();
+            $Y = $pdf->GetY() + 2;
             $af = 2.5;
             $total_articulos = 0;
             $total = 0.0;
             $pares = 0;
             foreach ($detalle as $key => $v) {
+//                for ($index = 0; $index < 100; $index++) {
+                if ($pdf->getY() > 75) {
+                    $pdf->AddPage();
+                    $Y = 2;
+                }
                 $subtotal = $v->PRECIO * $v->CANTIDAD;
                 $pdf->SetY($Y);
                 $pdf->SetX(1/* X */);
@@ -428,12 +438,14 @@ class Ventas extends CI_Controller {
                 $total += $subtotal;
                 $total_articulos += 1;
                 $pares += $v->CANTIDAD;
+//                }
             }
             /* FIN DETALLE */
             $pdf->Line(/* Izq-X */2, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            $pdf->SetY($pdf->GetY() + 1.5);
             /* PIE */
             $pdf->SetX(1/* X */);
-            $pdf->Cell(27, $af, "Articulos " . $total_articulos, 0/* BORDE */, 0/* SALTO */, 'L');
+            $pdf->Cell(27, $af, "Articulos vendidos " . $total_articulos, 0/* BORDE */, 0/* SALTO */, 'L');
             $pdf->SetX(20/* X */);
             $pdf->Cell(27, $af, "Pares " . $pares, 0/* BORDE */, 0/* SALTO */, 'R');
             $af -= .5;
@@ -443,21 +455,37 @@ class Ventas extends CI_Controller {
             $pdf->Cell(14, $af, "$" . number_format(($e->TIPODOC === 1 ? $total * .16 : 0), 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
             $pdf->SetX(50/* X */);
             $pdf->Cell(8, $af, "Total: ", 0/* BORDE */, 0/* SALTO */, 'R');
+
+            $YY = $pdf->GetY();
+            $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
             $pdf->SetX(58/* X */);
-            $pdf->Cell(14, $af, "$" . number_format(($e->TIPODOC === 1 ? $total * 1.16 : $total), 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            $pdf->Cell(14, $af, "$" . number_format($total, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $pdf->SetX(50/* X */);
+            $supago = ($e->SUPAGO > 0) ? $e->SUPAGO : 0;
+            $pdf->Cell(8, $af, "Su Pago: ", 0/* BORDE */, 0/* SALTO */, 'L');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$ " . number_format($supago, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $cambio = $supago - $total;
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "Cambio: ", 0/* BORDE */, 0/* SALTO */, 'L');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+
             $pdf->SetFont('Arial', '', 4);
+            $pdf->SetY($YY);
             $pdf->SetX(1/* X */);
-            $pdf->MultiCell(50, $af, "CANTIDAD EN LETRA 00/100 M.N/USD", 0/* BORDE */, 'L');
+            $pdf->MultiCell(50, $af - .2, strtoupper(utf8_decode($e->TOTAL_EN_LETRA)), 0/* BORDE */, 'L');
+            $pdf->SetFont('Arial', '', 5);
             $pdf->SetX(1/* X */);
-            $pdf->Cell(29, $af, "Metodo de pago $ 000,000,000.00", 0/* BORDE */, 0/* SALTO */, 'L');
-            $pdf->SetX(30/* X */);
-            $pdf->Cell(21, $af, "Pago $ 000,000,000.00", 0/* BORDE */, 0/* SALTO */, 'L');
-            $pdf->SetX(51/* X */);
-            $pdf->Cell(21, $af, "Cambio $ 000,000,000.00", 0/* BORDE */, 1/* SALTO */, 'L');
+            $pdf->Cell(29, $af, "Condiciones de pago: " . $e->METODO_PAGO, 0/* BORDE */, 1/* SALTO */, 'L');
+
             $pdf->SetX(1/* X */);
-            $pdf->Cell(50, $af, "LUGAR DE EXPEDICION", 0/* BORDE */, 1/* SALTO */, 'L');
+            $pdf->Cell(50, $af, utf8_decode("Lugar de expedición: " . $e->LUGAR_EXPEDICION), 0/* BORDE */, 1/* SALTO */, 'L');
             $pdf->SetX(1/* X */);
-            $pdf->Cell(50, $af, utf8_decode("Gracias por su compra, le atendió " . $e->VENDEDOR . " " . $pdf->GetY()), 0/* BORDE */, 1/* SALTO */, 'L');
+            $pdf->Cell(50, $af, utf8_decode("Gracias por su compra, le atendió: " . $e->VENDEDOR), 0/* BORDE */, 1/* SALTO */, 'L');
 
             /* PIE */
             /* SALIDA DEL TICKET */

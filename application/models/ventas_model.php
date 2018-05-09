@@ -116,13 +116,15 @@ class ventas_model extends CI_Model {
     public function getVentaByID($ID) {
         try {
             $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR, 
-	   V.FechaCreacion AS FECHA_DE_CREACION, V.FechaMov AS FECHA_MOV, V.MetodoPago AS METODO_PAGO, V.Estatus
+	   V.FechaCreacion AS FECHA_DE_CREACION, V.FechaMov AS FECHA_MOV, CA.SValue AS METODO_PAGO, V.Estatus AS ESTATUS, V.SuPago AS SUPAGO
       ,V.Importe      ,V.Usuario      ,V.Tipo, T.RazonSocial AS TIENDA, 
-      CONCAT(T.Direccion,\' #\', T.NoExt,\', \',T.Colonia,\' \', T.Ciudad,\', \', T.Estado,\' C.P \',T.CP) AS DIRECCION', false);
+      CONCAT(T.Direccion,\' #\', T.NoExt,\', \',T.Colonia,\' \', T.Ciudad,\', \', T.Estado,\' C.P \',T.CP) AS DIRECCION,
+      CONCAT(T.Ciudad,\',\',T.Estado) AS LUGAR_EXPEDICION, V.ImporteEnLetra  AS TOTAL_EN_LETRA,V.Tienda AS TIENDA_ID, T.Foto AS FOTO_TIENDA', false);
             $this->db->from('sz_Ventas AS V');
             $this->db->join('sz_Tiendas AS T', 'V.Tienda = T.ID');
             $this->db->join('sz_Clientes AS C', 'V.Cliente = C.ID');
             $this->db->join('sz_Empleados AS E', 'V.Tienda = E.ID');
+            $this->db->join('sz_Catalogos AS CA', 'V.MetodoPago = CA.ID');
             $this->db->where('V.ID', $ID);
 //            $this->db->where('V.Tipo', 'V');
             $query = $this->db->get();
