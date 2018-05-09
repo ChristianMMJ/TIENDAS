@@ -39,8 +39,8 @@
                             <input type="text" class="" id="ID" name="ID"  >
                         </div>
                         <div class="col-sm-1">
-                            <label for="TipoDoc">Tp*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" id="TipoDoc" name="TipoDoc" required >
+                            <label for="TipoDoc">RF*</label>
+                            <input type="text"  class="form-control form-control-sm " maxlength="1" id="TipoDoc" name="TipoDoc" required >
                         </div>
                         <div class="col-sm-2">
                             <label for="FechaMov">Fecha Mov.</label>
@@ -219,11 +219,30 @@
             }
         }
     };
+
+
     $(document).ready(function () {
+
+
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
-            if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
-                onCalcularMontos();
+        pnlDatos.find("input[name='TipoDoc']").keyup(function (e) {
+            if (e.keyCode === 82)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else if (e.keyCode === 70)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('F');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
             }
         });
         //Sombreado de la fila
@@ -326,7 +345,7 @@
             pnlDatosDetalle.removeClass('d-none');
             pnlDatos.find("input").val("");
             pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
-            pnlDatos.find('#TipoDoc').val('2');
+            pnlDatos.find('#TipoDoc').val('R');
             $('#Encabezado').removeClass('disabledForms');
             $('#ControlesDetalle').removeClass('disabledForms');
             pnlControlesDetalle.removeClass('d-none');
@@ -336,6 +355,7 @@
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             $(':input:text:enabled:visible:first').focus();
+            $(':input:text:enabled:visible:first').select();
             nuevo = true;
         });
         btnCancelar.click(function () {
@@ -543,7 +563,7 @@
         var Precio = pnlControlesDetalle.find("[name='Precio']");
         var Categoria = pnlControlesDetalle.find("[name='Categoria']");
 
-        if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() !== '') {
             if (Precio.val() !== '' && parseFloat(Precio.val()) > 0) {
 
                 tblDetalleGasto.row.add([
@@ -587,10 +607,10 @@
         });
         //Seteamos la variableGlobalDelTotal
         ImporteTotal = total;
-        if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
+        if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length >= 1) {
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
-        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() === 'F') {
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(total * 0.16, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total * 1.16, 2, '.', ','));
         } else {

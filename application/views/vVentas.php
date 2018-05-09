@@ -139,7 +139,7 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5> 
+                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
@@ -160,9 +160,9 @@
                         <div class="d-none">
                             <input type="text" class="" id="ID" name="ID"  >
                         </div>
-                        <div class="col-12 col-md-1"
-                             <label for="TipoDoc">Tp*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
+                        <div class="col-sm-1">
+                            <label for="TipoDoc">RF*</label>
+                            <input type="text"  class="form-control form-control-sm " maxlength="1" id="TipoDoc" name="TipoDoc" required >
                         </div>
                         <div class="col-12 col-md-1">
                             <label for="FolioTienda">No.*</label>
@@ -439,8 +439,8 @@
         btnTicket.click(function () {
             var Venta = parseInt(pnlDatos.find("#ID").val());
             if (Venta > 0) {
-                $.post(master_url + 'getTicketXVenta', {ID: Venta}).done(function (data,x,jq) {
-                  console.log(data)
+                $.post(master_url + 'getTicketXVenta', {ID: Venta}).done(function (data, x, jq) {
+                    console.log(data)
                     window.open(data, '_blank');
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
@@ -745,6 +745,8 @@
             mdlDevolucion.modal('show');
         });
 
+
+
         //Aqui devolver existencias y mandarle dialogo de confimacion
         shortcut.add("F1", function () {
             btnCerrarVenta.trigger('click');
@@ -773,7 +775,7 @@
             pnlDatos.find("select")[k].selectize.clear(true);
         });
         pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
-        pnlDatos.find('#TipoDoc').val('2');
+        pnlDatos.find('#TipoDoc').val('R');
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
@@ -786,9 +788,25 @@
         getVendedores();
         handleEnter();
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
-            if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
-                onCalcularMontos();
+
+        pnlDatos.find("input[name='TipoDoc']").keyup(function (e) {
+            if (e.keyCode === 82)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else if (e.keyCode === 70)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('F');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
             }
         });
         //Cuando pierde el foco despues de buscar
@@ -1166,7 +1184,7 @@
                 }).always(function () {
                     HoldOn.close();
                 });
-//            getSerieXEstilo($(this).val()); 
+//            getSerieXEstilo($(this).val());
             });
         });
         //Obtiene las existencias del inventario
@@ -1223,7 +1241,7 @@
                     //                    for (var pair of f.entries()) {
                     //                        console.log(pair[0] + ', ' + pair[1]);
                     //                    }
-                    
+
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -1298,7 +1316,7 @@
 
             });
         });
-        
+
         btnCerrarVenta.click(function () {
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 $('#mdlCerrarVenta').modal('show');
@@ -1309,7 +1327,7 @@
             }
 
         });
-        
+
         btnFinVenta.click(function () {
             $.ajax({
                 url: master_url + 'onModificarEstatus',
@@ -1319,7 +1337,7 @@
                     Estatus: 'CERRADA',
                     SuPago: mdlCerrarVenta.find("#Pago").val(),
                     Cambio: getNumberFloat(mdlCerrarVenta.find("#Cambio").text()),
-                    ImporteEnLetra: mdlCerrarVenta.find("#ImporteLetra h6").text();
+                    ImporteEnLetra: mdlCerrarVenta.find("#ImporteLetra h6").text()
                 }
             }).done(function (data, x, jq) {
                 $('#mdlCerrarVenta').modal('hide');
@@ -1411,7 +1429,7 @@
         var Desc = pnlControlesDetalle.find("[name='Descuento']");
         var Talla = pnlControlesDetalle.find("[name='Talla']");
         var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
-        if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() !== '') {
             /*COMPROBAR ESTILO, COMBINACION Y TALLA*/
             var estilo_combinacion_existen = false;
             if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
@@ -1867,7 +1885,7 @@
             pnlDatosDetalle.find("#Descuento").find("strong").text('$' + $.number(descuento, 2, '.', ','));
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
-        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() === 'F') {
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number((total) * 0.16, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number((total) * 1.16, 2, '.', ','));
         } else {
@@ -2329,10 +2347,12 @@
                 if (result) {
                     toggleFullScreen();
                     $(':input:text:enabled:visible:first').focus();
+                    $(':input:text:enabled:visible:first').select();
                 }
             });
         } else {
             $(':input:text:enabled:visible:first').focus();
+            $(':input:text:enabled:visible:first').select();
         }
     }
     var tblDevoluciones;

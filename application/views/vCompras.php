@@ -54,8 +54,8 @@
                             </select>
                         </div>
                         <div class="col-sm-1">
-                            <label for="TipoDoc">Tp*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="TipoDoc" maxlength="1" name="TipoDoc" required >
+                            <label for="TipoDoc">RF*</label>
+                            <input type="text"  class="form-control form-control-sm " maxlength="1" id="TipoDoc" name="TipoDoc" required >
                         </div>
                         <div class="col-sm-2">
                             <label for="FechaMov">Fecha Mov.</label>
@@ -335,20 +335,29 @@
     }
 
     $(document).ready(function () {
-
-
-
-
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-        pnlDatos.find("input[name='TipoDoc']").keyup(function () {
-            if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
-                onCalcularMontos();
+        pnlDatos.find("input[name='TipoDoc']").keyup(function (e) {
+            if (e.keyCode === 82)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else if (e.keyCode === 70)/*Solo R*/
+            {
+                pnlDatos.find("input[name='TipoDoc']").val('F');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
+            } else {
+                pnlDatos.find("input[name='TipoDoc']").val('R');
+                if (pnlDatosDetalle.find('#tblDetalle > tbody > tr').length > 0) {
+                    onCalcularMontos();
+                }
             }
         });
 
         //Alerta de afectación al inventario
-
-
         pnlDatos.find("#AfecInv").change(function () {
             if (this.checked) {
                 swal({
@@ -541,7 +550,7 @@
             pnlDatos.find("input").val("");
             pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
             pnlDatos.find('#AfecInv').prop('checked', false);
-            pnlDatos.find('#TipoDoc').val('2');
+            pnlDatos.find('#TipoDoc').val('R');
             pnlDatos.find('#dAfecInv').removeClass('disabledForms');
             $('#Encabezado').removeClass('disabledForms');
             $('#ControlesDetalle').removeClass('disabledForms');
@@ -550,6 +559,7 @@
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             $(':input:text:enabled:visible:first').focus();
+            $(':input:text:enabled:visible:first').select();
             nuevo = true;
         });
         btnCancelar.click(function () {
@@ -884,7 +894,7 @@
         var Estilo = pnlDatosDetalle.find("[name='Estilo']");
         var Combinacion = pnlDatosDetalle.find("[name='Combinacion']");
         var Costo = pnlDatosDetalle.find("[name='PrecioMov']");
-        if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() !== '') {
             if (Costo.val() !== '' && parseFloat(Costo.val()) > 0) {
                 /*COMPROBAR ESTILO Y COMBINACION*/
                 var estilo_combinacion_existen = false;
@@ -1000,11 +1010,11 @@
             pares += parseInt($(this)[5]);
             total += getNumberFloat($(this)[7]);
         });
-        if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
+        if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length >= 1) {
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
         }
-        if (parseInt(pnlDatos.find("input[name='TipoDoc']").val()) === 1) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() === 'F') {
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(total * 0.16, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number(total * 1.16, 2, '.', ','));
         } else {
