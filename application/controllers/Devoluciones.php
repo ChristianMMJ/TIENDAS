@@ -98,7 +98,6 @@ class Devoluciones extends CI_Controller {
             /* DETALLE DE LA VENTA DEVUELTO */
             $DetalleDevuelto = json_decode($this->input->post("DetalleDevuelto"));
             foreach ($DetalleDevuelto as $key => $v) {
-
                 /* AGREGAR LOS PRODUCTOS DEVUELTOS (SUMAR) */
 
                 /* OBTENER SERIE X ESTILO */
@@ -118,8 +117,7 @@ class Devoluciones extends CI_Controller {
                         $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
                         break;
                     }
-                }
-                /* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
+                }/* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
             }
 
             /* DETALLE DE LA VENTA (DEVOLUCION) */
@@ -132,7 +130,6 @@ class Devoluciones extends CI_Controller {
                 /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
                 $existencia = 0;
                 for ($index = 1; $index <= 22; $index++) {
-
                     /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
                     $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                     /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
@@ -144,7 +141,6 @@ class Devoluciones extends CI_Controller {
                         /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
                         $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
                         /* FIN RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
-
                         /* AGREGAR UN REGISTRO EN EL DETALLE DE LA DEVOLUCIÓN */
                         $data = array(
                             'Venta' => $ID,
@@ -155,7 +151,8 @@ class Devoluciones extends CI_Controller {
                             'Subtotal' => $v->Subtotal,
                             'Descuento' => 0,
                             'Precio' => $v->Precio,
-                            'PorcentajeDesc' => 0
+                            'PorcentajeDesc' => 0,
+                            'Registro' => Date('d/m/Y h:i:s a')
                         );
                         $this->devoluciones_model->onAgregarDetalle($data);
                         $data = array(
@@ -167,7 +164,8 @@ class Devoluciones extends CI_Controller {
                             'Subtotal' => $v->Subtotal,
                             'Descuento' => 0,
                             'Precio' => $v->Precio,
-                            'PorcentajeDesc' => 0
+                            'PorcentajeDesc' => 0,
+                            'Registro' => Date('d/m/Y h:i:s a')
                         );
                         $this->devoluciones_model->onAgregarDevolucionDetalle($data);
                         break;

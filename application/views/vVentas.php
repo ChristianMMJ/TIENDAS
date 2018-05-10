@@ -440,7 +440,6 @@
             var Venta = parseInt(pnlDatos.find("#ID").val());
             if (Venta > 0) {
                 $.post(master_url + 'getTicketXVenta', {ID: Venta}).done(function (data, x, jq) {
-                    console.log(data)
                     window.open(data, '_blank');
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
@@ -465,23 +464,18 @@
                 var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
                 $.each(dt, function () {
                     var tr = $(this).parent().parent();
-                    var row = tblDevolucionesDetalle.row(tr).data();
-                    detalle_devuelto.push({
-                        ID: row[0], Estilo: row[0], Color: row[2],
-                        Talla: row[3], Cantidad: row[4]
-                    });
+                    var cell = tblDevolucionesDetalle.row(tr).data();
+
+                    detalle_devuelto.push({ID: cell[0], Estilo: cell[9], Color: cell[10], Talla: cell[3], Cantidad: cell[12]});
                 });
                 /*DETALLE SELECCIONADO*/
                 var detalle = [];
                 $.each(tblDetalleParaIntercambio.rows().data(), function () {
-                    var row = $(this);
-                    console.log(row);
+                    var cells = $(this);
+                    console.log(cells);
                     detalle.push(
                             {
-                                Estilo: row[0], Color: row[2],
-                                Talla: row[4], Cantidad: row[5],
-                                Precio: getNumberFloat(row[6]),
-                                Subtotal: getNumberFloat(row[7])
+                                Estilo: cells[0], Color: cells[2], Talla: cells[4], Cantidad: cells[5], Precio: getNumberFloat(cells[6]), Subtotal: getNumberFloat(cells[7])
                             }
                     );
                 });
@@ -572,36 +566,7 @@
                             "visible": false,
                             "searchable": false
                         }],
-                    language: {
-                        processing: "Proceso en curso...",
-                        search: "Buscar:",
-                        lengthMenu: "Mostrar _MENU_ Elementos",
-                        info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-                        infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-                        infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-                        infoPostFix: "",
-                        loadingRecords: "Procesando los datos...",
-                        zeroRecords: "No se encontro nada.",
-                        emptyTable: "No existen datos en la tabla.",
-                        paginate: {
-                            first: "Primero",
-                            previous: "Anterior",
-                            next: "Siguiente",
-                            last: "&Uacute;ltimo"
-                        },
-                        aria: {
-                            sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": Habilitado para ordenar la columna en orden descendente"
-                        },
-                        buttons: {
-                            copyTitle: 'Registros copiados a portapapeles',
-                            copyKeys: 'Copiado con teclas clave.',
-                            copySuccess: {
-                                _: ' %d Registros copiados',
-                                1: ' 1 Registro copiado'
-                            }
-                        }
-                    }
+                    language: lang
                 });
                 tblDetalleParaIntercambio.clear().draw();
             } else {
@@ -1054,15 +1019,15 @@
                 total_cubierto += subtotal;
 //            if (total_cubierto >= monto_a_cubrir) {
                 tblDetalleParaIntercambio.row.add([
-                    mdlDevolucion.find("[name='Estilo']").val(),
-                    mdlDevolucion.find("[name='Estilo']").text(),
-                    mdlDevolucion.find("[name='Combinacion']").val(),
-                    mdlDevolucion.find("[name='Combinacion']").text(),
-                    mdlDevolucion.find("[name='Talla']").val(),
-                    Cantidad,
-                    "$" + $.number(Precio, 2, '.', ','),
-                    "$" + $.number(subtotal, 2, '.', ','),
-                    '<button type="button" class="btn btn-outline-danger" onclick="onRemoverElegido(this)"><span class="fa fa-trash fa-2x"></span></button>'
+                    mdlDevolucion.find("[name='Estilo']").val()/*0*/,
+                    mdlDevolucion.find("[name='Estilo']").text()/*1*/,
+                    mdlDevolucion.find("[name='Combinacion']").val()/*2*/,
+                    mdlDevolucion.find("[name='Combinacion']").text()/*3*/,
+                    mdlDevolucion.find("[name='Talla']").val()/*4*/,
+                    Cantidad/*5*/,
+                    "$" + $.number(Precio, 2, '.', ',')/*6*/,
+                    "$" + $.number(subtotal, 2, '.', ',')/*7*/,
+                    '<button type="button" class="btn btn-outline-danger" onclick="onRemoverElegido(this)"><span class="fa fa-trash fa-2x"></span></button>'/*8*/
                 ]).draw(false);
                 total_cubierto = 0;
                 $.each(tblDetalleParaIntercambio.rows().data(), function () {
@@ -2442,13 +2407,15 @@
                 rows += '<td>' + v.ESTILO + '</td>'; /*1*/
                 rows += '<td>' + v.COLOR + '</td>'; /*2*/
                 rows += '<td>' + v.TALLA + '</td>'; /*3*/
-                rows += '<td>' + v.CANTIDAD + '</td>'; /*4*/
+                rows += '<td><input type="text" value="' + v.CANTIDAD + '" class="form-control numbersOnly" placeholder="' + v.CANTIDAD + '" onkeyup="onComprobarCantidad(this)" onchange="onComprobarCantidad(this)"></td>'; /*4*/
                 rows += '<td>' + v.PRECIO + '</td>'; /*5*/
                 rows += '<td>' + v.DESCUENTO + '</td>'; /*6*/
                 rows += '<td>' + v.SUBTOTAL + '</td>'; /*7*/
                 rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>'; /*8*/
                 rows += '<td>' + v.ESTILO_ID + '</td>';/*9*/
                 rows += '<td>' + v.COLOR_ID + '</td>';/*10*/
+                rows += '<td>' + v.CANTIDAD + '</td>'; /*11*/
+                rows += '<td>0</td>'; /*12*/
 
                 rows += '</tr>';
             });
@@ -2480,37 +2447,18 @@
                         "targets": [10],
                         "visible": false,
                         "searchable": false
+                    },
+                    {
+                        "targets": [11],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [12],
+                        "visible": false,
+                        "searchable": false
                     }],
-                language: {
-                    processing: "Proceso en curso...",
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ Elementos",
-                    info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-                    infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-                    infoPostFix: "",
-                    loadingRecords: "Procesando los datos...",
-                    zeroRecords: "No se encontro nada.",
-                    emptyTable: "No existen datos en la tabla.",
-                    paginate: {
-                        first: "Primero",
-                        previous: "Anterior",
-                        next: "Siguiente",
-                        last: "&Uacute;ltimo"
-                    },
-                    aria: {
-                        sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
-                        sortDescending: ": Habilitado para ordenar la columna en orden descendente"
-                    },
-                    buttons: {
-                        copyTitle: 'Registros copiados a portapapeles',
-                        copyKeys: 'Copiado con teclas clave.',
-                        copySuccess: {
-                            _: ' %d Registros copiados',
-                            1: ' 1 Registro copiado'
-                        }
-                    }
-                }
+                language: lang
             }
             );
         }).fail(function (x, y, z) {
@@ -2606,6 +2554,7 @@
             mdlDevolucion.find("#TotalCubiertoTotal strong").text('$' + $.number(total_cubierto, 2, '.', ',')); /*I.V.A*/
         }
     }
+
     function onComprobarScaneoDevolucion() {
         var t = setTimeout(onComprobarScaneoDevolucion, 100);
         var LeerCodigoDevolucion = mdlDevolucion.find("#btnActivarCodigoDevolucion")[0].checked;
@@ -2613,8 +2562,19 @@
             mdlDevolucion.find("#CodigoBarrasDevolucion").focus();
         }
     }
-    function onEditarCantidadADevolver(e) {
 
+    function onComprobarCantidad(e) {
+        var cantidad_ingresada = (parseInt($(e).val()) > 0) ? parseInt($(e).val()) : 0;
+        var cantidad_a_devolver = parseInt(tblDevolucionesDetalle.row($(e).parents('tr')).data()[11]);
+        if (cantidad_ingresada !== '' && cantidad_a_devolver > 0) {
+            if (cantidad_ingresada > cantidad_a_devolver) {
+                onBeep(2);
+                $(e).val(cantidad_a_devolver);
+                swal('ATENCIÓN', 'INGRESE OTRA CANTIDAD MENOR O IGUAL A LA CANTIDAD A DEVOLVER', 'warning');
+            } else {
+                tblDevolucionesDetalle.cell($(e).parents('tr'), 12).data(cantidad_ingresada).draw();/*MODIFICA LA CELDA*/
+            }
+        } 
     }
 </script>
 <style>
