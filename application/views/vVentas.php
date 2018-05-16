@@ -2311,139 +2311,113 @@
 
     var tblDevolucionesDetalle;
     var tblDetalleParaIntercambio;
-    function getVentaXID(e) {
-        var tr = $(e).parent().parent();
-        var IDVTA = parseInt(tr.find("td").eq(0).text());
-        btnCancelarAtras.removeClass('d-none');
-        mdlDevolucion.find("#SubtotalEncabezado").removeClass("d-none");
-        mdlDevolucion.find("#SubtotaPie").removeClass("d-none");
-        mdlDevolucion.find("#Todos").parent().removeClass("d-none");
-        mdlDevolucion.find("#Venta").val(IDVTA);
-        mdlDevolucion.find("#ResumenDevolucionesDetalle").removeClass("d-none");
-        mdlDevolucion.find("#Pasos div").eq(0).removeClass('d-none');
-        mdlDevolucion.find("#Pasos div").eq(1).addClass('d-none');
-        mdlDevolucion.find("#Pasos div").eq(2).removeClass('d-none');
-        HoldOn.open({
-            theme: 'sk-bounce',
-            message: 'CARGANDO...'
-        });
-        $.getJSON(base_url + 'index.php/Devoluciones/getVentaXID', {ID: IDVTA}).done(function (data) {
-            var r = data[0];
-            mdlDevolucion.find("#VentaTP").val(r.TP);
-            if (parseInt(r.TP) === 2) {
-                mdlDevolucion.find("#TieneTP").addClass("d-none");
-            } else {
-                mdlDevolucion.find("#TieneTP").removeClass("d-none");
-            }
-            mdlDevolucion.find('#DevolucionesDetalle').removeClass("d-none");
-            mdlDevolucion.find('#FechaInicial').parent().addClass("d-none");
-            mdlDevolucion.find('#FechaFinal').parent().addClass("d-none");
-            mdlDevolucion.find('#Devoluciones').addClass("d-none");
-            mdlDevolucion.find('#btnBuscarPorFechas').addClass("d-none");
-            mdlDevolucion.find('#btnSiguiente').removeClass("d-none");
-            if ($.fn.DataTable.isDataTable('#tblDevoluciones')) {
-                mdlDevolucion.find('#tblDevoluciones').DataTable().destroy();
-            }
-            if ($.fn.DataTable.isDataTable('#tblDevolucionesDetalle')) {
-                mdlDevolucion.find('#tblDevolucionesDetalle').DataTable().destroy();
-            }
-            var rows;
-            $.each(data, function (k, v) {
-                rows += '<tr>';
-                rows += '<td>' + v.ID + '</td>'; /*0*/
-                rows += '<td>' + v.ESTILO + '</td>'; /*1*/
-                rows += '<td>' + v.COLOR + '</td>'; /*2*/
-                rows += '<td>' + v.TALLA + '</td>'; /*3*/
-                rows += '<td><input type="text" value="' + v.CANTIDAD + '" class="form-control numbersOnly" placeholder="' + v.CANTIDAD + '" onkeyup="onComprobarCantidad(this)" onchange="onComprobarCantidad(this)"></td>'; /*4*/
-                rows += '<td>' + v.PRECIO + '</td>'; /*5*/
-                rows += '<td>' + v.DESCUENTO + '</td>'; /*6*/
-                rows += '<td>' + v.SUBTOTAL + '</td>'; /*7*/
-                rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>'; /*8*/
-                rows += '<td>' + v.ESTILO_ID + '</td>';/*9*/
-                rows += '<td>' + v.COLOR_ID + '</td>';/*10*/
-                rows += '<td>' + v.CANTIDAD + '</td>'; /*11*/
-                rows += '<td>0</td>'; /*12*/
-
-                rows += '</tr>';
-            });
-            mdlDevolucion.find('#tblDevolucionesDetalle > tbody').html(rows);
-            tblDevolucionesDetalle = mdlDevolucion.find('#tblDevolucionesDetalle').DataTable({
-                "dom": 'frt',
-                "autoWidth": false,
-                "colReorder": true,
-                "displayLength": 500,
-                "bLengthChange": false,
-                "deferRender": true, "scrollCollapse": false,
-                "bSort": true,
-                "aaSorting": [
-                    [0, 'desc']/*ID*/
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        "targets": [9],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        "targets": [10],
-                        "visible": false,
-                        "searchable": false
-<<<<<<< HEAD
-                    }],
-                language: {
-                    processing: "Proceso en curso...",
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ Elementos",
-                    info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.", infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-                    infoPostFix: "",
-                    loadingRecords: "Procesando los datos...",
-                    zeroRecords: "No se encontro nada.",
-                    emptyTable: "No existen datos en la tabla.",
-                    paginate: {
-                        first: "Primero", previous: "Anterior",
-                        next: "Siguiente",
-                        last: "&Uacute;ltimo"
-=======
->>>>>>> ce08e3ecf935981714187fc6cfdec42ba3135929
-                    },
-                    {
-                        "targets": [11],
-                        "visible": false,
-                        "searchable": false
-                    },
-<<<<<<< HEAD
-                    buttons: {
-                        copyTitle: 'Registros copiados a portapapeles', copyKeys: 'Copiado con teclas clave.',
-                        copySuccess: {
-                            _: ' %d Registros copiados',
-                            1: ' 1 Registro copiado'
-                        }
+    Giovanni, [16.05.18 10:56]
+            function getVentaXID(e) {
+                var tr = $(e).parent().parent();
+                var IDVTA = parseInt(tr.find("td").eq(0).text());
+                btnCancelarAtras.removeClass('d-none');
+                mdlDevolucion.find("#SubtotalEncabezado").removeClass("d-none");
+                mdlDevolucion.find("#SubtotaPie").removeClass("d-none");
+                mdlDevolucion.find("#Todos").parent().removeClass("d-none");
+                mdlDevolucion.find("#Venta").val(IDVTA);
+                mdlDevolucion.find("#ResumenDevolucionesDetalle").removeClass("d-none");
+                mdlDevolucion.find("#Pasos div").eq(0).removeClass('d-none');
+                mdlDevolucion.find("#Pasos div").eq(1).addClass('d-none');
+                mdlDevolucion.find("#Pasos div").eq(2).removeClass('d-none');
+                HoldOn.open({
+                    theme: 'sk-bounce',
+                    message: 'CARGANDO...'
+                });
+                $.getJSON(base_url + 'index.php/Devoluciones/getVentaXID', {ID: IDVTA}).done(function (data) {
+                    var r = data[0];
+                    mdlDevolucion.find("#VentaTP").val(r.TP);
+                    if (parseInt(r.TP) === 2) {
+                        mdlDevolucion.find("#TieneTP").addClass("d-none");
+                    } else {
+                        mdlDevolucion.find("#TieneTP").removeClass("d-none");
                     }
-                }
-=======
-                    {
-                        "targets": [12],
-                        "visible": false,
-                        "searchable": false
-                    }],
-                language: lang
->>>>>>> ce08e3ecf935981714187fc6cfdec42ba3135929
+                    mdlDevolucion.find('#DevolucionesDetalle').removeClass("d-none");
+                    mdlDevolucion.find('#FechaInicial').parent().addClass("d-none");
+                    mdlDevolucion.find('#FechaFinal').parent().addClass("d-none");
+                    mdlDevolucion.find('#Devoluciones').addClass("d-none");
+                    mdlDevolucion.find('#btnBuscarPorFechas').addClass("d-none");
+                    mdlDevolucion.find('#btnSiguiente').removeClass("d-none");
+                    if ($.fn.DataTable.isDataTable('#tblDevoluciones')) {
+                        mdlDevolucion.find('#tblDevoluciones').DataTable().destroy();
+                    }
+                    if ($.fn.DataTable.isDataTable('#tblDevolucionesDetalle')) {
+                        mdlDevolucion.find('#tblDevolucionesDetalle').DataTable().destroy();
+                    }
+                    var rows;
+                    $.each(data, function (k, v) {
+                        rows += '<tr>';
+                        rows += '<td>' + v.ID + '</td>'; /*0*/
+                        rows += '<td>' + v.ESTILO + '</td>'; /*1*/
+                        rows += '<td>' + v.COLOR + '</td>'; /*2*/
+                        rows += '<td>' + v.TALLA + '</td>'; /*3*/
+                        rows += '<td><input type="text" value="' + v.CANTIDAD + '" class="form-control numbersOnly" placeholder="' + v.CANTIDAD + '" onkeyup="onComprobarCantidad(this)" onchange="onComprobarCantidad(this)"></td>'; /*4*/
+                        rows += '<td>' + v.PRECIO + '</td>'; /*5*/
+                        rows += '<td>' + v.DESCUENTO + '</td>'; /*6*/
+                        rows += '<td>' + v.SUBTOTAL + '</td>'; /*7*/
+                        rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>'; /*8*/
+                        rows += '<td>' + v.ESTILO_ID + '</td>';/*9*/
+                        rows += '<td>' + v.COLOR_ID + '</td>';/*10*/
+                        rows += '<td>' + v.CANTIDAD + '</td>'; /*11*/
+                        rows += '<td>0</td>'; /*12*/
+
+
+                        rows += '</tr>';
+                    });
+                    mdlDevolucion.find('#tblDevolucionesDetalle > tbody').html(rows);
+                    tblDevolucionesDetalle = mdlDevolucion.find('#tblDevolucionesDetalle').DataTable({
+                        "dom": 'frt',
+                        "autoWidth": false,
+                        "colReorder": true,
+                        "displayLength": 500,
+                        "bLengthChange": false,
+                        "deferRender": true,
+                        "scrollCollapse": false,
+                        "bSort": true,
+                        "aaSorting": [
+                            [0, 'desc']/*ID*/
+                        ],
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                "visible": false,
+                                "searchable": false
+                            },
+                            {
+                                "targets": [9],
+                                "visible": false,
+                                "searchable": false
+                            },
+                            {
+                                "targets": [10],
+                                "visible": false,
+                                "searchable": false
+                            },
+                            {
+                                "targets": [11],
+                                "visible": false,
+                                "searchable": false
+                            },
+                            {
+                                "targets": [12],
+                                "visible": false,
+                                "searchable": false
+                            }],
+                        language: lang
+                    }
+                    );
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                    onCalcularMontoDevuelto();
+                    paso = 2;
+                });
             }
-            );
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-            onCalcularMontoDevuelto();
-            paso = 2;
-        });
-    }
 
     function onCalcularMontoDevuelto() {
         var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
@@ -2548,7 +2522,7 @@
             } else {
                 tblDevolucionesDetalle.cell($(e).parents('tr'), 12).data(cantidad_ingresada).draw();/*MODIFICA LA CELDA*/
             }
-        } 
+        }
     }
 </script>
 <style>
