@@ -15,19 +15,19 @@
                     </div>
                 </div>               
                 <div id="Pasos" class="row">
-                    <div class="col-2 d-none" align="left">
+                    <div class="col-sm d-none" align="left">
                         <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtrasHead'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
                     </div>
-                    <div class="col-8 d-none"> 
-                        <h1>Paso 1 de 3: Seleccionar la venta</h1>
+                    <div class="col-sm d-none"> 
+                        <h2>Paso 1 de 3: Seleccionar la venta</h2>
                     </div>
-                    <div class="col-8 d-none"> 
-                        <h1>Paso 2 de 3: Seleccionar productos a devolver</h1>
+                    <div class="col-sm d-none"> 
+                        <h2>Paso 2 de 3: Seleccionar productos a devolver</h2>
                     </div>
-                    <div class="col-12 d-none"> 
-                        <h1>Paso 3 de 3: Seleccionar productos a entregar</h1>
+                    <div class="col-sm d-none"> 
+                        <h2>Paso 3 de 3: Seleccionar productos a entregar</h2>
                     </div>
-                    <div class="col-2" align="right">
+                    <div class="col-sm" align="right">
                         <button type='button' class="btn btn-success btn-sm  d-none" id='btnSiguiente'><span class="fa fa-arrow-right"></span><br>SIGUIENTE</button>
                     </div>
                 </div>
@@ -84,6 +84,8 @@
                                 <th>ACCION</th> 
                                 <th>ESTILO_ID</th> 
                                 <th>COLOR_ID</th> 
+                                <th>CANTIDAD_VENTA</th>
+                                <th>CANTIDAD_DEVOLUCION</th> 
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -100,6 +102,8 @@
                                 <th>ACCION</th> 
                                 <th>ESTILO_ID</th> 
                                 <th>COLOR_ID</th> 
+                                <th>CANTIDAD_VENTA</th>
+                                <th>CANTIDAD_DEVOLUCION</th> 
                             </tr>
                         </tfoot>
                     </table>

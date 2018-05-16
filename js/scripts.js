@@ -16,7 +16,10 @@ var valido = false;
  *******************************************************************************/
 var selected = [];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ce08e3ecf935981714187fc6cfdec42ba3135929
 var lang = {
         processing: "Proceso en curso...",
         search: "Buscar:",
@@ -47,7 +50,17 @@ var lang = {
             }
         }
     };
+<<<<<<< HEAD
 var buttons =[
+=======
+
+/*******************************************************************************
+ * OPTIONS FOR TABLES
+ *******************************************************************************/
+var tableOptions = {
+    "dom": 'Bfrtip',
+    buttons: [
+>>>>>>> ce08e3ecf935981714187fc6cfdec42ba3135929
         {
             extend: 'excelHtml5',
             text: ' <i class="fa fa-file-excel"></i>',
@@ -70,6 +83,7 @@ var buttons =[
             }
         }
 
+<<<<<<< HEAD
     ];
 /*******************************************************************************
  * OPTIONS FOR TABLES
@@ -77,6 +91,9 @@ var buttons =[
 var tableOptions = {
     "dom": 'Bfrtip',
      buttons: buttons,
+=======
+    ],
+>>>>>>> ce08e3ecf935981714187fc6cfdec42ba3135929
     language: lang,
     "autoWidth": true,
     "colReorder": true,
