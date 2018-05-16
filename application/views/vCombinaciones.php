@@ -9,14 +9,25 @@
             </div>
         </div>
         <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+            <div id="Registros" class="table-responsive">
+                <table id="tblRegistros" class="table table-sm display " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Estilo</th>
+                            <th>Color</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
             <form id="frmNuevo">
 
                 <div class="row">
@@ -27,8 +38,8 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -37,32 +48,32 @@
                     </div>
                     <div class="col-sm">
                         <label for="Estilo">Estilo*</label>
-                        <select class="form-control form-control-sm "  name="Estilo" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm "  name="Estilo" required="">
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-sm">
-                        <label for="Clave">Clave*</label>  
-                        <input type="text" class="form-control form-control-sm numbersOnly " id="Clave" name="Clave" required >
+                        <label for="Clave">Clave*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Descripcion">Descripción*</label>  
+                        <label for="Descripcion">Descripción*</label>
                         <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="Estatus" required="">
+                            <option value=""></option>
                             <option>ACTIVO</option>
-                            <option>INACTIVO</option> 
+                            <option>INACTIVO</option>
                         </select>
                     </div>
-                </div> 
+                </div>
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 <!--SCRIPT-->
 <script>
@@ -73,7 +84,32 @@
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var nuevo = true;
+
+    function getUltimaClave(Estilo) {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getUltimaClave',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Clave']").val(data);
+            pnlDatos.find("[name='Descripcion']").focus();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
     $(document).ready(function () {
+        pnlDatos.find("[name='Estilo']").change(function () {
+            if (nuevo) {
+                getUltimaClave($(this).val());
+            }
+        });
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -105,8 +141,8 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-pnlDatos.find('#ID').val(data);
-nuevo=false;
+                        pnlDatos.find('#ID').val(data);
+                        nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -137,108 +173,102 @@ nuevo=false;
         getEstilos();
         handleEnter();
     });
-
+    var tblRegistrosX = $("#tblRegistros"), Registros;
     function getRecords() {
-        temp = 0;
         HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
         });
-        $.ajax({
-            url: master_url + 'getRecords',
-            type: "POST",
-            dataType: "JSON"
-        }).done(function (data, x, jq) {
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblRegistros')) {
+            tblRegistrosX.DataTable().destroy();
+            Registros = tblRegistrosX.DataTable({
+                "dom": 'Bfrtip',
+                buttons: buttons,
+                "ajax": {
+                    "url": master_url + 'getRecords',
+                    "dataType": "jsonp",
+                    "dataSrc": ""
+                },
+                "columns": [
+                    {"data": "ID"},
+                    {"data": "Estilo"},
+                    {"data": "Color"}
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }],
+                language: lang,
+                "autoWidth": true,
+                "colReorder": true,
+                "displayLength": 20,
+                "bLengthChange": false,
+                "deferRender": true,
+                "scrollCollapse": false,
+                keys: true,
+                "bSort": true,
+                "aaSorting": [
+                    [0, 'desc']/*ID*/
+                ]
+            });
 
-            if (data.length > 0) {
+            tblRegistrosX.find('tbody').on('click', 'tr', function () {
+                tblRegistrosX.find("tbody tr").removeClass("success");
+                $(this).addClass("success");
+                var dtm = Registros.row(this).data();
+                temp = parseInt(dtm.ID);
+            });
 
-                $("#tblRegistros").html(getTable('tblCombinaciones', data));
-
-                $('#tblCombinaciones tfoot th').each(function () {
-                    $(this).html('');
-                });
-                var thead = $('#tblCombinaciones thead th');
-                var tfoot = $('#tblCombinaciones tfoot th');
-                thead.eq(0).addClass("d-none");
-                tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblCombinaciones tbody tr'), function (k, v) {
-                    var td = $(v).find("td");
-                    td.eq(0).addClass("d-none");
-                });
-                var tblSelected = $('#tblCombinaciones').DataTable(tableOptions);
-                $('#tblCombinaciones_filter input[type=search]').focus();
-
-                $('#tblCombinaciones tbody').on('click', 'tr', function () {
-
-                    $("#tblCombinaciones tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                });
-
-                $('#tblCombinaciones tbody').on('dblclick', 'tr', function () {
-                    $("#tblCombinaciones tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        nuevo = false;
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getCombinacionByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-
-                            pnlDatos.find("input").val("");
-                            $.each(pnlDatos.find("select"), function (k, v) {
-                                pnlDatos.find("select")[k].selectize.clear(true);
-                            });
-                            $.each(data[0], function (k, v) {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                }
-                            });
-                            pnlTablero.addClass("d-none");
-                            pnlDatos.removeClass('d-none');
-                            $(':input:text:enabled:visible:first').focus();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                    }
-                });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
+            tblRegistrosX.find('tbody').on('dblclick', 'tr', function () {
+                nuevo = false;
+                tblRegistrosX.find("tbody tr").removeClass("success");
+                $(this).addClass("success");
+                var dtm = Registros.row(this).data();
+                temp = parseInt(dtm.ID);
+                pnlDatos.removeClass("d-none");
+                pnlTablero.addClass("d-none");
+                if (temp !== 0 && temp !== undefined && temp > 0) {
+                    nuevo = false;
+                    HoldOn.open({
+                        theme: "sk-bounce",
+                        message: "CARGANDO DATOS..."
                     });
-                });
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
+                    $.ajax({
+                        url: master_url + 'getCombinacionByID',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            ID: temp
+                        }
+                    }).done(function (data, x, jq) {
+                        pnlDatos.find("input").val("");
+                        $.each(pnlDatos.find("select"), function (k, v) {
+                            pnlDatos.find("select")[k].selectize.clear(true);
+                        });
+                        $.each(data[0], function (k, v) {
+                            pnlDatos.find("[name='" + k + "']").val(v);
+                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            }
+                        });
+                        pnlTablero.addClass("d-none");
+                        pnlDatos.removeClass('d-none');
+                        pnlDatos.find("[name='Descripcion']").focus();
+                        pnlDatos.find("[name='Descripcion']").select();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                }
+            });
+        }
+        HoldOn.close();
     }
     function getEstilos() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
@@ -248,7 +278,7 @@ nuevo=false;
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                 pnlDatos.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                pnlDatos.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);

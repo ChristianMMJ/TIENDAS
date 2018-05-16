@@ -66,6 +66,16 @@ class Ventas extends CI_Controller {
         }
     }
 
+    public function getEncabezadoSerieXEstilo() {
+        try {
+            extract($this->input->post());
+            $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onEliminarDetalle() {
         try {
             extract($this->input->post());
@@ -277,6 +287,16 @@ class Ventas extends CI_Controller {
         try {
             extract($this->input->post());
             $data = $this->estilos_model->getEstilos();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstilosExt() {
+        try {
+            extract($this->input->post());
+            $data = $this->existencias_model->getEstilosExt();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -497,7 +517,7 @@ class Ventas extends CI_Controller {
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/Ventas/')) {
-                
+
             }
             $pdf->Output($url);
             print base_url() . $url;

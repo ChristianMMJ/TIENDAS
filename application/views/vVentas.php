@@ -52,7 +52,6 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <div class="row">
                     <div class="col-sm-6" >
                         <label for="Estilo">Estilo*</label>
@@ -67,63 +66,10 @@
                         </select>
                     </div>
                 </div>
-
-                <label for="Mayoreo">Tallas</label>
-                <div style="overflow-x:auto; white-space: nowrap; ">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22">
-                    <br>
-                    <span class="disabledForms">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22">
-                    </span>
-                </div>
-                <br>
+                <br><hr><br>
                 <div class="card-block">
                     <div class="table-responsive" id="tblRegistrosExistencias"></div>
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-raised btn-primary" data-dismiss="modal">ACEPTAR</button>
@@ -131,7 +77,7 @@
         </div>
     </div>
 </div>
-
+<!--VENTA PRINCIPAL-->
 <div class="card border-0">
     <div class="card-body text-dark" >
         <!--ENCABEZADO-->
@@ -224,7 +170,7 @@
                             <option value=""></option>
                         </select>
                         <span class="input-group-prepend">
-                            <span class="input-group-text text-dark" id="btnExistencias" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                            <span class="input-group-text text-dark" id="btnExistencias" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
                                 <i class="fa fa-search"></i>
                             </span>
                         </span>
@@ -424,7 +370,10 @@
         "deferRender": true,
         "scrollY": 220,
         "scrollCollapse": false,
-        "bSort": true
+        "bSort": false,
+        language: {
+            search: "Buscar:"
+        }
     };
     var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
     var btnCancelarAtras = mdlDevolucion.find("#btnCancelarAtras");
@@ -767,7 +716,7 @@
             btnSalir.trigger('click');
         });
         shortcut.add("Ctrl+E", function () {
-            btnExistencias.trigger('click');
+            onVerExistencias();
         });
         //Inicializar Componentes
         pnlDatos.find("input").val("");
@@ -1102,8 +1051,8 @@
         //Eventos en el select de estilo para traer las tallas y los colores
         pnlControlesDetalle.find("[name='Estilo']").change(function () {
             pnlDatosDetalle.find('#rExistencias').find("input").val("0");
-            $("[name='Combinacion']")[0].selectize.clear(true);
-            $("[name='Combinacion']")[0].selectize.clearOptions();
+            pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.clear(true);
+            pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.clearOptions();
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
             getFotoXEstilo($(this).val());
@@ -1197,6 +1146,7 @@
             $('#mdlInfoExistencia').find("[name='ColorEx']")[0].selectize.clear(true);
             $('#mdlInfoExistencia').find("[name='ColorEx']")[0].selectize.clearOptions();
             getCombinacionesXEstiloExt($(this).val());
+            getEncabezadoSerieXEstilo($(this).val());
             getExistenciasByEstiloByColor($(this).val(), '');
         });
         $('#mdlInfoExistencia').find("[name='ColorEx']").change(function () {
@@ -1407,11 +1357,14 @@
                 swal("INFO", "LA VENTA NO EXISTE", 'warning');
             }
         });
-        btnExistencias.click(function () {
-            getEstilosExt();
-            $('#mdlInfoExistencia').modal('show');
-        });
+
     });
+
+    function onVerExistencias() {
+        getEstilosExt();
+        $('#mdlInfoExistencia').modal('show');
+    }
+
     function limpiarCampos() {
         $("[name='CodigoBarras']").focus();
         $("[name='Estilo']")[0].selectize.clear(true);
@@ -2117,16 +2070,14 @@
     function getEstilosExt() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
-            url: master_url + 'getEstilos',
+            url: master_url + 'getEstilosExt',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.clear(true);
             $.each(data, function (k, v) {
-                $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.addOption({text: v.Estilo, value: v.IdEstilo});
             });
-            $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.focus();
-            $('#mdlInfoExistencia').find("[name='EstiloEx']")[0].selectize.close();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -2231,6 +2182,36 @@
         });
     }
 
+    function getEncabezadoSerieXEstilo(Estilo) {
+        $.ajax({
+            url: master_url + 'getEncabezadoSerieXEstilo',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            $('#tblExistencias thead th:not(:nth-child(1))').each(function () {
+                $(this).removeClass("d-none");
+            });
+            var thead = $('#tblExistencias thead th');
+            thead.eq(1).text('Tienda');
+            thead.eq(2).text('Estilo');
+            var cont = 3;
+            $.each(data[0], function (k, v) {
+                if (parseInt(v) <= 0) {
+                    thead.eq(cont).text('');
+                } else {
+                    thead.eq(cont).text(v);
+                }
+                cont++;
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+    }
+
     function getExistenciasByEstiloByColor(Estilo, Color) {
         temp = 0;
         HoldOn.open({
@@ -2249,77 +2230,44 @@
             if (data.length > 0) {
                 $("#tblRegistrosExistencias").html(getTable('tblExistencias', data));
                 $('#tblExistencias tfoot th').each(function () {
-                    $(this).html('');
+                    $(this).addClass("d-none");
                 });
+                $('#tblExistencias thead th').each(function () {
+                    $(this).addClass("d-none");
+                });
+
                 var thead = $('#tblExistencias thead th');
                 var tfoot = $('#tblExistencias tfoot th');
                 thead.eq(0).addClass("d-none");
                 tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblExistencias tbody tr'), function (k, v) {
+                $.each($('#tblExistencias tbody tr'), function (k, v) {
                     var td = $(v).find("td");
                     td.eq(0).addClass("d-none");
                 });
+
+                getEncabezadoSerieXEstilo(Estilo);
+                $.each($('#tblExistencias tbody tr td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3))'), function (k, v) {
+                    if (parseFloat($(this).text()) === 0) {
+                        $(this).text('-');
+
+                    } else if (parseFloat($(this).text()) > 0) {
+                        $(this).addClass('exists');
+                    }
+                });
                 var tblSelected = $('#tblExistencias').DataTable(tblExistencias);
-                $('#tblExistencias input[type=search]').focus();
-                $('#tblExistencias tbody').on('click', 'tr', function () {
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
+
+                var cellEstilo;
+                $("#tblRegistrosExistencias").find('#tblExistencias tbody').on('click', 'tr', function () {
+
                     $("#tblExistencias tbody tr").removeClass("success");
                     $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getExistenciaByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-                            getSerieXEstiloExt(data[0].Estilo);
-                            $('#mdlInfoExistencia').find("input").val("");
-                            $.each(data[0], function (k, v) {
-                                if (parseInt(v) <= 0) {
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", 'disabled');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('NoStock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('Stock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val('0');
-                                } else if (parseInt(v) > 0) {
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", false);
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('Stock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('NoStock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val(v);
-                                }
-                            });
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                    }
+                    var cells = $(this).find("td");
+                    cellEstilo = cells.eq(0).text();
+                    getEncabezadoSerieXEstilo(cellEstilo);
+
                 });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
-                    });
-                });
+
+
             } else {
                 onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO HAY EXISTENCIAS DE ESTE ESTILO', 'danger');
                 $("#tblRegistrosExistencias").html("");
@@ -2333,8 +2281,7 @@
 
     function onValidarPantallaCompleta() {
         if (ValidaPantallaCompleta === '1') {
-            $.ajax({
-                url: master_url + 'onCambiarSesion',
+            $.ajax({url: master_url + 'onCambiarSesion',
                 type: "POST"
             }).done(function (data, x, jq) {
             }).fail(function (x, y, z) {
@@ -2459,8 +2406,7 @@
                 "colReorder": true,
                 "displayLength": 500,
                 "bLengthChange": false,
-                "deferRender": true,
-                "scrollCollapse": false,
+                "deferRender": true, "scrollCollapse": false,
                 "bSort": true,
                 "aaSorting": [
                     [0, 'desc']/*ID*/
@@ -2486,15 +2432,13 @@
                     search: "Buscar:",
                     lengthMenu: "Mostrar _MENU_ Elementos",
                     info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-                    infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
+                    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.", infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
                     infoPostFix: "",
                     loadingRecords: "Procesando los datos...",
                     zeroRecords: "No se encontro nada.",
                     emptyTable: "No existen datos en la tabla.",
                     paginate: {
-                        first: "Primero",
-                        previous: "Anterior",
+                        first: "Primero", previous: "Anterior",
                         next: "Siguiente",
                         last: "&Uacute;ltimo"
                     },
@@ -2503,8 +2447,7 @@
                         sortDescending: ": Habilitado para ordenar la columna en orden descendente"
                     },
                     buttons: {
-                        copyTitle: 'Registros copiados a portapapeles',
-                        copyKeys: 'Copiado con teclas clave.',
+                        copyTitle: 'Registros copiados a portapapeles', copyKeys: 'Copiado con teclas clave.',
                         copySuccess: {
                             _: ' %d Registros copiados',
                             1: ' 1 Registro copiado'
@@ -2582,7 +2525,6 @@
 
         paso = 1;
     }
-
     function onRemoverElegido(e) {
         var tr = $(e).parent().parent();
         var monto_a_cubrir = getNumberFloat(mdlDevolucion.find("#SubtotaPie strong").text());

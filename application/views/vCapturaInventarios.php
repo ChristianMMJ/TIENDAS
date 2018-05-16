@@ -143,7 +143,6 @@
         <hr>
         <!--DETALLE-->
         <div class="" id="pnlDatosDetalle">
-            <!--DETALLE-->
             <div class="row">
                 <div class=" col-md-12 ">
                     <div class="row">
@@ -217,36 +216,7 @@
     var tblDetalleCaptura;
     var EstatusFinalizado = false;
 
-    function onActualizarInvFisAct() {
-        swal({
-            title: "Estas Seguro?",
-            text: "Esta Accion ya no se podrá revertir",
-            icon: "info",
-            buttons: ["Cancelar", "Aceptar"],
-            dangerMode: false
-        }).then((willDelete) => {
-            if (willDelete) {
-                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-                $.ajax({
-                    url: master_url + 'onActualizarInvFisAct',
-                    type: "POST",
-                    data: {
-                        Mes: MesE,
-                        Ano: AnoE
-                    }
-                }).done(function (data, x, jq) {
-                    swal('Info', 'Existencias Actualizadas', 'success');
-                    HoldOn.close();
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                });
-            }
-        }); /*FIN SWAL*/
 
-
-
-    }
 
     $(document).ready(function () {
         var mes = currentDate.getUTCMonth() + 1;
@@ -615,11 +585,41 @@
             });
 
         });
-
         getRecords();
         getEstilos();
         handleEnter();
     });
+
+    function onActualizarInvFisAct() {
+        swal({
+            title: "Estas Seguro?",
+            text: "Esta Accion ya no se podrá revertir",
+            icon: "info",
+            buttons: ["Cancelar", "Aceptar"],
+            dangerMode: false
+        }).then((willDelete) => {
+            if (willDelete) {
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                $.ajax({
+                    url: master_url + 'onActualizarInvFisAct',
+                    type: "POST",
+                    data: {
+                        Mes: MesE,
+                        Ano: AnoE
+                    }
+                }).done(function (data, x, jq) {
+                    swal('Info', 'Existencias Actualizadas', 'success');
+                    HoldOn.close();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                });
+            }
+        }); /*FIN SWAL*/
+
+
+
+    }
 
     function onImprimirDiferencias() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});

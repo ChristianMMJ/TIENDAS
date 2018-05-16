@@ -31,13 +31,27 @@ class Combinaciones extends CI_Controller {
         }
     }
 
+    public function getUltimaClave() {
+        try {
+            $Datos = $this->combinaciones_model->getUltimaClave($this->input->post('Estilo'));
+            $Clave = $Datos[0]->Clave;
+            if (empty($Clave)) {
+                $Clave = 1;
+            } else {
+                $Clave = $Clave + 1;
+            }
+
+            print $Clave;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
-            extract($this->input->post());
-
-
-            $data = $this->combinaciones_model->getRecords();
-            print json_encode($data);
+            //$data = $this->combinaciones_model->getRecords();
+            print $_GET['callback'] . '(' . json_encode($this->combinaciones_model->getRecords()) . ');'; /* JSONP */
+            //print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,10 +96,8 @@ class Combinaciones extends CI_Controller {
         try {
             extract($this->input->post());
             $DATA = array(
-                'Clave' => ($this->input->post('Clave') !== NULL) ? $this->input->post('Clave') : NULL,
                 'Descripcion' => ($this->input->post('Descripcion') !== NULL) ? $this->input->post('Descripcion') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
-                'Estilo' => ($this->input->post('Estilo') !== NULL) ? $this->input->post('Estilo') : NULL
+                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $this->combinaciones_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {

@@ -949,7 +949,7 @@
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
                         onCalcularMontos();
                     } else {
-                        swal('ATENCIÓN', 'YA SE HA AGREGADO ESTA COMBINACIÓN', 'warning');
+                        swal('ATENCIÓN', 'COMPLETA LOS CAMPOS', 'warning');
                         onBeep(2);
                     }
                 } else {

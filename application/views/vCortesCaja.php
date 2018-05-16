@@ -121,7 +121,7 @@
     </div>
 </div>
 <!--TABLERO-->
-<div class="card " id="pnlTablero">
+<div class="card border-0 " id="pnlTablero">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -149,8 +149,8 @@
 
                 </div>
                 <div class="col-md-2 float-right" align="right">
-                    <button type="button" class="btn btn-default" id="btnCancelar">SALIR</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">GUARDAR</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
                 </div>
             </div>
             <hr>
