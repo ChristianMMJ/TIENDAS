@@ -152,26 +152,30 @@
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
                         <div class="row">
-                            <div class="col-sm-2">
-                            </div>
+
                             <div class="col-sm-2 text-dark">
+                                Unisex<br>
+                                <div id="ParesUnisex"><strong>0</strong></div>
+                            </div>
+                            <div class="col-sm-2 text-danger">
+                                Infantil<br>
+                                <div id="ParesInfantil"><strong>0</strong></div>
+                            </div>
+                            <div class="col-sm-2 text-warning">
                                 Dama<br>
                                 <div id="ParesDama"><strong>0</strong></div>
                             </div>
-
                             <div class="col-sm-2 text-info">
                                 Caballero<br>
                                 <div id="ParesCaballero"><strong>0</strong></div>
                             </div>
-                            <div class="col-sm-2 text-danger">
-
+                            <div class="col-sm-2">
                             </div>
-                            <div class="col-sm-2 text-warning">
+                            <div class="col-sm-2 text-success">
                                 Pares Totales<br>
                                 <div id="Pares"><strong>0</strong></div>
                             </div>
-                            <div class="col-sm-2 text-success">
-                            </div>
+
                         </div>
                     </div>
 
@@ -780,6 +784,37 @@
         }).done(function (data, x, jq) {
             var dtm = JSON.parse(data);
             pnlDatosDetalle.find("#ParesCaballero").find("strong").text(dtm[0].TOTAL);
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+
+        //NIÑOS
+        $.ajax({
+            url: master_url + 'getTotalInfantil',
+            type: "POST",
+            data: {
+                Mes: Mes,
+                Ano: Ano
+            }
+        }).done(function (data, x, jq) {
+            var dtm = JSON.parse(data);
+            pnlDatosDetalle.find("#ParesInfantil").find("strong").text(dtm[0].TOTAL);
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+
+        $.ajax({
+            url: master_url + 'getTotalUnisex',
+            type: "POST",
+            data: {
+                Mes: Mes,
+                Ano: Ano
+            }
+        }).done(function (data, x, jq) {
+            var dtm = JSON.parse(data);
+            pnlDatosDetalle.find("#ParesUnisex").find("strong").text(dtm[0].TOTAL);
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

@@ -436,8 +436,10 @@ class existenciasCaptura_Model extends CI_Model {
                     . " ", false);
             $this->db->from('sz_ExistenciasCaptura AS Ex');
             $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->where('E.Genero', 'FEMENINO');
+            $this->db->where('GEN.Special', 'DAMA');
             $this->db->where('Ex.Mes', $Mes);
             $this->db->where('Ex.Ano', $Ano);
             $query = $this->db->get();
@@ -480,8 +482,102 @@ class existenciasCaptura_Model extends CI_Model {
                     . " ", false);
             $this->db->from('sz_ExistenciasCaptura AS Ex');
             $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->where('E.Genero', 'MASCULINO');
+            $this->db->where('GEN.Special', 'CABALLERO');
+            $this->db->where('Ex.Mes', $Mes);
+            $this->db->where('Ex.Ano', $Ano);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTotalInfantil($Ano, $Mes) {
+        try {
+            $this->db->select('SUM(Ex.Ex1)
+      +SUM(Ex.Ex2)
+      +SUM(Ex.Ex3)
+      +SUM(Ex.Ex4)
+      +SUM(Ex.Ex5)
+      +SUM(Ex.Ex6)
+      +SUM(Ex.Ex7)
+      +SUM(Ex.Ex8)
+      +SUM(Ex.Ex9)
+      +SUM(Ex.Ex10)
+      +SUM(Ex.Ex11)
+      +SUM(Ex.Ex12)
+      +SUM(Ex.Ex13)
+      +SUM(Ex.Ex14)
+      +SUM(Ex.Ex15)
+      +SUM(Ex.Ex16)
+      +SUM(Ex.Ex17)
+      +SUM(Ex.Ex18)
+      +SUM(Ex.Ex19)
+      +SUM(Ex.Ex20)
+      +SUM(Ex.Ex21)
+      +SUM(Ex.Ex22) AS TOTAL '
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS Ex');
+            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->like('GEN.FieldId', 'GENEROS');
+            $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('GEN.Special', 'INFANTIL');
+            $this->db->where('Ex.Mes', $Mes);
+            $this->db->where('Ex.Ano', $Ano);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTotalUnisex($Ano, $Mes) {
+        try {
+            $this->db->select('SUM(Ex.Ex1)
+      +SUM(Ex.Ex2)
+      +SUM(Ex.Ex3)
+      +SUM(Ex.Ex4)
+      +SUM(Ex.Ex5)
+      +SUM(Ex.Ex6)
+      +SUM(Ex.Ex7)
+      +SUM(Ex.Ex8)
+      +SUM(Ex.Ex9)
+      +SUM(Ex.Ex10)
+      +SUM(Ex.Ex11)
+      +SUM(Ex.Ex12)
+      +SUM(Ex.Ex13)
+      +SUM(Ex.Ex14)
+      +SUM(Ex.Ex15)
+      +SUM(Ex.Ex16)
+      +SUM(Ex.Ex17)
+      +SUM(Ex.Ex18)
+      +SUM(Ex.Ex19)
+      +SUM(Ex.Ex20)
+      +SUM(Ex.Ex21)
+      +SUM(Ex.Ex22) AS TOTAL '
+                    . " ", false);
+            $this->db->from('sz_ExistenciasCaptura AS Ex');
+            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->like('GEN.FieldId', 'GENEROS');
+            $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('GEN.Special', 'UNISEX');
             $this->db->where('Ex.Mes', $Mes);
             $this->db->where('Ex.Ano', $Ano);
             $query = $this->db->get();

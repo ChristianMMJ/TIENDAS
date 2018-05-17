@@ -146,6 +146,26 @@ class CapturaInventarios extends CI_Controller {
         }
     }
 
+    public function getTotalInfantil() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getTotalInfantil($Ano, $Mes);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTotalUnisex() {
+        try {
+            extract($this->input->post());
+            $data = $this->existenciasCaptura_Model->getTotalUnisex($Ano, $Mes);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstilos() {
         try {
             extract($this->input->post());

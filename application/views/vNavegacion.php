@@ -88,8 +88,8 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
-                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=DEFECTOS') ?>">Defectos</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CATEGORIAS GASTOS') ?>">Categorías Gastos</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=GENEROS') ?>">Géneros</a></li>
                             </ul>
                         </li>
                         <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
@@ -103,7 +103,6 @@
                         <li><a class="dropdown-item" href="<?php print base_url('Combinaciones') ?>">Colores</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Series') ?>">Series</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Descuentos') ?>">Descuentos</a></li>
-                        <!--                    <li><a class="dropdown-item" href="#">Almacenes</a></li> -->
                     </ul>
                 </li>
             <?php } ?>

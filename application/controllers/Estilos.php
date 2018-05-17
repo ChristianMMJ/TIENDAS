@@ -61,6 +61,16 @@ class Estilos extends CI_Controller {
         }
     }
 
+    public function getGeneros() {
+        try {
+            extract($this->input->post());
+            $data = $this->generales_model->getCatalogosByFielID('GENEROS');
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getTiposEstilo() {
         try {
             extract($this->input->post());
@@ -126,11 +136,11 @@ class Estilos extends CI_Controller {
                 if (!file_exists($URL_DOC)) {
                     mkdir($URL_DOC, 0777, true);
                 }
-                if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
-                    mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                if (!file_exists(utf8_decode($URL_DOC))) {
+                    mkdir(utf8_decode($URL_DOC), 0777, true);
                 }
-                if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
-                    $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                    $img = $master_url . $_FILES["Foto"]["name"];
                     $DATA = array(
                         'Foto' => ($img),
                     );
@@ -179,11 +189,11 @@ class Estilos extends CI_Controller {
                         if (!file_exists($URL_DOC)) {
                             mkdir($URL_DOC, 0777, true);
                         }
-                        if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
-                            mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                        if (!file_exists(utf8_decode($URL_DOC))) {
+                            mkdir(utf8_decode($URL_DOC), 0777, true);
                         }
-                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
-                            $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                            $img = $master_url . $_FILES["Foto"]["name"];
                             $DATA = array(
                                 'Foto' => ($img),
                             );

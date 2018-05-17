@@ -46,8 +46,6 @@
                         <label for="Genero">Género</label>
                         <select class="form-control form-control-sm required"   name="Genero">
                             <option value=""></option>
-                            <option value="MASCULINO">MASCULINO</option>
-                            <option value="FEMENINO">FEMENINO</option>
                         </select>
                     </div>
                     <div class="col-md">
@@ -233,6 +231,7 @@
         getMarcas();
         getTiposEstilo();
         getTemporadas();
+        getGeneros();
         getLineas();
         getSeries();
     });
@@ -389,6 +388,24 @@
             HoldOn.close();
         });
     }
+
+    function getGeneros() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getGeneros',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Genero']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
     function getTiposEstilo() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
