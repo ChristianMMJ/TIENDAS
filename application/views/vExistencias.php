@@ -6,8 +6,9 @@
             </div>
             <div class="col-sm-4" >
                 <label for="Tienda">Tienda*</label>
-                <select class="form-control form-control-sm required"  name="Tienda"> 
-                    <option value=""></option>  
+                <select class="form-control form-control-sm required"  name="Tienda">
+                    <option value=""></option>
+                    <option value="TODAS">TODAS</option>
                 </select>
             </div>
         </div>
@@ -16,81 +17,7 @@
         </div>
     </div>
 </div>
-<!--MODAL EXISTENCIAS--> 
-<!--Confirmacion-->
-<div class="modal fade modal-fullscreen" id="mdlInfoExistencia" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Existencias Tienda:  <strong id="DatosTienda"></strong> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                
-                Estilo: <strong id="DatosEstilo"></strong><br>
-                Color: <strong id="DatosColor"></strong>
-                
-                <br><br>
-                
-                <label for="Mayoreo">Tallas</label> 
-                <div style="overflow-x:auto; white-space: nowrap; ">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21">
-                    <input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22">
-                    <br>
-                    <span class="disabledForms">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21">
-                        <input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22">
-                    </span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-raised btn-primary" data-dismiss="modal">ACEPTAR</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <!--SCRIPT-->
 <script>
@@ -101,9 +28,41 @@
             getExistenciasByTienda($(this).val());
         });
         getExistenciasByTienda("<?php echo $this->session->userdata('TIENDA'); ?>");
-        getTiendas();
+        getTiendasConExistencias();
         handleEnter();
     });
+
+    function getEncabezadoSerieXEstilo(Estilo) {
+        $.ajax({
+            url: master_url + 'getEncabezadoSerieXEstilo',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            $('#tblExistencias thead th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4))').each(function () {
+                $(this).removeClass("d-none");
+            });
+            var thead = $('#tblExistencias thead th');
+            thead.eq(2).text('Tienda');
+            thead.eq(3).text('Estilo');
+            thead.eq(4).text('Color');
+            var cont = 5;
+            $.each(data[0], function (k, v) {
+                if (parseInt(v) <= 0) {
+                    thead.eq(cont).text('');
+                } else {
+                    thead.eq(cont).text(v);
+                }
+                cont++;
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+    }
+
     function getExistenciasByTienda(Tienda) {
         temp = 0;
         HoldOn.open({
@@ -120,85 +79,46 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblExistencias', data));
-   
                 $('#tblExistencias tfoot th').each(function () {
-                    var title = $(this).text();
-                    $(this).html('<div  style="overflow-x:auto; "><div class="form-group "><input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/></div></div>');
+                    $(this).addClass('d-none');
                 });
+
+//                $('#tblExistencias tfoot th').each(function () {
+//                    var title = $(this).text();
+//                    $(this).html('<div  style="overflow-x:auto; "><div class="form-group "><input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/></div></div>');
+//                });
+
                 var thead = $('#tblExistencias thead th');
                 var tfoot = $('#tblExistencias tfoot th');
                 thead.eq(0).addClass("d-none");
                 tfoot.eq(0).addClass("d-none");
+                thead.eq(1).addClass("d-none");
+                tfoot.eq(1).addClass("d-none");
                 $.each($.find('#tblExistencias tbody tr'), function (k, v) {
                     var td = $(v).find("td");
                     td.eq(0).addClass("d-none");
+                    td.eq(1).addClass("d-none");
                 });
                 var tblSelected = $('#tblExistencias').DataTable(tableOptions);
                 $('#tblExistencias_filter input[type=search]').focus();
 
-                $('#tblExistencias tbody').on('click', 'tr', function () {
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
+                $.each($('#tblExistencias tbody tr td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5))'), function (k, v) {
+                    if (parseFloat($(this).text()) === 0) {
+                        $(this).text('-');
 
-                    $("#tblExistencias tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getExistenciaByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-                            getSerieXEstilo(data[0].Estilo);
-                            $('#mdlInfoExistencia').find("input").val("");
-                            $('#mdlInfoExistencia').find("#DatosTienda").text(data[0].NombreTienda);
-                            $('#mdlInfoExistencia').find("#DatosEstilo").text(data[0].NombreEstilo);
-                            $('#mdlInfoExistencia').find("#DatosColor").text(data[0].NombreColor);
-                            $.each(data[0], function (k, v) {
-                                if (parseInt(v) <= 0) {
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", 'disabled');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('NoStock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('Stock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val('0');
-                                } else if (parseInt(v) > 0) {
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").prop("disabled", false);
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").addClass('Stock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").removeClass('NoStock');
-                                    $('#mdlInfoExistencia').find("[name='" + k + "']").val(v);
-                                }
-                            });
-                            $('#mdlInfoExistencia').modal('show');
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                    } else if (parseFloat($(this).text()) > 0) {
+                        $(this).addClass('exists');
                     }
                 });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
-                    });
+
+                var cellEstilo;
+                $("#tblRegistros").find('#tblExistencias tbody').on('click', 'tr', function () {
+                    $("#tblExistencias tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var cells = $(this).find("td");
+                    cellEstilo = cells.eq(1).text();
+                    getEncabezadoSerieXEstilo(cellEstilo);
+
                 });
             } else {
                 onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN EXISTENCIAS EN ESTA TIENDA', 'danger');
@@ -231,10 +151,10 @@
         });
     }
 
-    function getTiendas() {
+    function getTiendasConExistencias() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
-            url: master_url + 'getTiendas',
+            url: master_url + 'getTiendasConExistencias',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
@@ -253,9 +173,9 @@
     .Stock{
         font-weight: bold;
         color: #78a864;
-    } 
+    }
     .NoStock {
         font-weight: bold;
         color: #ff0000;
-    } 
+    }
 </style>

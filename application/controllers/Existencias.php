@@ -7,11 +7,7 @@ class Existencias extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('compras_model');
         $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('proveedores_model');
-        $this->load->model('combinaciones_model');
         $this->load->model('existencias_model');
     }
 
@@ -35,6 +31,16 @@ class Existencias extends CI_Controller {
         }
     }
 
+    public function getEncabezadoSerieXEstilo() {
+        try {
+            extract($this->input->post());
+            $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getExistenciasByTienda() {
         try {
             extract($this->input->post());
@@ -45,10 +51,10 @@ class Existencias extends CI_Controller {
         }
     }
 
-    public function getTiendas() {
+    public function getTiendasConExistencias() {
         try {
             extract($this->input->post());
-            $data = $this->tiendas_model->getTiendas();
+            $data = $this->existencias_model->getTiendasConExistencias();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

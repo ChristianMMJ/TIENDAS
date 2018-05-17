@@ -12,14 +12,42 @@ class existencias_model extends CI_Model {
 
     public function getExistenciasByTienda($Tienda) {
         try {
-            $this->db->select("U.ID, E.Clave +'-'+ E.Descripcion AS 'Estilo' , C.Clave +'-'+ c.Descripcion AS 'Color' "
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
+            $this->db->select("U.ID, U.Estilo AS IdEstilo, "
+                    . "T.Clave +'-'+ T.RazonSocial AS 'Tienda', "
+                    . "E.Clave +'-'+ E.Descripcion AS 'Estilo' ,"
+                    . "C.Clave +'-'+ c.Descripcion AS 'Color', "
+                    . "U.Ex1, "
+                    . "U.Ex2, "
+                    . "U.Ex3, "
+                    . "U.Ex4, "
+                    . "U.Ex5, "
+                    . "U.Ex6, "
+                    . "U.Ex7, "
+                    . "U.Ex8, "
+                    . "U.Ex9, "
+                    . "U.Ex10, "
+                    . "U.Ex11, "
+                    . "U.Ex12, "
+                    . "U.Ex13, "
+                    . "U.Ex14, "
+                    . "U.Ex15, "
+                    . "U.Ex16, "
+                    . "U.Ex17, "
+                    . "U.Ex18, "
+                    . "U.Ex19, "
+                    . "U.Ex20, "
+                    . "U.Ex21, "
+                    . "U.Ex22"
                     . "", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
-            $this->db->where_in('U.Tienda', $Tienda);
+            $this->db->like('U.Tienda', $Tienda);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -42,6 +70,27 @@ class existencias_model extends CI_Model {
             $this->db->where_in('U.Estatus', '1');
             $this->db->where_in('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->group_by(array("U.Estilo", "E.Clave", "E.Descripcion"));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTiendasConExistencias() {
+        try {
+            $this->db->select("U.Tienda AS ID, E.Clave +'-'+ E.RazonSocial AS 'Tienda' "
+                    . "", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->join('sz_Tiendas AS E', 'U.Tienda = E.ID', 'left');
+            $this->db->where_in('U.Estatus', '1');
+            $this->db->group_by(array("U.Tienda", "E.Clave", "E.RazonSocial"));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
