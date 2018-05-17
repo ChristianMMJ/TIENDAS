@@ -293,6 +293,16 @@ class Ventas extends CI_Controller {
         }
     }
 
+    public function getEstilosExistentesXTienda() {
+        try {
+            extract($this->input->post());
+            $data = $this->existencias_model->getEstilosExistentesXTienda();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstilosExt() {
         try {
             extract($this->input->post());

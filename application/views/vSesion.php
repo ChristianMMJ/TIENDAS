@@ -30,6 +30,7 @@
     $(document).ready(function () {
         handleEnter();
         Usuario.focus();
+        Usuario.select();
         Usuario.val("");
         Contrasena.val("");
         btnIngresar.click(function () {

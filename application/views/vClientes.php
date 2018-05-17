@@ -434,6 +434,7 @@
         $(e).parent().parent("#VistaPrevia").html("");
         $('#Foto').attr("type", "text");
         $('#Foto').val('N');
+    }
 
 </script>
 

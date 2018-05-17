@@ -19,6 +19,10 @@ class CortesCaja extends CI_Controller {
                 $this->load->view('vNavegacion');
                 $this->load->view('vCortesCaja');
                 $this->load->view('vFooter');
+            } else if (in_array($this->session->userdata["Tipo"], array("VENDEDOR"))) {
+                $this->load->view('vEncabezado');
+                $this->load->view('vCortesCaja');
+                $this->load->view('vFooter');
             } else {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');

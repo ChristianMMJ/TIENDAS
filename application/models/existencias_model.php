@@ -33,6 +33,28 @@ class existencias_model extends CI_Model {
         }
     }
 
+    public function getEstilosExistentesXTienda() {
+        try {
+            $this->db->select("U.Estilo AS IdEstilo, E.Clave +'-'+ E.Descripcion AS 'Estilo' "
+                    . "", false);
+            $this->db->from('sz_Existencias AS U');
+            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->where_in('U.Estatus', '1');
+            $this->db->where_in('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->group_by(array("U.Estilo", "E.Clave", "E.Descripcion"));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstilosExt() {
         try {
             $this->db->select("U.Estilo AS IdEstilo, E.Clave +'-'+ E.Descripcion AS 'Estilo' "
