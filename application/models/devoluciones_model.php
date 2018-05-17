@@ -24,8 +24,7 @@ class devoluciones_model extends CI_Model {
             $this->db->where_in('V.Estatus', array('CERRADA'));
             if (in_array($this->session->userdata["Tipo"], array('VENDEDOR'))) {
 //                $this->db->where('V.Vendedor', $this->session->userdata["ID"]);
-            }
-            $this->db->where_in('V.Estatus', array('CERRADA'));
+            } 
             $this->db->where_not_in('V.Tipo', array('D'));
             $this->db->where_in('T.Estatus', array('ACTIVO'))
                     ->where('V.Tienda', $this->session->userdata('TIENDA'));

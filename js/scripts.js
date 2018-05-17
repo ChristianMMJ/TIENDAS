@@ -545,8 +545,8 @@ function NumeroALetras(num) {
         enteros: Math.floor(num),
         centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
         letrasCentavos: "",
-        letrasMonedaPlural: " ",
-        letrasMonedaSingular: " "
+        letrasMonedaPlural: " PESOS",
+        letrasMonedaSingular: " PESO"
     };
 
     if (data.centavos >= 0)
