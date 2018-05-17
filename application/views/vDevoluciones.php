@@ -271,6 +271,21 @@
                         <p class="text-success">* Diferencia a cobrar *</p>
                         <strong class="text-dark">$ 0.0</strong>
                     </div>
+                    <div class="w-100"></div>
+                    <div class="col-12">
+                        <h6 class="text-info" id="ImporteEnLetraDevolucion"></h6>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-6">
+                        <p class="text-success">Su Pago*</p>
+                        <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control  numbersOnly text-success input-lg money" placeholder="0.0">
+                    </div>
+                    <div class="col-6"> 
+                        <div class="col-12 text-center">
+                            <h5 class="text-warning">CAMBIO*</h5>
+                            <strong><legend for="TOTAL" class="text-warning" id="CambioDevolucion">$ 0.00</legend></strong>
+                        </div> 
+                    </div>
                 </div>
                 <!--FIN TOTALES-->
             </div>

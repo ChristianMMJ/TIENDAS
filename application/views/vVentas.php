@@ -384,6 +384,46 @@
 
     $(document).ready(function () {
 
+        mdlDevolucion.find("#CodigoBarrasDevolucion").blur(function () {
+
+            EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
+            ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
+            TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
+            if (EstiloCB > 0 && ColorCB > 0 && TallaCB > 0) {
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                $.ajax({
+                    url: master_url + 'getExistenciasXEstiloXCombinacion',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        Estilo: EstiloCB,
+                        Combinacion: ColorCB
+                    }
+                }).done(function (data, x, jq) {
+                    if (data.length > 0) {
+                        var existencias = data[0];
+                        PrecioCB = existencias.PrecioMenudeo;
+                        AddCodigoBarras = true;
+                        btnGuardar.trigger('click');
+                        mdlDevolucion.find("#CodigoBarrasDevolucion").val('');
+                        mdlDevolucion.find("#CodigoBarrasDevolucion").focus();
+                    } else {
+                    }
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        });
+        
+        mdlDevolucion.find("#SuPagoDevolucion").keyup(function () {
+            var SuPago = parseFloat($(this).val());
+            var TotalDiferencia = parseFloat(getNumber(mdlDevolucion.find("#TotalDiferencia strong").text()));
+            var Cambio = TotalDiferencia - SuPago;
+            mdlDevolucion.find("#CambioDevolucion").text('$' + $.number(Cambio, 2, '.', ','));
+        });
+
         btnTicket.click(function () {
             var Venta = parseInt(pnlDatos.find("#ID").val());
             if (Venta > 0) {
@@ -413,6 +453,9 @@
                 $.each(dt, function () {
                     var tr = $(this).parent().parent();
                     var cell = tblDevolucionesDetalle.row(tr).data();
+                    console.log('*cell*');
+                    console.log(cell);
+                    console.log('*fin cell*');
 
                     detalle_devuelto.push({ID: cell[0], Estilo: cell[9], Color: cell[10], Talla: cell[3], Cantidad: cell[12]});
                 });
@@ -444,6 +487,8 @@
                 f.append('IVA', getNumberFloat(mdlDevolucion.find("#TotalCubiertoIVA strong").text()));
                 f.append('Total', getNumberFloat(mdlDevolucion.find("#TotalCubiertoTotal strong").text()));
                 f.append('DiferenciaACobrar', getNumberFloat(mdlDevolucion.find("#TotalDiferencia strong").text()));
+                f.append('SuPago', getNumberFloat(mdlDevolucion.find("#SuPagoDevolucion").val()));
+                f.append('Cambio', getNumberFloat(mdlDevolucion.find("#CambioDevolucion").text()));
                 $.ajax({
                     url: base_url + 'index.php/Devoluciones/onDevolucion',
                     type: "POST",
@@ -456,6 +501,8 @@
                     console.log(data);
                     console.log('* FIN LOG DEVOLUCION*');
                     swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
+                    onBeep(1);
+                    mdlDevolucion.modal('hide');
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 }).always(function () {
@@ -623,6 +670,7 @@
                     var tf = '$' + $.number(0, 2, '.', ',');
                     mdlDevolucion.find("#TotalCubierto strong").text(tf);
                     mdlDevolucion.find("#TotalDiferencia strong").text(tf);
+                    mdlDevolucion.find('#ImporteEnLetraDevolucion').text('( ZERO 00/100)');
                     mdlDevolucion.find("#TotalCubiertoIVA strong").text(tf); /*I.V.A*/
                     mdlDevolucion.find("#TotalCubiertoTotal strong").text(tf); /*TOTAL*/
                     paso = 2;
@@ -642,6 +690,7 @@
             mdlDevolucion.find("#SubtotalEncabezado").addClass("d-none");
             mdlDevolucion.find("#SubtotaPie").addClass("d-none");
             mdlDevolucion.find("#TotalDiferencia strong").text('$0.00');
+            mdlDevolucion.find('#ImporteEnLetraDevolucion').text('( ZERO 00/100)');
             paso = 1;
             onCancelarDevolucion();
         });
@@ -687,9 +736,7 @@
         });
         //Inicializar Componentes
         pnlDatos.find("input").val("");
-        $.each(pnlDatos.find("select"), function (k, v) {
-            pnlDatos.find("select")[k].selectize.clear(true);
-        });
+
         pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
         pnlDatos.find('#TipoDoc').val('R');
         $('#Encabezado').removeClass('disabledForms');
@@ -995,7 +1042,9 @@
                     mdlDevolucion.find("#TotalCubiertoIVA strong").text('$' + $.number(total_cubierto * 0.16, 2, '.', ',')); /*I.V.A*/
                     mdlDevolucion.find("#TotalCubiertoTotal strong").text('$' + $.number(total_cubierto * 1.16, 2, '.', ',')); /*I.V.A*/
                     mdlDevolucion.find("#TotalDiferencia strong").text('$' + $.number(((diff_iva_total > 0) ? 0 : diff_iva_total * -1), 2, '.', ','));
+                    mdlDevolucion.find('#ImporteEnLetraDevolucion').text('(' + NumeroALetras(((diff_iva_total > 0) ? 0 : diff_iva_total * -1)) + ')');
                 } else {
+                    mdlDevolucion.find('#ImporteEnLetraDevolucion').text('(' + NumeroALetras(diff) + ')');
                     mdlDevolucion.find("#TotalDiferencia strong").text(diff);
                     mdlDevolucion.find("#TotalCubiertoIVA strong").text('$' + $.number(0, 2, '.', ',')); /*I.V.A*/
                     mdlDevolucion.find("#TotalCubiertoTotal strong").text('$' + $.number(total_cubierto, 2, '.', ',')); /*I.V.A*/
@@ -2037,7 +2086,7 @@
     function getEstilos() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
-            url: master_url + 'getEstilos',
+            url: base_url + 'index.php/Devoluciones/getEstilos',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
@@ -2373,11 +2422,11 @@
                 rows += '<td>' + v.ESTILO + '</td>'; /*1*/
                 rows += '<td>' + v.COLOR + '</td>'; /*2*/
                 rows += '<td>' + v.TALLA + '</td>'; /*3*/
-                rows += '<td><input type="text" value="' + v.CANTIDAD + '" class="form-control numbersOnly" placeholder="' + v.CANTIDAD + '" onkeyup="onComprobarCantidad(this)" onchange="onComprobarCantidad(this)"></td>'; /*4*/
+                rows += '<td><input type="text" id="CantidadDevolucion" value="' + v.CANTIDAD + '" class="form-control numbersOnly" placeholder="' + v.CANTIDAD + '" onkeyup="onComprobarCantidad(this)" onchange="onComprobarCantidad(this)"></td>'; /*4*/
                 rows += '<td>' + v.PRECIO + '</td>'; /*5*/
                 rows += '<td>' + v.DESCUENTO + '</td>'; /*6*/
                 rows += '<td>' + v.SUBTOTAL + '</td>'; /*7*/
-                rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto()"> <br>Seleccionar</label></td>'; /*8*/
+                rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto(this)"> <br>Seleccionar</label></td>'; /*8*/
                 rows += '<td>' + v.ESTILO_ID + '</td>';/*9*/
                 rows += '<td>' + v.COLOR_ID + '</td>';/*10*/
                 rows += '<td>' + v.CANTIDAD + '</td>'; /*11*/
@@ -2437,13 +2486,17 @@
         });
     }
 
-    function onCalcularMontoDevuelto() {
+    function onCalcularMontoDevuelto(e) {
+        var row = tblDevolucionesDetalle.row($(e).parents('tr')).data();
         var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
         var total_devuelto = 0.0;
         $.each(dt, function () {
             var tr = $(this).parent().parent();
             var xrow = tblDevolucionesDetalle.row(tr).data();
             total_devuelto += getNumberFloat($(xrow[7]).text());
+            var ce = $(xrow[4]).val();
+            console.log(ce);
+            tblDevolucionesDetalle.cell($(e).parents('tr'), 12).data(parseInt(ce)).draw();/*MODIFICA LA CELDA*/
         });
         var tf = '$' + $.number(total_devuelto, 2, '.', ',');
         mdlDevolucion.find("#SubtotalEncabezado h1").text(tf);
@@ -2530,6 +2583,7 @@
     }
 
     function onComprobarCantidad(e) {
+        console.log(tblDevolucionesDetalle.row($(e).parents('tr')).data());
         var cantidad_ingresada = (parseInt($(e).val()) > 0) ? parseInt($(e).val()) : 0;
         var cantidad_a_devolver = parseInt(tblDevolucionesDetalle.row($(e).parents('tr')).data()[11]);
         if (cantidad_ingresada !== '' && cantidad_a_devolver > 0) {

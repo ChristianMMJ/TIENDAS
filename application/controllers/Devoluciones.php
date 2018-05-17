@@ -40,6 +40,14 @@ class Devoluciones extends CI_Controller {
         }
     }
 
+    public function getEstilos() {
+        try {
+            print json_encode($this->devoluciones_model->getEstilos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getVentaXID() {
         try {
             print json_encode($this->devoluciones_model->getVentaXID($this->input->get('ID')));
@@ -53,125 +61,127 @@ class Devoluciones extends CI_Controller {
          *   ALTER TABLE [ZAP].[dbo].[sz_Ventas] ADD Tipo VARCHAR(5) NOT NULL DEFAULT 'V';
          */
         try {
-            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TP'));
-            $vta = $this->devoluciones_model->getVentabyID($this->input->post('Venta'));
-            /* GENERAR VENTA */
-            $Folio = $Datos[0]->FolioTienda;
-            if (empty($Folio)) {
-                $Folio = 1;
-            } else {
-                $Folio = $Folio + 1;
-            }
-            $diff = $this->input->post('DiferenciaACobrar');
-            $data = array(
-                'TipoDoc' => $vta[0]->TipoDoc,
-                'Tienda' => $this->session->userdata('TIENDA'),
-                'FolioTienda' => $Folio,
-                'Cliente' => $vta[0]->Cliente,
-                'Vendedor' => $this->session->userdata('ID'),
-                'FechaCreacion' => Date('d/m/Y h:i:s a'),
-                'FechaMov' => Date('d/m/Y h:i:s a'),
-                'MetodoPago' => 0,
-                'Estatus' => 'CERRADA',
-                'Importe' => ($diff > 0) ? $diff : 0,
-                'Usuario' => $this->session->userdata('ID'),
-                'Tipo' => 'D'
-            );
-            $ID = $this->devoluciones_model->onAgregar($data);
-            $data = array(
-                'Venta' => $ID,
-                'TipoDoc' => $vta[0]->TipoDoc,
-                'Tienda' => $this->session->userdata('TIENDA'),
-                'FolioTienda' => $Folio,
-                'Cliente' => $vta[0]->Cliente,
-                'Vendedor' => $this->session->userdata('ID'),
-                'FechaCreacion' => Date('d/m/Y h:i:s a'),
-                'FechaMov' => Date('d/m/Y h:i:s a'),
-                'MetodoPago' => 0,
-                'Estatus' => 'CERRADA',
-                'Importe' => ($diff > 0) ? $diff : 0,
-                'Usuario' => $this->session->userdata('ID'),
-                'Tipo' => 'D'
-            );
-            $IDD = $this->devoluciones_model->onAgregarDevolucion($data);
-
-            /* DETALLE DE LA VENTA DEVUELTO */
-            $DetalleDevuelto = json_decode($this->input->post("DetalleDevuelto"));
-            foreach ($DetalleDevuelto as $key => $v) {
-                /* AGREGAR LOS PRODUCTOS DEVUELTOS (SUMAR) */
-
-                /* OBTENER SERIE X ESTILO */
-                $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
-
-                /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
-                $existencia = 0;
-                for ($index = 1; $index <= 22; $index++) {
-                    /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
-                    $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-                    /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
-                    $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-                    if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_disponibles[0]->{"Ex$index"} > 0) {
-                        /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
-                        $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
-                        /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
-                        $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
-                        break;
-                    }
-                }/* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
-            }
-
-            /* DETALLE DE LA VENTA (DEVOLUCION) */
-            $Detalle = json_decode($this->input->post("Detalle"));
-            foreach ($Detalle as $key => $v) {
-                /* ENTREGAR LOS PRODUCTOS SELECCIONADOS (RESTAR) */
-                /* OBTENER SERIE X ESTILO */
-                $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
-
-                /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
-                $existencia = 0;
-                for ($index = 1; $index <= 22; $index++) {
-                    /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
-                    $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-                    /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
-                    $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-
-                    if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_disponibles[0]->{"Ex$index"} > 0) {
-                        /* RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
-                        $existencia = ($existencias_disponibles[0]->{"Ex$index"} - $v->Cantidad);
-                        /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
-                        $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
-                        /* FIN RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
-                        /* AGREGAR UN REGISTRO EN EL DETALLE DE LA DEVOLUCIÓN */
-                        $data = array(
-                            'Venta' => $ID,
-                            'Estilo' => $v->Estilo,
-                            'Color' => $v->Color,
-                            'Talla' => $v->Talla,
-                            'Cantidad' => $v->Cantidad,
-                            'Subtotal' => $v->Subtotal,
-                            'Descuento' => 0,
-                            'Precio' => $v->Precio,
-                            'PorcentajeDesc' => 0,
-                            'Registro' => Date('d/m/Y h:i:s a')
-                        );
-                        $this->devoluciones_model->onAgregarDetalle($data);
-                        $data = array(
-                            'Devolucion' => $IDD,
-                            'Estilo' => $v->Estilo,
-                            'Color' => $v->Color,
-                            'Talla' => $v->Talla,
-                            'Cantidad' => $v->Cantidad,
-                            'Subtotal' => $v->Subtotal,
-                            'Descuento' => 0,
-                            'Precio' => $v->Precio,
-                            'PorcentajeDesc' => 0,
-                            'Registro' => Date('d/m/Y h:i:s a')
-                        );
-                        $this->devoluciones_model->onAgregarDevolucionDetalle($data);
-                        break;
-                    }
+            if ($this->input->post('Venta') !== '' && $this->input->post('Venta') > 0) {
+                $Datos = $this->ventas_model->onCrearFolio($this->input->post('TP'));
+                $vta = $this->devoluciones_model->getVentabyID($this->input->post('Venta'));
+                /* GENERAR VENTA */
+                $Folio = $Datos[0]->FolioTienda;
+                if (empty($Folio)) {
+                    $Folio = 1;
+                } else {
+                    $Folio = $Folio + 1;
                 }
-                /* FIN ENTREGAR LOS PRODUCTOS SELECCIONADOS */
+                $diff = $this->input->post('DiferenciaACobrar');
+                $data = array(
+                    'TipoDoc' => $vta[0]->TipoDoc,
+                    'Tienda' => $this->session->userdata('TIENDA'),
+                    'FolioTienda' => $Folio,
+                    'Cliente' => $vta[0]->Cliente,
+                    'Vendedor' => $this->session->userdata('ID'),
+                    'FechaCreacion' => Date('d/m/Y h:i:s a'),
+                    'FechaMov' => Date('d/m/Y h:i:s a'),
+                    'MetodoPago' => 0,
+                    'Estatus' => 'CERRADA',
+                    'Importe' => ($diff > 0) ? $diff : 0,
+                    'Usuario' => $this->session->userdata('ID'),
+                    'Tipo' => 'D'
+                );
+                $ID = $this->devoluciones_model->onAgregar($data);
+                $data = array(
+                    'Venta' => $ID,
+                    'TipoDoc' => $vta[0]->TipoDoc,
+                    'Tienda' => $this->session->userdata('TIENDA'),
+                    'FolioTienda' => $Folio,
+                    'Cliente' => $vta[0]->Cliente,
+                    'Vendedor' => $this->session->userdata('ID'),
+                    'FechaCreacion' => Date('d/m/Y h:i:s a'),
+                    'FechaMov' => Date('d/m/Y h:i:s a'),
+                    'MetodoPago' => 0,
+                    'Estatus' => 'CERRADA',
+                    'Importe' => ($diff > 0) ? $diff : 0,
+                    'Usuario' => $this->session->userdata('ID'),
+                    'Tipo' => 'D'
+                );
+                $IDD = $this->devoluciones_model->onAgregarDevolucion($data);
+
+                /* DETALLE DE LA VENTA DEVUELTO */
+                $DetalleDevuelto = json_decode($this->input->post("DetalleDevuelto"));
+                foreach ($DetalleDevuelto as $key => $v) {
+                    /* AGREGAR LOS PRODUCTOS DEVUELTOS (SUMAR) */
+
+                    /* OBTENER SERIE X ESTILO */
+                    $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
+
+                    /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
+                    $existencia = 0;
+                    for ($index = 1; $index <= 22; $index++) {
+                        /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
+                        $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
+                        $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        print "Talla : ".$v->Talla."-".$v->Cantidad.", EXDES: ".$existencias_disponibles[0]->{"Ex$index"}."\n";
+                        if ($serie[0]->{"T$index"} == $v->Talla) {
+                            /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
+                            $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
+                            /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
+                            $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
+                            break;
+                        }
+                    }/* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
+                }
+
+                /* DETALLE DE LA VENTA (DEVOLUCION) */
+                $Detalle = json_decode($this->input->post("Detalle"));
+                foreach ($Detalle as $key => $v) {
+                    /* ENTREGAR LOS PRODUCTOS SELECCIONADOS (RESTAR) */
+                    /* OBTENER SERIE X ESTILO */
+                    $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
+
+                    /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
+                    $existencia = 0;
+                    for ($index = 1; $index <= 22; $index++) {
+                        /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
+                        $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
+                        $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+
+                        if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_disponibles[0]->{"Ex$index"} > 0) {
+                            /* RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
+                            $existencia = ($existencias_disponibles[0]->{"Ex$index"} - $v->Cantidad);
+                            /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
+                            $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
+                            /* FIN RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
+                            /* AGREGAR UN REGISTRO EN EL DETALLE DE LA DEVOLUCIÓN */
+                            $data = array(
+                                'Venta' => $ID,
+                                'Estilo' => $v->Estilo,
+                                'Color' => $v->Color,
+                                'Talla' => $v->Talla,
+                                'Cantidad' => $v->Cantidad,
+                                'Subtotal' => $v->Subtotal,
+                                'Descuento' => 0,
+                                'Precio' => $v->Precio,
+                                'PorcentajeDesc' => 0
+                            );
+                            $this->devoluciones_model->onAgregarDetalle($data);
+                            $data = array(
+                                'Devolucion' => $IDD,
+                                'Estilo' => $v->Estilo,
+                                'Color' => $v->Color,
+                                'Talla' => $v->Talla,
+                                'Cantidad' => $v->Cantidad,
+                                'Subtotal' => $v->Subtotal,
+                                'Descuento' => 0,
+                                'Precio' => $v->Precio,
+                                'PorcentajeDesc' => 0,
+                                'Registro' => Date('d/m/Y h:i:s a')
+                            );
+                            $this->devoluciones_model->onAgregarDevolucionDetalle($data);
+                            break;
+                        }
+                    }
+                    /* FIN ENTREGAR LOS PRODUCTOS SELECCIONADOS */
+                }
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

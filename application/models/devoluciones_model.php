@@ -26,7 +26,10 @@ class devoluciones_model extends CI_Model {
 //                $this->db->where('V.Vendedor', $this->session->userdata["ID"]);
             }
             $this->db->where_in('V.Estatus', array('CERRADA'));
-            $this->db->where_in('T.Estatus', array('ACTIVO'));
+            $this->db->where_not_in('V.Tipo', array('D'));
+            $this->db->where_in('T.Estatus', array('ACTIVO'))
+                    ->where('V.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where('V.ID NOT IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -175,7 +178,7 @@ class devoluciones_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-      
+
     public function onModificarExistencias($Tienda, $Estilo, $Color, $data, $index) {
         try {
             $this->db->where('Tienda', $Tienda);
@@ -185,9 +188,29 @@ class devoluciones_model extends CI_Model {
             $this->db->update("sz_Existencias");
 
             $str = $this->db->last_query();
-//            print $str;
+            print $str;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
+    }
+
+    public function getEstilos() {
+        try {
+            $this->db->select("E.ID, E.Clave, E.Clave+'-'+E.Descripcion AS Descripcion ", false)
+                    ->from('sz_Estilos AS E')
+                    ->join('sz_Existencias as EX', 'E.ID = EX.Estilo')
+                    ->where_in('E.Estatus', 'ACTIVO')
+                    ->where('EX.Tienda', $this->session->userdata('TIENDA'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
