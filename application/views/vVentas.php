@@ -273,9 +273,7 @@
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
                         <div class="row">
-                            <div class="col-sm-2">
-                                Registros<br>
-                                <div id="Registros"><strong>0</strong></div></div>
+                            <div class="col-sm-2"></div>
                             <div class="col-sm-2 text-dark">
                                 Pares<br>
                                 <div id="Pares"><strong>0</strong></div>
@@ -1215,10 +1213,6 @@
                 });
                 var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
-                    //                    for (var pair of f.entries()) {
-                    //                        console.log(pair[0] + ', ' + pair[1]);
-                    //                    }
-
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -1231,11 +1225,11 @@
                         //Agregar renglon Detalle
                         if (AddCodigoBarras) {
                             onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                            onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
                         } else {
                             onAgregarFila(IdMov);
+                            onSacarExistenciasInventario();
                         }
-
-                        onSacarExistenciasInventario();
                         //Limpiar los campos del detalle
                         limpiarCampos();
                     }).fail(function (x, y, z) {
@@ -1262,10 +1256,11 @@
                         //Agregar renglon Detalle
                         if (AddCodigoBarras) {
                             onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                            onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
                         } else {
                             onAgregarFila(IdMov);
+                            onSacarExistenciasInventario();
                         }
-                        onSacarExistenciasInventario();
                         //Limpiar los campos del detalle
                         limpiarCampos();
                     }).fail(function (x, y, z) {
@@ -1293,7 +1288,6 @@
 
             });
         });
-
         btnCerrarVenta.click(function () {
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 $('#mdlCerrarVenta').modal('show');
@@ -1304,7 +1298,6 @@
             }
 
         });
-
         btnFinVenta.click(function () {
             $.ajax({
                 url: master_url + 'onModificarEstatus',
@@ -1329,7 +1322,7 @@
             if (IdMov !== 0 && IdMov !== undefined && IdMov > 0) {
                 swal({
                     title: "Confirmar",
-                    text: "Deseas cancelar la venta? *Este proceso afectará las existencias en la tienda*",
+                    text: "Deseas cancelar la venta?",
                     icon: "warning",
                     buttons: ["Cancelar", "Aceptar"],
                     dangerMode: true
@@ -1363,15 +1356,18 @@
                             processData: false,
                             data: f
                         }).done(function (data, x, jq) {
-                            console.log(data);
                             pnlDatos.find('#dAfecInv').addClass('disabledForms');
                             pnlDatos.find('#Encabezado').addClass('disabledForms');
                             pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
                             btnCancelarVenta.addClass("d-none");
                             btnCerrarVenta.addClass("d-none");
                             HoldOn.close();
-                            swal("SE HA CANCELADO LA VENTA ", {
+                            swal({
+                                title: "INFO",
+                                text: "SE HA CANCELADO LA VENTA",
                                 icon: "success"
+                            }).then((action) => {
+                                location.reload();
                             });
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
@@ -1384,7 +1380,6 @@
                 swal("INFO", "LA VENTA NO EXISTE", 'warning');
             }
         });
-
     });
 
     function onVerExistencias() {
@@ -1491,7 +1486,7 @@
         var Desc = pnlControlesDetalle.find("[name='Descuento']");
         var Talla = Talla;
         var Cantidad = 1;
-        if (pnlDatos.find("input[name='TipoDoc']").val() > 0) {
+        if (pnlDatos.find("input[name='TipoDoc']").val() !== '') {
             /*COMPROBAR ESTILO, COMBINACION Y TALLA*/
             var estilo_combinacion_existen = false;
             if (pnlDatosDetalle.find("#tblRegistrosDetalle tbody tr").length > 0) {
@@ -1578,7 +1573,7 @@
             if (data.length > 0) {
                 pnlDatosDetalle.find("#RegistrosDetalle").html(getTable('tblRegistrosDetalle', data));
                 $('#tblRegistrosDetalle tfoot th').each(function () {
-                    $(this).html('');
+                    $(this).addClass('d-none');
                 });
                 var thead = $('#tblRegistrosDetalle thead th');
                 var tfoot = $('#tblRegistrosDetalle tfoot th');
@@ -1732,7 +1727,7 @@
             if (data.length > 0) {
                 pnlDatosDetalle.find("#RegistrosDetalle").html(getTable('tblRegistrosDetalle', data));
                 $('#tblRegistrosDetalle tfoot th').each(function () {
-                    $(this).html('');
+                    $(this).addClass('d-none');
                 });
                 var thead = $('#tblRegistrosDetalle thead th');
                 var tfoot = $('#tblRegistrosDetalle tfoot th');
@@ -1846,6 +1841,80 @@
             }
         });
     }
+
+    function onSacarExistenciasInventarioCB(Estilo, Color, Talla) {
+        var Estilo = Estilo;
+        var Color = Color;
+        var Talla = Talla;
+        //Traemos la serie por estilo
+        $.ajax({
+            url: master_url + 'getSerieXEstilo',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            $.each(data[0], function (k, v) {
+                pnlControlesDetalle.find("[name='" + k + "']").val(v);
+            });
+            //Traemos la existencia si es que existe
+            $.ajax({
+                url: master_url + 'getExistenciasXEstiloXCombinacion',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    Estilo: Estilo,
+                    Combinacion: Color
+                }
+            }).done(function (data, x, jq) {
+                if (data.length > 0) {
+                    $.each(data[0], function (k, v) {
+                        pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                    });
+                    var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
+                    var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+                    var existenciaFinal = 0;
+                    var existenciaActual = 0;
+                    var PosicionActualiza = "";
+
+                    $.each(tallas.find("input.numbersOnly"), function () {
+                        if (parseFloat(Talla) === parseFloat($(this).val())) {
+                            existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
+                            PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
+                            existenciaFinal = parseFloat(existenciaActual) - 1;
+                            $.ajax({
+                                url: master_url + 'onModifcarExistenciaXEstiloXColorXTienda',
+                                type: "POST",
+                                data: {
+                                    Estilo: Estilo,
+                                    Color: Color,
+                                    Posicion: PosicionActualiza,
+                                    ExistenciaNueva: existenciaFinal
+                                }
+                            }).done(function (data, x, jq) {
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
+                                HoldOn.close();
+                            });
+                        }
+                    });
+                } else {
+                }
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+                HoldOn.close();
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+
+    }
+
     var ImporteTotal = 0;
     function onCalcularMontos() {
         var pares = 0;
@@ -1860,7 +1929,6 @@
         ImporteTotal = total;
         onModificarImporte(IdMov, ImporteTotal);
         if (pnlDatosDetalle.find("#tblRegistrosDetalle > tbody > tr").length >= 1) {
-            pnlDatosDetalle.find("#Registros").find("strong").text(pnlDatosDetalle.find("#tblRegistrosDetalle > tbody > tr").length);
             pnlDatosDetalle.find("#Pares").find("strong").text(pares);
             pnlDatosDetalle.find("#Descuento").find("strong").text('$' + $.number(descuento, 2, '.', ','));
             pnlDatosDetalle.find("#SubTotal").find("strong").text('$' + $.number(total, 2, '.', ','));
@@ -1872,7 +1940,6 @@
             pnlDatosDetalle.find("#IVA").find("strong").text('$' + $.number(0, 2, '.', ','));
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number((total), 2, '.', ','));
         }
-
     }
 
     function onModificarImporte(ID, ImporteTotal) {
@@ -2446,9 +2513,7 @@
                 rows += '</tr>';
             });
             mdlDevolucion.find('#tblDevolucionesDetalle > tbody').html(rows);
-            $.each(mdlDevolucion.find("#tblDevolucionesDetalle > tbody > tr"), function () {
-                $(this).find("#CanditadDevolucion").keypad();
-            });
+
             tblDevolucionesDetalle = mdlDevolucion.find('#tblDevolucionesDetalle').DataTable({
                 "dom": 'frt',
                 "autoWidth": false,
