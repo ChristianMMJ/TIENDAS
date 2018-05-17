@@ -123,7 +123,8 @@ class Ventas extends CI_Controller {
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL,
                 'Usuario' => $this->session->userdata('ID'),
                 'SuPago' => $this->input->post('SuPago'),
-                'Tipo' => 'V'
+                'Tipo' => 'V',
+                'ImporteEnLetra'=>''
             );
             $ID = $this->ventas_model->onAgregar($data);
             $dataCliente = array(
@@ -424,7 +425,7 @@ class Ventas extends CI_Controller {
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(false);
             /* ENCABEZADO */
-            $url = "./uploads/Tiendas/$e->TIENDA_ID/" . $e->FOTO_TIENDA;
+            $url = "./" . $e->FOTO_TIENDA;
             $pdf->Image($url, 27.5, 2, /* ANCHO */ 21, /* ALTO */ 21);
             $pdf->SetFont('Arial', 'B', 8);
             $pdf->SetY(23);
@@ -478,29 +479,36 @@ class Ventas extends CI_Controller {
             $pdf->SetX(1/* X */);
             $pdf->Cell(27, $af, "Articulos vendidos " . $total_articulos, 0/* BORDE */, 0/* SALTO */, 'L');
             $pdf->SetX(20/* X */);
-            $pdf->Cell(27, $af, "Pares " . $pares, 0/* BORDE */, 0/* SALTO */, 'R');
+            //$pdf->Cell(27, $af, "Pares " . $pares, 0/* BORDE */, 0/* SALTO */, 'R');
             $af -= .5;
             $pdf->SetX(50/* X */);
-            $pdf->Cell(8, $af, "I.V.A: ", 0/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(8, $af, "I.V.A: ", 0/* BORDE */, 0/* SALTO */, 'R');
             $pdf->SetX(58/* X */);
             $pdf->Cell(14, $af, "$" . number_format(($e->TIPODOC === 1 ? $total * .16 : 0), 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $YY = $pdf->GetY();
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "Desc: ", 0/* BORDE */, 0/* SALTO */, 'R');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$" . number_format($e->DESCUENTO_TOTAL, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
             $pdf->SetX(50/* X */);
             $pdf->Cell(8, $af, "Total: ", 0/* BORDE */, 0/* SALTO */, 'R');
 
-            $YY = $pdf->GetY();
             $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
+            $total = $total - $e->DESCUENTO_TOTAL;
             $pdf->SetX(58/* X */);
             $pdf->Cell(14, $af, "$" . number_format($total, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
 
             $pdf->SetX(50/* X */);
-            $supago = ($e->SUPAGO > 0) ? $e->SUPAGO : 0;
-            $pdf->Cell(8, $af, "Su Pago: ", 0/* BORDE */, 0/* SALTO */, 'L');
+            $supago = ($e->SUPAGO > 0) ? str_replace(",", "", $e->SUPAGO) : 0;
+            $pdf->Cell(8, $af, "Su Pago: ", 0/* BORDE */, 0/* SALTO */, 'R');
             $pdf->SetX(58/* X */);
-            $pdf->Cell(14, $af, "$ " . number_format($supago, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            $pdf->Cell(14, $af, "$ " . $supago, 0/* BORDE */, 1/* SALTO */, 'R');
 
             $cambio = $supago - $total;
             $pdf->SetX(50/* X */);
-            $pdf->Cell(8, $af, "Cambio: ", 0/* BORDE */, 0/* SALTO */, 'L');
+            $pdf->Cell(8, $af, "Cambio: ", 0/* BORDE */, 0/* SALTO */, 'R');
             $pdf->SetX(58/* X */);
             $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
             $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
@@ -528,7 +536,7 @@ class Ventas extends CI_Controller {
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/Ventas/')) {
-
+                
             }
             $pdf->Output($url);
             print base_url() . $url;

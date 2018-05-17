@@ -811,13 +811,14 @@
                             if (data[0].Estatus === 'BORRADOR') {
                                 $('#Encabezado').remove('disabledForms');
                                 pnlControlesDetalle.removeClass('disabledForms');
-                                btnCerrarVenta.removeClass('d-none');
+                                btnCerrarVenta.removeClass('d-none');            
                                 btnCancelarVenta.removeClass('d-none');
-                                btnTicket.removeClass("d-none");
+                                btnTicket.addClass("d-none");
                                 /*DETALLE*/
                                 getDetallebyID(data[0].ID);
                                 /*FIN DETALLE*/
                             } else {
+                                btnTicket.removeClass("d-none");
                                 btnCerrarVenta.addClass('d-none');
                                 btnCancelarVenta.addClass('d-none');
                                 $('#Encabezado').addClass('disabledForms');
