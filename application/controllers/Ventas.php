@@ -122,7 +122,8 @@ class Ventas extends CI_Controller {
                 'Estatus' => 'BORRADOR',
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL,
                 'Usuario' => $this->session->userdata('ID'),
-                'SuPago' => $this->input->post('SuPago')
+                'SuPago' => $this->input->post('SuPago'),
+                'Tipo' => 'V'
             );
             $ID = $this->ventas_model->onAgregar($data);
             $dataCliente = array(
