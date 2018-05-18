@@ -811,7 +811,7 @@
                             if (data[0].Estatus === 'BORRADOR') {
                                 $('#Encabezado').remove('disabledForms');
                                 pnlControlesDetalle.removeClass('disabledForms');
-                                btnCerrarVenta.removeClass('d-none');            
+                                btnCerrarVenta.removeClass('d-none');
                                 btnCancelarVenta.removeClass('d-none');
                                 btnTicket.addClass("d-none");
                                 /*DETALLE*/
@@ -842,7 +842,6 @@
         });
         //Agrega con codigo barras
         pnlControlesDetalle.find("[name='CodigoBarras']").blur(function () {
-
             EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
             ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
             TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
@@ -1008,10 +1007,6 @@
         });
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
         mdlDevolucion.find("[name='Precio']").blur(function () {
-            console.log("\n agregar a devolucion \n");
-            console.log(agregar_a_devolucion);
-            console.log("\n fin agregar a devolucion \n");
-
             if (agregar_a_devolucion && mdlDevolucion.find("[name='Estilo']").val() !== '' && mdlDevolucion.find("[name='Combinacion']").val() !== '') {
                 var Precio = parseFloat(mdlDevolucion.find("[name='Precio']").val());
                 var Cantidad = parseFloat(mdlDevolucion.find("[name='Cantidad']").val());
@@ -2504,7 +2499,9 @@
                 rows += '<td>' + v.PRECIO + '</td>'; /*5*/
                 rows += '<td>' + v.DESCUENTO + '</td>'; /*6*/
                 rows += '<td>' + v.SUBTOTAL + '</td>'; /*7*/
-                rows += '<td><label class="btn btn-outline-secondary"><input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto(this)"> <br>Seleccionar</label></td>'; /*8*/
+                rows += '<td><label class="btn btn-outline-secondary">' +
+                        '<input type="checkbox" autocomplete="off" id="btnDevolver" name="btnDevolver" onchange="onCalcularMontoDevuelto(this)">' +
+                        '<br>Seleccionar</label></td>'; /*8*/
                 rows += '<td>' + v.ESTILO_ID + '</td>';/*9*/
                 rows += '<td>' + v.COLOR_ID + '</td>';/*10*/
                 rows += '<td>' + v.CANTIDAD + '</td>'; /*11*/
@@ -2575,15 +2572,13 @@
             var xrow = tblDevolucionesDetalle.row(tr).data();
 //            total_devuelto += getNumberFloat($(xrow[7]).text());
             var ce = str.find("#CantidadDevolucion").val();
+            var descuento = getNumberFloat($(xrow[6]).text());
             var precio = getNumberFloat($(xrow[5]).text());
-            total_devuelto = ce * precio;
-            console.log(ce);
+            total_devuelto += ce * precio;
+            total_devuelto = total_devuelto - descuento;
             /*MODIFICA LA CELDA*/
             tblDevolucionesDetalle.cell($(e).parents('tr'), 12).data(parseInt(ce)).draw();
-        });
-        console.log("\n TOTAL DEVUELTO \n");
-        console.log(total_devuelto);
-        console.log("\n FIN TOTAL DEVUELTO \n");
+        }); 
         var tf = '$' + $.number(total_devuelto, 2, '.', ',');
         mdlDevolucion.find("#SubtotalEncabezado h1").text(tf);
         mdlDevolucion.find("#SubtotaPie strong").text(tf);
@@ -2598,8 +2593,8 @@
         var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']");
         $.each(dt, function () {
             $(this)[0].checked = $(e)[0].checked;
+            $(this).trigger('change');
         });
-        onCalcularMontoDevuelto();
     }
 
     function onCancelarDevolucion() {

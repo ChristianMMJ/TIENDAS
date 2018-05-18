@@ -46,17 +46,6 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <th>ID</th> 
-                                <th>TIENDA</th>
-                                <th>FOLIO</th> 
-                                <th>CLIENTE</th> 
-                                <th>FECHA DE CREACION</th> 
-                                <th>IMPORTE</th> 
-                                <th>ACCIONES</th> 
-                            </tr>
-                        </tfoot>
                     </table>
                 </div> 
                 <!--SUBTOTAL DETALLE VENTA-->
@@ -89,23 +78,6 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <th>ID</th> 
-                                <th>ESTILO</th>
-                                <th>COLOR</th> 
-                                <th>TALLA</th> 
-                                <th>CANTIDAD</th> 
-                                <th>PRECIO</th> 
-                                <th>DESCUENTO</th> 
-                                <th>SUBTOTAL</th> 
-                                <th>ACCION</th> 
-                                <th>ESTILO_ID</th> 
-                                <th>COLOR_ID</th> 
-                                <th>CANTIDAD_VENTA</th>
-                                <th>CANTIDAD_DEVOLUCION</th> 
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>  
                 <!--FIN SUBTOTAL DETALLE VENTA--> 
@@ -139,7 +111,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <label for="Combinacion">Color*</label>
                         <select class="form-control form-control-sm "  name="Combinacion">
                             <option value=""></option>
@@ -156,7 +128,13 @@
                     <div class="col-2"> 
                         <label for="Precio">Precio</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
-                    </div> 
+                    </div>
+                    <div class="col-1">
+                        <br>
+                        <button  class="btn btn-primary btn-sm" id="btnAgregarADevolucion" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
                     <div class="col-sm-12" align="center">
                         <label for="">Tallas y Existencias</label>
                         <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
@@ -234,19 +212,6 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <th>ESTILOID</th> 
-                                <th>ESTILO</th>
-                                <th>COLORID</th> 
-                                <th>COLOR</th> 
-                                <th>TALLA</th> 
-                                <th>CANTIDAD</th> 
-                                <th>PRECIO</th>  
-                                <th>SUBTOTAL</th> 
-                                <th>ACCION</th> 
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <!--TOTALES-->
@@ -276,13 +241,13 @@
                         <h3 class="text-info" id="ImporteEnLetraDevolucion"></h3>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-6">
-                        <p class="text-success">Su Pago*</p>
+                    <div class="col-12" align="center">
+                        <h4 class="text-success">Su Pago*</h4>
                         <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control  numbersOnly text-success input-lg money" placeholder="0.0">
                     </div>
-                    <div class="col-6"> 
+                    <div class="col-12"> 
                         <div class="col-12 text-center">
-                            <h5 class="text-warning">CAMBIO*</h5>
+                            <h4 class="text-warning">CAMBIO*</h4>
                             <strong><legend for="TOTAL" class="text-warning" id="CambioDevolucion">$ 0.00</legend></strong>
                         </div> 
                     </div>
