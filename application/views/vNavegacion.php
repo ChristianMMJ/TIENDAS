@@ -65,12 +65,27 @@
                     </div>
                 </li>
             <?php } ?>
-
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-dollar-sign"></i> Nómina
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Prestamos') ?>">Préstamos</a>
+                        <a class="dropdown-item" href="<?php print base_url('Asistencia') ?>">Asistencia</a>
+                        <a class="dropdown-item" href="<?php print base_url('DiversosNomina') ?>">Movimientos Diversos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Generar Nómina</a>
+                    </div>
+                </li>
+            <?php } ?>
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-wrench"></i> Catálogos
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
@@ -92,9 +107,18 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=GENEROS') ?>">Géneros</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown dropdown-submenu">
+                            <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Nómina
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="<?php print base_url('Semanas') ?>">Semanas de Nómina</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('ConceptosNomina') ?>">Conceptos de Nómina</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
+                            </ul>
+                        </li>
                         <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
-                        <li><a class="dropdown-item" href="<?php print base_url('Empleados') ?>">Empleados</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Clientes') ?>">Clientes</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
                         <div class="dropdown-divider" ></div>
@@ -103,6 +127,7 @@
                         <li><a class="dropdown-item" href="<?php print base_url('Combinaciones') ?>">Colores</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Series') ?>">Series</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Descuentos') ?>">Descuentos</a></li>
+
                     </ul>
                 </li>
             <?php } ?>

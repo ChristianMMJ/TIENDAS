@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Gestión de Descuentos</legend>
+                <legend class="float-left">Gestión de Conceptos Nomina</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -21,7 +21,7 @@
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
-                        <legend class="float-left">Descuentos</legend>
+                        <legend class="float-left">Conceptos</legend>
                     </div>
                     <div class="col-md-7 float-right">
 
@@ -37,28 +37,29 @@
                     </div>
                     <div class="col-sm">
                         <label for="Clave">Clave*</label>
-                        <input type="text" maxlength="25" class="form-control form-control-sm" id="Clave" name="Clave" required >
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
                         <label for="Descripcion">Descripción*</label>
                         <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-sm">
-                        <label for="Porcentaje">Porcentaje*</label>
-                        <input type="text" id="Porcentaje" name="Porcentaje" maxlength="4" class="form-control form-control-sm numbersOnly" required>
-                    </div>
-                    <div class="col-sm">
-                        <label for="Tienda">Tienda*</label>
-                        <select class="form-control form-control-sm required" name="Tienda">
-                            <option value=""></option>
+                        <label for="Tipo">Tipo*</label>
+                        <select class="form-control form-control-sm required" name="Tipo">
+                            <option value="">SELECCIONE TIPO CONCEPTO</option>
+                            <option value="1">1 PERCEPCIÓN</option>
+                            <option value="2">2 DEDUCCIÓN</option>
                         </select>
                     </div>
-
+                    <div class="col-sm">
+                        <label for="Tipo">Es Fijo*</label>
+                        <select class="form-control form-control-sm required" name="Tipo">
+                            <option value="">SELECCIONE TIPO CONCEPTO</option>
+                            <option value="1">1 SI</option>
+                            <option value="0">2 NO</option>
+                        </select>
+                    </div>
                 </div>
-
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
@@ -69,24 +70,22 @@
                         </select>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
 <!--SCRIPT-->
 <script>
-    var master_url = base_url + 'index.php/Descuentos/';
+    var master_url = base_url + 'index.php/ConceptosNomina/';
     var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
-
+    /*DEFINIR VARIABLES PARA LA SELECCION DE ARCHIVOS*/
     var nuevo = true;
 
     $(document).ready(function () {
-
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -107,7 +106,6 @@
                     }).always(function () {
                         HoldOn.close();
                     });
-
                 } else {
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -126,12 +124,10 @@
                     }).always(function () {
                         HoldOn.close();
                     });
-
                 }
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
-
         });
 
         btnNuevo.click(function () {
@@ -151,7 +147,6 @@
         });
         /*CALLS*/
         getRecords();
-        getTiendas();
         handleEnter();
     });
     function getRecords() {
@@ -165,107 +160,96 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            $("#tblRegistros").html(getTable('tblDescuentos', data));
+            if (data.length > 0) {
+                $("#tblRegistros").html(getTable('tblConceptos', data));
+                $('#tblConceptos tfoot th').each(function () {
+                    $(this).html('');
+                });
+                var thead = $('#tblConceptos thead th');
+                var tfoot = $('#tblConceptos tfoot th');
+                thead.eq(0).addClass("d-none");
+                tfoot.eq(0).addClass("d-none");
+                $.each($.find('#tblConceptos tbody tr'), function (k, v) {
+                    var td = $(v).find("td");
+                    td.eq(0).addClass("d-none");
+                });
+                var tblSelected = $('#tblConceptos').DataTable(tableOptions);
+                $('#tblConceptos_filter input[type=search]').focus();
 
-            $('#tblDescuentos tfoot th').each(function () {
-                $(this).html('');
-            });
-            var tblSelected = $('#tblDescuentos').DataTable(tableOptions);
-            $('#tblDescuentos_filter input[type=search]').focus();
+                $('#tblConceptos tbody').on('click', 'tr', function () {
+                    $("#tblConceptos tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var dtm = tblSelected.row(this).data();
+                    temp = parseInt(dtm[0]);
+                });
 
-            $('#tblDescuentos tbody').on('click', 'tr', function () {
-
-                $("#tblDescuentos tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = tblSelected.row(this).data();
-                temp = parseInt(dtm[0]);
-            });
-
-            $('#tblDescuentos tbody').on('dblclick', 'tr', function () {
-                $("#tblCatalogos tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var id = this.id;
-                var index = $.inArray(id, selected);
-                if (index === -1) {
-                    selected.push(id);
-                } else {
-                    selected.splice(index, 1);
-                }
-                var dtm = tblSelected.row(this).data();
-                if (temp !== 0 && temp !== undefined && temp > 0) {
-                    nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.ajax({
-                        url: master_url + 'getDescuentoByID',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            ID: temp
-                        }
-                    }).done(function (data, x, jq) {
-                        var dtm = data[0];
-
-                        pnlDatos.find("input").val("");
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.clear(true);
+                $('#tblConceptos tbody').on('dblclick', 'tr', function () {
+                    $("#tblCatalogos tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var id = this.id;
+                    var index = $.inArray(id, selected);
+                    if (index === -1) {
+                        selected.push(id);
+                    } else {
+                        selected.splice(index, 1);
+                    }
+                    var dtm = tblSelected.row(this).data();
+                    if (temp !== 0 && temp !== undefined && temp > 0) {
+                        nuevo = false;
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
                         });
-                        $.each(data[0], function (k, v) {
-                            if (k !== 'Foto') {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                }
-
+                        $.ajax({
+                            url: master_url + 'getConceptoNominaByID',
+                            type: "POST",
+                            dataType: "JSON",
+                            data: {
+                                ID: temp
                             }
+                        }).done(function (data, x, jq) {
+                            var dtm = data[0];
+                            pnlDatos.find("input").val("");
+                            $.each(pnlDatos.find("select"), function (k, v) {
+                                pnlDatos.find("select")[k].selectize.clear(true);
+                            });
+                            $.each(data[0], function (k, v) {
+                                if (k !== 'Foto') {
+                                    pnlDatos.find("[name='" + k + "']").val(v);
+                                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                    }
+                                }
+                            });
+                            pnlTablero.addClass("d-none");
+                            pnlDatos.removeClass('d-none');
+                            $(':input:text:enabled:visible:first').focus();
+                            $(':input:text:enabled:visible:first').select();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
                         });
-
-                        pnlTablero.addClass("d-none");
-                        pnlDatos.removeClass('d-none');
-                        $(':input:text:enabled:visible:first').focus();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                }
-            });
-            // Apply the search
-            tblSelected.columns().every(function () {
-                var that = this;
-                $('input', this.footer()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that.search(this.value).draw();
+                    } else {
+                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
                     }
                 });
-            });
+                // Apply the search
+                tblSelected.columns().every(function () {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
             HoldOn.close();
         });
     }
-
-    function getTiendas() {
-
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-        $.ajax({
-            url: master_url + 'getTiendas',
-            type: "POST",
-            dataType: "JSON"
-        }).done(function (data, x, jq) {
-            $.each(data, function (k, v) {
-                pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
-
 </script>
+
+

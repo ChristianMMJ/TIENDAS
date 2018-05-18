@@ -291,7 +291,7 @@ function getExt(filename) {
     return filename.substr(dot_pos + 1).toLowerCase();
 }
 function handleEnter() {
-    $('input').keyup(function () {
+    $('input:not(.notEnter)').keyup(function () {
         $(this).val($(this).val().toUpperCase());
     });
     $('body').on('keydown', 'input, select, textarea', function (e) {
