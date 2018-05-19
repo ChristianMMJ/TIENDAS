@@ -40,10 +40,28 @@ class Semanas extends CI_Controller {
         }
     }
 
-    public function getSemanaNominaByID() {
+    public function onValidarExisteAno() {
+        try {
+            print json_encode($this->semanas_model->onValidarExisteAno($this->input->post('Ano')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanaNominaByAno() {
         try {
             extract($this->input->post());
-            $data = $this->semanas_model->getSemanaNominaByID($ID);
+            $data = $this->semanas_model->getSemanaNominaByAno($this->input->post('Ano'));
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanasNominaByAno() {
+        try {
+            extract($this->input->post());
+            $data = $this->semanas_model->getSemanasNominaByAno($this->input->post('Ano'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -52,15 +70,17 @@ class Semanas extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $data = array(
-                'Ano' => ($this->input->post('Ano') !== NULL) ? $this->input->post('Ano') : NULL,
-                'Sem' => ($this->input->post('Sem') !== NULL) ? $this->input->post('Sem') : NULL,
-                'FechaIni' => ($this->input->post('FechaIni') !== NULL) ? $this->input->post('FechaIni') : NULL,
-                'FechaFin' => ($this->input->post('FechaFin') !== NULL) ? $this->input->post('FechaFin') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
-            );
-            $ID = $this->semanas_model->onAgregar($data);
-            print $ID;
+            $Detalle = json_decode($this->input->post("Detalle"));
+            foreach ($Detalle as $key => $v) {
+                $data = array(
+                    'Ano' => $v->Ano,
+                    'Sem' => $v->Sem,
+                    'FechaIni' => $v->FechaIni,
+                    'FechaFin' => $v->FechaFin,
+                    'Estatus' => 'ACTIVO'
+                );
+                $this->semanas_model->onAgregar($data);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,14 +89,8 @@ class Semanas extends CI_Controller {
     public function onModificar() {
         try {
             extract($this->input->post());
-            $data = array(
-                'Ano' => ($this->input->post('Ano') !== NULL) ? $this->input->post('Ano') : NULL,
-                'Sem' => ($this->input->post('Sem') !== NULL) ? $this->input->post('Sem') : NULL,
-                'FechaIni' => ($this->input->post('FechaIni') !== NULL) ? $this->input->post('FechaIni') : NULL,
-                'FechaFin' => ($this->input->post('FechaFin') !== NULL) ? $this->input->post('FechaFin') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
-            );
-            $this->semanas_model->onModificar($ID, $data);
+            unset($_POST['ID']);
+            $this->semanas_model->onModificar($ID, $this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
