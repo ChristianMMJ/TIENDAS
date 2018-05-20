@@ -34,7 +34,15 @@ class Devoluciones extends CI_Controller {
 
     public function getVentas() {
         try {
-            print json_encode($this->devoluciones_model->getVentas());
+            print json_encode($this->devoluciones_model->getVentas()); /* JSONP */
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDevoluciones() {
+        try {
+            print json_encode($this->devoluciones_model->getDevoluciones());  /* JSONP */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -56,6 +64,14 @@ class Devoluciones extends CI_Controller {
         }
     }
 
+    public function getExistenciasXEstiloXCombinacion() {
+        try {
+            print json_encode($this->existencias_model->getExistenciasXEstiloXCombinacion($this->input->get('Estilo'), $this->input->get('Combinacion')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onDevolucion() {
         /*
          *   ALTER TABLE [ZAP].[dbo].[sz_Ventas] ADD Tipo VARCHAR(5) NOT NULL DEFAULT 'V';
@@ -72,6 +88,7 @@ class Devoluciones extends CI_Controller {
                     $Folio = $Folio + 1;
                 }
                 $diff = $this->input->post('DiferenciaACobrar');
+                $supago = str_replace(",", "", $this->input->post('SuPago'));
                 $data = array(
                     'TipoDoc' => $vta[0]->TipoDoc,
                     'Tienda' => $this->session->userdata('TIENDA'),
@@ -80,15 +97,17 @@ class Devoluciones extends CI_Controller {
                     'Vendedor' => $this->session->userdata('ID'),
                     'FechaCreacion' => Date('d/m/Y h:i:s a'),
                     'FechaMov' => Date('d/m/Y h:i:s a'),
-                    'MetodoPago' => 0,
+                    'MetodoPago' => $this->input->post('MetodoDePago'),
                     'Estatus' => 'CERRADA',
                     'Importe' => ($diff > 0) ? $diff : 0,
                     'Usuario' => $this->session->userdata('ID'),
+                    'SuPago' => $supago,
+                    'ImporteEnLetra' => $this->input->post('ImporteEnLetra'),
                     'Tipo' => 'D'
                 );
                 $ID = $this->devoluciones_model->onAgregar($data);
                 $data = array(
-                    'Venta' => $ID,
+                    'Venta' => $this->input->post('Venta'),
                     'TipoDoc' => $vta[0]->TipoDoc,
                     'Tienda' => $this->session->userdata('TIENDA'),
                     'FolioTienda' => $Folio,
@@ -96,10 +115,12 @@ class Devoluciones extends CI_Controller {
                     'Vendedor' => $this->session->userdata('ID'),
                     'FechaCreacion' => Date('d/m/Y h:i:s a'),
                     'FechaMov' => Date('d/m/Y h:i:s a'),
-                    'MetodoPago' => 0,
+                    'MetodoPago' => $this->input->post('MetodoDePago'),
                     'Estatus' => 'CERRADA',
                     'Importe' => ($diff > 0) ? $diff : 0,
                     'Usuario' => $this->session->userdata('ID'),
+                    'SuPago' => $this->input->post('SuPago'),
+                    'ImporteEnLetra' => $this->input->post('ImporteEnLetra'),
                     'Tipo' => 'D'
                 );
                 $IDD = $this->devoluciones_model->onAgregarDevolucion($data);
@@ -119,13 +140,25 @@ class Devoluciones extends CI_Controller {
                         $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                         /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
                         $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-                        print "Talla : ".$v->Talla."-".$v->Cantidad.", EXDES: ".$existencias_disponibles[0]->{"Ex$index"}."\n";
+                        print "Talla : " . $v->Talla . "-" . $v->Cantidad . ", EXDES: " . $existencias_disponibles[0]->{"Ex$index"} . "\n";
                         if ($serie[0]->{"T$index"} == $v->Talla) {
                             /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
                             $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
                             /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
                             $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
-                            break;
+                            $data = array(
+                                'Devolucion' => $IDD,
+                                'Estilo' => $v->Estilo,
+                                'Color' => $v->Color,
+                                'Talla' => $v->Talla,
+                                'Cantidad' => $v->Cantidad,
+                                'Subtotal' => $v->Subtotal,
+                                'Descuento' => 0,
+                                'Precio' => $v->Precio,
+                                'PorcentajeDesc' => 0,
+                                'Registro' => Date('d/m/Y h:i:s a')
+                            );
+                            $this->devoluciones_model->onAgregarDevolucionDetalle($data);
                         }
                     }/* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
                 }
@@ -164,25 +197,25 @@ class Devoluciones extends CI_Controller {
                                 'PorcentajeDesc' => 0
                             );
                             $this->devoluciones_model->onAgregarDetalle($data);
-                            $data = array(
-                                'Devolucion' => $IDD,
-                                'Estilo' => $v->Estilo,
-                                'Color' => $v->Color,
-                                'Talla' => $v->Talla,
-                                'Cantidad' => $v->Cantidad,
-                                'Subtotal' => $v->Subtotal,
-                                'Descuento' => 0,
-                                'Precio' => $v->Precio,
-                                'PorcentajeDesc' => 0,
-                                'Registro' => Date('d/m/Y h:i:s a')
-                            );
-                            $this->devoluciones_model->onAgregarDevolucionDetalle($data);
                             break;
                         }
                     }
                     /* FIN ENTREGAR LOS PRODUCTOS SELECCIONADOS */
                 }
             }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCancelarDevolucion() {
+        try {
+            /* CANCELAR LA VENTA POR DEVOLUCION */
+            $ID = $this->input->post('ID');
+            PRINT $ID;
+            /* CANCELAR LA DEVOLUCION */
+
+            /**/
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

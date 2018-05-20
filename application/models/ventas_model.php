@@ -32,7 +32,7 @@ class ventas_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Ventas", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";
             return $row['IDL'];
@@ -44,7 +44,7 @@ class ventas_model extends CI_Model {
     public function onAgregarDetalle($array) {
         try {
             $this->db->insert("sz_VentasDetalle", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";
             return $row['IDL'];
@@ -171,9 +171,9 @@ class ventas_model extends CI_Model {
                     . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
                     . 'VD.Talla AS Talla,'
                     . 'VD.Cantidad AS Cantidad,'
-                    . "  ''+ CONVERT(varchar, CAST(VD.Precio AS money), 1) AS Precio, "
-                    . "  '$'+ CONVERT(varchar, CAST(VD.Descuento AS money), 1) AS 'Desc', "
-                    . "  '$'+ CONVERT(varchar, CAST(VD.Subtotal AS money), 1) AS Sub, "
+                    . "  CONCAT('', FORMAT(VD.Precio, 2)) AS Precio, "
+                    . "  CONCAT('$', FORMAT(VD.Descuento , 2)) AS 'Desc', "
+                    . "   CONCAT('$', FORMAT(VD.Subtotal, 2)) AS Sub, "
                     . 'VD.PorcentajeDesc AS PorDesc,'
                     //Eliminar
                     . "'<span class=''fa fa-trash-alt''></span>' AS Eliminar "

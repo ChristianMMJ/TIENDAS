@@ -18,6 +18,7 @@ class Ventas extends CI_Controller {
         $this->load->model('empleados_model');
         $this->load->model('descuentos_model');
         $this->load->model('ventas_model');
+        $this->load->model('devoluciones_model');
         $this->load->helper('ticket_helper');
     }
 
@@ -110,6 +111,7 @@ class Ventas extends CI_Controller {
             } else {
                 $Folio = $Folio + 1;
             }
+            $supago = str_replace(",", "", $this->input->post('SuPago'));
             $data = array(
                 'TipoDoc' => ($this->input->post('TipoDoc') !== NULL) ? $this->input->post('TipoDoc') : NULL,
                 'Tienda' => $this->session->userdata('TIENDA'),
@@ -122,9 +124,9 @@ class Ventas extends CI_Controller {
                 'Estatus' => 'BORRADOR',
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL,
                 'Usuario' => $this->session->userdata('ID'),
-                'SuPago' => $this->input->post('SuPago'),
+                'SuPago' => $supago,
                 'Tipo' => 'V',
-                'ImporteEnLetra'=>''
+                'ImporteEnLetra' => ''
             );
             $ID = $this->ventas_model->onAgregar($data);
             $dataCliente = array(
@@ -140,16 +142,17 @@ class Ventas extends CI_Controller {
 
     public function onAgregarDetalle() {
         try {
+            $x = $this->input;
             $data = array(
-                'Venta' => ($this->input->post('Venta') !== NULL) ? $this->input->post('Venta') : NULL,
-                'Estilo' => ($this->input->post('Estilo') !== NULL) ? $this->input->post('Estilo') : NULL,
-                'Color' => ($this->input->post('Color') !== NULL) ? $this->input->post('Color') : NULL,
-                'Talla' => ($this->input->post('Talla') !== NULL) ? $this->input->post('Talla') : NULL,
-                'Cantidad' => ($this->input->post('Cantidad') !== NULL) ? $this->input->post('Cantidad') : NULL,
-                'Precio' => ($this->input->post('Precio') !== NULL) ? $this->input->post('Precio') : NULL,
-                'Descuento' => ($this->input->post('Descuento') !== NULL) ? $this->input->post('Descuento') : NULL,
-                'Subtotal' => ($this->input->post('Subtotal') !== NULL) ? $this->input->post('Subtotal') : NULL,
-                'PorcentajeDesc' => ($this->input->post('PorcentajeDesc') !== NULL) ? $this->input->post('PorcentajeDesc') : NULL
+                'Venta' => ($x->post('Venta') !== NULL) ? $x->post('Venta') : NULL,
+                'Estilo' => ($x->post('Estilo') !== NULL) ? $x->post('Estilo') : NULL,
+                'Color' => ($x->post('Color') !== NULL) ? $x->post('Color') : NULL,
+                'Talla' => ($x->post('Talla') !== NULL) ? $x->post('Talla') : NULL,
+                'Cantidad' => ($x->post('Cantidad') !== NULL) ? $x->post('Cantidad') : NULL,
+                'Precio' => ($x->post('Precio') !== NULL) ? $x->post('Precio') : NULL,
+                'Descuento' => ($x->post('Descuento') !== NULL) ? $x->post('Descuento') : NULL,
+                'Subtotal' => ($x->post('Subtotal') !== NULL) ? $x->post('Subtotal') : NULL,
+                'PorcentajeDesc' => ($x->post('PorcentajeDesc') !== '' && $x->post('PorcentajeDesc') !== NULL) ? $x->post('PorcentajeDesc') : 0.0
             );
             $this->ventas_model->onAgregarDetalle($data);
         } catch (Exception $exc) {
@@ -420,7 +423,7 @@ class Ventas extends CI_Controller {
 
     function getTicketXVenta() {
         try {
-            $e = $this->ventas_model->getVentaByID($this->input->post('ID'))[0];
+            $e = $this->devoluciones_model->getVentaXTicket($this->input->post('ID'))[0];
             $pdf = new FPDF('P', 'mm', array(75/* ANCHO */, 80/* ALTURA */));
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(false);
@@ -495,23 +498,36 @@ class Ventas extends CI_Controller {
             $pdf->SetX(50/* X */);
             $pdf->Cell(8, $af, "Total: ", 0/* BORDE */, 0/* SALTO */, 'R');
 
-            $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
-            $total = $total - $e->DESCUENTO_TOTAL;
-            $pdf->SetX(58/* X */);
-            $pdf->Cell(14, $af, "$" . number_format($total, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
-
+            if ($e->TIPO_VD === 'V') {
+                $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
+                $total = $total - $e->DESCUENTO_TOTAL;
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$" . number_format($total, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            } else {
+                $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
+                $total = $total - $e->DESCUENTO_TOTAL;
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$" . number_format($e->IMPORTE_VENTA, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            }
             $pdf->SetX(50/* X */);
             $supago = ($e->SUPAGO > 0) ? str_replace(",", "", $e->SUPAGO) : 0;
             $pdf->Cell(8, $af, "Su Pago: ", 0/* BORDE */, 0/* SALTO */, 'R');
             $pdf->SetX(58/* X */);
-            $pdf->Cell(14, $af, "$ " . $supago, 0/* BORDE */, 1/* SALTO */, 'R');
+            $pdf->Cell(14, $af, "$ " . number_format($supago, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
 
             $cambio = $supago - $total;
             $pdf->SetX(50/* X */);
             $pdf->Cell(8, $af, "Cambio: ", 0/* BORDE */, 0/* SALTO */, 'R');
-            $pdf->SetX(58/* X */);
-            $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
-            $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            /* ES VENTA ? */
+            if ($e->TIPO_VD === 'V') {
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+                $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            } else {
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+                $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            }
 
             $pdf->SetFont('Arial', '', 4);
             $pdf->SetY($YY);

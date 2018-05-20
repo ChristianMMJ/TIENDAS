@@ -381,30 +381,37 @@
     var btnTicket = $("#btnTicket");
     var agregar_a_devolucion = false;
     $(document).ready(function () {
-        mdlDevolucion.find("#CodigoBarrasDevolucion").blur(function () {
 
+        mdlDevolucion.find("#CodigoBarrasDevolucion").blur(function () {
             EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
             ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
             TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
             if (EstiloCB > 0 && ColorCB > 0 && TallaCB > 0) {
                 HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-                $.ajax({
-                    url: master_url + 'getExistenciasXEstiloXCombinacion',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                        Estilo: EstiloCB,
-                        Combinacion: ColorCB
-                    }
-                }).done(function (data, x, jq) {
+                $.getJSON(base_url + 'index.php/Devolucion/getExistenciasXEstiloXCombinacion',
+                        {Estilo: EstiloCB, Combinacion: ColorCB}
+                ).done(function (data, x, jq) {
                     if (data.length > 0) {
-                        var existencias = data[0];
-                        PrecioCB = existencias.PrecioMenudeo;
-                        AddCodigoBarras = true;
-                        btnGuardar.trigger('click');
+                        var dt = data[0];
+                        /*AGREGAR A LA TABLA*/
+                        tblDetalleParaIntercambio.row.add([
+                            dt.ESTILO_ID/*0*/,
+                            dt.ESTILO/*1*/,
+                            dt.COLOR_ID/*2*/,
+                            dt.COLOR/*3*/,
+                            TallaCB/*4*/,
+                            "$" + $.number(dt.PRECIO, 2, '.', ',')/*6*/,
+                            "$" + $.number(dt.PRECIO * 1, 2, '.', ',')/*7*/,
+                            '<button type="button" class="btn btn-outline-danger" onclick="onRemoverElegido(this)">' +
+                                    '<span class="fa fa-trash fa-2x"></span>' +
+                                    '</button>'/*8*/
+                        ]).draw(false);
+                        /*FIN AGREGAR A LA TABLA*/
                         mdlDevolucion.find("#CodigoBarrasDevolucion").val('');
                         mdlDevolucion.find("#CodigoBarrasDevolucion").focus();
                     } else {
+                        swal('ATENCIÓN', 'NO EXISTE INFORMACIÓN PARA EL PRODUCTO', 'warning');
+                        onBeep(2);
                     }
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
@@ -428,6 +435,8 @@
             var Venta = parseInt(pnlDatos.find("#ID").val());
             if (Venta > 0) {
                 $.post(master_url + 'getTicketXVenta', {ID: Venta}).done(function (data, x, jq) {
+                    console.log('* TICKET *');
+                    console.log(data);
                     window.open(data, '_blank');
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
@@ -446,71 +455,95 @@
         });
 
         btnFinalizarDevolucion.click(function () {
-            if (tblDetalleParaIntercambio.rows().data().length > 0) {
-                /*DETALLE DEVUELTO*/
-                var detalle_devuelto = [];
-                var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
-                $.each(dt, function () {
-                    var tr = $(this).parent().parent();
-                    var cell = tblDevolucionesDetalle.row(tr).data();
-                    console.log('*cell*');
-                    console.log(cell);
-                    console.log('*fin cell*');
-
-                    detalle_devuelto.push({ID: cell[0], Estilo: cell[9], Color: cell[10], Talla: cell[3], Cantidad: cell[12]});
-                });
-                /*DETALLE SELECCIONADO*/
-                var detalle = [];
-                $.each(tblDetalleParaIntercambio.rows().data(), function () {
-                    var cells = $(this);
-                    console.log(cells);
-                    detalle.push(
-                            {
-                                Estilo: cells[0], Color: cells[2], Talla: cells[4], Cantidad: cells[5], Precio: getNumberFloat(cells[6]), Subtotal: getNumberFloat(cells[7])
-                            }
-                    );
-                });
-                console.log('* DETALLE DEVUELTO *');
-                console.log(detalle_devuelto);
-                console.log('* FIN DETALLE DEVUELTO *');
-                console.log('* DETALLE ENTREGADO *');
-                console.log(detalle);
-                console.log('* FIN DETALLE ENTREGADO *');
-                /*FINALIZAR DEVOLUCION*/
-                var f = new FormData();
-                f.append('Venta', mdlDevolucion.find("#Venta").val());
-                f.append('TP', mdlDevolucion.find("#VentaTP").val());
-                f.append('DetalleDevuelto', JSON.stringify(detalle_devuelto));
-                f.append('Detalle', JSON.stringify(detalle));
-                f.append('MontoDevolucion', getNumberFloat(mdlDevolucion.find("#SubtotaPie strong").text()));
-                f.append('Subtotal', getNumberFloat(mdlDevolucion.find("#TotalCubierto strong").text()));
-                f.append('IVA', getNumberFloat(mdlDevolucion.find("#TotalCubiertoIVA strong").text()));
-                f.append('Total', getNumberFloat(mdlDevolucion.find("#TotalCubiertoTotal strong").text()));
-                f.append('DiferenciaACobrar', getNumberFloat(mdlDevolucion.find("#TotalDiferencia strong").text()));
-                f.append('SuPago', getNumberFloat(mdlDevolucion.find("#SuPagoDevolucion").val()));
-                f.append('Cambio', getNumberFloat(mdlDevolucion.find("#CambioDevolucion").text()));
-                $.ajax({
-                    url: base_url + 'index.php/Devoluciones/onDevolucion',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: f
-                }).done(function (data, x, jq) {
-                    console.log('* LOG DEVOLUCION*');
-                    console.log(data);
-                    console.log('* FIN LOG DEVOLUCION*');
-                    swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
-                    onBeep(1);
-                    mdlDevolucion.modal('hide');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
+            var Metodo = mdlDevolucion.find("#MetodoPago").val();
+            if (Metodo !== '' && Metodo > 0) {
+                if (tblDetalleParaIntercambio.rows().data().length > 0) {
+                    /*DETALLE DEVUELTO*/
+                    var detalle_devuelto = [];
+                    var dt = mdlDevolucion.find('#tblDevolucionesDetalle > tbody > tr ').find("td input[type='checkbox']:checked");
+                    $.each(dt, function () {
+                        var tr = $(this).parent().parent();
+                        var cell = tblDevolucionesDetalle.row(tr).data();
+                        console.log('*cell*');
+                        console.log(cell);
+                        console.log('*fin cell*');
+                        var precio = cell[5];
+                        var precio_final = getNumberFloat($(precio).find("strong").text());
+                        var cantidad = cell[12];
+                        var cantidad_final = getNumberFloat($(cantidad).find("strong").text());
+                        var subtotal = parseFloat(cantidad_final * precio_final);
+                        console.log("\n* PRECIO " + precio + " * ");
+                        console.log("* CANTIDAD " + cantidad + " * ");
+                        console.log("* SUBTOTAL " + subtotal + " *\n");
+                        detalle_devuelto.push({ID: cell[0],
+                            Estilo: cell[9],
+                            Color: cell[10],
+                            Talla: cell[3],
+                            Cantidad: cell[12],
+                            Precio: precio_final,
+                            SubTotal: subtotal
+                        });
+                    });
+                    /*DETALLE SELECCIONADO*/
+                    var detalle = [];
+                    $.each(tblDetalleParaIntercambio.rows().data(), function () {
+                        var cells = $(this);
+                        console.log(cells);
+                        detalle.push(
+                                {
+                                    Estilo: cells[0], Color: cells[2], Talla: cells[4], Cantidad: cells[5], Precio: getNumberFloat(cells[6]), Subtotal: getNumberFloat(cells[7])
+                                }
+                        );
+                    });
+                    console.log('* DETALLE DEVUELTO *');
+                    console.log(detalle_devuelto);
+                    console.log('* FIN DETALLE DEVUELTO *');
+                    console.log('* DETALLE ENTREGADO *');
+                    console.log(detalle);
+                    console.log('* FIN DETALLE ENTREGADO *');
+                    /*FINALIZAR DEVOLUCION*/
+                    var f = new FormData();
+                    f.append('Venta', mdlDevolucion.find("#Venta").val());
+                    f.append('TP', mdlDevolucion.find("#VentaTP").val());
+                    f.append('DetalleDevuelto', JSON.stringify(detalle_devuelto));
+                    f.append('Detalle', JSON.stringify(detalle));
+                    f.append('MontoDevolucion', getNumberFloat(mdlDevolucion.find("#SubtotaPie strong").text()));
+                    f.append('Subtotal', getNumberFloat(mdlDevolucion.find("#TotalCubierto strong").text()));
+                    f.append('IVA', getNumberFloat(mdlDevolucion.find("#TotalCubiertoIVA strong").text()));
+                    f.append('Total', getNumberFloat(mdlDevolucion.find("#TotalCubiertoTotal strong").text()));
+                    f.append('DiferenciaACobrar', getNumberFloat(mdlDevolucion.find("#TotalDiferencia strong").text()));
+                    f.append('SuPago', getNumberFloat(mdlDevolucion.find("#SuPagoDevolucion").val()));
+                    f.append('Cambio', getNumberFloat(mdlDevolucion.find("#CambioDevolucion").text()));
+                    f.append('ImporteEnLetra', (mdlDevolucion.find("#ImporteEnLetraDevolucion").text()));
+                    f.append('MetodoDePago', (mdlDevolucion.find("#MetodoPago").val()));
+                    console.log('* FORM DATA *');
+                    console.log(f);
+//                $.ajax({
+//                    url: base_url + 'index.php/Devoluciones/onDevolucion',
+//                    type: "POST",
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+//                    data: f
+//                }).done(function (data, x, jq) {
+//                    console.log('* LOG DEVOLUCION*');
+//                    console.log(data);
+//                    console.log('* FIN LOG DEVOLUCION*');
+//                    swal('ATENCIÓN', 'SE HA GENERADO UNA DEVOLUCIÓN', 'success');
+//                    onBeep(1);
+//                    mdlDevolucion.modal('hide');
+//                }).fail(function (x, y, z) {
+//                    console.log(x, y, z);
+//                }).always(function () {
+//                    HoldOn.close();
+//                });
+                } else {
+                    onBeep(2);
+                    swal('ATENCIÓN', 'ES NECESARIO AGREGAR AL MENOS UN PRODUCTO', 'warning');
+                }
             } else {
                 onBeep(2);
-                swal('ATENCIÓN', 'ES NECESARIO AGREGAR AL MENOS UN PRODUCTO', 'warning');
+                swal('ATENCIÓN', 'ES NECESARIO ESTABLECER UN METODO DE PAGO', 'warning');
             }
         });
 
@@ -796,6 +829,9 @@
                             TipoDoc: TipoDoc
                         }
                     }).done(function (data, x, jq) {
+                        console.log('* FOLIO CONSULTADO *');
+                        console.log(data);
+
                         if (data.length > 0) {
                             IdMov = data[0].ID;
                             pnlDatos.find("input").val("");
@@ -2244,6 +2280,7 @@
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='MetodoPago']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                mdlDevolucion.find("#MetodoPago")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
             pnlDatos.find("[name='MetodoPago']")[0].selectize.setValue('1');
         }).fail(function (x, y, z) {
@@ -2410,7 +2447,6 @@
     }
     var tblDevoluciones;
     function getVentasDevolucion() {
-
         mdlDevolucion.find("#Devoluciones").removeClass("d-none");
         mdlDevolucion.find("#DevolucionesDetalle").addClass("d-none");
         if ($.fn.DataTable.isDataTable('#tblDevoluciones')) {
@@ -2578,7 +2614,7 @@
             total_devuelto = total_devuelto - descuento;
             /*MODIFICA LA CELDA*/
             tblDevolucionesDetalle.cell($(e).parents('tr'), 12).data(parseInt(ce)).draw();
-        }); 
+        });
         var tf = '$' + $.number(total_devuelto, 2, '.', ',');
         mdlDevolucion.find("#SubtotalEncabezado h1").text(tf);
         mdlDevolucion.find("#SubtotaPie strong").text(tf);
@@ -2694,6 +2730,101 @@
             $(e).focus();
         }
     }
+</script>
+<!--SCRIPT DEVOLUCIONES-->
+<script>
+    var devolucion_cancelar = 0;
+    var devoluciones_url = base_url + 'index.php/Devoluciones/';
+    var btnCancelarDevolucion = mdlDevolucion.find("#btnCancelarDevolucion");
+    var mdlCancelarDevolucion = $("#mdlCancelarDevolucion");
+
+    $(document).ready(function () {
+
+        mdlCancelarDevolucion.on('shown.bs.modal', function () {
+            getDevolucionesACancelar();
+        });
+
+        mdlCancelarDevolucion.find("#btnCerrar").click(function () {
+            mdlCancelarDevolucion.modal('hide');
+        });
+        mdlCancelarDevolucion.find("#btnGuardar").click(function () {
+            if (devolucion_cancelar !== 0 && devolucion_cancelar !== undefined && devolucion_cancelar > 0) {
+                mdlCancelarDevolucion.modal('hide');
+                swal('ATENCIÓN', 'SE HA CANCELADO LA DEVOLUCIÓN ' + devolucion_cancelar, 'success');
+                onBeep(1);
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO ', 'warning');
+            }
+        });
+
+        btnCancelarDevolucion.click(function () {
+            mdlDevolucion.modal('hide');
+            mdlCancelarDevolucion.modal('show');
+        });
+
+    });
+    var tblDevolucionesACancelar = mdlCancelarDevolucion.find("#tblDevolucionesACancelar"), DevolucionesACancelar;
+    function getDevolucionesACancelar() {
+        HoldOn.open({
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
+        });
+        $.fn.dataTable.ext.errMode = 'throw';
+        $.getJSON(devoluciones_url + 'getDevoluciones').done(function (data, x, jq) {
+            console.log(data);
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+
+        });
+        if ($.fn.DataTable.isDataTable('#tblDevolucionesACancelar')) {
+            tblDevolucionesACancelar.DataTable().destroy();
+            DevolucionesACancelar = tblDevolucionesACancelar.DataTable({
+                "dom": 'Bfrtip',
+                buttons: buttons,
+                "ajax": {
+                    "url": devoluciones_url + 'getDevoluciones',
+                    "dataSrc": ""
+                },
+                "columns": [
+                    {"data": "ID"},
+                    {"data": "TIENDA"},
+                    {"data": "FOLIO"},
+                    {"data": "CLIENTE"},
+                    {"data": "FECHA DE CREACION"},
+                    {"data": "IMPORTE"}
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }],
+                language: lang,
+                "autoWidth": true,
+                "colReorder": true,
+                "displayLength": 20,
+                "bLengthChange": false,
+                "deferRender": true,
+                "scrollCollapse": false,
+                keys: true,
+                "bSort": true,
+                "aaSorting": [
+                    [0, 'desc']/*ID*/
+                ]
+            });
+
+            tblDevolucionesACancelar.find('tbody').on('click', 'tr', function () {
+                tblDevolucionesACancelar.find("tbody tr").removeClass("success");
+                $(this).addClass("success");
+                var dtm = DevolucionesACancelar.row(this).data();
+                devolucion_cancelar = parseInt(dtm.ID);
+            });
+        }
+        HoldOn.close();
+    }
+
 </script>
 <style>
     .Stock{

@@ -14,6 +14,10 @@
                         <input type="text" id="Venta" name="Venta" readonly="" class="form-control">
                     </div>
                 </div>               
+                <div class="col-12" align="right">
+                    <button type="button" class="btn btn-danger btn-sm" id="btnCancelarDevolucion"><span class="fa fa-exclamation-triangle"></span> CANCELAR UNA DEVOLUCIÓN</button>
+                    
+                </div>
                 <div id="Pasos" class="row">
                     <div class="col-sm d-none" align="left">
                         <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtrasHead'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
@@ -47,7 +51,7 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                </div> 
+                </div>
                 <!--SUBTOTAL DETALLE VENTA-->
                 <div id="ResumenDevolucionesDetalle" class="row">
                     <div class="col-4"></div>
@@ -241,7 +245,13 @@
                         <h3 class="text-info" id="ImporteEnLetraDevolucion"></h3>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-12" align="center">
+                    <div class="col-6">
+                        <h4 class="text-danger">Metodo de pago*</h4>
+                        <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-6" align="center">
                         <h4 class="text-success">Su Pago*</h4>
                         <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control  numbersOnly text-success input-lg money" placeholder="0.0">
                     </div>
@@ -254,7 +264,7 @@
                 </div>
                 <!--FIN TOTALES-->
             </div>
-            <div class="modal-footer">    
+            <div class="modal-footer">   
                 <div class="col-6">
                     <button type='button' class="btn btn-danger btn-sm d-none" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
                 </div>
@@ -262,6 +272,47 @@
                     <button type='button' class="btn btn-primary btn-sm  d-none" id='btnFinalizar'><span class="fa fa-check"></span><br> FINALIZAR</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!--MODAL DEVOLUCIONES -->
+<div id="mdlCancelarDevolucion" class="modal fade modal-fullscreen" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"> 
+            <div class="modal-header text-center">
+                <h5 class="modal-title">CANCELAR DEVOLUCION</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <!--DEVOLUCIONES-->
+                <div id="DevolucionesCancelar" class="table-responsive">
+                    <table id="tblDevolucionesACancelar" class="table table-bordered table-striped table-hover display row-border hover order-column" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th> 
+                                <th>TIENDA</th>
+                                <th>FOLIO</th> 
+                                <th>CLIENTE</th> 
+                                <th>FECHA DE CREACION</th> 
+                                <th>IMPORTE</th> 
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div> <!--            FIN MODAL BODY-->
+            <div class="modal-footer">   
+                <div class="col-6">
+                    <button type='button' class="btn btn-danger btn-sm" id='btnCerrar'><span class="fa fa-arrow-left "></span><br>CERRAR</button>
+                </div>
+                <div class="col-6" align="right">
+                    <button type='button' class="btn btn-primary btn-sm" id='btnGuardar'><span class="fa fa-check"></span><br> CANCELAR</button>
+                </div>
+            </div> <!--            FIN MODAL FOOTER-->
         </div>
     </div>
 </div>
