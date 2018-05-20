@@ -23,6 +23,37 @@
 <script>
     var master_url = base_url + 'index.php/Existencias/';
     var pnlTablero = $("#pnlTablero");
+
+    var tableOptionsE = {
+        "dom": 'Bfrti',
+        buttons: buttons,
+        language: lang,
+        "autoWidth": true,
+        "colReorder": true,
+        "displayLength": 500,
+        "bStateSave": true,
+        "scrollY": 380,
+        "scrollX": true,
+        "bLengthChange": false,
+        "deferRender": true,
+        "scrollCollapse": true,
+        "bSort": true,
+        "columnDefs": [
+            {
+                "targets": [2],
+                "width": "280px"
+            },
+            {
+                "targets": [3],
+                "width": "200px"
+            },
+            {
+                "targets": [4],
+                "width": "360px"
+            }
+        ]
+    };
+
     $(document).ready(function () {
         $("[name='Tienda']").change(function () {
             getExistenciasByTienda($(this).val());
@@ -99,7 +130,7 @@
                     td.eq(0).addClass("d-none");
                     td.eq(1).addClass("d-none");
                 });
-                var tblSelected = $('#tblExistencias').DataTable(tableOptions);
+                var tblSelected = $('#tblExistencias').DataTable(tableOptionsE);
                 $('#tblExistencias_filter input[type=search]').focus();
 
                 $.each($('#tblExistencias tbody tr td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5))'), function (k, v) {

@@ -241,9 +241,9 @@ class Traspasos extends CI_Controller {
                         $this->db->where('Tienda', $this->input->post('Tienda'));
                         $this->db->where('Estilo', $v->Estilo);
                         $this->db->where('Color', $v->Color);
-                        $this->db->set('Precio', $$precios[0]->Precio);
-                        $this->db->set('PrecioMenudeo', $$precios[0]->PrecioMenudeo);
-                        $this->db->set('PrecioMayoreo', $$precios[0]->PrecioMayoreo);
+                        $this->db->set('Precio', $precios[0]->Precio);
+                        $this->db->set('PrecioMenudeo', $precios[0]->PrecioMenudeo);
+                        $this->db->set('PrecioMayoreo', $precios[0]->PrecioMayoreo);
                         $this->db->update("sz_Existencias");
                         /* AGREGAR UN REGISTRO EN EL DETALLE DEL TRASPASO */
                         $data = array(
