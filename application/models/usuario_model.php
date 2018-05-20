@@ -12,7 +12,7 @@ class usuario_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, ISNULL(T.Clave,'')+'-'+ISNULL(T.RazonSocial,'') as Tienda ", false);
+            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
             $this->db->from('sz_Usuarios AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -52,10 +52,9 @@ class usuario_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Usuarios", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

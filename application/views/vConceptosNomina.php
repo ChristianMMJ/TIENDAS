@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-sm">
                         <label for="Tipo">Es Fijo*</label>
-                        <select class="form-control form-control-sm required" name="Tipo">
+                        <select class="form-control form-control-sm required" name="EsFijo">
                             <option value="">SELECCIONE TIPO CONCEPTO</option>
                             <option value="1">1 SI</option>
                             <option value="0">2 NO</option>

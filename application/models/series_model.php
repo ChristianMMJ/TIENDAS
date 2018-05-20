@@ -12,7 +12,8 @@ class series_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave,'DEL '+ CONVERT(VARCHAR(25),U.PuntoInicial)+' AL '+ CONVERT(VARCHAR(25),U.PuntoFinal) AS 'Numeración' ", false);
+            $this->db->select("U.ID, U.Clave,"
+                    . "CONCAT('DEL ',U.PuntoInicial,' AL',U.PuntoFinal) AS 'Numeración' ", false);
             $this->db->from('sz_Series AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $this->db->order_by("U.ID", "asc");
@@ -30,7 +31,7 @@ class series_model extends CI_Model {
 
     public function getSeries() {
         try {
-            $this->db->select("U.ID, U.Clave+ ' DEL '+ CONVERT(VARCHAR(25),U.PuntoInicial)+' AL '+ CONVERT(VARCHAR(25),U.PuntoFinal) AS 'Clave' ", false);
+            $this->db->select("U.ID, CONCAT('(',U.Clave,') DEL ',U.PuntoInicial,' AL',U.PuntoFinal) AS 'Clave' ", false);
             $this->db->from('sz_Series AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -48,10 +49,9 @@ class series_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Series", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

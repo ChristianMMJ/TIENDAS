@@ -15,10 +15,11 @@ class existencias_model extends CI_Model {
             if ($Tienda === 'TODAS') {
                 $Tienda = "";
             }
-            $this->db->select("U.ID, U.Estilo AS IdEstilo, "
-                    . "T.Clave +'-'+ T.RazonSocial AS 'Tienda', "
-                    . "E.Clave +'-'+ E.Descripcion AS 'Estilo' ,"
-                    . "C.Clave +'-'+ c.Descripcion AS 'Color', "
+            $this->db->select("U.ID, "
+                    . "U.Estilo AS IdEstilo, "
+                    . "CONCAT(T.Clave ,'-', T.RazonSocial) AS 'Tienda', "
+                    . "CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' ,"
+                    . "CONCAT(C.Clave ,'-', c.Descripcion) AS 'Color', "
                     . "U.Ex1, "
                     . "U.Ex2, "
                     . "U.Ex3, "
@@ -63,7 +64,7 @@ class existencias_model extends CI_Model {
 
     public function getEstilosExistentesXTienda() {
         try {
-            $this->db->select("U.Estilo AS IdEstilo, E.Clave +'-'+ E.Descripcion AS 'Estilo' "
+            $this->db->select("U.Estilo AS IdEstilo, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' "
                     . "", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
@@ -85,7 +86,7 @@ class existencias_model extends CI_Model {
 
     public function getTiendasConExistencias() {
         try {
-            $this->db->select("U.Tienda AS ID, E.Clave +'-'+ E.RazonSocial AS 'Tienda' "
+            $this->db->select("U.Tienda AS ID, CONCAT(E.Clave ,'-', E.RazonSocial) AS 'Tienda' "
                     . "", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Tiendas AS E', 'U.Tienda = E.ID', 'left');
@@ -106,7 +107,7 @@ class existencias_model extends CI_Model {
 
     public function getEstilosExt() {
         try {
-            $this->db->select("U.Estilo AS IdEstilo, E.Clave +'-'+ E.Descripcion AS 'Estilo' "
+            $this->db->select("U.Estilo AS IdEstilo, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' "
                     . "", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
@@ -127,11 +128,11 @@ class existencias_model extends CI_Model {
 
     public function getUbicacionesByTienda() {
         try {
-            $this->db->select("U.ID, E.Clave +'-'+ E.Descripcion AS 'Estilo' , "
-                    . "C.Clave +'-'+ c.Descripcion AS 'Color', "
-                    . "ISNULL(Loc1,'') AS 'Ubicación 1', "
-                    . "ISNULL(Loc2,'') AS 'Ubicación 2', "
-                    . "ISNULL(Loc3,'') AS 'Ubicación 3' "
+            $this->db->select("U.ID, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' , "
+                    . "CONCAT(C.Clave ,'-', c.Descripcion) AS 'Color', "
+                    . "IFNULL(Loc1,'') AS 'Ubicación 1', "
+                    . "IFNULL(Loc2,'') AS 'Ubicación 2', "
+                    . "IFNULL(Loc3,'') AS 'Ubicación 3' "
                     . "", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
@@ -155,8 +156,8 @@ class existencias_model extends CI_Model {
     public function getExistenciasByEstiloByColor($Estilo, $Color) {
         try {
             $this->db->select('U.Estilo AS IDEstilo, '
-                    . " T.Clave + '-'+T.RazonSocial AS 'Tienda', "
-                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . " CONCAT(T.Clave ,'-', T.RazonSocial) AS 'Tienda', "
+                    . "CONCAT(E.Clave ,'-', E.Descripcion) AS Estilo, "
                     . "Ex1, "
                     . "Ex2, "
                     . "Ex3, "
@@ -252,10 +253,9 @@ class existencias_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Existencias", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -338,9 +338,10 @@ class existencias_model extends CI_Model {
 
     public function getExistenciaByID($ID) {
         try {
-            $this->db->select("U.*, T.Clave + '-'+T.RazonSocial AS NombreTienda, "
-                    . "E.Clave + '-'+E.Descripcion AS NombreEstilo, "
-                    . "C.Clave + '-'+C.Descripcion AS NombreColor "
+            $this->db->select("U.*, "
+                    . "CONCAT(T.Clave , '-',T.RazonSocial) AS NombreTienda, "
+                    . "CONCAT(E.Clave , '-',E.Descripcion) AS NombreEstilo, "
+                    . "CONCAT(C.Clave , '-',C.Descripcion) AS NombreColor "
                     . " ", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');

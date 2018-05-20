@@ -923,11 +923,10 @@
                                 if (par > 0) {
                                     var cbTalla = talla;
                                     if (cbTalla.length <= 2) {
-                                        cbTalla = padLeft(talla, 4);
+                                        cbTalla = padLeft(cbTalla, 4);
                                     }
-
-                                    var EsCoTa;
-                                    EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 2) + '' + cbTalla;
+                                    var EsCoTa = "";
+                                    EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 5) + '' + cbTalla;
                                     tblDetalleCompra.row.add([
                                         Estilo.val(),
                                         Combinacion.val(),

@@ -29,7 +29,7 @@ class clientes_model extends CI_Model {
 
     public function getClientes() {
         try {
-            $this->db->select("U.ID, U.Clave+'-'+U.RazonSocial AS Nombre ", false);
+            $this->db->select("U.ID, CONCAT(U.Clave,'-',U.RazonSocial) AS Nombre ", false);
             $this->db->from('sz_Clientes AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -47,10 +47,9 @@ class clientes_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("Clientes", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,4 +96,3 @@ class clientes_model extends CI_Model {
     }
 
 }
-

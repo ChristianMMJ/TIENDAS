@@ -27,18 +27,18 @@ class generales_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
-     public function onAgregar($array) {
+
+    public function onAgregar($array) {
         try {
             $this->db->insert("sz_Catalogos", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
@@ -48,6 +48,7 @@ class generales_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
@@ -58,6 +59,7 @@ class generales_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getCatalogoByID($ID) {
         try {
             $this->db->select('U.*', false);
@@ -76,10 +78,10 @@ class generales_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getCatalogosByFielID($FieldId) {
         try {
-            $this->db->select('U.ID, CONVERT(varchar(10), U.IValue)+\'-\'+U.SValue AS SValue', false);
+            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue) AS SValue", false);
             $this->db->from('sz_Catalogos AS U');
             $this->db->where('U.FieldId', $FieldId);
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -96,10 +98,10 @@ class generales_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getCatalogosDescripcionByFielID($FieldId) {
         try {
-            $this->db->select('U.ID, CONVERT(varchar(10), U.IValue)+\'-\'+U.SValue+\'-\'+U.Valor_Text AS SValue', false);
+            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue,'-',U.Valor_Text) AS SValue", false);
             $this->db->from('sz_Catalogos AS U');
             $this->db->where('U.FieldId', $FieldId);
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -109,13 +111,12 @@ class generales_model extends CI_Model {
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//        print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
 
 }

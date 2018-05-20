@@ -141,9 +141,9 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->select('U.ID AS ID, '
                     . 'U.Estilo AS IdEstilo, '
                     . 'U.Color AS IdColor,'
-                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . "CONCAT(E.Clave,'-',C.Descripcion) AS Estilo, "
                     . 'Se.ID AS Serie,'
-                    . "CONVERT(VARCHAR(10),Se.PuntoInicial)+ ' AL '+ CONVERT(VARCHAR(10),Se.PuntoFinal) AS NombreSerie ,"
+                    . "CONCAT(Se.PuntoInicial,' AL ',Se.PuntoFinal) AS NombreSerie ,"
                     . "U.Ex1, "
                     . "U.Ex2, "
                     . "U.Ex3, "
@@ -194,9 +194,9 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->select('U.ID AS ID, '
                     . 'U.Estilo AS IdEstilo, '
                     . 'U.Color AS IdColor,'
-                    . 'CONCAT(E.Clave,\'-\',C.Descripcion) AS Estilo, '
+                    . "CONCAT(E.Clave,'-',C.Descripcion) AS Estilo, "
                     . 'Se.ID AS Serie,'
-                    . "CONVERT(VARCHAR(10),Se.PuntoInicial)+ ' AL '+ CONVERT(VARCHAR(10),Se.PuntoFinal) AS NombreSerie ,"
+                    . "CONCAT(Se.PuntoInicial,' AL ',Se.PuntoFinal) AS NombreSerie ,"
                     . "U.Ex1, "
                     . "U.Ex2, "
                     . "U.Ex3, "
@@ -315,7 +315,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->select('U.ID AS ID, '
                     . 'U.Estilo AS IdEstilo, '
                     . 'U.Color AS IdColor, '
-                    . 'CONCAT(E.Clave, \'-\',C.Descripcion) AS Estilo, '
+                    . "CONCAT(E.Clave, '-',C.Descripcion) AS Estilo, "
                     . "Ex1, "
                     . "Ex2, "
                     . "Ex3, "
@@ -338,9 +338,8 @@ class existenciasCaptura_Model extends CI_Model {
                     . "Ex20, "
                     . "Ex21, "
                     . "Ex22,"
-                    . "'<span class=''fa fa-trash-alt'' "
-                    . "onclick=''onEliminarRegistro('+      "
-                    . "REPLACE(LTRIM(REPLACE(U.ID, '0', ' ')), ' ', '0') +')  ''></span>' AS Eliminar "
+                    . "CONCAT('<span class=''fa fa-trash-alt'' "
+                    . "onclick=''onEliminarRegistro(',U.ID,')  ''></span>') AS Eliminar "
                     . " ", false);
             $this->db->from('sz_ExistenciasCaptura AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
@@ -596,10 +595,9 @@ class existenciasCaptura_Model extends CI_Model {
     public function onAgregarExistenciasCaptura($array) {
         try {
             $this->db->insert("sz_ExistenciasCaptura", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

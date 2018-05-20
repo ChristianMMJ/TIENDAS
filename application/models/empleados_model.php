@@ -13,8 +13,8 @@ class empleados_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->select("U.ID, "
-                    . "U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ ISNULL(U.SegundoNombre,'') As Empleado,"
-                    . "ISNULL(T.Clave,'')+'-'+ISNULL(T.RazonSocial,'') as Tienda ", false);
+                    . "CONCAT(U.ApellidoP,' ', U.ApellidoM ,' ', U.PrimerNombre,' ', IFNULL(U.SegundoNombre,'') ) As Empleado,"
+                    . "CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
             $this->db->from('sz_Empleados AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             //$this->db->where_in('U.Estatus', 'ACTIVO');
@@ -32,7 +32,7 @@ class empleados_model extends CI_Model {
 
     public function getEmpleados() {
         try {
-            $this->db->select("U.ID, CONVERT(VARCHAR(20),U.ID)+'-'+U.ApellidoP+' '+ U.ApellidoM +' '+ U.PrimerNombre+' '+ U.SegundoNombre As Empleado   ", false);
+            $this->db->select("U.ID, CONCAT(U.ID,'-',U.ApellidoP,' ', U.ApellidoM ,' ', U.PrimerNombre,' ', IFNULL(U.SegundoNombre,'')) As Empleado   ", false);
             $this->db->from('sz_Empleados AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -50,10 +50,9 @@ class empleados_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Empleados", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

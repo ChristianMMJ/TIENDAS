@@ -127,7 +127,7 @@
                 if (parseFloat(tallaCaptura) > 0) {
                     if (parseFloat(cantidadCaptura) > 0) {
                         var TallaF = (tallaCaptura.length <= 2) ? padLeft(tallaCaptura, 4) : tallaCaptura;
-                        var EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 2) + '' + TallaF;
+                        var EsCoTa = padLeft(Estilo.val(), 5) + '' + padLeft(Combinacion.val(), 5) + '' + TallaF;
                         var renglonEt = {
                             Estilo: ClaveEstilo,
                             Color: Combinacion.find("option:selected").text(),

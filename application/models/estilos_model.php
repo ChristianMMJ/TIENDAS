@@ -17,7 +17,7 @@ class estilos_model extends CI_Model {
                     . "CASE "
                     . "WHEN E.Linea IS NULL "
                     . "THEN '<span class=\"badge badge-danger\">SIN LINEA</span>' "
-                    . "ELSE L.Clave+'-'+L.Descripcion END AS Linea "
+                    . "ELSE CONCAT(L.Clave,'-',L.Descripcion) END AS Linea "
                     . " ", false);
             $this->db->from('sz_Estilos AS E');
             $this->db->join('sz_Lineas AS L', 'E.Linea = L.ID', 'left');
@@ -37,7 +37,7 @@ class estilos_model extends CI_Model {
 
     public function getEstilos() {
         try {
-            $this->db->select("U.ID, U.Clave, U.Clave+'-'+U.Descripcion AS Descripcion ", false);
+            $this->db->select("U.ID, U.Clave, CONCAT(U.Clave,'-',U.Descripcion) AS Descripcion ", false);
             $this->db->from('sz_Estilos AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -55,10 +55,9 @@ class estilos_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Estilos", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

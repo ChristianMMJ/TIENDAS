@@ -12,13 +12,13 @@ class compras_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, ISNULL(U.DocMov,'') AS Documento ,"
+            $this->db->select("U.ID, IFNULL(U.DocMov,'') AS Documento ,"
                     . "(CASE WHEN  U.Estatus ='ACTIVO' "
                     . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN TRANSITO','</span>') "
                     . "WHEN  U.Estatus ='AFECTADO' "
                     . "THEN CONCAT('<span class=''badge badge-success'' style=''font-size: 15px;''>','ENTRADA','</span>') "
                     . "END) AS Estatus ,"
-                    . "T.Clave + '-'+T.RazonSocial AS 'Tienda' ,"
+                    . "CONCAT(T.Clave , '-',T.RazonSocial) AS 'Tienda' ,"
                     . "U.FechaMov as 'Fecha Movimiento ', "
                     . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Compras AS U');
@@ -42,10 +42,9 @@ class compras_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Compras", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -54,10 +53,9 @@ class compras_model extends CI_Model {
     public function onAgregarDetalle($array) {
         try {
             $this->db->insert("sz_CompraDetalle", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -179,7 +177,7 @@ class compras_model extends CI_Model {
                     . 'CD.Estilo AS IdEstilo, '
                     . 'CD.Color AS IdColor,'
                     . 'E.Clave AS Estilo,'
-                    . "C.Clave+' '+C.Descripcion AS Color,"
+                    . "CONCAT(C.Clave,' ',C.Descripcion) AS Color,"
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad,'
                     . 'CD.EsCoTa', false);

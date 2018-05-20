@@ -12,7 +12,7 @@ class combinaciones_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, E.Clave + '-'+ E.Descripcion AS Estilo, ISNULL(U.Clave,'')+'-'+U.Descripcion AS Color ", false);
+            $this->db->select("U.ID, CONCAT(E.Clave , '-', E.Descripcion) AS Estilo,CONCAT( IFNULL(U.Clave,''),'-',U.Descripcion) AS Color ", false);
             $this->db->from('sz_Combinaciones AS U');
             $this->db->join('sz_Estilos AS E', 'E.ID = U.Estilo', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -50,7 +50,7 @@ class combinaciones_model extends CI_Model {
 
     public function getCombinacionesXEstilo($Estilo) {
         try {
-            $this->db->select("U.ID, U.Clave+'-'+ U.Descripcion AS Descripcion ", false);
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.Descripcion) AS Descripcion ", false);
             $this->db->from('sz_Combinaciones AS U');
             $this->db->where_in('U.Estilo', $Estilo);
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -69,7 +69,7 @@ class combinaciones_model extends CI_Model {
 
     public function getCombinacionesXEstiloConExistencias($Estilo) {
         try {
-            $this->db->select("C.ID, C.Clave+'-'+ C.Descripcion AS Descripcion ", false);
+            $this->db->select("C.ID, CONCAT(C.Clave,'-', C.Descripcion) AS Descripcion ", false);
             $this->db->from('sz_Combinaciones AS C');
             $this->db->join('sz_Existencias AS E', 'C.ID = E.Color');
             $this->db->where_in('C.Estilo', $Estilo);
@@ -91,10 +91,9 @@ class combinaciones_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Combinaciones", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

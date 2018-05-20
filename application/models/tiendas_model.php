@@ -30,7 +30,7 @@ class tiendas_model extends CI_Model {
 
     public function getTiendas() {
         try {
-            $this->db->select("U.ID, U.Clave+'-'+ U.RazonSocial AS 'Tienda'  ", false);
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Tienda'  ", false);
             $this->db->from('sz_Tiendas AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -44,7 +44,7 @@ class tiendas_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getPorcentajesByTienda($ID) {
         try {
             $this->db->select("U.PorMen, U.PorMay  ", false);
@@ -65,10 +65,9 @@ class tiendas_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Tiendas", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

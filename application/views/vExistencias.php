@@ -41,7 +41,7 @@
                 Estilo: Estilo
             }
         }).done(function (data, x, jq) {
-            $('#tblExistencias thead th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4))').each(function () {
+            $('#tblExistencias thead th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5))').each(function () {
                 $(this).removeClass("d-none");
             });
             var thead = $('#tblExistencias thead th');

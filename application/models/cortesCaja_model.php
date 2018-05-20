@@ -36,10 +36,9 @@ class cortesCaja_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_CortesCaja", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -144,7 +143,7 @@ class cortesCaja_model extends CI_Model {
     public function getDetalleNuevo() {
         try {
             $query = $this->db->query("
-SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, 'VENTA: '+ CT.RazonSocial AS Cliente,V.Importe, V.ID
+SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha,CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
 FROM sz_Ventas V
 left join sz_Clientes CT ON CT.ID = v.Cliente
 WHERE V.Estatus = 'CERRADA'
@@ -161,7 +160,7 @@ AND G.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, D.Importe, D.ID
+SELECT '' AS Documento, D.FechaCreacion AS Fecha,CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja IS NULL
@@ -170,7 +169,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, -D.Importe, D.ID
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja IS NULL
@@ -179,7 +178,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
 
 
-ORDER BY FechaCreacion DESC ");
+ORDER BY Fecha DESC ");
 
             $str = $this->db->last_query();
             $data = $query->result();
@@ -192,7 +191,7 @@ ORDER BY FechaCreacion DESC ");
     public function getDetalleByID($ID) {
         try {
             $query = $this->db->query("
-SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, 'VENTA: '+ CT.RazonSocial AS Cliente,V.Importe, V.ID
+SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
 FROM sz_Ventas V
 left join sz_Clientes CT ON CT.ID = v.Cliente
 WHERE V.Estatus = 'CERRADA'
@@ -210,7 +209,7 @@ AND G.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, D.Importe, D.ID
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente , D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
@@ -219,7 +218,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, D.Concepto +': '+ D.Motivo AS Cliente, -D.Importe, D.ID
+SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
@@ -227,7 +226,7 @@ AND D.Concepto ='RETIRO'
 AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
 
-ORDER BY FechaCreacion DESC ");
+ORDER BY Fecha DESC ");
 
             $str = $this->db->last_query();
             $data = $query->result();

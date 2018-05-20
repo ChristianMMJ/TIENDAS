@@ -58,27 +58,27 @@ class Reimpresion extends CI_Controller {
                     $pdf->SetFont('Arial', '', 9);
                     $pdf->Write(5, $v->EsCoTa);
 
-                    /* Talla */
-                    $pdf->SetFont('Arial', '', 9);
-                    $pdf->SetXY(40, 28);
-                    $pdf->Cell(4, 5, 'Talla: ', 0, 0, 'L');
-
-                    $pdf->SetFont('Arial', 'B', 19);
-                    $pdf->SetXY(51, 28);
-                    $pdf->Cell(4, 5, $v->Talla, 0, 0, 'L');
-
                     /* Estilo */
                     $pdf->SetFont('Arial', '', 9);
-                    $pdf->SetXY(40, 21);
+                    $pdf->SetXY(40, 18);
                     $pdf->Cell(4, 5, 'Estilo: ', 0, 0, 'L');
 
                     $pdf->SetFont('Arial', 'B', 17);
-                    $pdf->SetXY(51, 21);
+                    $pdf->SetXY(51, 18);
                     $pdf->Cell(4, 5, $v->Estilo, 0, 0, 'L');
 
+                    /* Talla */
+                    $pdf->SetFont('Arial', '', 9);
+                    $pdf->SetXY(40, 25);
+                    $pdf->Cell(4, 5, 'Talla: ', 0, 0, 'L');
+
+                    $pdf->SetFont('Arial', 'B', 19);
+                    $pdf->SetXY(51, 25);
+                    $pdf->Cell(4, 5, $v->Talla, 0, 0, 'L');
+
                     /* Color */
-                    $pdf->SetFont('Arial', 'BI', 9);
-                    $pdf->SetXY(3, 28);
+                    $pdf->SetFont('Arial', 'BI', 8);
+                    $pdf->SetXY(3, 29.5);
                     $pdf->Cell(4, 5, $v->Color, 0, 0, 'L');
 
                     /* Fecha */

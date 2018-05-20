@@ -13,7 +13,7 @@ class traspasos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("T.ID, ISNULL(T.DocMov,'') AS Documento , "
+            $this->db->select("T.ID, IFNULL(T.DocMov,'') AS Documento , "
                     . "OTI.RazonSocial as 'De Tienda', "
                     . "DTI.RazonSocial as 'A Tienda', "
                     . "(CASE WHEN  T.Estatus ='ACTIVO' "
@@ -22,7 +22,7 @@ class traspasos_model extends CI_Model {
                     . "THEN CONCAT('<h5><span class=''badge badge-success''>','AFECTADO','</span></h5>') "
                     . "END) AS Estatus ,"
                     . "T.FechaMov as 'Fecha Movimiento', T.Registro AS Registro,"
-                    . "US.Usuario AS 'Usuario'",false);
+                    . "US.Usuario AS 'Usuario'", false);
             $this->db->from('sz_Traspasos AS T');
             $this->db->join('sz_Usuarios AS US', 'T.Usuario = US.ID', 'left');
             $this->db->join('sz_Tiendas AS OTI', 'OTI.ID = T.dTienda', 'left');
@@ -126,10 +126,9 @@ class traspasos_model extends CI_Model {
     public function onAgregarExistencias($data) {
         try {
             $this->db->insert("sz_Existencias", $data);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -153,10 +152,9 @@ class traspasos_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Traspasos", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -165,10 +163,9 @@ class traspasos_model extends CI_Model {
     public function onAgregarDetalle($array) {
         try {
             $this->db->insert("sz_TraspasosDetalle", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -296,7 +293,7 @@ class traspasos_model extends CI_Model {
 
     public function getTiendasConExistencias() {
         try {
-            $this->db->select("T.ID, T.Clave+'-'+ T.RazonSocial AS 'Tienda'  ", false);
+            $this->db->select("T.ID, CONCAT(T.Clave,'-', T.RazonSocial) AS 'Tienda'  ", false);
             $this->db->from('sz_Tiendas AS T');
             $this->db->join('sz_Existencias AS E', 'E.Tienda = T.ID');
             $this->db->where_in('T.Estatus', 'ACTIVO');

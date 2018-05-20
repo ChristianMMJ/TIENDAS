@@ -50,10 +50,9 @@ class semanas_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Semanas", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -101,7 +100,7 @@ class semanas_model extends CI_Model {
     public function getSemanasNominaByAno($Ano) {
         try {
             $this->db->select(""
-                    . "'<input type=''text'' id=''#Sem''  class=''form-control form-control-sm numbersOnly'' onkeypress= ''validate(event,this.value);''  onpaste= ''return false;''  value='' '+ CONVERT(VARCHAR(100),U.Sem) +' '' onchange=''onModificarSemanaXID(this.value,'+ REPLACE(LTRIM(REPLACE(U.ID, '0', ' ')), ' ', '0') +')'' />' AS 'No. Sem', "
+                    . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'No. Sem',  "
                     . "U.FechaIni AS 'Fecha Inicio', "
                     . "U.FechaFin AS 'Fecha Fin' "
                     . " ", false);

@@ -234,8 +234,8 @@
             if (!EstatusFinalizado) {
                 if ($(this).val() !== "") {
                     EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
-                    ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
-                    TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
+                    ColorCB = $(this).val().slice(5, 10).replace(/^0+/, '');
+                    TallaCB = $(this).val().slice(10, 14).replace(/^0+/, '');
                     var Mes = pnlControlesDetalle.find("[name='Mes']");
                     var Ano = pnlControlesDetalle.find("[name='Ano']");
                     var Estilo = EstiloCB;

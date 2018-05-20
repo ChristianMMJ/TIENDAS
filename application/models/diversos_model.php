@@ -12,10 +12,11 @@ class diversos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, T.Clave + '-'+T.RazonSocial AS 'Tienda', ,"
+            $this->db->select("U.ID, "
+                    . "CONCAT(T.Clave + '-'+T.RazonSocial) AS 'Tienda', ,"
                     . "U.Concepto, "
                     . "U.FechaCreacion as 'Fecha Movimiento ', "
-                    . "'<strong>$'+CONVERT(varchar, CAST(U.Importe AS money), 1)+'</strong>' AS Importe , "
+                    . "CONCAT('<strong>$',FORMAT(IFNULL(U.Importe,0),2),'</strong>') AS Importe,"
                     . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Diversos AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
@@ -38,10 +39,9 @@ class diversos_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Diversos", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
-//            PRINT "\n ID IN MODEL: $LastIdInserted \n";
-            return $row['IDL'];
+            return $row['LAST_INSERT_ID()'];
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
