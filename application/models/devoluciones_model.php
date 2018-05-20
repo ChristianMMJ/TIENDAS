@@ -29,6 +29,7 @@ class devoluciones_model extends CI_Model {
                     ->where_in('T.Estatus', array('ACTIVO'))
                     ->where('V.Tienda', $this->session->userdata('TIENDA'))
                     ->where('V.ID NOT IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false)
+                    ->where('(DATEDIFF(str_to_date(V.FechaCreacion, \'%d/%m/%Y\') , NOW()) *-1) <= 90', null, false)
                     ->get()->result(); 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
