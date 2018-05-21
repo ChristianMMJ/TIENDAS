@@ -257,6 +257,7 @@ class CapturaInventarios extends CI_Controller {
             $pdf = new PDFIF('L', 'mm', array(215.9, 279.4));
             $pdf->AliasNbPages();
             $pdf->SetAutoPageBreak(false, 10);
+            $pdf->LogoEmpresa = utf8_decode($this->session->userdata('EMPRESA_LOGO'));
             $pdf->AddPage();
 
             $pdf->SetFont('Arial', 'B', 9);
@@ -267,7 +268,7 @@ class CapturaInventarios extends CI_Controller {
             foreach ($Series as $i => $v) {
                 $Datos = $this->existenciasCaptura_Model->getReporteCapturaInvByMesByAno($Mes, $Ano, $v->Serie);
                 $pdf->SetY($Y);
-                $pdf->SetX(50);
+                $pdf->SetX(70);
                 $pdf->SetFont('Arial', 'B', 7);
                 $pdf->SetFillColor(225, 225, 234);
 
@@ -292,7 +293,7 @@ class CapturaInventarios extends CI_Controller {
                     //Existencias físicas
                     $contT = 1;
                     $Total = 0;
-                    $pdf->SetX(50);
+                    $pdf->SetX(70);
                     while ($contT <= 22) {
                         $pdf->SetFont('Arial', '', 6);
                         $pdf->SetTextColor(0, 0, 0);
@@ -328,6 +329,9 @@ class CapturaInventarios extends CI_Controller {
             $pdf = new PDFDI('L', 'mm', array(215.9, 279.4));
             $pdf->AliasNbPages();
             $pdf->SetAutoPageBreak(false, 10);
+            $pdf->LogoEmpresa = utf8_decode($this->session->userdata('EMPRESA_LOGO'));
+
+
             $pdf->AddPage();
 
             $pdf->SetFont('Arial', 'B', 9);
@@ -340,7 +344,7 @@ class CapturaInventarios extends CI_Controller {
             foreach ($Series as $i => $v) {
                 $Datos = $this->existenciasCaptura_Model->getReporteDiferenciasInvByMesByAno($this->input->post('Mes'), $this->input->post('Ano'), $v->Serie);
                 $pdf->SetY($Y);
-                $pdf->SetX(45);
+                $pdf->SetX(70);
                 $pdf->SetFont('Arial', 'B', 6.5);
                 $pdf->SetTextColor(0, 0, 0);
                 $pdf->SetFillColor(225, 225, 234);
@@ -365,7 +369,7 @@ class CapturaInventarios extends CI_Controller {
 
                     //Existencias físicas
                     $contT = 1;
-                    $pdf->SetX(45);
+                    $pdf->SetX(70);
                     $TotalT = 0;
                     while ($contT <= 22) {
                         $pdf->SetFont('Arial', '', 6);
@@ -379,7 +383,7 @@ class CapturaInventarios extends CI_Controller {
 
                     //Existencias en sistemas
                     $contE = 1;
-                    $pdf->SetX(45);
+                    $pdf->SetX(70);
                     $TotalE = 0;
                     while ($contE <= 22) {
                         $pdf->SetFont('Arial', '', 6);
@@ -392,7 +396,7 @@ class CapturaInventarios extends CI_Controller {
                     $pdf->Cell(15, 3, utf8_decode($TotalE . ' En Sistema'), 0, 1, 'L');
 
                     //Diferencias
-                    $pdf->SetX(45);
+                    $pdf->SetX(70);
                     $cont = 1;
                     $TotalD = 0;
                     while ($cont <= 22) {

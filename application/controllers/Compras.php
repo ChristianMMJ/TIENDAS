@@ -59,20 +59,20 @@ class Compras extends CI_Controller {
 
                         /* Estilo */
                         $pdf->SetFont('Arial', '', 9);
-                        $pdf->SetXY(40, 18);
+                        $pdf->SetXY(40, 15);
                         $pdf->Cell(4, 5, 'Estilo: ', 0, 0, 'L');
 
                         $pdf->SetFont('Arial', 'B', 17);
-                        $pdf->SetXY(51, 18);
+                        $pdf->SetXY(51, 15);
                         $pdf->Cell(4, 5, $data->Estilo, 0, 0, 'L');
 
                         /* Talla */
                         $pdf->SetFont('Arial', '', 9);
-                        $pdf->SetXY(40, 25);
+                        $pdf->SetXY(40, 22);
                         $pdf->Cell(4, 5, 'Talla: ', 0, 0, 'L');
 
                         $pdf->SetFont('Arial', 'B', 19);
-                        $pdf->SetXY(51, 25);
+                        $pdf->SetXY(51, 22);
                         $pdf->Cell(4, 5, $data->Talla, 0, 0, 'L');
 
                         /* Color */
@@ -91,7 +91,8 @@ class Compras extends CI_Controller {
                         $pdf->Cell(4, 3, $data->Tienda, 0, 0, 'L');
 
                         /* Logo Empresa */
-                        $pdf->Image(base_url() . 'img/LS.png', 8, 8, 18);
+
+                        $pdf->Image(base_url() . utf8_decode($data->LogoEmpresa), 4, 8, 30);
 
                         $cont++;
                     }

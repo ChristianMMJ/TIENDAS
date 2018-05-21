@@ -114,7 +114,7 @@ class existenciasCaptura_Model extends CI_Model {
                     . " ", false);
             $this->db->from('sz_ExistenciasCaptura AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -170,7 +170,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->from('sz_ExistenciasCaptura AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
-            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -245,7 +245,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->from('sz_ExistenciasCaptura AS U');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
-            $this->db->join('sz_Series AS Se', 'U.Estilo = Se.ID');
+            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
             $this->db->join('sz_Existencias AS Ex', 'U.Estilo = Ex.Estilo and U.Color = Ex.Color and U.Tienda = Ex.Tienda ', 'left');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);

@@ -172,6 +172,7 @@ class compras_model extends CI_Model {
     public function getDetalleEtiquetas($ID) {
         try {
             $this->db->select('CD.ID AS ID, '
+                    . 'Em.Foto As LogoEmpresa,'
                     . 'COMS.FechaMov As Fecha,'
                     . 'T.RazonSocial As Tienda,'
                     . 'CD.Estilo AS IdEstilo, '
@@ -186,6 +187,7 @@ class compras_model extends CI_Model {
             $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
             $this->db->join('sz_Compras AS COMS', 'CD.Compra = COMS.ID');
             $this->db->join('sz_Tiendas AS T', 'COMS.Tienda = T.ID');
+            $this->db->join('sz_Empresas AS Em', 'T.Empresa = Em.ID');
             $this->db->where('CD.Compra', $ID);
             $query = $this->db->get();
             /*
