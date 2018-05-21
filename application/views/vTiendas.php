@@ -121,6 +121,12 @@
                         <label for="Telefono">Teléfono</label>
                         <input type="tel" class="form-control form-control-sm"  maxlength="15"  id="Telefono" name="Telefono"  >
                     </div>
+                    <div class="col-sm-3">
+                        <label for="Empresa">Zona*</label>
+                        <select class="form-control form-control-sm required"  name="Zona" required="">
+                            <option value=""></option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
@@ -130,6 +136,12 @@
                     <div class="col-sm-3">
                         <label for="PorMay">Mayoreo</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" required=""  maxlength="4" name="PorMay"  >
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="Empresa">Empresa*</label>
+                        <select class="form-control form-control-sm required"  name="Empresa" required="">
+                            <option value=""></option>
+                        </select>
                     </div>
                     <div class="col-sm-3">
                         <label for="Estatus">Estatus*</label>
@@ -176,6 +188,8 @@
     $(document).ready(function () {
         /*NUEVO ARCHIVO*/
         btnArchivo.on("click", function () {
+            $('#Foto').attr("type", "file");
+            $('#Foto').val('');
             Archivo.change(function () {
                 HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
                 var imageType = /image.*/;
@@ -272,6 +286,8 @@
         });
 
         getRecords();
+        getEmpresas();
+        getZonas();
         handleEnter();
     });
 
@@ -387,6 +403,40 @@
                         that.search(this.value).draw();
                     }
                 });
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getEmpresas() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getEmpresas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Empresa']")[0].selectize.addOption({text: v.Empresa, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getZonas() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getZonas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Zona']")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);

@@ -2,12 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Tiendas extends CI_Controller {
+class Empresas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('tiendas_model');
         $this->load->model('empresas_model');
         $this->load->model('generales_model');
     }
@@ -18,7 +17,7 @@ class Tiendas extends CI_Controller {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');
-                $this->load->view('vTiendas');
+                $this->load->view('vEmpresas');
                 $this->load->view('vFooter');
             } else {
                 $this->load->view('vEncabezado');
@@ -32,42 +31,32 @@ class Tiendas extends CI_Controller {
         }
     }
 
+    public function getRegimenesFiscales() {
+        try {
+            extract($this->input->post());
+            $data = $this->generales_model->getCatalogosDescripcionByFielID('REGIMENES FISCALES');
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
             extract($this->input->post());
 
 
-            $data = $this->tiendas_model->getRecords();
+            $data = $this->empresas_model->getRecords();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getZonas() {
+    public function getEmpresaByID() {
         try {
             extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('ZONAS');
-            print json_encode($data);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getEmpresas() {
-        try {
-            extract($this->input->post());
-            $data = $this->empresas_model->getEmpresas();
-            print json_encode($data);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getTiendaByID() {
-        try {
-            extract($this->input->post());
-            $data = $this->tiendas_model->getTiendaByID($ID);
+            $data = $this->empresas_model->getEmpresaByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -88,13 +77,10 @@ class Tiendas extends CI_Controller {
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
-                'PorMen' => ($this->input->post('PorMen') !== NULL) ? $this->input->post('PorMen') : NULL,
-                'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
-                'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL,
-                'Zona' => ($this->input->post('Zona') !== NULL) ? $this->input->post('Zona') : NULL,
+                'RegimenFiscal' => ($this->input->post('RegimenFiscal') !== NULL) ? $this->input->post('RegimenFiscal') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $ID = $this->tiendas_model->onAgregar($data);
+            $ID = $this->empresas_model->onAgregar($data);
 
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Tiendas/';
@@ -111,12 +97,12 @@ class Tiendas extends CI_Controller {
                     $DATA = array(
                         'Foto' => ($img),
                     );
-                    $this->tiendas_model->onModificar($ID, $DATA);
+                    $this->empresas_model->onModificar($ID, $DATA);
                 } else {
                     $DATA = array(
                         'Foto' => (null),
                     );
-                    $this->tiendas_model->onModificar($ID, $DATA);
+                    $this->empresas_model->onModificar($ID, $DATA);
                 }
             }
             /* FIN SUBIR FOTO */
@@ -141,13 +127,10 @@ class Tiendas extends CI_Controller {
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
-                'PorMen' => ($this->input->post('PorMen') !== NULL) ? $this->input->post('PorMen') : NULL,
-                'PorMay' => ($this->input->post('PorMay') !== NULL) ? $this->input->post('PorMay') : NULL,
-                'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL,
-                'Zona' => ($this->input->post('Zona') !== NULL) ? $this->input->post('Zona') : NULL,
+                'RegimenFiscal' => ($this->input->post('RegimenFiscal') !== NULL) ? $this->input->post('RegimenFiscal') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->tiendas_model->onModificar($ID, $DATA);
+            $this->empresas_model->onModificar($ID, $DATA);
 
             /* MODIFICAR FOTO */
             $Foto = $this->input->post('Foto');
@@ -167,12 +150,12 @@ class Tiendas extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->tiendas_model->onModificar($ID, $DATA);
+                            $this->empresas_model->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->tiendas_model->onModificar($ID, $DATA);
+                            $this->empresas_model->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -180,7 +163,7 @@ class Tiendas extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->tiendas_model->onModificar($ID, $DATA);
+                $this->empresas_model->onModificar($ID, $DATA);
             }
             /* FIN MODIFICAR FOTO */
         } catch (Exception $exc) {
@@ -191,7 +174,7 @@ class Tiendas extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->tiendas_model->onEliminar($ID);
+            $this->empresas_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

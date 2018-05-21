@@ -118,6 +118,7 @@
                             </ul>
                         </li>
                         <li><a class="dropdown-item" href="<?php print base_url('Usuarios') ?>">Usuarios</a></li>
+                        <li><a class="dropdown-item" href="<?php print base_url('Empresas') ?>">Empresas</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Tiendas') ?>">Tiendas</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Clientes') ?>">Clientes</a></li>
                         <li><a class="dropdown-item" href="<?php print base_url('Proveedores') ?>">Proveedores</a></li>
