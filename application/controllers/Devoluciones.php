@@ -18,7 +18,7 @@ class Devoluciones extends CI_Controller {
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
-                $this->load->view('vVentas');
+                $this->load->view('vDevoluciones');
                 $this->load->view('vFooter');
             } else {
                 $this->load->view('vEncabezado');
@@ -56,6 +56,30 @@ class Devoluciones extends CI_Controller {
         }
     }
 
+    public function getCombinacionesXEstilo() {
+        try {
+            print json_encode($this->devoluciones_model->getCombinacionesXEstilo($this->input->post('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXEstilo() {
+        try {
+            print json_encode($this->devoluciones_model->getSerieXEstiloConClave($this->input->post('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+ 
+    public function getMetodosPago() {
+        try {
+            print json_encode($this->devoluciones_model->getCatalogosByFielID('CONDICIONES DE PAGO'));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getVentaXID() {
         try {
             print json_encode($this->devoluciones_model->getVentaXID($this->input->get('ID')));
@@ -66,7 +90,7 @@ class Devoluciones extends CI_Controller {
 
     public function getExistenciasXEstiloXCombinacion() {
         try {
-            print json_encode($this->existencias_model->getExistenciasXEstiloXCombinacion($this->input->get('Estilo'), $this->input->get('Combinacion')));
+            print json_encode($this->devoluciones_model->getExistenciasXEstiloXCombinacionT($this->input->post('Estilo'), $this->input->post('Combinacion')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
