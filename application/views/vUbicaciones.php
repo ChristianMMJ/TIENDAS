@@ -1,8 +1,20 @@
 <div class="card border-0" id="pnlTablero">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-12 float-left">
+            <div class="col-sm-9 float-left">
                 <legend class="float-left">Ubicaciones dentro de la Tienda</legend>
+            </div>
+            <div class="col-sm-3 float-left">
+                <?php
+                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS", "ADMINISTRADOR"))) {
+                    ?>
+                    <label for="Tienda">Tienda*</label>
+                    <select class="form-control form-control-sm required"  id="TiendaT">
+                        <option value=""></option>
+                        <option value="TODAS">TODAS</option>
+                    </select>
+                <?php } ?>
+
             </div>
         </div>
         <div class="card-block">
@@ -61,6 +73,10 @@
     var pnlTablero = $("#pnlTablero");
     $(document).ready(function () {
 
+        pnlTablero.find("#TiendaT").change(function () {
+            getUbicacionesByTienda();
+        });
+
         $('#mdlUbicaciones').on('shown.bs.modal', function () {
             $('#mdlUbicaciones').find(':input:text:enabled:visible:first').focus();
         });
@@ -85,6 +101,7 @@
         });
 
         getUbicacionesByTienda();
+        getTiendas();
         handleEnter();
     });
     function getUbicacionesByTienda() {
@@ -96,7 +113,10 @@
         $.ajax({
             url: master_url + 'getUbicacionesByTienda',
             type: "POST",
-            dataType: "JSON"
+            dataType: "JSON",
+            data: {
+                Tienda: pnlTablero.find("#TiendaT").val()
+            }
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblUbicaciones', data));
@@ -190,6 +210,23 @@
         });
     }
 
+    function getTiendas() {
+
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getTiendas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlTablero.find("#TiendaT")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
 
 
 </script>

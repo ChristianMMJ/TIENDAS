@@ -8,6 +8,7 @@ class CortesCaja extends CI_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('cortesCaja_model');
+        $this->load->model('tiendas_model');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -37,10 +38,17 @@ class CortesCaja extends CI_Controller {
 
     public function getRecords() {
         try {
-            extract($this->input->post());
 
+            $data = $this->cortesCaja_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
-            $data = $this->cortesCaja_model->getRecords();
+    public function getTiendas() {
+        try {
+            $data = $this->tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

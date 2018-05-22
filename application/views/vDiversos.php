@@ -1,9 +1,21 @@
 <!--TABLERO-->
-<div class="card " id="pnlTablero">
+<div class="card border-0" id="pnlTablero">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-6 float-left">
+            <div class="col-sm-3 float-left">
                 <legend class="float-left">Movimientos Diversos de Caja</legend>
+            </div>
+            <div class="col-sm-3 float-left">
+                <?php
+                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS", "ADMINISTRADOR"))) {
+                    ?>
+                    <label for="Tienda">Tienda*</label>
+                    <select class="form-control form-control-sm required"  id="TiendaT">
+                        <option value=""></option>
+                        <option value="TODAS">TODAS</option>
+                    </select>
+                <?php } ?>
+
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -73,6 +85,10 @@
     var currentDate = new Date();
     var nuevo = true;
     $(document).ready(function () {
+
+        pnlTablero.find("#TiendaT").change(function () {
+            getRecords();
+        });
 
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -174,6 +190,7 @@
             }
         });
         getRecords();
+        getTiendas();
         handleEnter();
     });
 
@@ -186,7 +203,10 @@
         $.ajax({
             url: master_url + 'getRecords',
             type: "POST",
-            dataType: "JSON"
+            dataType: "JSON",
+            data: {
+                Tienda: pnlTablero.find("#TiendaT").val()
+            }
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblCortesCaja', data));
@@ -274,6 +294,24 @@
             } else {
                 $("#tblRegistros").html('');
             }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
+    function getTiendas() {
+
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getTiendas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlTablero.find("#TiendaT")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+            });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

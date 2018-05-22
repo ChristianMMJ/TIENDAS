@@ -86,6 +86,21 @@ class Semanas extends CI_Controller {
         }
     }
 
+    public function onAgregarExtra() {
+        try {
+            $data = array(
+                'Ano' => $this->input->post('Ano'),
+                'Sem' => $this->input->post('Sem'),
+                'FechaIni' => $this->input->post('FechaIni'),
+                'FechaFin' => $this->input->post('FechaFin'),
+                'Estatus' => 'ACTIVO'
+            );
+            $this->semanas_model->onAgregar($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModificar() {
         try {
             extract($this->input->post());

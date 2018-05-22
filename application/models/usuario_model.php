@@ -10,17 +10,22 @@ class usuario_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
             $this->db->from('sz_Usuarios AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->like('U.Tienda', $Tienda, 'before');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

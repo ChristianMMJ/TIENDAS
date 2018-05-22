@@ -10,8 +10,11 @@ class existenciasCaptura_Model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select(" U.Ano AS 'Año', U.Mes,"
                     . "(CASE WHEN  U.Estatus ='ACTIVO' "
                     . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN CAPTURA','</span>') "
@@ -22,7 +25,7 @@ class existenciasCaptura_Model extends CI_Model {
                     . " ", false);
             $this->db->from('sz_ExistenciasCaptura AS U');
             $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->order_by("U.Mes", "ASC");
             $this->db->order_by("U.Ano", "ASC");
             $this->db->group_by(array("U.Ano", "U.Mes", "U.Estatus"));

@@ -121,7 +121,7 @@ class Compras extends CI_Controller {
             extract($this->input->post());
 
 
-            $data = $this->compras_model->getRecords();
+            $data = $this->compras_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

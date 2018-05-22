@@ -11,15 +11,18 @@ class traspasos_model extends CI_Model {
         date_default_timezone_set('America/Mexico_City');
     }
 
-    public function getRecords() {
+    public function getRecords($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select("T.ID, IFNULL(T.DocMov,'') AS Documento , "
                     . "OTI.RazonSocial as 'De Tienda', "
                     . "DTI.RazonSocial as 'A Tienda', "
                     . "(CASE WHEN  T.Estatus ='ACTIVO' "
-                    . "THEN CONCAT('<h5><span class=''badge badge-info''>','ACTIVO','</span><h5>') "
+                    . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN TRANSITO','</span>') "
                     . "WHEN  T.Estatus ='AFECTADO' "
-                    . "THEN CONCAT('<h5><span class=''badge badge-success''>','AFECTADO','</span></h5>') "
+                    . "THEN CONCAT('<span class=''badge badge-success'' style=''font-size: 15px;''>','REALIZADO','</span>') "
                     . "END) AS Estatus ,"
                     . "T.FechaMov as 'Fecha Movimiento', T.Registro AS Registro,"
                     . "US.Usuario AS 'Usuario'", false);
@@ -28,12 +31,14 @@ class traspasos_model extends CI_Model {
             $this->db->join('sz_Tiendas AS OTI', 'OTI.ID = T.dTienda', 'left');
             $this->db->join('sz_Tiendas AS DTI', 'DTI.ID = T.Tienda', 'left');
             $this->db->where_in('T.Estatus', 'ACTIVO');
+            $this->db->like('T.Tienda', $Tienda, 'before');
             $this->db->order_by("T.DocMov", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

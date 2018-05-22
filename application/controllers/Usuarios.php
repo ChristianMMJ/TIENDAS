@@ -33,7 +33,8 @@ class Usuarios extends CI_Controller {
 
     public function getRecords() {
         try {
-            $data = $this->usuario_model->getRecords();
+            //var_dump($this->input->post('Tienda'));
+            $data = $this->usuario_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

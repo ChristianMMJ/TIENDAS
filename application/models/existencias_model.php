@@ -126,8 +126,11 @@ class existencias_model extends CI_Model {
         }
     }
 
-    public function getUbicacionesByTienda() {
+    public function getUbicacionesByTienda($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select("U.ID, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' , "
                     . "CONCAT(C.Clave ,'-', c.Descripcion) AS 'Color', "
                     . "IFNULL(Loc1,'') AS 'Ubicación 1', "
@@ -139,7 +142,7 @@ class existencias_model extends CI_Model {
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
-            $this->db->where_in('U.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->where_in('U.Tienda', $Tienda);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

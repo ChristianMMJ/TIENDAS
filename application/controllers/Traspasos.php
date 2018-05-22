@@ -19,7 +19,7 @@ class Traspasos extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');
                 $this->load->view('vTraspasos');
@@ -38,7 +38,7 @@ class Traspasos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->traspasos_model->getRecords());
+            print json_encode($this->traspasos_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

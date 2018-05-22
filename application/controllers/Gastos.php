@@ -9,6 +9,8 @@ class Gastos extends CI_Controller {
         $this->load->library('session');
         $this->load->model('gastos_model');
         $this->load->model('generales_model');
+        $this->load->model('tiendas_model');
+
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -44,10 +46,16 @@ class Gastos extends CI_Controller {
 
     public function getRecords() {
         try {
-            extract($this->input->post());
+            $data = $this->gastos_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
-
-            $data = $this->gastos_model->getRecords();
+    public function getTiendas() {
+        try {
+            $data = $this->tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -74,8 +82,6 @@ class Gastos extends CI_Controller {
 
     public function onAgregar() {
         try {
-
-
             $data = array(
                 'Tienda' => $this->session->userdata('TIENDA'),
                 'FechaCreacion' => Date('d/m/Y h:i:s a'),

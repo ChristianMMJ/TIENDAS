@@ -10,6 +10,7 @@ class CapturaInventarios extends CI_Controller {
         $this->load->library('session');
         $this->load->model('existenciasCaptura_Model');
         $this->load->model('estilos_model');
+        $this->load->model('tiendas_model');
         $this->load->model('combinaciones_model');
         $this->load->model('existencias_model');
         $this->load->helper('reportes_helper');
@@ -79,7 +80,16 @@ class CapturaInventarios extends CI_Controller {
     public function getRecords() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getRecords();
+            $data = $this->existenciasCaptura_Model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTiendas() {
+        try {
+            $data = $this->tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

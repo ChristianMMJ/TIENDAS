@@ -1,8 +1,20 @@
-<div class="card " id="pnlTablero">
+<div class="card border-0" id="pnlTablero">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-6 float-left">
+            <div class="col-sm-3 float-left">
                 <legend class="float-left">Gestión de Traspasos</legend>
+            </div>
+            <div class="col-sm-3 float-left">
+                <?php
+                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS", "ADMINISTRADOR"))) {
+                    ?>
+                    <label for="Tienda">Tienda*</label>
+                    <select class="form-control form-control-sm required"  id="TiendaT">
+                        <option value=""></option>
+                        <option value="TODAS">TODAS</option>
+                    </select>
+                <?php } ?>
+
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -250,6 +262,10 @@
         }
     };
     $(document).ready(function () {
+        pnlTablero.find("#TiendaT").change(function () {
+            getRecords();
+        });
+
         onComprobarExistencias();
         pnlDatos.find("#AfecInv").change(function () {
             if ($(this)[0].checked) {
@@ -483,12 +499,14 @@
         });
         getRecords();
         getEstilos();
+
         getTiendasConExistencias();
         getTiendas();
         handleEnter();
     });
 
     function getRecords() {
+
         temp = 0;
         HoldOn.open({
             theme: "sk-bounce",
@@ -497,7 +515,10 @@
         $.ajax({
             url: master_url + 'getRecords',
             type: "POST",
-            dataType: "JSON"
+            dataType: "JSON",
+            data: {
+                Tienda: pnlTablero.find("#TiendaT").val()
+            }
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblCompras', data));
@@ -615,6 +636,8 @@
                         }
                     });
                 });
+            } else {
+                $("#tblRegistros").html('');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -632,6 +655,7 @@
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+                pnlTablero.find("#TiendaT")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);

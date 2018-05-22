@@ -10,8 +10,11 @@ class gastos_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select("U.ID, IFNULL(U.DocMov,'') AS Documento ,"
                     . "CONCAT(T.Clave , '-',T.RazonSocial) AS 'Tienda' ,"
                     . "U.FechaMov as 'Fecha Movimiento ', "
@@ -20,8 +23,8 @@ class gastos_model extends CI_Model {
             $this->db->from('sz_Gastos AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where_in('U.Estatus', array('ACTIVO'));
+            $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->order_by("U.DocMov", "ASC");
             $query = $this->db->get();
             /*

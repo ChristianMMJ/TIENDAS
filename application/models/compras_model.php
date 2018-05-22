@@ -10,8 +10,11 @@ class compras_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Tienda) {
         try {
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
             $this->db->select("U.ID, IFNULL(U.DocMov,'') AS Documento ,"
                     . "(CASE WHEN  U.Estatus ='ACTIVO' "
                     . "THEN CONCAT('<span class=''badge badge-info'' style=''font-size: 15px;'' >','EN TRANSITO','</span>') "
@@ -25,6 +28,7 @@ class compras_model extends CI_Model {
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
             $this->db->where_in('U.Estatus', array('AFECTADO', 'ACTIVO'));
+            $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->order_by("U.DocMov", "ASC");
             $query = $this->db->get();
             /*

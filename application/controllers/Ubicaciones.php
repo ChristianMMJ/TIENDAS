@@ -47,10 +47,19 @@ class Ubicaciones extends CI_Controller {
         }
     }
 
+    public function getTiendas() {
+        try {
+            $data = $this->tiendas_model->getTiendas();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getUbicacionesByTienda() {
         try {
             extract($this->input->post());
-            $data = $this->existencias_model->getUbicacionesByTienda();
+            $data = $this->existencias_model->getUbicacionesByTienda(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

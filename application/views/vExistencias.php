@@ -5,11 +5,15 @@
                 <legend class="float-left">Existencias</legend>
             </div>
             <div class="col-sm-4" >
-                <label for="Tienda">Tienda*</label>
-                <select class="form-control form-control-sm required"  name="Tienda">
-                    <option value=""></option>
-                    <option value="TODAS">TODAS</option>
-                </select>
+                <?php
+                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS", "ADMINISTRADOR"))) {
+                    ?>
+                    <label for="Tienda">Tienda*</label>
+                    <select class="form-control form-control-sm required"  name="Tienda">
+                        <option value=""></option>
+                        <option value="TODAS">TODAS</option>
+                    </select>
+                <?php } ?>
             </div>
         </div>
         <div class="card-block">

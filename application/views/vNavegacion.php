@@ -82,7 +82,7 @@
                 </li>
             <?php } ?>
             <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -139,8 +139,8 @@
                     Bienvenido : <?php echo $this->session->userdata('USERNAME') ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" onclick="onCambiarContrasena();">Cambiar Contraseña</a>
-                    <a class="dropdown-item" >Reportar un problema</a>
+                    <a class="dropdown-item" href="#" onclick="onCambiarContrasena();">Cambiar Contraseña</a>
+                    <a class="dropdown-item" href="#">Reportar un problema</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('Login/onSalir'); ?>">Salir</a>
                 </div>
