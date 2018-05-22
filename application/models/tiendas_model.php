@@ -45,6 +45,25 @@ class tiendas_model extends CI_Model {
         }
     }
 
+    public function getTiendasByEmpresa($Empresa) {
+        try {
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Tienda'  ", false);
+            $this->db->from('sz_Tiendas AS U');
+            $this->db->where('U.Estatus', 'ACTIVO');
+            $this->db->where('U.Empresa', $Empresa);
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPorcentajesByTienda($ID) {
         try {
             $this->db->select("U.PorMen, U.PorMay  ", false);

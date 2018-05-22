@@ -14,7 +14,6 @@
                         <option value="TODAS">TODAS</option>
                     </select>
                 <?php } ?>
-
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -29,14 +28,12 @@
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
         <div class="card-body text-dark">
-
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
                         <legend class="float-left">Usuarios</legend>
                     </div>
                     <div class="col-md-7 float-right">
-
                     </div>
                     <div class="col-md-3 float-right" align="right">
                         <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
@@ -55,12 +52,17 @@
                         <label for="Contrasena">Contraseña*</label>
                         <input type="password" class="form-control form-control-sm" id="Contrasena" name="Contrasena" required >
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-sm">
                         <label for="Correo">Correo*</label>
                         <input type="email" id="Correo" name="Correo" class="form-control form-control-sm" placeholder="lobo@lobo.com.mx" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <label for="Empresa">Empresa*</label>
+                        <select class="form-control form-control-sm required" name="Empresa">
+                            <option value=""></option>
+                        </select>
                     </div>
                     <div class="col-sm">
                         <label for="Tienda">Tienda*</label>
@@ -68,10 +70,6 @@
                             <option value=""></option>
                         </select>
                     </div>
-
-                </div>
-
-                <div class="row">
                     <div class="col-sm">
                         <label for="Tipo">Tipo</label>
                         <select class="form-control form-control-sm required" name="Tipo">
@@ -82,6 +80,8 @@
                             <option value="VENDEDOR">VENDEDOR</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
                         <select class="form-control form-control-sm required"  name="Estatus">
@@ -91,7 +91,6 @@
                         </select>
                     </div>
                 </div>
-
                 <!-- FOTO -->
                 <div for="" align="center">
                     <br>
@@ -122,15 +121,16 @@
     var Archivo = pnlDatos.find("#Foto");
     var btnArchivo = pnlDatos.find("#btnArchivo");
     var VistaPrevia = pnlDatos.find("#VistaPrevia");
-
     var nuevo = true;
-
     $(document).ready(function () {
-
         pnlTablero.find("#TiendaT").change(function () {
             getRecords();
         });
-
+        pnlDatos.find("[name='Empresa']").change(function () {
+            pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
+            pnlDatos.find("[name='Tienda']")[0].selectize.clearOptions();
+            getTiendasByEmpresa($(this).val());
+        });
         /*NUEVO ARCHIVO*/
         btnArchivo.on("click", function () {
             $('#Foto').attr("type", "file");
@@ -182,7 +182,6 @@
                     }).always(function () {
                         HoldOn.close();
                     });
-
                 } else {
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -202,14 +201,11 @@
                     }).always(function () {
                         HoldOn.close();
                     });
-
                 }
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
-
         });
-
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -227,6 +223,7 @@
         });
         /*CALLS*/
         getRecords();
+        getEmpresas();
         getTiendas();
         handleEnter();
     });
@@ -246,21 +243,17 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 $("#tblRegistros").html(getTable('tblUsuarios', data));
-
                 $('#tblUsuarios tfoot th').each(function () {
                     $(this).html('');
                 });
                 var tblSelected = $('#tblUsuarios').DataTable(tableOptions);
                 $('#tblUsuarios_filter input[type=search]').focus();
-
                 $('#tblUsuarios tbody').on('click', 'tr', function () {
-
                     $("#tblUsuarios tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var dtm = tblSelected.row(this).data();
                     temp = parseInt(dtm[0]);
                 });
-
                 $('#tblUsuarios tbody').on('dblclick', 'tr', function () {
                     $("#tblCatalogos tbody tr").removeClass("success");
                     $(this).addClass("success");
@@ -287,19 +280,40 @@
                             }
                         }).done(function (data, x, jq) {
                             var dtm = data[0];
-
                             pnlDatos.find("input").val("");
                             $.each(pnlDatos.find("select"), function (k, v) {
                                 pnlDatos.find("select")[k].selectize.clear(true);
                             });
+
+
+
                             $.each(data[0], function (k, v) {
                                 if (k !== 'Foto') {
                                     pnlDatos.find("[name='" + k + "']").val(v);
                                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
                                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                     }
-
                                 }
+                            });
+
+                            $.ajax({
+                                url: master_url + 'getTiendasByEmpresa',
+                                type: "POST",
+                                dataType: "JSON",
+                                data: {
+                                    Empresa: dtm.Empresa
+                                }
+                            }).done(function (data, x, jq) {
+                                $.each(data, function (k, v) {
+                                    pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+                                });
+                                pnlDatos.find("[name='Tienda']")[0].selectize.setValue(dtm.Tienda);
+                                pnlDatos.find("[name='Tienda']")[0].selectize.close();
+                                pnlDatos.find("[name='Usuario']").focus();
+                                pnlDatos.find("[name='Usuario']").select();
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
                             });
                             /*COLOCAR FOTO*/
                             if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
@@ -319,7 +333,7 @@
                             /*FIN COLOCAR FOTO*/
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
-                            $(':input:text:enabled:visible:first').focus();
+                            //$(':input:text:enabled:visible:first').focus();
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -347,9 +361,23 @@
             HoldOn.close();
         });
     }
-
+    function getEmpresas() {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getEmpresas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Empresa']")[0].selectize.addOption({text: v.Empresa, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
     function getTiendas() {
-
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getTiendas',
@@ -357,7 +385,6 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
                 pnlTablero.find("#TiendaT")[0].selectize.addOption({text: v.Tienda, value: v.ID});
             });
         }).fail(function (x, y, z) {
@@ -366,7 +393,26 @@
             HoldOn.close();
         });
     }
-
+    function getTiendasByEmpresa(Empresa) {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getTiendasByEmpresa',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Empresa: Empresa
+            }
+        }).done(function (data, x, jq) {
+            console.log(data);
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
         $('#Foto').attr("type", "text");

@@ -9,6 +9,7 @@ class Usuarios extends CI_Controller {
         $this->load->library('session');
         $this->load->model('usuario_model');
         $this->load->model('tiendas_model');
+        $this->load->model('empresas_model');
     }
 
     public function index() {
@@ -41,9 +42,28 @@ class Usuarios extends CI_Controller {
         }
     }
 
+    public function getEmpresas() {
+        try {
+            extract($this->input->post());
+            $data = $this->empresas_model->getEmpresas();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getTiendas() {
         try {
             $data = $this->tiendas_model->getTiendas();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTiendasByEmpresa() {
+        try {
+            $data = $this->tiendas_model->getTiendasByEmpresa($this->input->post('Empresa'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -69,7 +89,8 @@ class Usuarios extends CI_Controller {
                 'Correo' => ($this->input->post('Correo') !== NULL) ? $this->input->post('Correo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
                 'Registro' => Date('d/m/Y h:i:s a'),
-                'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL
+                'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
+                'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL
             );
             $ID = $this->usuario_model->onAgregar($data);
             /* SUBIR FOTO */
@@ -118,7 +139,8 @@ class Usuarios extends CI_Controller {
                 'Correo' => ($Correo !== NULL) ? $Correo : NULL,
                 'Tipo' => ($Tipo !== NULL) ? $Tipo : NULL,
                 'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL,
-                'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL
+                'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
+                'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL
             );
             $this->usuario_model->onModificar($ID, $DATA);
 

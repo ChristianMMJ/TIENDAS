@@ -17,7 +17,6 @@
         </div>
     </div>
 </div>
-
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
@@ -28,7 +27,6 @@
                         <legend class="float-left">Tiendas</legend>
                     </div>
                     <div class="col-md-7 float-right">
-
                     </div>
                     <div class="col-md-3 float-right" align="right">
                         <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
@@ -170,7 +168,6 @@
         </div>
     </div>
 </div>
-
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Tiendas/';
@@ -184,7 +181,6 @@
     var btnArchivo = pnlDatos.find("#btnArchivo");
     var VistaPrevia = pnlDatos.find("#VistaPrevia");
     var nuevo = true;
-
     $(document).ready(function () {
         /*NUEVO ARCHIVO*/
         btnArchivo.on("click", function () {
@@ -221,7 +217,6 @@
         pnlDatos.find("#RFC").blur(function () {
             var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
             var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
-
             if (rfcCorrecto) {
             } else {
                 $("#RFC").val("");
@@ -268,7 +263,6 @@
                 }
             }
         });
-
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -284,13 +278,11 @@
             pnlDatos.addClass('d-none');
             nuevo = true;
         });
-
         getRecords();
         getEmpresas();
         getZonas();
         handleEnter();
     });
-
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -303,7 +295,6 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $("#tblRegistros").html(getTable('tblTiendas', data));
-
             $('#tblTiendas tfoot th').each(function () {
                 $(this).html('');
             });
@@ -315,19 +306,14 @@
                 var td = $(v).find("td");
                 td.eq(0).addClass("d-none");
             });
-
-
             var tblSelected = $('#tblTiendas').DataTable(tableOptions);
             $('#tblTiendas_filter input[type=search]').focus();
-
             $('#tblTiendas tbody').on('click', 'tr', function () {
-
                 $("#tblTiendas tbody tr").removeClass("success");
                 $(this).addClass("success");
                 var dtm = tblSelected.row(this).data();
                 temp = parseInt(dtm[0]);
             });
-
             $('#tblTiendas tbody').on('dblclick', 'tr', function () {
                 $("#tblTiendas tbody tr").removeClass("success");
                 $(this).addClass("success");
@@ -353,7 +339,6 @@
                             ID: temp
                         }
                     }).done(function (data, x, jq) {
-
                         var dtm = data[0];
                         pnlDatos.find("input").val("");
                         $.each(pnlDatos.find("select"), function (k, v) {
@@ -410,7 +395,6 @@
             HoldOn.close();
         });
     }
-
     function getEmpresas() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -427,7 +411,6 @@
             HoldOn.close();
         });
     }
-
     function getZonas() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -444,12 +427,9 @@
             HoldOn.close();
         });
     }
-
-
     function onRemovePreview(e) {
         $(e).parent().parent("#VistaPrevia").html("");
         $('#Foto').attr("type", "text");
         $('#Foto').val('N');
     }
-
 </script>

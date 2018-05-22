@@ -96,7 +96,6 @@
                     <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
                     <a href="<?php print base_url('CortesCaja') ?>" target="_blank" class="btn btn-secondary btn-sm" id="btnCorteCaja"><span class="fa fa-cut"></span> (F7)CORTE</a>
                     <button type="button" class="btn btn-success " id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> VENTA (F1)</button>
-
                 </div>
             </div>
             <hr>
@@ -268,7 +267,6 @@
                 <div class=" col-md-9 ">
                     <div class="row">
                         <div class="table-responsive" id="RegistrosDetalle">
-
                         </div>
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
@@ -296,16 +294,13 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-md-3">
                     <label for="">Foto del Artículo</label>
                     <div id="VistaPrevia" >
                         <img src="<?php echo base_url(); ?>img/camera.png" class="img-thumbnail img-fluid"/>
                     </div>
-
                 </div>
-
             </div>
             <!--FIN DETALLE-->
         </div>
@@ -327,11 +322,8 @@
     var btnCancelarVenta = $("#btnCancelarVenta");
     var mdlCerrarVenta = $("#mdlCerrarVenta");
     var btnFinVenta = mdlCerrarVenta.find("#btnFinVenta");
-
     var btnDevolucion = pnlDatos.find("#btnDevolucion");
-
     var btnFullScreen = pnlDatos.find("#btnFullScreen");
-
     var currentDate = new Date();
     var nuevo = true;
     var IdMov = 0;
@@ -340,7 +332,6 @@
     var ColorCB = 0;
     var TallaCB = 0;
     var PrecioCB = 0;
-
     /*DATATABLE GLOBAL*/
     var tblDetalleVenta;
     var tblInicial = {
@@ -372,13 +363,10 @@
         }
     };
     var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
-
     $(document).ready(function () {
-
         btnDevolucion.click(function () {
             location.href = base_url + 'Devoluciones';
         });
-
         btnTicket.click(function () {
             var Venta = parseInt(pnlDatos.find("#ID").val());
             if (Venta > 0) {
@@ -422,7 +410,6 @@
         });
         //Inicializar Componentes
         pnlDatos.find("input").val("");
-
         pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
         pnlDatos.find('#TipoDoc').val('R');
         $('#Encabezado').removeClass('disabledForms');
@@ -430,14 +417,13 @@
         nuevo = true;
         onValidarPantallaCompleta();
         getNuevoFolio();
-        getEstilosExistentesXTienda();
+        getEstilos();
         getClientes();
         getDescuentos();
         getMetodosPago();
         getVendedores();
         handleEnter();
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
-
         pnlDatos.find("input[name='TipoDoc']").keyup(function (e) {
             if (e.keyCode === 82)/*Solo R*/
             {
@@ -483,7 +469,6 @@
                     }).done(function (data, x, jq) {
                         console.log('* FOLIO CONSULTADO *');
                         console.log(data);
-
                         if (data.length > 0) {
                             IdMov = data[0].ID;
                             pnlDatos.find("input").val("");
@@ -531,8 +516,8 @@
         //Agrega con codigo barras
         pnlControlesDetalle.find("[name='CodigoBarras']").blur(function () {
             EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
-            ColorCB = $(this).val().slice(5, 7).replace(/^0+/, '');
-            TallaCB = $(this).val().slice(7, 12).replace(/^0+/, '');
+            ColorCB = $(this).val().slice(5, 10).replace(/^0+/, '');
+            TallaCB = $(this).val().slice(7, 14).replace(/^0+/, '');
             if (EstiloCB > 0 && ColorCB > 0 && TallaCB > 0) {
                 HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
                 $.ajax({
@@ -626,7 +611,6 @@
                     }
                 });
             }
-
         });
         //Validacion de existencias en cantidad
         pnlControlesDetalle.find("[name='Cantidad']").change(function () {
@@ -659,7 +643,6 @@
                 });
             }
         });
-
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
         pnlControlesDetalle.find("[name='Precio']").blur(function () {
             pnlControlesDetalle.find("#btnAgregarDetalle").trigger('click');
@@ -784,7 +767,6 @@
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
-
         });
         btnSalir.click(function () {
             HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
@@ -797,7 +779,6 @@
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {
-
             });
         });
         btnCerrarVenta.click(function () {
@@ -808,7 +789,6 @@
             } else {
                 swal('INFO', 'NO EXISTE LA VENTA', 'info');
             }
-
         });
         btnFinVenta.click(function () {
             $.ajax({
@@ -893,12 +873,10 @@
             }
         });
     });
-
     function onVerExistencias() {
         getEstilosExt();
         $('#mdlInfoExistencia').modal('show');
     }
-
     function limpiarCampos() {
         $("[name='CodigoBarras']").focus();
         $("[name='Estilo']")[0].selectize.clear(true);
@@ -989,7 +967,6 @@
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
-
     /*AGREGAR DETALLE CB*/
     function onAgregarFilaCB(MovID, Estilo, Combinacion, Talla, Costo) {
         var Estilo = Estilo;
@@ -1071,7 +1048,6 @@
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
-
     function getDetallebyID(IDX) {
         HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         $.ajax({
@@ -1222,10 +1198,8 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-
         });
     }
-
     function getDetalleDisabledbyID(IDX) {
         HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         $.ajax({
@@ -1282,19 +1256,15 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-
         });
     }
-
     function onRegresarExistenciasInventario(Estilo, Color, Talla, Cantidad) {
-
         var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
         var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
         var existenciaFinal = 0;
         var existenciaActual = 0;
         var PosicionActualiza = "";
         $.each(tallas.find("input.numbersOnly"), function () {
-
             if (parseFloat(Talla) === parseFloat($(this).val())) {
                 existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
                 PosicionActualiza = existencias.find('td').eq($(this).parent().index()).find("input").attr("name");
@@ -1318,7 +1288,6 @@
             }
         });
     }
-
     function onSacarExistenciasInventario() {
         var Estilo = pnlControlesDetalle.find("[name='Estilo']");
         var Color = pnlControlesDetalle.find("[name='Combinacion']");
@@ -1344,7 +1313,6 @@
                         ExistenciaNueva: existenciaFinal
                     }
                 }).done(function (data, x, jq) {
-
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 }).always(function () {
@@ -1353,7 +1321,6 @@
             }
         });
     }
-
     function onSacarExistenciasInventarioCB(Estilo, Color, Talla) {
         var Estilo = Estilo;
         var Color = Color;
@@ -1389,7 +1356,6 @@
                     var existenciaFinal = 0;
                     var existenciaActual = 0;
                     var PosicionActualiza = "";
-
                     $.each(tallas.find("input.numbersOnly"), function () {
                         if (parseFloat(Talla) === parseFloat($(this).val())) {
                             existenciaActual = existencias.find('td').eq($(this).parent().index()).find("input").val();
@@ -1424,9 +1390,7 @@
         }).always(function () {
             HoldOn.close();
         });
-
     }
-
     var ImporteTotal = 0;
     function onCalcularMontos() {
         var pares = 0;
@@ -1453,7 +1417,6 @@
             pnlDatosDetalle.find("#Total").find("strong").text('$' + $.number((total), 2, '.', ','));
         }
     }
-
     function onModificarImporte(ID, ImporteTotal) {
         $.ajax({
             url: master_url + 'onModificarImporte',
@@ -1469,7 +1432,6 @@
             HoldOn.close();
         });
     }
-
     function getSerieXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1489,7 +1451,6 @@
             HoldOn.close();
         });
     }
-
     function getSerieXEstiloExt(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1509,7 +1470,6 @@
             HoldOn.close();
         });
     }
-
     function getExistenciasXEstiloXCombinacion(Estilo, Combinacion) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1546,7 +1506,6 @@
             HoldOn.close();
         });
     }
-
     function getExistenciasXEstiloXCombinacionBorrar(Estilo, Combinacion, Talla, Cantidad) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1583,7 +1542,6 @@
         }).always(function () {
         });
     }
-
     function getCombinacionesXEstilo(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1604,7 +1562,6 @@
             HoldOn.close();
         });
     }
-
     function getCombinacionesXEstiloExt(Estilo) {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1625,7 +1582,6 @@
             HoldOn.close();
         });
     }
-
     function getFotoXEstilo(Estilo) {
         $.ajax({
             url: master_url + 'getEstiloByID',
@@ -1654,16 +1610,15 @@
         }).always(function () {
         });
     }
-
-    function getEstilosExistentesXTienda() {
+    function getEstilos() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
-            url: master_url + 'getEstilosExistentesXTienda',
+            url: master_url + 'getEstilos',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlControlesDetalle.find("[name='Estilo']")[0].selectize.addOption({text: v.Estilo, value: v.IdEstilo});
+                pnlControlesDetalle.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1671,8 +1626,6 @@
             HoldOn.close();
         });
     }
-
-
     function getEstilosExt() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1690,7 +1643,6 @@
             HoldOn.close();
         });
     }
-
     function getClientes() {
         pnlDatos.find("[name='Cliente']")[0].selectize.close();
         pnlDatos.find("[name='Cliente']")[0].selectize.clear(true);
@@ -1711,7 +1663,6 @@
             HoldOn.close();
         });
     }
-
     function getDescuentos() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1727,14 +1678,12 @@
             } else {
                 pnlControlesDetalle.find("#dDescuento").addClass('d-none');
             }
-
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
             HoldOn.close();
         });
     }
-
     function getMetodosPago() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1752,7 +1701,6 @@
             HoldOn.close();
         });
     }
-
     function getVendedores() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1769,7 +1717,6 @@
             HoldOn.close();
         });
     }
-
     function getNuevoFolio() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
@@ -1787,7 +1734,6 @@
             HoldOn.close();
         });
     }
-
     function getEncabezadoSerieXEstilo(Estilo) {
         $.ajax({
             url: master_url + 'getEncabezadoSerieXEstilo',
@@ -1817,7 +1763,6 @@
         }).always(function () {
         });
     }
-
     function getExistenciasByEstiloByColor(Estilo, Color) {
         temp = 0;
         HoldOn.open({
@@ -1841,7 +1786,6 @@
                 $('#tblExistencias thead th').each(function () {
                     $(this).addClass("d-none");
                 });
-
                 var thead = $('#tblExistencias thead th');
                 var tfoot = $('#tblExistencias tfoot th');
                 thead.eq(0).addClass("d-none");
@@ -1850,30 +1794,23 @@
                     var td = $(v).find("td");
                     td.eq(0).addClass("d-none");
                 });
-
                 getEncabezadoSerieXEstilo(Estilo);
                 $.each($('#tblExistencias tbody tr td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3))'), function (k, v) {
                     if (parseFloat($(this).text()) === 0) {
                         $(this).text('-');
-
                     } else if (parseFloat($(this).text()) > 0) {
                         $(this).addClass('exists');
                     }
                 });
                 var tblSelected = $('#tblExistencias').DataTable(tblExistencias);
-
                 var cellEstilo;
                 $("#tblRegistrosExistencias").find('#tblExistencias tbody').on('click', 'tr', function () {
-
                     $("#tblExistencias tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var cells = $(this).find("td");
                     cellEstilo = cells.eq(0).text();
                     getEncabezadoSerieXEstilo(cellEstilo);
-
                 });
-
-
             } else {
                 onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO HAY EXISTENCIAS DE ESTE ESTILO', 'danger');
                 $("#tblRegistrosExistencias").html("");
@@ -1884,7 +1821,6 @@
             HoldOn.close();
         });
     }
-
     function onValidarPantallaCompleta() {
         if (ValidaPantallaCompleta === '1') {
             $.ajax({url: master_url + 'onCambiarSesion',
@@ -1908,7 +1844,7 @@
             $(':input:text:enabled:visible:first').select();
         }
     }
-</script> 
+</script>
 <style>
     .Stock{
         font-weight: bold;
