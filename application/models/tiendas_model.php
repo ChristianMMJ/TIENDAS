@@ -10,17 +10,23 @@ class tiendas_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Empresa) {
         try {
-            $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Razón Social' ", false);
+            if ($Empresa === 'TODAS') {
+                $Empresa = "";
+            }
+            $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Tienda',CONCAT(E.Clave,'-',E.RazonSocial) AS 'Empresa' ", false);
             $this->db->from('sz_Tiendas AS U');
+            $this->db->join('sz_Empresas AS E', 'U.Empresa = E.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->like('U.Empresa', $Empresa, 'before');
             $this->db->order_by('U.Clave', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -33,6 +39,7 @@ class tiendas_model extends CI_Model {
             $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Tienda'  ", false);
             $this->db->from('sz_Tiendas AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->where('U.Empresa', $this->session->userdata('EMPRESA'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -32,7 +32,7 @@
         <!--ACCIONES-->
         <div class="row">
             <div class="col-md-5 float-left">
-                <h5>CAPTURA INVENTARIO: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
+                <h5>CAPTURA INVENTARIO</h5>
             </div>
             <div class="col-md-7 float-right" align="right">
 

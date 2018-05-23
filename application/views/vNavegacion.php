@@ -1,75 +1,163 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between" id="navPrincipal">
-    <a class="navbar-brand" href="<?php print base_url(); ?>">
-        <img src="<?php print base_url(); ?>img/LS.png" width="30px">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse cursor-hand" id="navbarSupportedContent">
+<style>
+    .dropdown {
+        cursor:pointer;
+        font-size: 16px !important;
+        color: #FAFAFA;
+    }
+    .dropdown-item {
+        padding: 0.25rem 1rem !important;
+        font-size: 14.5px !important;
+        color: #A6A6A6;
+    }
+    .dropdown-menu {
+        background-color: transparent !important;
+        border: 0px !important;
+        border-radius: 0px !important;
+    }
+
+    .overlay .btn {
+        width: 100%;
+    }
+
+    .overlay {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        background-color: rgba(13, 25, 41, 0.95);
+        overflow-x: hidden;
+        transition: 0.1s;
+    }
+    .overlay-content {
+        position: relative;
+        top: 5%;
+        width: 100%;
+        margin-top: 5px;
+    }
+    .overlay .closebtn {
+        cursor:pointer;
+        position: absolute;
+        top: 0px;
+        right: 20px;
+        color: #fff !important;
+        font-size: 30px !important;
+    }
+</style>
+
+
+<div id="myNav" class="overlay">
+    <a class="closebtn " onclick="closeNav()">&times;</a>
+    <div class="overlay-content navbar ">
         <ul class="navbar-nav mr-auto">
+            <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
+            <br>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle active"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo $this->session->userdata('USERNAME') ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#" onclick="onCambiarContrasena();">Cambiar Contraseña</a>
+                    <a class="dropdown-item" href="#">Reportar un problema</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php print base_url('Login/onSalir'); ?>">Salir</a>
+                </div>
+            </li>
+            <div class="dropdown-divider"></div>
+            <!-------------------------------------VENTAS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "CAJERO", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item">
-                    <a class="btn btn-success my-2 my-sm-0 btnSpace btn-sm" onclick="ocultarNav();" href="<?php print base_url('Ventas') ?>">
+
+                <li class="nav-item dropdown">
+                    <a class="btn btn-success my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-hand-holding-usd"></i>  Ventas
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Ventas') ?>">Registrar Venta</a>
+                        <a class="dropdown-item" href="<?php print base_url('Devoluciones') ?>">Devoluciones</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('ReportesVentas') ?>">Reportes</a>
+                    </div>
                 </li>
             <?php } ?>
+            <br>
+            <!-------------------------------------CAJA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-cut"></i>  Caja
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="<?php print base_url('CortesCaja') ?>">Corte de Caja</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="<?php print base_url('Diversos') ?>">Movimientos Diversos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('ReportesCaja') ?>">Reportes</a>
                     </div>
                 </li>
             <?php } ?>
-            <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                ?>
-                <li class="nav-item">
-                    <a class="btn btn-danger my-2 my-sm-0 btnSpace btn-sm" href="<?php print base_url('Gastos') ?>">
-                        <i class="fa fa-external-link-alt"></i>  Gastos
-                    </a>
-                </li>
-            <?php } ?>
-            <?php
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                ?>
-                <li class="nav-item">
-                    <a class="btn btn-warning my-2 my-sm-0 btnSpace btnSpaceRight btn-sm" href="<?php print base_url('Compras') ?>">
-                        <i class="fa fa-shopping-cart"></i> Compras
-                    </a>
-                </li>
-            <?php } ?>
+            <br>
+            <!-------------------------------------GASTOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle btnSpace btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-danger my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-external-link-alt"></i>  Gastos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Gastos') ?>">Gestion de Gastos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('ReportesGastos') ?>">Reportes</a>
+                    </div>
+                </li>
+            <?php } ?>
+            <br>
+            <!-------------------------------------COMPRAS--------------------------------->
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-warning my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-shopping-cart"></i> Compras
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Compras') ?>">Gestion de Compras</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('ReportesCompras') ?>">Reportes</a>
+                    </div>
+                </li>
+            <?php } ?>
+            <br>
+            <!-------------------------------------INVENTARIOS--------------------------------->
+            <?php
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-list-alt"></i> Inventarios
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="<?php print base_url('Existencias') ?>">Existencias</a>
                         <a class="dropdown-item" href="<?php print base_url('Traspasos') ?>">Traspasos de Inventario</a>
-                        <a class="dropdown-item" href="<?php print base_url('CapturaInventarios') ?>">Captura de Inventario Físico</a>
+                        <a class="dropdown-item" href="<?php print base_url('CapturaInventarios') ?>">Captura de Inv. Físico</a>
                         <a class="dropdown-item" href="<?php print base_url('Ubicaciones') ?>">Ubicaciones en Tienda</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Reimpresión de Etiquetas</a>
+                        <a class="dropdown-item" href="<?php print base_url('ReportesInventarios') ?>">Reportes Inventarios</a>
+                        <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Reimpresión Etiquetas</a>
                     </div>
                 </li>
             <?php } ?>
+            <br>
+            <!-------------------------------------NOMINA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle btnSpace btn-sm text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle  btn-sm text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-dollar-sign"></i> Nómina
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -77,10 +165,12 @@
                         <a class="dropdown-item" href="<?php print base_url('Asistencia') ?>">Asistencia</a>
                         <a class="dropdown-item" href="<?php print base_url('DiversosNomina') ?>">Movimientos Diversos</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?php print base_url('Reimpresion') ?>">Generar Nómina</a>
+                        <a class="dropdown-item" href="<?php print base_url('GenerarNomina') ?>">Generar Nómina</a>
                     </div>
                 </li>
             <?php } ?>
+            <div class="dropdown-divider"></div>
+            <!-------------------------------------CATALOGOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "SISTEMAS"))) {
                 ?>
@@ -90,7 +180,7 @@
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <li class="nav-item dropdown dropdown-submenu">
-                            <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Generales
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -99,7 +189,7 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=TIPOS ESTILO') ?>">Tipos de Estilo</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MARCAS') ?>">Otras Marcas Zap</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=METODOS PAGO') ?>">Métodos de Pago</a></li>
-                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES DE PAGO') ?>">Condiciones de Pago</a></li>
+                                <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=CONDICIONES DE PAGO') ?>">Cond. de Pago</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=UNIDADES') ?>">Unidades</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=MONEDAS') ?>">Monedas</a></li>
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=ZONAS') ?>">Zonas</a></li>
@@ -108,7 +198,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown dropdown-submenu">
-                            <a class="nav-link dropdown-toggle text-dark"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Nómina
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -133,18 +223,31 @@
                 </li>
             <?php } ?>
         </ul>
-        <ul class="navbar-nav navbar-right">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Bienvenido : <?php echo $this->session->userdata('USERNAME') ?>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#" onclick="onCambiarContrasena();">Cambiar Contraseña</a>
-                    <a class="dropdown-item" href="#">Reportar un problema</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Login/onSalir'); ?>">Salir</a>
-                </div>
-            </li>
-        </ul>
+
     </div>
-</nav>
+</div>
+
+<div class="container-fluid bg-primary" style="background-color: rgb(166,175,179);">
+    <div class="row">
+        <div class="col-4 ">
+            <button class="btn btn-primary btn-sm " onclick="openNav()">
+                <i class="fa fa-bars"></i> Menú Principal
+            </button>
+        </div>
+        <div class="col-8 mt-1" align="right">
+            <span class="badge badge-primary">
+                <?php echo $this->session->userdata('TIENDA_NOMBRE') ?>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#myNav > li:not(ul)').click(function (event) {
+            event.stopPropagation();
+        });
+    });
+</script>

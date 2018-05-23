@@ -85,7 +85,7 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-                    <h5>VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></h5>
+                    <span class="badge badge-primary" style="font-size:16px ;">VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></span>
                 </div>
                 <div class="col-md-7 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="col-12 col-md-3">
                             <label for="Vendedor">Vendedor</label>
-                            <select class="form-control form-control-sm required"  name="Vendedor">
+                            <select class="form-control form-control-sm required"  name="Vendedor" required>
                                 <option value=""></option>
                             </select>
                         </div>
@@ -318,6 +318,7 @@
     var btnExistencias = $("#btnExistencias");
     var btnCerrarVenta = $("#btnCerrarVenta");
     var btnBuscar = $("#btnBuscar");
+    var btnTicket = $("#btnTicket");
     var btnCorteCaja = $("#btnCorteCaja");
     var btnCancelarVenta = $("#btnCancelarVenta");
     var mdlCerrarVenta = $("#mdlCerrarVenta");
@@ -362,6 +363,18 @@
             search: "Buscar:"
         }
     };
+
+    function getInicial() {
+        HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
+        getNuevoFolio();
+        getEstilos();
+        getClientes();
+        getDescuentos();
+        getMetodosPago();
+        getVendedores();
+        HoldOn.close();
+    }
+
     var ValidaPantallaCompleta = "<?php echo $this->session->userdata('Ventas'); ?>";
     $(document).ready(function () {
         btnDevolucion.click(function () {
@@ -416,12 +429,7 @@
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
         onValidarPantallaCompleta();
-        getNuevoFolio();
-        getEstilos();
-        getClientes();
-        getDescuentos();
-        getMetodosPago();
-        getVendedores();
+        getInicial();
         handleEnter();
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
         pnlDatos.find("input[name='TipoDoc']").keyup(function (e) {
@@ -443,6 +451,7 @@
                     onCalcularMontos();
                 }
             }
+            onCalcularMontos();
         });
         //Cuando pierde el foco despues de buscar
         pnlDatos.find("input[name='FolioTienda']").focusout(function () {
@@ -454,10 +463,7 @@
                 var TipoDoc = pnlDatos.find("input[name='TipoDoc']").val();
                 if (FolioTienda !== "" && TipoDoc !== "") {
                     nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
+                    HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
                     $.ajax({
                         url: master_url + 'getVentaByFolioTiendaByTipoDocByTienda',
                         type: "POST",
@@ -487,6 +493,7 @@
                                 btnCerrarVenta.removeClass('d-none');
                                 btnCancelarVenta.removeClass('d-none');
                                 btnTicket.addClass("d-none");
+                                pnlControlesDetalle.find("[name='CodigoBarras']").focus();
                                 /*DETALLE*/
                                 getDetallebyID(data[0].ID);
                                 /*FIN DETALLE*/
@@ -519,7 +526,6 @@
             ColorCB = $(this).val().slice(5, 10).replace(/^0+/, '');
             TallaCB = $(this).val().slice(7, 14).replace(/^0+/, '');
             if (EstiloCB > 0 && ColorCB > 0 && TallaCB > 0) {
-                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
                 $.ajax({
                     url: master_url + 'getExistenciasXEstiloXCombinacion',
                     type: "POST",
@@ -547,27 +553,32 @@
         });
         //Inserta Detalle y guarda el movimiento
         pnlControlesDetalle.find("#btnAgregarDetalle").click(function () {
-            var Estilo = pnlControlesDetalle.find("[name='Estilo']");
-            var Color = pnlControlesDetalle.find("[name='Combinacion']");
-            var Talla = pnlControlesDetalle.find("[name='Talla']");
-            var Precio = pnlControlesDetalle.find("[name='Precio']");
-            var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
-            if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
-                    && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0)
-            {
-                AddCodigoBarras = false;
-                //Guarda Movimiento
-                btnGuardar.trigger('click');
+            isValid('pnlDatos');
+            if (valido) {
+                var Estilo = pnlControlesDetalle.find("[name='Estilo']");
+                var Color = pnlControlesDetalle.find("[name='Combinacion']");
+                var Talla = pnlControlesDetalle.find("[name='Talla']");
+                var Precio = pnlControlesDetalle.find("[name='Precio']");
+                var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
+                if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
+                        && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0)
+                {
+                    AddCodigoBarras = false;
+                    //Guarda Movimiento
+                    btnGuardar.trigger('click');
+                } else {
+                    swal({
+                        title: 'INFO',
+                        text: 'Completa todos los campos',
+                        icon: 'warning'
+                    }).then((result) => {
+                        if (result) {
+                            $("[name='Cantidad']").focus();
+                        }
+                    });
+                }
             } else {
-                swal({
-                    title: 'INFO',
-                    text: 'Completa todos los campos',
-                    icon: 'warning'
-                }).then((result) => {
-                    if (result) {
-                        $("[name='Cantidad']").focus();
-                    }
-                });
+                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
         //Validaciones tallas
@@ -588,16 +599,18 @@
                     }
                 });
                 if (!tallaValida) {
-                    swal({
-                        title: 'INFO',
-                        text: 'Introduce una talla válida',
-                        icon: 'warning'
-                    }).then((result) => {
-                        if (result) {
-                            pnlControlesDetalle.find("[name='Talla']").val('');
-                            pnlControlesDetalle.find("[name='Talla']").focus();
-                        }
-                    });
+                    pnlControlesDetalle.find("[name='Talla']").val('');
+//                    pnlControlesDetalle.find("[name='Talla']").focus();
+//                    swal({
+//                        title: 'INFO',
+//                        text: 'Introduce una talla válida',
+//                        icon: 'warning'
+//                    }).then((result) => {
+//                        if (result) {
+//                            pnlControlesDetalle.find("[name='Talla']").val('');
+//                            pnlControlesDetalle.find("[name='Talla']").focus();
+//                        }
+//                    });
                 }
             } else {
                 swal({
@@ -631,10 +644,14 @@
                 }
             });
             if (!CantidadValida) {
+                pnlControlesDetalle.find("[name='Cantidad']").val('');
+                pnlControlesDetalle.find("[name='Cantidad']").focus();
                 swal({
                     title: 'INFO',
                     text: 'No tiene existencias suficientes en esta talla',
-                    icon: 'warning'
+                    icon: 'warning',
+                    closeOnEsc: false,
+                    closeOnClickOutside: false
                 }).then((result) => {
                     if (result) {
                         pnlControlesDetalle.find("[name='Cantidad']").val('');
@@ -700,72 +717,68 @@
             pnlDatos.find("input[name='FolioTienda']").focus();
         });
         btnGuardar.click(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "GUARDANDO DATOS..."
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: "GUARDANDO DATOS..."
+            });
+
+            var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
+            if (!nuevo) {
+                $.ajax({
+                    url: master_url + 'onModificar',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                    //Agregar renglon Detalle
+                    if (AddCodigoBarras) {
+                        onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                        onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
+                    } else {
+                        onAgregarFila(IdMov);
+                        onSacarExistenciasInventario();
+                    }
+                    //Limpiar los campos del detalle
+                    limpiarCampos();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
                 });
-                var f = new FormData(pnlDatos.find("#frmNuevo")[0]);
-                if (!nuevo) {
-                    $.ajax({
-                        url: master_url + 'onModificar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: f
-                    }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        //Agregar renglon Detalle
-                        if (AddCodigoBarras) {
-                            onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
-                            onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
-                        } else {
-                            onAgregarFila(IdMov);
-                            onSacarExistenciasInventario();
-                        }
-                        //Limpiar los campos del detalle
-                        limpiarCampos();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    $.ajax({
-                        url: master_url + 'onAgregar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: f
-                    }).done(function (data, x, jq) {
-                        var Folios = JSON.parse(data);
-                        IdMov = parseInt(Folios.ID);
-                        nuevo = false;
-                        btnCancelarVenta.removeClass('d-none');
-                        pnlDatos.find('#ID').val(Folios.ID);
-                        pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                        //Agregar renglon Detalle
-                        if (AddCodigoBarras) {
-                            onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
-                            onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
-                        } else {
-                            onAgregarFila(IdMov);
-                            onSacarExistenciasInventario();
-                        }
-                        //Limpiar los campos del detalle
-                        limpiarCampos();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                }
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                $.ajax({
+                    url: master_url + 'onAgregar',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    var Folios = JSON.parse(data);
+                    IdMov = parseInt(Folios.ID);
+                    nuevo = false;
+                    btnCancelarVenta.removeClass('d-none');
+                    pnlDatos.find('#ID').val(Folios.ID);
+                    pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
+                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                    //Agregar renglon Detalle
+                    if (AddCodigoBarras) {
+                        onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
+                        onSacarExistenciasInventarioCB(EstiloCB, ColorCB, TallaCB);
+                    } else {
+                        onAgregarFila(IdMov);
+                        onSacarExistenciasInventario();
+                    }
+                    //Limpiar los campos del detalle
+                    limpiarCampos();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
             }
         });
         btnSalir.click(function () {
@@ -1049,7 +1062,6 @@
         }
     }
     function getDetallebyID(IDX) {
-        HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         $.ajax({
             url: master_url + 'getDetallebyID',
             type: "POST",
@@ -1112,10 +1124,6 @@
                         dangerMode: true
                     }).then((result) => {
                         if (result) {
-                            HoldOn.open({
-                                theme: "sk-bounce",
-                                message: "ELIMINANDO REGISTRO..."
-                            });
                             getExistenciasXEstiloXCombinacionBorrar(parseInt(cellEstilo), parseInt(cellCombinacion), cellTalla, cellCantidad);
                             $.ajax({
                                 url: master_url + 'onEliminarDetalle',
@@ -1201,7 +1209,6 @@
         });
     }
     function getDetalleDisabledbyID(IDX) {
-        HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         $.ajax({
             url: master_url + 'getDetallebyID',
             type: "POST",
@@ -1433,7 +1440,6 @@
         });
     }
     function getSerieXEstilo(Estilo) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getSerieXEstilo',
             type: "POST",
@@ -1452,7 +1458,6 @@
         });
     }
     function getSerieXEstiloExt(Estilo) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getSerieXEstilo',
             type: "POST",
@@ -1471,7 +1476,6 @@
         });
     }
     function getExistenciasXEstiloXCombinacion(Estilo, Combinacion) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getExistenciasXEstiloXCombinacion',
             type: "POST",
@@ -1507,7 +1511,6 @@
         });
     }
     function getExistenciasXEstiloXCombinacionBorrar(Estilo, Combinacion, Talla, Cantidad) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getExistenciasXEstiloXCombinacion',
             type: "POST",
@@ -1543,7 +1546,6 @@
         });
     }
     function getCombinacionesXEstilo(Estilo) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getCombinacionesXEstilo',
             type: "POST",
@@ -1563,7 +1565,6 @@
         });
     }
     function getCombinacionesXEstiloExt(Estilo) {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getCombinacionesXEstilo',
             type: "POST",
@@ -1611,7 +1612,6 @@
         });
     }
     function getEstilos() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getEstilos',
             type: "POST",
@@ -1623,11 +1623,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getEstilosExt() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getEstilosExt',
             type: "POST",
@@ -1647,7 +1645,6 @@
         pnlDatos.find("[name='Cliente']")[0].selectize.close();
         pnlDatos.find("[name='Cliente']")[0].selectize.clear(true);
         pnlDatos.find("[name='Cliente']")[0].selectize.clearOptions();
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getClientes',
             type: "POST",
@@ -1660,11 +1657,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getDescuentos() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getDescuentos',
             type: "POST",
@@ -1681,11 +1676,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getMetodosPago() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getMetodosPago',
             type: "POST",
@@ -1698,11 +1691,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getVendedores() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getVendedores',
             type: "POST",
@@ -1714,11 +1705,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getNuevoFolio() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({
             url: master_url + 'getNuevoFolio',
             type: "POST",
@@ -1731,7 +1720,6 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function getEncabezadoSerieXEstilo(Estilo) {
@@ -1765,10 +1753,6 @@
     }
     function getExistenciasByEstiloByColor(Estilo, Color) {
         temp = 0;
-        HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
-        });
         $.ajax({
             url: master_url + 'getExistenciasByEstiloByColor',
             type: "POST",
@@ -1818,7 +1802,6 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
     function onValidarPantallaCompleta() {

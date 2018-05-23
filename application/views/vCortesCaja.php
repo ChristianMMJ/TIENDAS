@@ -155,7 +155,7 @@
         <div class="card-body text-dark customBackground" >
             <div class="row">
                 <div class="col-md-8 float-left">
-                    <h5>CORTE DE CAJA</h5>
+                    <span class="badge badge-primary" style="font-size:16px ;">CORTE CAJA: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></span>
                 </div>
                 <div class="col-md-2 float-right">
 
@@ -448,6 +448,10 @@
             pnlDatos.find("input").val("");
             $('#Encabezado').removeClass('disabledForms');
             btnGuardar.removeClass('d-none');
+
+            pnlDatos.find("#Diferencia").find("strong").text('$0.00');
+            pnlDatos.find("#VentasTotales").find("strong").text('$0.00');
+
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });

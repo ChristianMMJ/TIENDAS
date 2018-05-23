@@ -34,10 +34,7 @@ class Tiendas extends CI_Controller {
 
     public function getRecords() {
         try {
-            extract($this->input->post());
-
-
-            $data = $this->tiendas_model->getRecords();
+            $data = $this->tiendas_model->getRecords(($this->input->post('Empresa') !== NULL && $this->input->post('Empresa') !== '' ) ? $this->input->post('Empresa') : $this->session->userdata('EMPRESA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
