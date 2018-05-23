@@ -18,6 +18,7 @@ class Devoluciones extends CI_Controller {
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
+                $this->load->view('vNavegacion');
                 $this->load->view('vDevoluciones');
                 $this->load->view('vFooter');
             } else {
@@ -71,7 +72,7 @@ class Devoluciones extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
- 
+
     public function getMetodosPago() {
         try {
             print json_encode($this->devoluciones_model->getCatalogosByFielID('CONDICIONES DE PAGO'));
@@ -130,6 +131,7 @@ class Devoluciones extends CI_Controller {
                     'Tipo' => 'D'
                 );
                 $ID = $this->devoluciones_model->onAgregar($data);
+                print '{ "ID":' . $ID . '}'; /* ID REQUERIDO PARA EL TICKET */
                 $data = array(
                     'Venta' => $this->input->post('Venta'),
                     'TipoDoc' => $vta[0]->TipoDoc,
@@ -164,7 +166,7 @@ class Devoluciones extends CI_Controller {
                         $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                         /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
                         $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
-                        print "Talla : " . $v->Talla . "-" . $v->Cantidad . ", EXDES: " . $existencias_disponibles[0]->{"Ex$index"} . "\n";
+                        // print "Talla : " . $v->Talla . "-" . $v->Cantidad . ", EXDES: " . $existencias_disponibles[0]->{"Ex$index"} . "\n";
                         if ($serie[0]->{"T$index"} == $v->Talla) {
                             /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
                             $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
@@ -176,7 +178,7 @@ class Devoluciones extends CI_Controller {
                                 'Color' => $v->Color,
                                 'Talla' => $v->Talla,
                                 'Cantidad' => $v->Cantidad,
-                                'Subtotal' => $v->Subtotal,
+                                'Subtotal' => $v->SubTotal,
                                 'Descuento' => 0,
                                 'Precio' => $v->Precio,
                                 'PorcentajeDesc' => 0,
@@ -215,7 +217,7 @@ class Devoluciones extends CI_Controller {
                                 'Color' => $v->Color,
                                 'Talla' => $v->Talla,
                                 'Cantidad' => $v->Cantidad,
-                                'Subtotal' => $v->Subtotal,
+                                'Subtotal' => $v->SubTotal,
                                 'Descuento' => 0,
                                 'Precio' => $v->Precio,
                                 'PorcentajeDesc' => 0

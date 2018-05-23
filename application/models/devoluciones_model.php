@@ -72,6 +72,8 @@ class devoluciones_model extends CI_Model {
                             ->join('sz_Ventas AS V', 'V.ID = VD.Venta', 'left')
                             ->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left')
                             ->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left')
+                            ->where('V.Tipo', 'V')
+                            ->where('V.ID NOT IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false)
                             ->where('VD.Venta', $ID);
             $query = $this->db->get();
 //            print $str = $this->db->last_query();
@@ -235,8 +237,7 @@ class devoluciones_model extends CI_Model {
                     ->where('Color', $Color)
                     ->set("Ex$index", $data)
                     ->update("sz_Existencias");
-            $str = $this->db->last_query();
-            print $str;
+            $str = $this->db->last_query(); 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
