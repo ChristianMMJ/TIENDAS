@@ -28,7 +28,7 @@ class Ventas extends CI_Controller {
                 $this->session->set_userdata("Ventas", 1);
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
-                $this->load->view('vEncabezado'); 
+                $this->load->view('vEncabezado');
                 $this->load->view('vVentas');
                 $this->load->view('vFooter');
             } else {
@@ -551,7 +551,7 @@ class Ventas extends CI_Controller {
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/Ventas/')) {
-                
+
             }
             $pdf->Output($url);
             print base_url() . $url;

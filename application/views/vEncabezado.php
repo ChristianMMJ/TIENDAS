@@ -94,6 +94,14 @@
 
         var base_url = "<?php print base_url(); ?>";
         $(function () {
+            $(".maskDate").inputmask({alias: "date"});
+            $(".maskDateTime").inputmask('datetime', {
+                mask: "1/2/y h:s:s t\m",
+                alias: "dd/mm/yyyy",
+                placeholder: "dd/mm/yyyy hh:mm:ss xm",
+                separator: '/',
+                hourFormat: "12"
+            });
             $('.money').maskMoney({prefix: '$', allowNegative: false, thousands: ',', decimal: '.', affixesStay: false});
 
             $('[data-toggle="tooltip"]').tooltip();
@@ -105,11 +113,11 @@
             $('a[data-toggle="collapse"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
-            $("select").not('.NotOpenDropDown').selectize({
+            $("select").not('.NotOpenDropDown').not('.notSelect').selectize({
                 hideSelected: true,
                 openOnFocus: true
             });
-            $("select").filter('.NotOpenDropDown').selectize({
+            $("select").filter('.NotOpenDropDown').not('.notSelect').selectize({
                 hideSelected: true,
                 openOnFocus: false
             });

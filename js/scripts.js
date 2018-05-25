@@ -17,73 +17,73 @@ var valido = false;
 var selected = [];
 
 var lang = {
-        processing: "Proceso en curso...",
-        search: "Buscar:",
-        lengthMenu: "Mostrar _MENU_ Elementos",
-        info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-        infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-        infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-        infoPostFix: "",
-        loadingRecords: "Procesando los datos...",
-        zeroRecords: "No se encontro nada.",
-        emptyTable: "No existen datos en la tabla.",
-        paginate: {
-            first: "Primero",
-            previous: "Anterior",
-            next: "Siguiente",
-            last: "&Uacute;ltimo"
-        },
-        aria: {
-            sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
-            sortDescending: ": Habilitado para ordenar la columna en orden descendente"
-        },
-        buttons: {
-            copyTitle: 'Registros copiados a portapapeles',
-            copyKeys: 'Copiado con teclas clave.',
-            copySuccess: {
-                _: ' %d Registros copiados',
-                1: ' 1 Registro copiado'
-            }
+    processing: "Proceso en curso...",
+    search: "Buscar:",
+    lengthMenu: "Mostrar _MENU_ Elementos",
+    info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
+    infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
+    infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
+    infoPostFix: "",
+    loadingRecords: "Procesando los datos...",
+    zeroRecords: "No se encontro nada.",
+    emptyTable: "No existen datos en la tabla.",
+    paginate: {
+        first: "Primero",
+        previous: "Anterior",
+        next: "Siguiente",
+        last: "&Uacute;ltimo"
+    },
+    aria: {
+        sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
+        sortDescending: ": Habilitado para ordenar la columna en orden descendente"
+    },
+    buttons: {
+        copyTitle: 'Registros copiados a portapapeles',
+        copyKeys: 'Copiado con teclas clave.',
+        copySuccess: {
+            _: ' %d Registros copiados',
+            1: ' 1 Registro copiado'
         }
-    };
+    }
+};
 
-var buttons =[
-        {
-            extend: 'excelHtml5',
-            text: ' <i class="fa fa-file-excel"></i>',
-            titleAttr: 'Excel',
-            exportOptions: {
-                columns: ':visible'
-            }
+var buttons = [
+    {
+        extend: 'excelHtml5',
+        text: ' <i class="fa fa-file-excel"></i>',
+        titleAttr: 'Excel',
+        exportOptions: {
+            columns: ':visible'
         }
-        ,
-        {
-            extend: 'colvis',
-            text: '<i class="fa fa-columns"></i>',
-            titleAttr: 'Seleccionar Columnas',
-            exportOptions: {
-                modifier: {
-                    page: 'current'
-                },
-                columns: ':visible'
-            }
+    }
+    ,
+    {
+        extend: 'colvis',
+        text: '<i class="fa fa-columns"></i>',
+        titleAttr: 'Seleccionar Columnas',
+        exportOptions: {
+            modifier: {
+                page: 'current'
+            },
+            columns: ':visible'
         }
+    }
 
-    ];
+];
 
 /*******************************************************************************
  * OPTIONS FOR TABLES
  *******************************************************************************/
 var tableOptions = {
     "dom": 'Bfrtip',
-     buttons: buttons,
+    buttons: buttons,
     language: lang,
     "autoWidth": true,
     "colReorder": true,
     "displayLength": 20,
     "bStateSave": true,
     "bLengthChange": false,
-    "deferRender": true,keys: true,
+    "deferRender": true, keys: true,
 //    "scrollY": false,
 //    "scrollX": true,
     "scrollCollapse": false,
@@ -290,6 +290,50 @@ function getExt(filename) {
         return "";
     return filename.substr(dot_pos + 1).toLowerCase();
 }
+
+function getToday() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10)
+        month = "0" + month;
+    if (day < 10)
+        day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+    return today;
+}
+
+function getTodayWithTime() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10)
+        month = "0" + month;
+    if (day < 10)
+        day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;
+
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+
+    return today + ' ' + strTime;
+}
+
 function handleEnter() {
     $('input:not(.notEnter)').keyup(function () {
         $(this).val($(this).val().toUpperCase());

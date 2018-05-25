@@ -52,6 +52,36 @@ class estilos_model extends CI_Model {
         }
     }
 
+    public function getEstilosCombinacionesSerie($Estilo) {
+        try {
+
+
+            $this->db->select("CONCAT(E.ID,U.ID) AS Clave, "
+                    . "U.ID AS ClaveColor,"
+                    . "CONCAT(E.Clave , ' ', E.Descripcion) AS Estilo,"
+                    . "CONCAT( IFNULL(U.Clave,''),' ',U.Descripcion) AS Color, "
+                    . "CONCAT('Serie: ' ,S.PuntoInicial,' AL ', S.PuntoFinal) AS Serie ", false);
+            $this->db->from('sz_Combinaciones AS U');
+            $this->db->join('sz_Estilos AS E', 'E.ID = U.Estilo', 'left');
+            $this->db->join('sz_Series AS S', 'S.ID =  E.Serie');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->like('E.Clave', $Estilo, 'after');
+            $this->db->order_by("E.Clave", "ASC");
+            $this->db->order_by("U.Clave", "ASC");
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("sz_Estilos", $array);

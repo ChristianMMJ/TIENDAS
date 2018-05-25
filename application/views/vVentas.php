@@ -127,7 +127,7 @@
                         </div>
                         <div class="col-12 col-md-2">
                             <label for="FechaMov">Fecha</label>
-                            <input type="text" class="form-control form-control-sm required" id="FechaMov" name="FechaMov"  placeholder="XX/XX/XXXX" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="">
+                            <input type="text" class="form-control form-control-sm required notEnter maskDateTime" id="FechaMov" name="FechaMov" >
                         </div>
                         <div class="col-12 col-md-2">
                             <label for="MetodoPago">Método de Pago*</label>
@@ -421,10 +421,12 @@
         shortcut.add("Ctrl+E", function () {
             onVerExistencias();
         });
+
         //Inicializar Componentes
         pnlDatos.find("input").val("");
-        pnlDatos.find("#FechaMov").datepicker("setDate", currentDate);
         pnlDatos.find('#TipoDoc').val('R');
+        console.log(getTodayWithTime());
+        pnlDatos.find('.maskDateTime').val(getTodayWithTime());
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
         nuevo = true;
