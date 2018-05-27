@@ -17,46 +17,51 @@
             </div>
         </div>
         <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+            <div id="Existencias" class="table-responsive">
+                <table id="tblExistencias" class="table table-sm display " style="width:100%">
+                    <thead class="d-none">
+                        <tr>
+                            <th>ID</th>
+                            <th>IdEstilo</th>
+                            <th>Tienda</th>
+                            <th>Estilo</th>
+                            <th>Color</th>
+                            <th>	Ex1	</th>
+                            <th>	Ex2	</th>
+                            <th>	Ex3	</th>
+                            <th>	Ex4	</th>
+                            <th>	Ex5	</th>
+                            <th>	Ex6	</th>
+                            <th>	Ex7	</th>
+                            <th>	Ex8	</th>
+                            <th>	Ex9	</th>
+                            <th>	Ex10	</th>
+                            <th>	Ex11	</th>
+                            <th>	Ex12	</th>
+                            <th>	Ex13	</th>
+                            <th>	Ex14	</th>
+                            <th>	Ex15	</th>
+                            <th>	Ex16	</th>
+                            <th>	Ex17	</th>
+                            <th>	Ex18	</th>
+                            <th>	Ex19	</th>
+                            <th>	Ex20	</th>
+                            <th>	Ex21	</th>
+                            <th>	Ex22	</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
 
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Existencias/';
     var pnlTablero = $("#pnlTablero");
-
-    var tableOptionsE = {
-        "dom": 'Bfrti',
-        buttons: buttons,
-        language: lang,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 500,
-        "bStateSave": true,
-        "scrollY": 380,
-        "scrollX": true,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": true,
-        "bSort": true,
-        "columnDefs": [
-            {
-                "targets": [2],
-                "width": "280px"
-            },
-            {
-                "targets": [3],
-                "width": "200px"
-            },
-            {
-                "targets": [4],
-                "width": "360px"
-            }
-        ]
-    };
+    var Existencias, tblExistencias = $("#tblExistencias");
 
     $(document).ready(function () {
         $("[name='Tienda']").change(function () {
@@ -67,103 +72,138 @@
         handleEnter();
     });
 
-    function getEncabezadoSerieXEstilo(Estilo) {
-        $.ajax({
-            url: master_url + 'getEncabezadoSerieXEstilo',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Estilo: Estilo
-            }
-        }).done(function (data, x, jq) {
-            $('#tblExistencias thead th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5))').each(function () {
-                $(this).removeClass("d-none");
-            });
-            var thead = $('#tblExistencias thead th');
-            thead.eq(2).text('Tienda');
-            thead.eq(3).text('Estilo');
-            thead.eq(4).text('Color');
-            var cont = 5;
-            $.each(data[0], function (k, v) {
-                if (parseInt(v) <= 0) {
-                    thead.eq(cont).text('');
-                } else {
-                    thead.eq(cont).text(v);
-                }
-                cont++;
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-        });
-    }
-
     function getExistenciasByTienda(Tienda) {
         temp = 0;
         HoldOn.open({
             theme: "sk-bounce",
             message: "CARGANDO DATOS..."
         });
-        $.ajax({
-            url: master_url + 'getExistenciasByTienda',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Tienda: Tienda
-            }
-        }).done(function (data, x, jq) {
-            if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblExistencias', data));
-                $('#tblExistencias tfoot th').each(function () {
-                    $(this).addClass('d-none');
-                });
-
-//                $('#tblExistencias tfoot th').each(function () {
-//                    var title = $(this).text();
-//                    $(this).html('<div  style="overflow-x:auto; "><div class="form-group "><input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/></div></div>');
-//                });
-
-                var thead = $('#tblExistencias thead th');
-                var tfoot = $('#tblExistencias tfoot th');
-                thead.eq(0).addClass("d-none");
-                tfoot.eq(0).addClass("d-none");
-                thead.eq(1).addClass("d-none");
-                tfoot.eq(1).addClass("d-none");
-                $.each($.find('#tblExistencias tbody tr'), function (k, v) {
-                    var td = $(v).find("td");
-                    td.eq(0).addClass("d-none");
-                    td.eq(1).addClass("d-none");
-                });
-                var tblSelected = $('#tblExistencias').DataTable(tableOptionsE);
-                $('#tblExistencias_filter input[type=search]').focus();
-
-                $.each($('#tblExistencias tbody tr td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5))'), function (k, v) {
-                    if (parseFloat($(this).text()) === 0) {
-                        $(this).text('-');
-
-                    } else if (parseFloat($(this).text()) > 0) {
-                        $(this).addClass('exists');
-                    }
-                });
-
-                var cellEstilo;
-                $("#tblRegistros").find('#tblExistencias tbody').on('click', 'tr', function () {
-                    $("#tblExistencias tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var cells = $(this).find("td");
-                    cellEstilo = cells.eq(1).text();
-                    getEncabezadoSerieXEstilo(cellEstilo);
-
-                });
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN EXISTENCIAS EN ESTA TIENDA', 'danger');
-                $("#tblRegistros").html("");
-            }
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblExistencias')) {
+            tblExistencias.DataTable().destroy();
+            Existencias = tblExistencias.DataTable(
+                    {
+                        "dom": 'Bfrti',
+                        "columnDefs": [
+                            {
+                                "targets": [0],
+                                "visible": false,
+                                "searchable": false
+                            },
+                            {
+                                "targets": [1],
+                                "visible": false,
+                                "searchable": false
+                            }, {
+                                "targets": [2],
+                                "width": "280px"
+                            },
+                            {
+                                "targets": [3],
+                                "width": "200px"
+                            },
+                            {
+                                "targets": [4],
+                                "width": "360px"
+                            }],
+                        language: lang,
+                        "autoWidth": true,
+                        "displayLength": 9999,
+                        "bLengthChange": false,
+                        "deferRender": true,
+                        "scrollCollapse": false,
+                        "bSort": false,
+                        keys: true,
+                        "createdRow": function (row, data, index) {
+                            $.each($(row).find("td"), function (k, v) {
+                                if ($.isNumeric($(v).text())) {
+                                    if (data[0] === "" && parseFloat($(v).text()) > 0) {
+                                        $(v).addClass('Serie');
+                                    } else
+                                    if (data[0] === "" && parseFloat($(v).text()) <= 0) {
+                                        $(v).addClass('Serie');
+                                        $(v).text("-");
+                                    } else if (parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) > 0) {
+                                        $(v).addClass('HasStock');
+                                    } else if (data[0] !== "" && parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) === 0) {
+                                        $(v).addClass('NoHasStock');
+                                        $(v).text("-");
+                                    }
+                                }
+                            });
+                        }
+                    });
+        }
+        //PARA PRUEBAS
+        Existencias.clear().draw();
+        $.getJSON(master_url + 'getExistenciasByTienda', {Tienda: Tienda}).done(function (existencias) {
+            console.log(existencias)
+            var rows;
+            var Estilos = [];
+            var Series = [];
+            console.log('*ESTILOS*')
+            $.each(existencias, function (k, e) {
+                if ($.inArray(e.IdEstilo, Estilos) === -1) {
+                    Estilos.push(e.IdEstilo);
+                    console.log('* FIN ESTILOS*')
+                    $.getJSON(master_url + 'getSerieXEstiloTRG', {Estilo: e.IdEstilo}).done(function (serie) {
+                        $.each(serie, function (k, s) {
+                            if ($.inArray(s.ID, Series) === -1) {
+                                var b = '<strong>', bc = '</strong>', bs = '<strong class="Serie">';
+                                Existencias.row.add([
+                                    '', '', b + 'Tienda' + bc, b + 'Estilo' + bc, b + 'Color' + bc,
+                                    s["T1"], s["T2"],
+                                    s["T3"], s["T4"],
+                                    s["T5"], s["T6"],
+                                    s["T7"], s["T8"],
+                                    s["T9"], s["T10"],
+                                    s["T11"], s["T12"],
+                                    s["T13"], s["T14"],
+                                    s["T15"], s["T16"],
+                                    s["T17"], s["T18"],
+                                    s["T19"], s["T20"],
+                                    s["T21"], s["T22"]
+                                ]).draw(false);
+                                $.each(existencias, function (k, ex) {
+                                    if (s.ID === ex.Serie) {
+                                        Series.push(s.ID);
+                                        Existencias.row.add([
+                                            ex.ID, ex.IdEstilo, ex.Tienda, ex.Estilo, ex.Color,
+                                            ex["Ex1"], ex["Ex2"],
+                                            ex["Ex3"], ex["Ex4"],
+                                            ex["Ex5"], ex["Ex6"],
+                                            ex["Ex7"], ex["Ex8"],
+                                            ex["Ex9"], ex["Ex10"],
+                                            ex["Ex11"], ex["Ex12"],
+                                            ex["Ex13"], ex["Ex14"],
+                                            ex["Ex15"], ex["Ex16"],
+                                            ex["Ex17"], ex["Ex18"],
+                                            ex["Ex19"], ex["Ex20"],
+                                            ex["Ex21"], ex["Ex22"]
+                                        ]).draw(false);
+                                    }
+                                });
+                            }
+                        });
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+//                        $("#tblExistencias tbody").html(rows); 
+                    });
+                }
+            });
         }).fail(function (x, y, z) {
-            console.log(x, y, z);
+            console.log(z, y, x);
         }).always(function () {
             HoldOn.close();
         });
+        $('#tblExistencias tbody')
+                .on('mouseenter', 'td', function () {
+                    var colIdx = Existencias.cell(this).index().column;
+
+                    $(Existencias.cells().nodes()).removeClass('highlight');
+                    $(Existencias.column(colIdx).nodes()).addClass('highlight');
+                });
     }
 
     function getSerieXEstilo(Estilo) {
@@ -202,7 +242,14 @@
             HoldOn.close();
         });
     }
-
+    function onSelect(e) {
+        $("#tblExistencias > tbody > tr").find("td").removeClass('SerieActive');
+        $(e).addClass("SerieActive");
+    }
+    function onSelectStock(e) {
+        $("#tblExistencias > tbody > tr").find("td").removeClass('HasStockActive');
+        $(e).addClass("HasStockActive");
+    }
 </script>
 <style>
     .Stock{
@@ -213,4 +260,34 @@
         font-weight: bold;
         color: #ff0000;
     }
+    .HasStock{ 
+        background-color: #669900 !important;
+        color: #fff !important;
+    }
+    .HasStock:hover{ 
+        background-color: #ffff00 !important;
+        color: #000 !important;
+        font-weight: bold;
+    }
+    .HasStockActive{ 
+        background-color: #cc0033 !important;
+        color: #fff !important;
+    }
+    .Serie{  
+        font-weight: bold;
+        background-color: #333333 !important;
+        color: #fff;
+    }
+    .Serie:hover{  
+        background-color: #ffff00 !important;
+        color: #000;
+    }
+    .SerieActive{  
+        background-color: #ffff00 !important;
+        color: #000;
+    }
+    .NoHasStock{ 
+        background-color: #fff !important;
+        color: #000 !important;
+    } 
 </style>

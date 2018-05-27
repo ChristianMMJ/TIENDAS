@@ -41,11 +41,12 @@ class existencias_model extends CI_Model {
                     . "U.Ex19, "
                     . "U.Ex20, "
                     . "U.Ex21, "
-                    . "U.Ex22"
-                    . "", false);
+                    . "U.Ex22,"
+                    . "S.ID AS Serie", false);
             $this->db->from('sz_Existencias AS U');
             $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_series AS S', 'E.Serie = S.ID', 'left');
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->like('U.Tienda', $Tienda);
@@ -398,6 +399,51 @@ class existencias_model extends CI_Model {
 //        print $str;
             $data = $query->result();
             return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXEstiloTR($Estilo) {
+        try {
+            return $this->db->select("S.T1,S.T2,
+                                S.T3,                                S.T4,
+                                S.T5,                                S.T6,
+                                S.T7,                                S.T8,
+                                S.T9,                                S.T10,
+                                S.T11,                                S.T12,
+                                S.T13,                                S.T14,
+                                S.T15,                                S.T16,
+                                S.T17,                                S.T18,
+                                S.T19,                                S.T20,
+                                S.T21,                                S.T22", false)
+                    ->from('sz_Estilos AS E')
+                    ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                    ->where('E.ID', $Estilo)
+                    ->get()
+                    ->result(); 
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getSerieXEstiloTRG($Estilo) {
+        try {
+            return $this->db->select("S.ID,S.T1,S.T2,
+                                S.T3,                                S.T4,
+                                S.T5,                                S.T6,
+                                S.T7,                                S.T8,
+                                S.T9,                                S.T10,
+                                S.T11,                                S.T12,
+                                S.T13,                                S.T14,
+                                S.T15,                                S.T16,
+                                S.T17,                                S.T18,
+                                S.T19,                                S.T20,
+                                S.T21,                                S.T22", false)
+                    ->from('sz_Estilos AS E')
+                    ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                    ->where('E.ID', $Estilo)
+                    ->get()
+                    ->result(); 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
