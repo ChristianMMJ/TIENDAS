@@ -94,17 +94,6 @@
                                 "targets": [1],
                                 "visible": false,
                                 "searchable": false
-                            }, {
-                                "targets": [2],
-                                "width": "280px"
-                            },
-                            {
-                                "targets": [3],
-                                "width": "200px"
-                            },
-                            {
-                                "targets": [4],
-                                "width": "360px"
                             }],
                         language: lang,
                         "autoWidth": true,
@@ -116,10 +105,10 @@
                         keys: true,
                         "createdRow": function (row, data, index) {
                             $.each($(row).find("td"), function (k, v) {
+                                if (data[0] === "") {
+                                    $(v).addClass('Serie');
+                                }
                                 if ($.isNumeric($(v).text())) {
-                                    if (data[0] === "" && parseFloat($(v).text()) > 0) {
-                                        $(v).addClass('Serie');
-                                    } else
                                     if (data[0] === "" && parseFloat($(v).text()) <= 0) {
                                         $(v).addClass('Serie');
                                         $(v).text("-");
@@ -131,6 +120,10 @@
                                     }
                                 }
                             });
+                            /*ANCHO*/
+                            $(row).find("td").eq(0).css("width", "220px");
+                            $(row).find("td").eq(1).css("width", "200px");
+                            $(row).find("td").eq(2).css("width", "340px");
                         }
                     });
         }
@@ -188,7 +181,7 @@
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
-//                        $("#tblExistencias tbody").html(rows); 
+//                        $("#tblExistencias tbody").html(rows);
                     });
                 }
             });
@@ -260,34 +253,34 @@
         font-weight: bold;
         color: #ff0000;
     }
-    .HasStock{ 
+    .HasStock{
         background-color: #669900 !important;
         color: #fff !important;
     }
-    .HasStock:hover{ 
+    .HasStock:hover{
         background-color: #ffff00 !important;
         color: #000 !important;
         font-weight: bold;
     }
-    .HasStockActive{ 
+    .HasStockActive{
         background-color: #cc0033 !important;
         color: #fff !important;
     }
-    .Serie{  
+    .Serie{
         font-weight: bold;
         background-color: #333333 !important;
         color: #fff;
     }
-    .Serie:hover{  
+    .Serie:hover{
         background-color: #ffff00 !important;
         color: #000;
     }
-    .SerieActive{  
+    .SerieActive{
         background-color: #ffff00 !important;
         color: #000;
     }
-    .NoHasStock{ 
+    .NoHasStock{
         background-color: #fff !important;
         color: #000 !important;
-    } 
+    }
 </style>

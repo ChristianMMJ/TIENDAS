@@ -50,6 +50,7 @@ class existencias_model extends CI_Model {
             $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->like('U.Tienda', $Tienda);
+            $this->db->order_by('U.Tienda', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -417,15 +418,16 @@ class existencias_model extends CI_Model {
                                 S.T17,                                S.T18,
                                 S.T19,                                S.T20,
                                 S.T21,                                S.T22", false)
-                    ->from('sz_Estilos AS E')
-                    ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
-                    ->where('E.ID', $Estilo)
-                    ->get()
-                    ->result(); 
+                            ->from('sz_Estilos AS E')
+                            ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                            ->where('E.ID', $Estilo)
+                            ->get()
+                            ->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getSerieXEstiloTRG($Estilo) {
         try {
             return $this->db->select("S.ID,S.T1,S.T2,
@@ -439,11 +441,11 @@ class existencias_model extends CI_Model {
                                 S.T17,                                S.T18,
                                 S.T19,                                S.T20,
                                 S.T21,                                S.T22", false)
-                    ->from('sz_Estilos AS E')
-                    ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
-                    ->where('E.ID', $Estilo)
-                    ->get()
-                    ->result(); 
+                            ->from('sz_Estilos AS E')
+                            ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                            ->where('E.ID', $Estilo)
+                            ->get()
+                            ->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
