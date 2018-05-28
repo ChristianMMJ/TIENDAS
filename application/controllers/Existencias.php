@@ -43,9 +43,7 @@ class Existencias extends CI_Controller {
 
     public function getExistenciasByTienda() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getExistenciasByTienda($Tienda);
-            print json_encode($data);
+            print json_encode($this->existencias_model->getExistenciasByTienda($this->input->get('Tienda')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,6 +64,21 @@ class Existencias extends CI_Controller {
             extract($this->input->post());
             $data = $this->estilos_model->getSerieXEstilo($Estilo);
             print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXEstiloTR() {
+        try {
+            print json_encode($this->existencias_model->getSerieXEstiloTR($this->input->get('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getSerieXEstiloTRG() {
+        try {
+            print json_encode($this->existencias_model->getSerieXEstiloTRG($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
