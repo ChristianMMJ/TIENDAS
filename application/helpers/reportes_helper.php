@@ -3,6 +3,8 @@
 class PDFVTASG extends FPDF {
 
     public $LogoEmpresa = '';
+    public $Fechas = '';
+    public $FP = '';
 
     public function setLogoEmpresa($LogoEmpresa) {
         $this->$LogoEmpresa = $LogoEmpresa;
@@ -10,6 +12,22 @@ class PDFVTASG extends FPDF {
 
     public function getLogoEmpresa() {
         return $this->LogoEmpresa;
+    }
+
+    public function setFechas($Fechas) {
+        $this->$Fechas = $Fechas;
+    }
+
+    public function getFechas() {
+        return $this->Fechas;
+    }
+
+    public function setFP($FP) {
+        $this->$FP = $FP;
+    }
+
+    public function getFP() {
+        return $this->FP;
     }
 
     function Header() {
@@ -21,6 +39,19 @@ class PDFVTASG extends FPDF {
         $this->SetX(245);
         $this->SetFont('Arial', 'B', 7.5);
         $this->Cell(100, 4, utf8_decode("Fecha. " . Date('d/m/Y')), 0/* BORDE */, 1, 'L');
+
+        $this->SetFont('Arial', 'B', 9);
+        $this->SetY(5);
+        $this->SetX(110);
+        $this->Cell(110, 4, 'REPORTE DE VENTAS DIARIAS GENERAL', 0/* BORDE */, 1, 'L');
+        $this->SetY(10);
+        $this->SetX(110);
+        $this->Cell(110, 4, $this->getFechas(), 0/* BORDE */, 1, 'L');
+        $this->SetY(15);
+        $this->SetX(110);
+        $this->Cell(110, 4, 'FORMA DE PAGO: ' . $this->getFP(), 0/* BORDE */, 1, 'L');
+        $this->SetY(25);
+        $this->SetX(5);
     }
 
     function Footer() {

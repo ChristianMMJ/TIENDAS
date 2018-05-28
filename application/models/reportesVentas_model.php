@@ -12,11 +12,12 @@ class reportesVentas_model extends CI_Model {
 
     public function getTiendas($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin) {
         try {
+
             if ($Tienda === 'TODAS' || $Tienda === '') {
                 $Tienda = "";
             }
             if ($MetodoPago === 'TODAS' || $MetodoPago === '') {
-                $Tienda = "";
+                $MetodoPago = "";
             }
             if ($FechaIni === '') {
                 $FechaIni = "";
@@ -30,6 +31,7 @@ class reportesVentas_model extends CI_Model {
             $this->db->like('U.TipoDoc', $TipoDoc);
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');
+            $this->db->like('U.MetodoPago', $MetodoPago, 'before');
             $this->db->where('U.FechaMov >=', $FechaIni);
             $this->db->where('U.FechaMov <=', $FechaFin);
             $this->db->where('T.Empresa', $this->session->userdata('EMPRESA'));
@@ -40,6 +42,7 @@ class reportesVentas_model extends CI_Model {
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -53,7 +56,7 @@ class reportesVentas_model extends CI_Model {
                 $Tienda = "";
             }
             if ($MetodoPago === 'TODAS' || $MetodoPago === '') {
-                $Tienda = "";
+                $MetodoPago = "";
             }
             if ($FechaIni === '') {
                 $FechaIni = "";
@@ -78,8 +81,9 @@ class reportesVentas_model extends CI_Model {
             $this->db->like('U.TipoDoc', $TipoDoc);
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');
+            $this->db->like('U.MetodoPago', $MetodoPago, 'before');
             $this->db->where('U.FechaMov >=', $FechaIni);
-            $this->db->where('U.FechaMov <=', $FechaFin);
+            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") <=', $FechaFin);
             $this->db->order_by("U.TipoDoc", "ASC");
             $this->db->order_by("U.FolioTienda", "ASC");
             $query = $this->db->get();

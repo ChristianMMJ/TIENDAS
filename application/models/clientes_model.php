@@ -46,7 +46,7 @@ class clientes_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("Clientes", $array);
+            $this->db->insert("sz_Clientes", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];

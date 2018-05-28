@@ -38,16 +38,6 @@ class ReportesVentas extends CI_Controller {
         }
     }
 
-    public function getEstilosCombinacionesSerie() {
-        try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getEstilosCombinacionesSerie($Estilo);
-            print json_encode($data);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function getTiendas() {
         try {
             extract($this->input->post());
@@ -70,29 +60,27 @@ class ReportesVentas extends CI_Controller {
 
     public function onImprimirReporteVentasGenerales() {
         extract($this->input->post());
-        $Ventas = $this->reportesVentas_model->getVentasGenerales($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin);
         $Tiendas = $this->reportesVentas_model->getTiendas($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin);
+        $Ventas = $this->reportesVentas_model->getVentasGenerales($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin);
+
 
         if (!empty($Ventas)) {
             $Encabezado = $Ventas[0];
             $pdf = new PDFVTASG('L', 'mm', array(215.9, 279.4));
             $pdf->AliasNbPages();
-            $pdf->SetAutoPageBreak(true, 10);
-            $pdf->LogoEmpresa = utf8_decode($this->session->userdata('EMPRESA_LOGO'));
-            $pdf->AddPage();
 
-            $pdf->SetFont('Arial', 'B', 9);
-            $pdf->SetY(5);
-            $pdf->SetX(110);
-            $pdf->Cell(110, 4, 'REPORTE DE VENTAS GENERAL', 0/* BORDE */, 1, 'L');
+            $pdf->LogoEmpresa = utf8_decode($this->session->userdata('EMPRESA_LOGO'));
+            $pdf->Fechas = 'DEL: ' . $FechaIni . ' AL: ' . $FechaFin;
+            $pdf->FP = $FormaPago;
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 20);
 
             /* ENCABEZADO DETALLE TITULOS */
             $anchos = array(45/* 0 */, 15/* 1 */, 35/* 2 */, 110/* 3 */, 40/* 4 */, 20/* 5 */);
             $aligns = array('C', 'C', 'C', 'C', 'C', 'C');
             $pdf->SetFont('Arial', 'B', 7);
 
-            $pdf->SetY(25);
-            $pdf->SetX(5);
+
             $Y = 25;
 
             /* TIENDAS */

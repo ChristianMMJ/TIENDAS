@@ -78,8 +78,8 @@ class Clientes extends CI_Controller {
                 'RegimenFiscal' => ($this->input->post('RegimenFiscal') !== NULL) ? $this->input->post('RegimenFiscal') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
                 'Correo' => ($this->input->post('Correo') !== NULL) ? $this->input->post('Correo') : NULL,
-                'LimiteCredito' => ($this->input->post('LimiteCredito') !== NULL) ? $this->input->post('LimiteCredito') : 0,
-                'PlazoPagos' => ($this->input->post('PlazoPagos') !== NULL) ? $this->input->post('PlazoPagos') : 0,
+                'LimiteCredito' => ($this->input->post('LimiteCredito') !== NULL && $this->input->post('LimiteCredito') !== "") ? $this->input->post('LimiteCredito') : 0,
+                'PlazoPagos' => ($this->input->post('PlazoPagos') !== NULL && $this->input->post('PlazoPagos') !== "") ? $this->input->post('PlazoPagos') : 0,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
             $ID = $this->clientes_model->onAgregar($data);
