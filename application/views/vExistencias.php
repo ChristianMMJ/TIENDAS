@@ -107,6 +107,8 @@
                             $.each($(row).find("td"), function (k, v) {
                                 if (data[0] === "") {
                                     $(v).addClass('Serie');
+                                } else {
+                                    $(row).find("td:eq(0),td:eq(1),td:eq(2)").addClass("zoom");
                                 }
                                 if ($.isNumeric($(v).text())) {
                                     if (data[0] === "" && parseFloat($(v).text()) <= 0) {
@@ -254,10 +256,14 @@
         color: #ff0000;
     }
     .HasStock{
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
         background-color: #669900 !important;
         color: #fff !important;
     }
     .HasStock:hover{
+        -webkit-transform: scale(1.75);
+        transform: scale(1.75);
         background-color: #ffff00 !important;
         color: #000 !important;
         font-weight: bold;
@@ -267,11 +273,15 @@
         color: #fff !important;
     }
     .Serie{
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
         font-weight: bold;
         background-color: #333333 !important;
         color: #fff;
     }
     .Serie:hover{
+        -webkit-transform: scale(1.75);
+        transform: scale(1.75);
         background-color: #ffff00 !important;
         color: #000;
     }
@@ -282,5 +292,17 @@
     .NoHasStock{
         background-color: #fff !important;
         color: #000 !important;
+    }
+    .zoom{   
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
+    }
+    .zoom:hover{ 
+        font-weight: bold;
+        background-color: #3498DB !important;
+        color: #fff;
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5);
+        z-index: 999999;
     }
 </style>
