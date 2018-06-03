@@ -82,6 +82,24 @@
     var btnNuevo = $("#btnNuevo");
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
+    var tableOptionsDesc = {
+        "dom": 'Bfrtip',
+        buttons: buttons,
+        language: lang,
+        "autoWidth": true,
+        "colReorder": true,
+        "displayLength": 20,
+        "bStateSave": true,
+        "bLengthChange": false,
+        "deferRender": true, keys: true,
+//    "scrollY": false,
+//    "scrollX": true,
+        "scrollCollapse": false
+//        "bSort": true,
+//        "aaSorting": [
+//            [0, 'desc']
+//        ]
+    };
 
     var nuevo = true;
 
@@ -165,84 +183,86 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            $("#tblRegistros").html(getTable('tblDescuentos', data));
+            if (data.length > 0) {
+                $("#tblRegistros").html(getTable('tblDescuentos', data));
 
-            $('#tblDescuentos tfoot th').each(function () {
-                $(this).html('');
-            });
-            var tblSelected = $('#tblDescuentos').DataTable(tableOptions);
-            $('#tblDescuentos_filter input[type=search]').focus();
+                $('#tblDescuentos tfoot th').each(function () {
+                    $(this).html('');
+                });
+                var tblSelected = $('#tblDescuentos').DataTable(tableOptionsDesc);
+                $('#tblDescuentos_filter input[type=search]').focus();
 
-            $('#tblDescuentos tbody').on('click', 'tr', function () {
+                $('#tblDescuentos tbody').on('click', 'tr', function () {
 
-                $("#tblDescuentos tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = tblSelected.row(this).data();
-                temp = parseInt(dtm[0]);
-            });
+                    $("#tblDescuentos tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var dtm = tblSelected.row(this).data();
+                    temp = parseInt(dtm[0]);
+                });
 
-            $('#tblDescuentos tbody').on('dblclick', 'tr', function () {
-                $("#tblCatalogos tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var id = this.id;
-                var index = $.inArray(id, selected);
-                if (index === -1) {
-                    selected.push(id);
-                } else {
-                    selected.splice(index, 1);
-                }
-                var dtm = tblSelected.row(this).data();
-                if (temp !== 0 && temp !== undefined && temp > 0) {
-                    nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.ajax({
-                        url: master_url + 'getDescuentoByID',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            ID: temp
-                        }
-                    }).done(function (data, x, jq) {
-                        var dtm = data[0];
-
-                        pnlDatos.find("input").val("");
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.clear(true);
+                $('#tblDescuentos tbody').on('dblclick', 'tr', function () {
+                    $("#tblDescuentos tbody tr").removeClass("success");
+                    $(this).addClass("success");
+                    var id = this.id;
+                    var index = $.inArray(id, selected);
+                    if (index === -1) {
+                        selected.push(id);
+                    } else {
+                        selected.splice(index, 1);
+                    }
+                    var dtm = tblSelected.row(this).data();
+                    if (temp !== 0 && temp !== undefined && temp > 0) {
+                        nuevo = false;
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
                         });
-                        $.each(data[0], function (k, v) {
-                            if (k !== 'Foto') {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                }
-
+                        $.ajax({
+                            url: master_url + 'getDescuentoByID',
+                            type: "POST",
+                            dataType: "JSON",
+                            data: {
+                                ID: temp
                             }
-                        });
+                        }).done(function (data, x, jq) {
+                            var dtm = data[0];
 
-                        pnlTablero.addClass("d-none");
-                        pnlDatos.removeClass('d-none');
-                        $(':input:text:enabled:visible:first').focus();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                }
-            });
-            // Apply the search
-            tblSelected.columns().every(function () {
-                var that = this;
-                $('input', this.footer()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that.search(this.value).draw();
+                            pnlDatos.find("input").val("");
+                            $.each(pnlDatos.find("select"), function (k, v) {
+                                pnlDatos.find("select")[k].selectize.clear(true);
+                            });
+                            $.each(data[0], function (k, v) {
+                                if (k !== 'Foto') {
+                                    pnlDatos.find("[name='" + k + "']").val(v);
+                                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                                    }
+
+                                }
+                            });
+
+                            pnlTablero.addClass("d-none");
+                            pnlDatos.removeClass('d-none');
+                            $(':input:text:enabled:visible:first').focus();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
                     }
                 });
-            });
+                // Apply the search
+                tblSelected.columns().every(function () {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

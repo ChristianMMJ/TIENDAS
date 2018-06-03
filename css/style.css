@@ -138,6 +138,7 @@ label, .control-label, .help-block, .checkbox, .radio, .form-control-feedback {
 
 table tbody tr{
     cursor: pointer;
+    font-size: 12px !important;
 
 }
 table thead tr{
