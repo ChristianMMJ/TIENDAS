@@ -7,8 +7,7 @@ class Devoluciones extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->model('devoluciones_model');
-        $this->load->model('ventas_model');
+        $this->load->model('devoluciones_model')->model('ventas_model');
     }
 
     public function index() {
@@ -17,19 +16,12 @@ class Devoluciones extends CI_Controller {
                 $this->session->set_userdata("Ventas", 1);
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vDevoluciones');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vDevoluciones')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
@@ -242,6 +234,146 @@ class Devoluciones extends CI_Controller {
             /* CANCELAR LA DEVOLUCION */
 
             /**/
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    function getTicketXVenta() {
+        try {
+            $e = $this->devoluciones_model->getVentaXTicket($this->input->post('ID'))[0];
+            $pdf = new FPDF('P', 'mm', array(75/* ANCHO */, 80/* ALTURA */));
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(false);
+            /* ENCABEZADO */
+            $url = "./" . $e->FOTO_TIENDA;
+            $pdf->Image($url, 27.5, 2, /* ANCHO */ 21, /* ALTO */ 21);
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetY(23);
+            $pdf->SetX(1/* X */);
+            $pdf->Cell(75, 4, $e->TIENDA, 0/* BORDE */, 1, 'C');
+            $pdf->SetFont('Arial', '', 6);
+            $pdf->SetXY(1/* X */, 27.5/* Y */);
+            $pdf->MultiCell(75, 2, "No Venta: " . $e->FOLIO, 0/* BORDE */, 'C');
+            $pdf->SetXY(1/* X */, 30/* Y */);
+            $pdf->Cell(25, 4, $e->DIRECCION, 0/* BORDE */, 1, 'L');
+
+            $pdf->SetXY(0/* X */, 33/* Y */);
+
+            $pdf->Line(/* Izq-X */2, /* Top-Y */ $pdf->GetY() + 1.5, /* Largo */ 72, $pdf->GetY() + 1.5); /* FIN ENCABEZADO */
+
+            /* DETALLE */
+            $detalle = $this->ventas_model->getVentaDetalleByID($this->input->post('ID'));
+            $pdf->SetFont('Arial', '', 5);
+            $Y = $pdf->GetY() + 2;
+            $af = 2.5;
+            $total_articulos = 0;
+            $total = 0.0;
+            $pares = 0;
+            foreach ($detalle as $key => $v) {
+//                for ($index = 0; $index < 100; $index++) {
+                if ($pdf->getY() > 75) {
+                    $pdf->AddPage();
+                    $Y = 2;
+                }
+                $subtotal = $v->PRECIO * $v->CANTIDAD;
+                $pdf->SetY($Y);
+                $pdf->SetX(1/* X */);
+                $pdf->Cell(40, $af, $v->ESCOTA, 0/* BORDE */, 0/* SALTO */, 'L');
+                $pdf->SetX(41/* X */);
+                $pdf->Cell(9, $af, $v->CANTIDAD, 0/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->SetX(50/* X */);
+                $pdf->Cell(12, $af, "$" . number_format($v->PRECIO, 2, '.', ', '), 0/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->SetX(62/* X */);
+                $pdf->Cell(12, $af, "$" . number_format($subtotal, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'C');
+                $Y = $pdf->GetY();
+                /* SUMAR */
+                $total += $subtotal;
+                $total_articulos += 1;
+                $pares += $v->CANTIDAD;
+//                }
+            }
+            /* FIN DETALLE */
+            $pdf->Line(/* Izq-X */2, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            $pdf->SetY($pdf->GetY() + 1.5);
+            /* PIE */
+            $pdf->SetX(1/* X */);
+            $pdf->Cell(27, $af, "Articulos vendidos " . $total_articulos, 0/* BORDE */, 0/* SALTO */, 'L');
+            $pdf->SetX(20/* X */);
+            //$pdf->Cell(27, $af, "Pares " . $pares, 0/* BORDE */, 0/* SALTO */, 'R');
+            $af -= .5;
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "I.V.A: ", 0/* BORDE */, 0/* SALTO */, 'R');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$" . number_format(($e->TIPODOC === 1 ? $total * .16 : 0), 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $YY = $pdf->GetY();
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "Desc: ", 0/* BORDE */, 0/* SALTO */, 'R');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$" . number_format($e->DESCUENTO_TOTAL, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "Total: ", 0/* BORDE */, 0/* SALTO */, 'R');
+
+            if ($e->TIPO_VD === 'V') {
+                $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
+                $total = $total - $e->DESCUENTO_TOTAL;
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$" . number_format($total, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            } else {
+                $total = ($e->TIPODOC === 1 ? $total * 1.16 : $total);
+                $total = $total - $e->DESCUENTO_TOTAL;
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$" . number_format($e->IMPORTE_VENTA, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+            }
+            $pdf->SetX(50/* X */);
+            $supago = ($e->SUPAGO > 0) ? str_replace(",", "", $e->SUPAGO) : 0;
+            $pdf->Cell(8, $af, "Su Pago: ", 0/* BORDE */, 0/* SALTO */, 'R');
+            $pdf->SetX(58/* X */);
+            $pdf->Cell(14, $af, "$ " . number_format($supago, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+
+            $cambio = $supago - $total;
+            $pdf->SetX(50/* X */);
+            $pdf->Cell(8, $af, "Cambio: ", 0/* BORDE */, 0/* SALTO */, 'R');
+            /* ES VENTA ? */
+            if ($e->TIPO_VD === 'V') {
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+                $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            } else {
+                $pdf->SetX(58/* X */);
+                $pdf->Cell(14, $af, "$ " . number_format(($cambio > 0) ? $cambio : 0, 2, '.', ', '), 0/* BORDE */, 1/* SALTO */, 'R');
+                $pdf->Line(/* Izq-X */50, /* Top-Y */ $pdf->GetY(), /* Largo */ 72, $pdf->GetY());
+            }
+
+            $pdf->SetFont('Arial', '', 4);
+            $pdf->SetY($YY);
+            $pdf->SetX(1/* X */);
+            $pdf->MultiCell(50, $af - .2, strtoupper(utf8_decode($e->TOTAL_EN_LETRA)), 0/* BORDE */, 'L');
+            $pdf->SetFont('Arial', '', 5);
+            $pdf->SetX(1/* X */);
+            $pdf->Cell(29, $af, "Condiciones de pago: " . $e->METODO_PAGO, 0/* BORDE */, 1/* SALTO */, 'L');
+
+            $pdf->SetX(1/* X */);
+            $pdf->Cell(50, $af, utf8_decode("Lugar de expedición: " . $e->LUGAR_EXPEDICION), 0/* BORDE */, 1/* SALTO */, 'L');
+            $pdf->SetX(1/* X */);
+            $pdf->Cell(50, $af, utf8_decode("Gracias por su compra, le atendió: " . $e->VENDEDOR), 0/* BORDE */, 1/* SALTO */, 'L');
+
+            /* PIE */
+            /* SALIDA DEL TICKET */
+            $path = 'uploads/Reportes/Ventas';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "TICKET_" . $this->input->post('ID');
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Ventas/')) {
+                
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
