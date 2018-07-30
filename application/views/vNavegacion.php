@@ -229,18 +229,22 @@
 
 <div class="container-fluid bg-primary" style="background-color: rgb(166,175,179);">
     <div class="row">
-        <div class="col-4 ">
+        <div class="col-4 mt-1 mb-1">
             <button class="btn btn-primary btn-sm " onclick="openNav()">
-                <i class="fa fa-bars"></i> Menú Principal
+                <i class="fa fa-bars"></i> Menú
             </button>
         </div>
-        <div class="col-8 mt-1" align="right">
-            <span class="badge badge-primary">
+        <div class="col-8 mt-1 mb-1" align="right">
+            <span class="badge badge-primary ">
                 <?php echo $this->session->userdata('TIENDA_NOMBRE') ?>
             </span>
+            <a  class="btn btn-primary btn-sm" href="<?php print base_url('Login/onSalir'); ?>" onclick="onRegistrarAccion('SALIÓ DEL SISTEMA');">
+                <i class="fa fa-sign-out-alt"></i> Salir</a>
         </div>
     </div>
 </div>
+
+
 
 
 

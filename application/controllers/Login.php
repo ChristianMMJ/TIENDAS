@@ -23,6 +23,7 @@ class Login extends CI_Controller {
             } else {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');
+                $this->load->view('vFondo');
                 $this->load->view('vFooter');
             }
         } else {
