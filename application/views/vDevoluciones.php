@@ -31,48 +31,47 @@
 </div>
 
 <div id="" class="container-fluid ">
-    <div class="card border-0 animated fadeIn d-none" id="pnlDatos">
-        <div class="row">
-            <div class="w-100"><br></div>
-            <div class="col-6">
-                <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span><br>CANCELAR</button>
-            </div> 
-            <div class="col-6"  align="right">
-                <button type='button' class="btn btn-primary btn-sm d-none" id='btnFinalizar'><span class="fa fa-check"></span><br> FINALIZAR</button>
-            </div> 
-            <div class="w-100"><br></div>
-        </div>
+    <div class="card border-0 animated fadeIn d-none" id="pnlDatos"> 
         <div id="accordion">
             <div class="card">
-                <div class="card-header" id="headingOne" align="center">
-                    <h5 class="mb-0">
-                        <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Buscar Venta
-                        </button>
-                    </h5>
-                </div> 
+                <div class="card-header mt-3" id="headingOne">
+                    <div class="row">
+                        <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
+                            <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span> CANCELAR</button>
+                        </div>
+                        <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
+                            <h5 class="mb-0">Buscar Venta</h5>
+                        </div>
+                        <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
+                            <button type='button' class="btn btn-primary btn-sm d-none" id='btnFinalizar'><span class="fa fa-check"></span> FINALIZAR</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 d-none" >
                             <input type="text" id="Venta" name="Venta" readonly="" class="form-control">
                         </div>
-                    </div>       
+                    </div>
                     <!--SUBTOTAL DETALLE VENTA-->
                     <div id="ResumenDevolucionesDetalle" class="row">
-                        <div class="col-11" class="">
+                        <div class="col-7 col-sm-7 col-md-7 col-lg-8 col-xl-8" class="">
                             <input type="text" id="NumeroDeVenta" name="NumeroDeVenta" class="form-control form-control-sm" placeholder="# de venta"> 
                         </div>
-                        <div class="col-1" class="">
+                        <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1" class="">
                             <button type="button" class="btn btn-primary btn-sm" id="btnBuscarVenta">
                                 <span class="fa fa-search"></span>
                             </button>
                         </div>
-                        <div class="w-100"><br></div>
-                        <div id="SubtotalEncabezado" align='center' class="col">
-                            <h1 class="text-success">$0.0</h1>
+                        <div class="col-3 col-sm-2 col-md-2 col-lg-1 col-xl-1" align="left" >
+                            <div class="custom-control custom-checkbox" >
+                                <input type="checkbox" class="custom-control-input " style="cursor: pointer;" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)">
+                                <label class="custom-control-label" for="Todos" style="cursor: pointer;">Todos</label>
+                            </div>
                         </div>
-                        <div class="col" align="right">
-                            <label class="btn btn-warning"><input type="checkbox" autocomplete="off" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)"> <br>Todos</label>
+                        <div class="w-100"><br></div>
+                        <div id="SubtotalEncabezado" align='center' class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1 class="text-success">$0.0</h1>
                         </div>
                     </div>
                     <div id="DevolucionesDetalle" class="table-responsive table-sm d-none">
@@ -103,9 +102,7 @@
             <div class="card border-dark">
                 <div class="card-header" id="headingTwo"  align="center">
                     <h5 class="mb-0">
-                        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Finalizar Devolucion
-                        </button>
+                        Finalizar Devolucion 
                     </h5>
                 </div> 
                 <div class="card-body">
@@ -124,12 +121,12 @@
                             <input type="text" id="CodigoBarrasDevolucion" name="CodigoBarrasDevolucion" class="form-control" placeholder="000123456">
                         </div>
                         <div class="col-2 d-none">     
-                            <button type='button' class="btn btn-primary btn-sm" id='btnBuscarCodigoDevolucion'><span class="fa fa-search"></span> BUSCAR CÓDIGO</button>
+                            <button type='button' class="btn btn-primary btn-sm mt-1" id='btnBuscarCodigoDevolucion'><span class="fa fa-search"></span> BUSCAR CÓDIGO</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="w-100 d-none d-md-block"></div>
-                        <div class="col-3">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                             <strong for="Estilo">Estilo</strong>
                             <div class="input-group mb-3">
                                 <select class="form-control form-control-sm "  name="Estilo">
@@ -142,32 +139,32 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
                             <strong for="Combinacion">Color*</strong>
                             <select class="form-control form-control-sm "  name="Combinacion">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
                             <strong for="Talla">Talla</strong>
                             <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
                         </div> 
-                        <div class="col-2"> 
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
                             <strong for="Talla">Cantidad</strong>
                             <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
                         </div> 
-                        <div class="col-2"> 
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
                             <strong for="Precio">Precio</strong>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
                         </div>
-                        <div class="col-1">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-1 col-xl-1">
                             <br>
                             <button  class="btn btn-primary btn-sm" id="btnAgregarADevolucion" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                         <div class="col-sm-12" align="center">
-                            <span class="badge badge-pill badge-primary">* Tallas y Existencias *</span>
+                            <h5> <span class="badge badge-pill badge-primary">* Tallas y Existencias *</span></h5>
                             <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
                                 <thead></thead>
                                 <tbody>
@@ -247,24 +244,24 @@
                     </div>
                     <!--TOTALES-->
                     <div id="ResumenDetalleParaIntercambioTotales" class="row">
-                        <div id="SubtotaPie" class="col-3" align="center">
-                            <strong class="badge badge-danger">* Monto devolución *</strong><br>
+                        <div id="SubtotaPie" class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" align="center">
+                            <h5><strong class="badge badge-danger">* Monto devolución *</strong></h5><br>
                             <strong class="text-dark">$ 0.0</strong>
                         </div>
-                        <div id="TotalCubierto" class="col-2" align="center">
-                            <strong class="badge badge-info">* Subtotal *</strong><br>
+                        <div id="TotalCubierto" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                            <h5><strong class="badge badge-info">* Subtotal *</strong></h5><br>
                             <strong class="text-dark">$ 0.0</strong>
                         </div>
-                        <div id="TotalCubiertoIVA" class="col-2" align="center">
-                            <strong class="badge badge-warning">* I. V. A. *</strong><br>
+                        <div id="TotalCubiertoIVA" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                            <h5><strong class="badge badge-warning">* I. V. A. *</strong></h5><br>
                             <strong class="text-dark">$ 0.0</strong>
                         </div>
-                        <div id="TotalCubiertoTotal" class="col-2" align="center">
-                            <strong class="badge badge-primary">* Total *</strong><br>
+                        <div id="TotalCubiertoTotal" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                            <h5><strong class="badge badge-primary">* Total *</strong></h5><br>
                             <strong class="text-dark">$ 0.0</strong>
                         </div>
-                        <div id="TotalDiferencia" class="col-3" align="center">
-                            <strong class="badge badge-success">* Diferencia a cobrar *</strong><br>
+                        <div id="TotalDiferencia" class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" align="center">
+                            <h5><strong class="badge badge-success">* Diferencia a cobrar *</strong></h5><br>
                             <strong class="text-dark">$ 0.0</strong>
                         </div>
                         <div class="w-100"></div>
@@ -272,19 +269,19 @@
                             <h3 class="text-info" id="ImporteEnLetraDevolucion"></h3>
                         </div>
                         <div class="w-100"></div>
-                        <div class="col-6">
-                            <h4 class="badge badge-pill badge-danger">* Metodo de pago *</h4>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <h5><strong class="badge badge-pill badge-danger">* Metodo de pago *</strong></h5>
                             <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div class="col-6" align="">
-                            <h4 class="badge badge-pill badge-dark">* Su Pago *</h4>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="">
+                            <h5><strong class="badge badge-pill badge-dark">* Su Pago *</strong></h5>
                             <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control form-control-sm  numbersOnly text-success input-lg money" placeholder="0.0">
                         </div>
                         <div class="col-12"> 
                             <div class="col-12 text-center">
-                                <h4 class="badge badge-warning">* Cambio *</h4>
+                                <h5><strong class="badge badge-warning">* Cambio *</strong></h5>
                                 <strong><legend for="TOTAL" class="text-dark" id="CambioDevolucion">$ 0.00</legend></strong>
                             </div> 
                         </div>
@@ -299,7 +296,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     var pnlTablero = $("#pnlTablero");
@@ -425,7 +421,6 @@
                 swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO ', 'warning');
             }
         });
-
 
         pnlDatos.find("#CodigoBarrasDevolucion").blur(function () {
             EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
@@ -882,10 +877,10 @@
                     }
                 });
                 if (!tallaValida) {
-                    onBeep(2);
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'Ingresa una talla válida', 'danger');
+//                    onBeep(2);
+//                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'Ingresa una talla válida', 'danger');
                     pnlDatos.find("[name='Talla']").val('');
-                    pnlDatos.find("[name='Talla']").focus();
+//                    pnlDatos.find("[name='Talla']").focus();
 //                    swal({
 //                        title: 'INFO',
 //                        text: 'Introduce una talla válida',
