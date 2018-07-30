@@ -43,14 +43,6 @@ class Ventas extends CI_Controller {
         }
     }
 
-    public function onCambiarSesion() {
-        try {
-            $this->session->set_userdata("Ventas", 3);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function onConsultarAcceso() {
         try {
             if ($this->session->userdata['Tipo'] === 'VENDEDOR') {

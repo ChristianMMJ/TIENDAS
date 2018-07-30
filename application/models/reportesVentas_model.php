@@ -32,8 +32,8 @@ class reportesVentas_model extends CI_Model {
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->like('U.MetodoPago', $MetodoPago, 'before');
-            $this->db->where('U.FechaMov >=', $FechaIni);
-            $this->db->where('U.FechaMov <=', $FechaFin);
+            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") >=', 'STR_TO_DATE(' . $FechaIni . ', "%d/%m/%Y")');
+            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") <=', 'STR_TO_DATE(' . $FechaFin . ', "%d/%m/%Y")');
             $this->db->where('T.Empresa', $this->session->userdata('EMPRESA'));
             $this->db->order_by("T.Clave", "ASC");
             $this->db->group_by(array('T.ID', 'T.Clave', 'T.RazonSocial'));
@@ -82,8 +82,8 @@ class reportesVentas_model extends CI_Model {
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->like('U.MetodoPago', $MetodoPago, 'before');
-            $this->db->where('U.FechaMov >=', $FechaIni);
-            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") <=', $FechaFin);
+            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") >= STR_TO_DATE(' . $FechaIni . ', "%d/%m/%Y")');
+            $this->db->where('STR_TO_DATE(U.FechaMov, "%d/%m/%Y") <= STR_TO_DATE(' . $FechaFin . ', "%d/%m/%Y")');
             $this->db->order_by("U.TipoDoc", "ASC");
             $this->db->order_by("U.FolioTienda", "ASC");
             $query = $this->db->get();

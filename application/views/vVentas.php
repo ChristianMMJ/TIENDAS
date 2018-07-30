@@ -41,6 +41,127 @@
         </div>
     </div>
 </div>
+<!--MODAL BUSCAR MANUAL-->
+<div class="modal fade modal-fullscreen " id="mdlBuscaManual" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SELECCIONAR ARTÍCULO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--AGREGAR MANUAL-->
+                <div class="row">
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="Estilo">Estilo</label>
+                        <div class="input-group mb-3">
+                            <select class="form-control form-control-sm "  name="Estilo">
+                                <option value=""></option>
+                            </select>
+                            <span class="input-group-prepend">
+                                <span class="input-group-text text-dark" id="btnExistencias" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                                    <i class="fa fa-sitemap"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="Combinacion">Color*</label>
+                        <select class="form-control form-control-sm "  name="Combinacion">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-1 col-sm-1">
+                        <label for="Talla">Talla</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
+                    </div>
+                    <div class="col-12 col-md-1 col-sm-1">
+                        <label for="Cantidad">Cant.</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
+                    </div>
+                    <div class="col-12 col-md-1 col-sm-1">
+                        <label for="Precio">Precio</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
+                    </div>
+                    <div class="col-12 col-md-1 col-sm-1">
+                        <br>
+                        <button  class="btn btn-primary btn-sm" id="btnAgregarDetalle" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span class="input-group-text text-dark d-none" id="btnExistencias" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                            <i class="fa fa-search"></i>
+                        </span>
+                        <label for="">Tallas y Existencias (Ctrl+E para ver en otras tiendas)</label>
+                        <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                            <thead></thead>
+                            <tbody>
+                                <tr id="rTallasBuscaManual">
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                                </tr>
+                                <tr class="disabledForms" id="rExistencias">
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--            <div class="modal-footer">
+                            <button type="button" class="btn btn-raised btn-primary" id="btnAceptaBusqueda">ACEPTAR</button>
+                            <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal">REGRESAR</button>
+                        </div>-->
+        </div>
+    </div>
+</div>
 <!--MODAL EXISTENCIAS GENERALES-->
 <div class="modal fade modal-fullscreen" id="mdlInfoExistencia" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -87,7 +208,10 @@
                 <div class="col-md-5 float-left">
                     <span class="badge badge-primary" style="font-size:16px ;">VENTAS: <?php echo $this->session->userdata('TIENDA_NOMBRE') ?></span>
                 </div>
-                <div class="col-md-7 float-right" align="right">
+                <div class="col-md-2 text-center">
+                    <span class="badge badge-danger d-none" id="lCancelada" style="font-size:16px ;">CANCELADA</span>
+                </div>
+                <div class="col-md-5 float-right" align="right">
                     <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR (ESC)</button>
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnTicket"><span class="fa fa-ticket-alt"></span> TICKET (SHIFT+T)</button>
                     <button type="button" class="btn btn-primary btn-sm" id="btnDevolucion"><span class="fa fa-arrow-left"></span> DEVOLUCIÓN</button>
@@ -106,7 +230,7 @@
                         <div class="d-none">
                             <input type="text" class="" id="ID" name="ID"  >
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-12 col-md-1">
                             <label for="TipoDoc">RF*</label>
                             <input type="text"  class="form-control form-control-sm " maxlength="1" id="TipoDoc" name="TipoDoc" required >
                         </div>
@@ -137,7 +261,7 @@
                         </div>
                         <div class="col-12 col-md-3">
                             <label for="Vendedor">Vendedor</label>
-                            <select class="form-control form-control-sm required"  name="Vendedor" required>
+                            <select class="form-control form-control-sm required" id="Vendedor"  name="Vendedor" required>
                                 <option value=""></option>
                             </select>
                         </div>
@@ -155,111 +279,20 @@
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <label for="CodigoBarras">Código Barras</label>
+                    <label for="CodigoBarras">Código (Ctrl+E para ver Existencias en otras Tiendas)</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-sm numbersOnly"  name="CodigoBarras"  >
-                        <div class="input-group-prepend">
-                            <span class="input-group-text text-dark"><i class="fa fa-barcode"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-2 col-sm-2">
-                    <label for="Estilo">Estilo</label>
-                    <div class="input-group mb-3">
-                        <select class="form-control form-control-sm "  name="Estilo">
-                            <option value=""></option>
-                        </select>
+                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="CÓDIGO DEL ARTÍCULO" name="CodigoBarras"  >
                         <span class="input-group-prepend">
-                            <span class="input-group-text text-dark" id="btnExistencias" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                            <span class="input-group-text text-dark" id="btnBuscarManual" onclick="onBusquedaManual()" data-toggle="tooltip" data-placement="top" title="Buscar por Estilo">
                                 <i class="fa fa-search"></i>
                             </span>
                         </span>
                     </div>
                 </div>
-                <div class="col-12 col-md-2 col-sm-2">
-                    <label for="Combinacion">Color*</label>
-                    <select class="form-control form-control-sm "  name="Combinacion">
-                        <option value=""></option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Talla">Talla</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
-                </div>
-                <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Cantidad">Cant.</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
-                </div>
-                <div class="col-12 col-md-1 col-sm-1">
-                    <label for="Precio">Precio</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
-                </div>
-                <div class="col-12 col-md-1 col-sm-1">
-                    <br>
-                    <button  class="btn btn-primary btn-sm" id="btnAgregarDetalle" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <label for="">Tallas y Existencias (Ctrl+E para ver en otras tiendas)</label>
-                    <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
-                        <thead></thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
-                            </tr>
-                            <tr class="disabledForms" id="rExistencias">
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21"></td>
-                                <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
         </div>
+        <hr>
         <!--DETALLE-->
         <div class="" id="pnlDatosDetalle">
             <!--DETALLE-->
@@ -267,6 +300,22 @@
                 <div class=" col-md-9 ">
                     <div class="row">
                         <div class="table-responsive" id="RegistrosDetalle">
+                            <div class="container-fluid">
+                                <table id="tblRegistrosDetalle" class="table table-sm" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Artículo</th>
+                                            <th scope="col">Talla</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Desc</th>
+                                            <th scope="col">Sub</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="" align="center" style="background-color: #fff ">
@@ -324,7 +373,6 @@
     var mdlCerrarVenta = $("#mdlCerrarVenta");
     var btnFinVenta = mdlCerrarVenta.find("#btnFinVenta");
     var btnDevolucion = pnlDatos.find("#btnDevolucion");
-    var btnFullScreen = pnlDatos.find("#btnFullScreen");
     var currentDate = new Date();
     var nuevo = true;
     var IdMov = 0;
@@ -336,7 +384,7 @@
     /*DATATABLE GLOBAL*/
     var tblDetalleVenta;
     var tblInicial = {
-        "dom": 'frt',
+        "dom": 'rt',
         "autoWidth": false,
         "displayLength": 500,
         "colReorder": true,
@@ -367,7 +415,6 @@
     function getInicial() {
         HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         getNuevoFolio();
-        getEstilos();
         getClientes();
         getDescuentos();
         getMetodosPago();
@@ -429,8 +476,8 @@
         pnlDatos.find('.maskDateTime').val(getTodayWithTime());
         $('#Encabezado').removeClass('disabledForms');
         pnlControlesDetalle.removeClass('disabledForms');
+
         nuevo = true;
-        onValidarPantallaCompleta();
         getInicial();
         handleEnter();
         //Calula los montos si se cambia el tipo de documento fiscal o no fiscal
@@ -554,20 +601,21 @@
             }
         });
         //Inserta Detalle y guarda el movimiento
-        pnlControlesDetalle.find("#btnAgregarDetalle").click(function () {
+        $('#mdlBuscaManual').find("#btnAgregarDetalle").click(function () {
             isValid('pnlDatos');
             if (valido) {
-                var Estilo = pnlControlesDetalle.find("[name='Estilo']");
-                var Color = pnlControlesDetalle.find("[name='Combinacion']");
-                var Talla = pnlControlesDetalle.find("[name='Talla']");
-                var Precio = pnlControlesDetalle.find("[name='Precio']");
-                var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
+                var Estilo = $('#mdlBuscaManual').find("[name='Estilo']");
+                var Color = $('#mdlBuscaManual').find("[name='Combinacion']");
+                var Talla = $('#mdlBuscaManual').find("[name='Talla']");
+                var Precio = $('#mdlBuscaManual').find("[name='Precio']");
+                var Cantidad = $('#mdlBuscaManual').find("[name='Cantidad']");
                 if (Estilo.val() !== '' && Color.val() !== '' && Talla.val() !== '' && Precio.val() !== ''
                         && Cantidad.val() !== '' && Cantidad.val() > 0 && Precio.val() > 0)
                 {
                     AddCodigoBarras = false;
                     //Guarda Movimiento
                     btnGuardar.trigger('click');
+                    $('#mdlBuscaManual').modal('hide');
                 } else {
                     swal({
                         title: 'INFO',
@@ -584,13 +632,13 @@
             }
         });
         //Validaciones tallas
-        pnlControlesDetalle.find("[name='Talla']").blur(function () {
+        $('#mdlBuscaManual').find("[name='Talla']").blur(function () {
             //Verificar que los combos de estilo y color esten llenos
-            if (pnlControlesDetalle.find("[name='Estilo']").val() !== "" && pnlControlesDetalle.find("[name='Combinacion']").val() !== "") {
+            if ($('#mdlBuscaManual').find("[name='Estilo']").val() !== "" && $('#mdlBuscaManual').find("[name='Combinacion']").val() !== "") {
                 var tallaCaptura = $(this).val();
                 var tallaValida = false;
-                $.each(pnlControlesDetalle.find("#tblTallas > tbody > tr").find("input.numbersOnly").filter(':enabled'), function () {
-                    var talla = pnlControlesDetalle.find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
+                $.each($('#mdlBuscaManual').find("#tblTallas > tbody > tr").find("input.numbersOnly").filter(':enabled'), function () {
+                    var talla = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").find("input").eq($(this).parent().index()).val();
                     if (parseFloat(talla) > 0) {
                         if (parseFloat(tallaCaptura) === parseFloat(talla)) {
                             tallaValida = true;
@@ -601,7 +649,7 @@
                     }
                 });
                 if (!tallaValida) {
-                    pnlControlesDetalle.find("[name='Talla']").val('');
+                    $('#mdlBuscaManual').find("[name='Talla']").val('');
 //                    pnlControlesDetalle.find("[name='Talla']").focus();
 //                    swal({
 //                        title: 'INFO',
@@ -621,19 +669,19 @@
                     icon: 'warning'
                 }).then((result) => {
                     if (result) {
-                        pnlControlesDetalle.find("[name='Talla']").val('');
-                        pnlControlesDetalle.find("[name='Estilo']")[0].selectize.focus();
+                        $('#mdlBuscaManual').find("[name='Talla']").val('');
+                        $('#mdlBuscaManual').find("[name='Estilo']")[0].selectize.focus();
                     }
                 });
             }
         });
         //Validacion de existencias en cantidad
-        pnlControlesDetalle.find("[name='Cantidad']").change(function () {
+        $('#mdlBuscaManual').find("[name='Cantidad']").change(function () {
             var CantidadCaptura = $(this).val();
-            var TallaCapturada = pnlControlesDetalle.find("[name='Talla']").val();
+            var TallaCapturada = $('#mdlBuscaManual').find("[name='Talla']").val();
             var CantidadValida = false;
-            var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
-            var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+            var tallas = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(0);
+            var existencias = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(1);
             var existenciaReal = 0;
             $.each(tallas.find("input.numbersOnly"), function () {
                 if (parseFloat(TallaCapturada) === parseFloat($(this).val())) {
@@ -646,8 +694,8 @@
                 }
             });
             if (!CantidadValida) {
-                pnlControlesDetalle.find("[name='Cantidad']").val('');
-                pnlControlesDetalle.find("[name='Cantidad']").focus();
+                $('#mdlBuscaManual').find("[name='Cantidad']").val('');
+                $('#mdlBuscaManual').find("[name='Cantidad']").focus();
                 swal({
                     title: 'INFO',
                     text: 'No tiene existencias suficientes en esta talla',
@@ -656,28 +704,27 @@
                     closeOnClickOutside: false
                 }).then((result) => {
                     if (result) {
-                        pnlControlesDetalle.find("[name='Cantidad']").val('');
-                        pnlControlesDetalle.find("[name='Cantidad']").focus();
+                        $('#mdlBuscaManual').find("[name='Cantidad']").val('');
+                        $('#mdlBuscaManual').find("[name='Cantidad']").focus();
                     }
                 });
             }
         });
         //Evento que controla la insercion de filas a la tabla cuando se termina de capturar
-        pnlControlesDetalle.find("[name='Precio']").blur(function () {
-            pnlControlesDetalle.find("#btnAgregarDetalle").trigger('click');
+        $('#mdlBuscaManual').find("[name='Precio']").blur(function () {
+            $('#mdlBuscaManual').find("#btnAgregarDetalle").trigger('click');
         });
         //Eventos en el select de estilo para traer las tallas y los colores
-        pnlControlesDetalle.find("[name='Estilo']").change(function () {
-            pnlDatosDetalle.find('#rExistencias').find("input").val("0");
-            pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.clear(true);
-            pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.clearOptions();
+        $('#mdlBuscaManual').find("[name='Estilo']").change(function () {
+            $('#mdlBuscaManual').find("[name='Combinacion']")[0].selectize.clear(true);
+            $('#mdlBuscaManual').find("[name='Combinacion']")[0].selectize.clearOptions();
             getCombinacionesXEstilo($(this).val());
             getSerieXEstilo($(this).val());
             getFotoXEstilo($(this).val());
         });
         //Obtiene las existencias del inventario
-        pnlControlesDetalle.find("[name='Combinacion']").change(function () {
-            getExistenciasXEstiloXCombinacion(pnlControlesDetalle.find("[name='Estilo']").val(), pnlControlesDetalle.find("[name='Combinacion']").val());
+        $('#mdlBuscaManual').find("[name='Combinacion']").change(function () {
+            getExistenciasXEstiloXCombinacion($('#mdlBuscaManual').find("[name='Estilo']").val(), $('#mdlBuscaManual').find("[name='Combinacion']").val());
         });
         //Evento para traer colores en modal de existencias
         $('#mdlInfoExistencia').find("[name='EstiloEx']").change(function () {
@@ -695,6 +742,10 @@
         });
         //Evento modales para inicializar el foco
         $('#mdlInfoExistencia').on('shown.bs.modal', function () {
+            $(':input:text:enabled:visible:first').focus();
+        });
+        //Evento modales para inicializar el foco
+        $('#mdlBuscaManual').on('shown.bs.modal', function () {
             $(':input:text:enabled:visible:first').focus();
         });
         //Evento modal para inicializar el foco
@@ -717,6 +768,7 @@
         btnBuscar.click(function () {
             pnlDatos.find("input[name='FolioTienda']").prop("disabled", false);
             pnlDatos.find("input[name='FolioTienda']").focus();
+            pnlDatos.find("input[name='FolioTienda']").select();
         });
         btnGuardar.click(function () {
             HoldOn.open({
@@ -888,6 +940,10 @@
             }
         });
     });
+    function onBusquedaManual() {
+        getEstilos();
+        $('#mdlBuscaManual').modal('show');
+    }
     function onVerExistencias() {
         getEstilosExt();
         $('#mdlInfoExistencia').modal('show');
@@ -903,12 +959,12 @@
     }
     /*AGREGAR DETALLE NORMAL*/
     function onAgregarFila(MovID) {
-        var Estilo = pnlControlesDetalle.find("[name='Estilo']");
-        var Combinacion = pnlControlesDetalle.find("[name='Combinacion']");
-        var Costo = pnlControlesDetalle.find("[name='Precio']");
+        var Estilo = $('#mdlBuscaManual').find("[name='Estilo']");
+        var Combinacion = $('#mdlBuscaManual').find("[name='Combinacion']");
+        var Costo = $('#mdlBuscaManual').find("[name='Precio']");
         var Desc = pnlControlesDetalle.find("[name='Descuento']");
-        var Talla = pnlControlesDetalle.find("[name='Talla']");
-        var Cantidad = pnlControlesDetalle.find("[name='Cantidad']");
+        var Talla = $('#mdlBuscaManual').find("[name='Talla']");
+        var Cantidad = $('#mdlBuscaManual').find("[name='Cantidad']");
         if (pnlDatos.find("input[name='TipoDoc']").val() !== '') {
             /*COMPROBAR ESTILO, COMBINACION Y TALLA*/
             var estilo_combinacion_existen = false;
@@ -1085,6 +1141,8 @@
                 tfoot.eq(1).addClass("d-none");
                 thead.eq(2).addClass("d-none");
                 tfoot.eq(2).addClass("d-none");
+                thead.eq(3).addClass("d-none");
+                tfoot.eq(3).addClass("d-none");
                 thead.eq(10).addClass("d-none");
                 tfoot.eq(10).addClass("d-none");
                 $.each($('#tblRegistrosDetalle tbody tr'), function (k, v) {
@@ -1092,6 +1150,7 @@
                     td.eq(0).addClass("d-none");
                     td.eq(1).addClass("d-none");
                     td.eq(2).addClass("d-none");
+                    td.eq(3).addClass("d-none");
                     td.eq(10).addClass("d-none");
                 });
                 tblDetalleVenta = pnlDatosDetalle.find("#tblRegistrosDetalle").DataTable(tblInicial);
@@ -1232,6 +1291,8 @@
                 tfoot.eq(1).addClass("d-none");
                 thead.eq(2).addClass("d-none");
                 tfoot.eq(2).addClass("d-none");
+                thead.eq(3).addClass("d-none");
+                tfoot.eq(3).addClass("d-none");
                 thead.eq(10).addClass("d-none");
                 tfoot.eq(10).addClass("d-none");
                 thead.eq(11).addClass("d-none");
@@ -1241,6 +1302,7 @@
                     td.eq(0).addClass("d-none");
                     td.eq(1).addClass("d-none");
                     td.eq(2).addClass("d-none");
+                    td.eq(3).addClass("d-none");
                     td.eq(10).addClass("d-none");
                     td.eq(11).addClass("d-none");
                 });
@@ -1268,8 +1330,8 @@
         });
     }
     function onRegresarExistenciasInventario(Estilo, Color, Talla, Cantidad) {
-        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
-        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+        var tallas = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(0);
+        var existencias = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(1);
         var existenciaFinal = 0;
         var existenciaActual = 0;
         var PosicionActualiza = "";
@@ -1298,12 +1360,12 @@
         });
     }
     function onSacarExistenciasInventario() {
-        var Estilo = pnlControlesDetalle.find("[name='Estilo']");
-        var Color = pnlControlesDetalle.find("[name='Combinacion']");
-        var CantidadCaptura = pnlControlesDetalle.find("[name='Cantidad']").val(); //Cantidad a descontar
-        var TallaCapturada = pnlControlesDetalle.find("[name='Talla']").val(); //Verificar que talla
-        var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
-        var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+        var Estilo = $('#mdlBuscaManual').find("[name='Estilo']");
+        var Color = $('#mdlBuscaManual').find("[name='Combinacion']");
+        var CantidadCaptura = $('#mdlBuscaManual').find("[name='Cantidad']").val(); //Cantidad a descontar
+        var TallaCapturada = $('#mdlBuscaManual').find("[name='Talla']").val(); //Verificar que talla
+        var tallas = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(0);
+        var existencias = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(1);
         var existenciaFinal = 0;
         var existenciaActual = 0;
         var PosicionActualiza = "";
@@ -1344,7 +1406,7 @@
             }
         }).done(function (data, x, jq) {
             $.each(data[0], function (k, v) {
-                pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                $('#mdlBuscaManual').find("[name='" + k + "']").val(v);
             });
             //Traemos la existencia si es que existe
             $.ajax({
@@ -1358,10 +1420,10 @@
             }).done(function (data, x, jq) {
                 if (data.length > 0) {
                     $.each(data[0], function (k, v) {
-                        pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                        $('#mdlBuscaManual').find("[name='" + k + "']").val(v);
                     });
-                    var tallas = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(0);
-                    var existencias = pnlControlesDetalle.find("#tblTallas > tbody > tr").eq(1);
+                    var tallas = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(0);
+                    var existencias = $('#mdlBuscaManual').find("#tblTallas > tbody > tr").eq(1);
                     var existenciaFinal = 0;
                     var existenciaActual = 0;
                     var PosicionActualiza = "";
@@ -1451,7 +1513,7 @@
             }
         }).done(function (data, x, jq) {
             $.each(data[0], function (k, v) {
-                pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                $('#mdlBuscaManual').find('#rTallasBuscaManual').find("[name='" + k + "']").val(v);
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1489,22 +1551,22 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 var existencias = data[0];
-                pnlControlesDetalle.find("[name='Precio']").val(existencias.PrecioMenudeo);
+                $('#mdlBuscaManual').find("[name='Precio']").val(existencias.PrecioMenudeo);
                 $.each(data[0], function (k, v) {
                     if (parseInt(v) <= 0) {
-                        pnlControlesDetalle.find("[name='" + k + "']").addClass('NoStock');
-                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('Stock');
-                        pnlControlesDetalle.find("[name='" + k + "']").val('0');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").addClass('NoStock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").removeClass('Stock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").val('0');
                     } else if (parseInt(v) > 0) {
-                        pnlControlesDetalle.find("[name='" + k + "']").addClass('Stock');
-                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('NoStock');
-                        pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                        $('#mdlBuscaManual').find("[name='" + k + "']").addClass('Stock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").removeClass('NoStock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").val(v);
                     }
                 });
             } else {
-                pnlControlesDetalle.find('#rExistencias').find("input").val("0");
-                pnlControlesDetalle.find('#rExistencias').find("input").addClass('NoStock').val("0");
-                pnlControlesDetalle.find("[name='Precio']").val("");
+                $('#mdlBuscaManual').find('#rExistencias').find("input").val("0");
+                $('#mdlBuscaManual').find('#rExistencias').find("input").addClass('NoStock').val("0");
+                $('#mdlBuscaManual').find("[name='Precio']").val("");
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1524,22 +1586,22 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
                 var existencias = data[0];
-                pnlControlesDetalle.find("[name='Precio']").val(existencias.PrecioMenudeo);
+                $('#mdlBuscaManual').find("[name='Precio']").val(existencias.PrecioMenudeo);
                 $.each(data[0], function (k, v) {
                     if (parseInt(v) <= 0) {
-                        pnlControlesDetalle.find("[name='" + k + "']").addClass('NoStock');
-                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('Stock');
-                        pnlControlesDetalle.find("[name='" + k + "']").val('0');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").addClass('NoStock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").removeClass('Stock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").val('0');
                     } else if (parseInt(v) > 0) {
-                        pnlControlesDetalle.find("[name='" + k + "']").addClass('Stock');
-                        pnlControlesDetalle.find("[name='" + k + "']").removeClass('NoStock');
-                        pnlControlesDetalle.find("[name='" + k + "']").val(v);
+                        $('#mdlBuscaManual').find("[name='" + k + "']").addClass('Stock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").removeClass('NoStock');
+                        $('#mdlBuscaManual').find("[name='" + k + "']").val(v);
                     }
                 });
             } else {
-                pnlControlesDetalle.find('#rExistencias').find("input").val("0");
-                pnlControlesDetalle.find('#rExistencias').find("input").addClass('NoStock').val("0");
-                pnlControlesDetalle.find("[name='Precio']").val("");
+                $('#mdlBuscaManual').find('#rExistencias').find("input").val("0");
+                $('#mdlBuscaManual').find('#rExistencias').find("input").addClass('NoStock').val("0");
+                $('#mdlBuscaManual').find("[name='Precio']").val("");
             }
             onRegresarExistenciasInventario(Estilo, Combinacion, Talla, Cantidad);
         }).fail(function (x, y, z) {
@@ -1557,9 +1619,9 @@
             }
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                $('#mdlBuscaManual').find("[name='Combinacion']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
-            pnlControlesDetalle.find("[name='Combinacion']")[0].selectize.open();
+            $('#mdlBuscaManual').find("[name='Combinacion']")[0].selectize.open();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -1620,7 +1682,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlControlesDetalle.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                $('#mdlBuscaManual').find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1704,6 +1766,7 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Vendedor']")[0].selectize.addOption({text: v.Empleado, value: v.ID});
             });
+            pnlDatos.find("[name='Vendedor']")[0].selectize.open();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -1806,29 +1869,7 @@
         }).always(function () {
         });
     }
-    function onValidarPantallaCompleta() {
-        if (ValidaPantallaCompleta === '1') {
-            $.ajax({url: master_url + 'onCambiarSesion',
-                type: "POST"
-            }).done(function (data, x, jq) {
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            }).always(function () {
-            });
-            swal({
-                text: "BIENVENIDO"
-            }).then((result) => {
-                if (result) {
-                    toggleFullScreen();
-                    $(':input:text:enabled:visible:first').focus();
-                    $(':input:text:enabled:visible:first').select();
-                }
-            });
-        } else {
-            $(':input:text:enabled:visible:first').focus();
-            $(':input:text:enabled:visible:first').select();
-        }
-    }
+
 </script>
 <style>
     .Stock{

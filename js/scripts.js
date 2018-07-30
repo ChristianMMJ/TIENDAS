@@ -83,7 +83,7 @@ var tableOptions = {
     "displayLength": 20,
     "bStateSave": true,
     "bLengthChange": false,
-    "deferRender": true, keys: true,
+    "deferRender": true,
 //    "scrollY": false,
 //    "scrollX": true,
     "scrollCollapse": false,

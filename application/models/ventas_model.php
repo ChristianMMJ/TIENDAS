@@ -115,9 +115,9 @@ class ventas_model extends CI_Model {
 
     public function getVentaByID($ID) {
         try {
-            $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR, 
+            $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR,
 	   V.FechaCreacion AS FECHA_DE_CREACION, V.FechaMov AS FECHA_MOV, CA.SValue AS METODO_PAGO, V.Estatus AS ESTATUS, V.SuPago AS SUPAGO
-      ,V.Importe      ,V.Usuario      ,V.Tipo, T.RazonSocial AS TIENDA, 
+      ,V.Importe      ,V.Usuario      ,V.Tipo, T.RazonSocial AS TIENDA,
       CONCAT(T.Direccion,\' #\', T.NoExt,\', \',T.Colonia,\' \', T.Ciudad,\', \', T.Estado,\' C.P \',T.CP) AS DIRECCION,
       CONCAT(T.Ciudad,\',\',T.Estado) AS LUGAR_EXPEDICION, V.ImporteEnLetra  AS TOTAL_EN_LETRA,V.Tienda AS TIENDA_ID, T.Foto AS FOTO_TIENDA,
       (SELECT SUM(VD.Descuento) FROM sz_VentasDetalle AS VD WHERE VD.Venta = V.ID) AS DESCUENTO_TOTAL', false);
@@ -168,7 +168,7 @@ class ventas_model extends CI_Model {
                     . 'VD.Estilo AS IdEstilo, '
                     . 'VD.Color AS IdColor,'
                     . 'CONCAT(E.Clave,\'-\',E.Descripcion) AS Estilo,'
-                    . 'CONCAT(C.Clave,\'-\',C.Descripcion) AS Color,'
+                    . "CONCAT(E.Clave,'-',E.Descripcion,' ',C.Descripcion) AS 'Artículo',"
                     . 'VD.Talla AS Talla,'
                     . 'VD.Cantidad AS Cantidad,'
                     . "  CONCAT('', FORMAT(VD.Precio, 2)) AS Precio, "
