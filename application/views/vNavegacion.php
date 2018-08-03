@@ -229,29 +229,64 @@
 
 <div class="container-fluid bg-primary" style="background-color: rgb(166,175,179);">
     <div class="row">
-        <div class="col-4 mt-1 mb-1">
+        <div class="col-6 mt-1 mb-1">
             <button class="btn btn-primary btn-sm " onclick="openNav()">
                 <i class="fa fa-bars"></i> Menú
             </button>
-        </div>
-        <div class="col-8 mt-1 mb-1" align="right">
+        </div> 
+        <div class="col-6 mt-1 mb-1" align="right">
             <span class="badge badge-primary ">
                 <?php echo $this->session->userdata('TIENDA_NOMBRE') ?>
             </span>
+            <button class="btn btn-primary btn-sm " id="btnAcceso">
+                <i class="fa fa-check"></i> Acceso
+            </button>
             <a  class="btn btn-primary btn-sm" href="<?php print base_url('Login/onSalir'); ?>" onclick="onRegistrarAccion('SALIÓ DEL SISTEMA');">
                 <i class="fa fa-sign-out-alt"></i> Salir</a>
         </div>
     </div>
 </div>
-
-
-
-
-
 <script>
     $(document).ready(function () {
         $('#myNav > li:not(ul)').click(function (event) {
             event.stopPropagation();
         });
+        $("#btnAcceso").click(function () {
+//            onBeep(5); 
+            location.href = "<?php print base_url('Reloj'); ?>";
+        });
     });
+    var acceso = function () {
+        swal("Escriba su numero de empleado", {
+            buttons: {
+                cancel: "Cancelar",
+                access: "Acceder"
+            },
+            content: "input"
+        }).then((value) => {
+            console.log(value);
+            if (parseFloat(value) > 0) {
+                $.post(base_url + 'index.php/Asistencia/onAcceder', {Numero: parseInt(value)}).done(function (data) {
+                    swal('Exito', `El empleado ${value} ha ingresado correctamente`, 'success');
+                    onBeep(6);
+                }).fail(function (x, y, z) {
+                    swal('Error', `No ha sido posible ingresar al empleado ${value}, intente de nuevo o más tarde`, 'error');
+                    console.log(x, x.responseText, z);
+                    console.log(x, y, z);
+                });
+            } else {
+                if (value !== null) {
+                    switch (value) {
+                        case "cancel":
+                            onBeep(3);
+                            break;
+                        default:
+                            acceso();
+                            onBeep(2);
+                            break;
+                    }
+                }
+            }
+        });
+    };
 </script>
