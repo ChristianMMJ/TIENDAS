@@ -60,9 +60,7 @@ class Semanas extends CI_Controller {
 
     public function getSemanasNominaByAno() {
         try {
-            extract($this->input->post());
-            $data = $this->semanas_model->getSemanasNominaByAno($this->input->post('Ano'));
-            print json_encode($data);
+            print json_encode($this->semanas_model->getSemanasNominaByAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

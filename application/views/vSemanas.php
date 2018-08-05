@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Gestión de Semanas Nomina</legend>
+                <legend class="float-left">Gestión de Semanas</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -102,7 +102,18 @@
     <!--FIN DETALLE NUEVO-->
     <!--DETALLE EDITAR-->
     <div class="row">
-        <div class="table-responsive col-12 " id="RegistrosDetalleE">
+        <div class="table-responsive d-none" id="RegistrosDetalleE">
+            <table id="tblRegistrosDetalle" class="table table-sm" width="100%">
+                <thead>
+                    <tr>
+                        <th>No. Sem</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
     <!--FIN DETALLE EDITAR-->
@@ -121,7 +132,7 @@
     var AnoI;
     /*DATATABLE GLOBAL*/
     var tblDetalleSemanas;
-    var tblDetalleSemanasE;
+    var tblDetalleSemanasE = $('#tblRegistrosDetalle'), RegistrosDetalleE;
     var tblInicial = {
         "dom": 'rt',
         "autoWidth": false,
@@ -134,30 +145,11 @@
         "bSort": true,
         "aaSorting": [
             [1, 'asc']/*ID*/
-        ]
-    };
-    var tblEdicion = {
-        "dom": 'rt',
-        "autoWidth": true,
-        "displayLength": 500,
-        "colReorder": true,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollY": 390,
-        "scrollCollapse": true,
-        "bSort": true,
-        "aaSorting": [
-            [0, 'asc']/*ID*/
         ],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "width": "10%"
-            }
-        ]
+        initComplete: function (x, y) {
+            HoldOn.close();
+        }
     };
-
-
     var FechaIni;
     $(document).ready(function () {
         pnlDatos.find("#Ano").change(function () {
@@ -199,11 +191,40 @@
         pnlDatos.find("#FechaIni").inputmask({alias: "date"});
         $('#ControlesAgregarExtras').find("#FechaI").inputmask({alias: "date"});
         $('#ControlesAgregarExtras').find("#FechaF").inputmask({alias: "date"});
-
-        pnlDatos.find("#FechaIni").keydown(function (e) {
+        pnlDatos.find("#btnGenerarSemanas").click(function () {
             if (pnlDatos.find("#Ano").val() !== '') {
-                if (e.keyCode === 13) {
-                    pnlDatos.find("#btnGenerarSemanas").trigger('click');
+                if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 0) {
+                    swal('Atención', 'Ya se han generado las semanas', 'warning');
+                } else {
+                    HoldOn.open({
+                        theme: "sk-bounce",
+                        message: "CARGANDO DATOS..."
+                    });
+                    var feC = pnlDatos.find("#FechaIni").val().split("/");
+                    var feI = new Date(feC[2], feC[1] - 1, feC[0]);
+                    var cont = 1;
+                    var Sem = 1;
+                    var esInicio = true;
+                    tblDetalleSemanas = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                    while (cont <= 104) {
+                        if (esInicio) {
+                            //console.log('Sem: ' + Sem);
+                            //console.log(convertDate(feI));
+                            esInicio = false;
+                        } else {
+                            tblDetalleSemanas.row.add([
+                                pnlDatos.find("#Ano").val(),
+                                Sem,
+                                convertDate(feI),
+                                convertDate(feI.setDate(feI.getDate() + 6))
+                            ]).draw(false);
+                            Sem++;
+                            //console.log(convertDate(feI));
+                            feI.setDate(feI.getDate() + 1);
+                            esInicio = true;
+                        }
+                        cont++;
+                    }
                 }
             } else {
                 swal({
@@ -213,42 +234,6 @@
                 }).then((action) => {
                     pnlDatos.find("#Ano").focus();
                 });
-            }
-        });
-        pnlDatos.find("#btnGenerarSemanas").click(function () {
-            if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 0) {
-                swal('Atención', 'Ya se han generado las semanas', 'warning');
-            } else {
-                HoldOn.open({
-                    theme: "sk-bounce",
-                    message: "CARGANDO DATOS..."
-                });
-                var feC = pnlDatos.find("#FechaIni").val().split("/");
-                var feI = new Date(feC[2], feC[1] - 1, feC[0]);
-                var cont = 1;
-                var Sem = 1;
-                var esInicio = true;
-                tblDetalleSemanas = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-                while (cont <= 104) {
-                    if (esInicio) {
-                        //console.log('Sem: ' + Sem);
-                        //console.log(convertDate(feI));
-                        esInicio = false;
-                    } else {
-                        tblDetalleSemanas.row.add([
-                            pnlDatos.find("#Ano").val(),
-                            Sem,
-                            convertDate(feI),
-                            convertDate(feI.setDate(feI.getDate() + 6))
-                        ]).draw(false);
-                        Sem++;
-                        //console.log(convertDate(feI));
-                        feI.setDate(feI.getDate() + 1);
-                        esInicio = true;
-                    }
-                    cont++;
-                }
-                HoldOn.close();
             }
         });
         btnGuardar.click(function () {
@@ -267,7 +252,6 @@
                     //Iteramos en la tabla natural
                     pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                         var row = $(this).find("td");
-                        console.log(row);
                         //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
                         var Semanas = {
                             Ano: row.eq(0).text().replace(/\s+/g, ''),
@@ -292,10 +276,11 @@
                         getRecords();
                         nuevo = false;
                         pnlDatos.find('#lAno').text(AnoI);
-                        getSemanasNominaByAno(AnoI);
                         $('#ControlesEncabezado').addClass("d-none");
                         $('#RegistrosDetalle').addClass("d-none");
+                        $('#ControlesAgregarExtras').removeClass("d-none");
                         $('#RegistrosDetalleE').removeClass("d-none");
+                        getSemanasNominaByAno(AnoI);
                         btnGuardar.addClass("d-none");
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -310,14 +295,19 @@
         btnNuevo.click(function () {
             if ($.fn.DataTable.isDataTable('#tblDetalle')) {
                 tblDetalleSemanas.destroy();
-                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
+
             }
-            pnlDatosDetalle.find("#RegistrosDetalleE").html("");
+            pnlDatosDetalle.find("#tblDetalle > tbody").html("");
+            if ($.fn.DataTable.isDataTable('#tblRegistrosDetalle')) {
+                RegistrosDetalleE.clear().draw();
+            }
+
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
             $('#RegistrosDetalle').removeClass("d-none");
-
+            $('#ControlesAgregarExtras').addClass("d-none");
+            $('#RegistrosDetalleE').addClass("d-none");
             pnlDatos.find("input").val("");
             btnGuardar.removeClass("d-none");
             pnlDatos.find('#lAno').text('');
@@ -346,7 +336,7 @@
                         FechaFin: $('#ControlesAgregarExtras').find('#FechaF').val()
                     }
                 }).done(function (data, x, jq) {
-                    getSemanasNominaByAno(temp);
+                    RegistrosDetalleE.ajax.reload();
                     $('#ControlesAgregarExtras').find('input').val('');
                     $('#ControlesAgregarExtras').find('#Semana').focus();
                     swal({
@@ -376,7 +366,6 @@
             }
 
         });
-
         /*CALLS*/
         getRecords();
         handleEnter();
@@ -397,7 +386,7 @@
                 Sem: value === '' || value === null ? 0 : value
             }
         }).done(function (data, x, jq) {
-            getSemanasNominaByAno(temp);
+            RegistrosDetalleE.ajax.reload();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -503,34 +492,46 @@
     }
 
     function getSemanasNominaByAno(Ano) {
-        $.ajax({
-            url: master_url + 'getSemanasNominaByAno',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Ano: Ano
+        tblDetalleSemanasE.DataTable().destroy();
+        RegistrosDetalleE = tblDetalleSemanasE.DataTable({
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getSemanasNominaByAno',
+                "dataType": "json",
+                "dataSrc": "",
+                type: "POST",
+                "data": {
+                    Ano: Ano
+                }
+            },
+            "columns": [
+                {"data": "NoSem"},
+                {"data": "FechaInicio"},
+                {"data": "FechaFin"}
+            ],
+            "dom": 'rt',
+            "autoWidth": true,
+            "displayLength": 500,
+            "colReorder": true,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollY": 390,
+            "scrollCollapse": true,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'asc']/*ID*/
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "width": "10%"
+                }
+            ],
+            initComplete: function (x, y) {
+                HoldOn.close();
             }
-        }).done(function (data, x, jq) {
-            if (data.length > 0) {
-                pnlDatosDetalle.find("#RegistrosDetalleE").html(getTable('tblDetalleE', data));
-                $('#tblDetalleE tfoot th').each(function () {
-                    $(this).addClass("d-none");
-                });
-                pnlDatosDetalle.find("#tblDetalleE").DataTable(tblEdicion);
-                //Sombreado de la fila
-                pnlDatosDetalle.find('#tblDetalleE tbody').on('click', 'tr', function () {
-                    $("#tblDetalleE tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                });
-            } else {
-                pnlDatosDetalle.find("#RegistrosDetalleE").html("");
-            }
-            HoldOn.close();
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-
         });
+
     }
 
 </script>

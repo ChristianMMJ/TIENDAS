@@ -100,12 +100,30 @@ class semanas_model extends CI_Model {
     public function getSemanasNominaByAno($Ano) {
         try {
             $this->db->select(""
-                    . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'No. Sem',  "
-                    . "U.FechaIni AS 'Fecha Inicio', "
-                    . "U.FechaFin AS 'Fecha Fin' "
+                    . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'NoSem',  "
+                    . "U.FechaIni AS 'FechaInicio', "
+                    . "U.FechaFin AS 'FechaFin' "
                     . " ", false);
             $this->db->from('sz_Semanas AS U');
             $this->db->where('U.Ano', $Ano);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanaByFecha($fecha) {
+        try {
+            $this->db->select('U.Sem', false);
+            $this->db->from('sz_Semanas AS U');
+            $this->db->where('\'' . $fecha . '\' BETWEEN CONVERT(DATE,U.FechaIni) AND CONVERT(DATE,U.FechaFin)');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
