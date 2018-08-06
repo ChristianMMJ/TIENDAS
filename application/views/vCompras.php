@@ -120,9 +120,9 @@
 
 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" style="overflow-x:auto; white-space: nowrap;">
                             <label for="Mayoreo">Tallas</label>
-                            <table id="tblTallas" class="Tallas" style="overflow-x:auto; white-space: nowrap;">
+                            <table id="tblTallas" class="Tallas" >
                                 <thead></thead>
                                 <tbody>
                                     <tr>

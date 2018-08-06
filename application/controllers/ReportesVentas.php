@@ -61,6 +61,7 @@ class ReportesVentas extends CI_Controller {
     public function onImprimirReporteVentasGenerales() {
         extract($this->input->post());
         $Tiendas = $this->reportesVentas_model->getTiendas($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin);
+
         $Ventas = $this->reportesVentas_model->getVentasGenerales($TipoDoc, $Tienda, $MetodoPago, $FechaIni, $FechaFin);
 
 
