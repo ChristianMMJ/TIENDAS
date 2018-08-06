@@ -245,7 +245,9 @@
                                     <option value=""></option>
                                 </select>
                                 <div class="input-group-prepend">
-                                    <a href="<?php print base_url('Clientes') ?>" target="_blank" class="input-group-text text-dark" data-toggle="tooltip" data-placement="top" title="Ver Clientes"><i class="fa fa-users"></i></a>
+                                    <a href="<?php print base_url('Clientes') ?>" target="_blank" class="input-group-text text-dark" data-toggle="tooltip" data-placement="top" title="Ver Clientes">
+                                        <i class="fa fa-users"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>

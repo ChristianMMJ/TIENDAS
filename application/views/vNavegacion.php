@@ -81,7 +81,7 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesVentas') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?> 
+            <?php } ?>
             <!-------------------------------------CAJA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
@@ -97,7 +97,7 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesCaja') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?> 
+            <?php } ?>
             <!-------------------------------------GASTOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
@@ -112,7 +112,7 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesGastos') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?> 
+            <?php } ?>
             <!-------------------------------------COMPRAS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
@@ -128,7 +128,7 @@
                     </div>
                 </li>
             <?php } ?>
-                
+
             <!-------------------------------------INVENTARIOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
@@ -148,7 +148,7 @@
                     </div>
                 </li>
             <?php } ?>
-                
+
             <!-------------------------------------NOMINA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
@@ -226,14 +226,15 @@
 
 <div class="container-fluid bg-primary" style="background-color: rgb(166,175,179);">
     <div class="row">
-        <div class="col-6 mt-1 mb-1">
+        <div class="col-6 mt-2 ">
             <button class="btn btn-primary btn-sm " onclick="openNav()">
-                <i class="fa fa-bars"></i> Menú
-            </button>
-        </div> 
-        <div class="col-6 mt-1 mb-1" align="right">
-            <span class="badge badge-primary ">
+                <i class="fa fa-bars"></i>
                 <?php echo $this->session->userdata('TIENDA_NOMBRE') ?>
+            </button>
+        </div>
+        <div class="col-6 mt-2 " align="right">
+            <span class="badge badge-primary ">
+
             </span>
             <button class="btn btn-primary btn-sm " id="btnAcceso">
                 <i class="fa fa-check"></i> Acceso
@@ -249,7 +250,7 @@
             event.stopPropagation();
         });
         $("#btnAcceso").click(function () {
-//            onBeep(5); 
+//            onBeep(5);
             location.href = "<?php print base_url('Reloj'); ?>";
         });
     });

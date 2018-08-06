@@ -1,16 +1,14 @@
+.input-group-prepend, .input-group-append {
+     display: block !important; 
+}
+
+.btn {
+    margin-bottom: 0.454rem;
+}
 
 .table thead th {
     vertical-align: bottom;
     border-bottom: 0.5px solid #dee2e6;
-}
-
-
-
-.input-group-text {
-    height: 22px;
-    /*    padding: 0.1rem 0.25rem;*/
-    font-size: 17px;
-    border-radius: 0.25rem;
 }
 
 .btnSpace {
@@ -38,7 +36,6 @@ html{
 
 body{
     background-color: #f5f5f5;
-    line-height: 1.4;
     font-size: 0.8375rem;
 }
 .card-body {
@@ -72,25 +69,16 @@ body{
 
 /*Tablas mas angostas*/
 .table th {
-    padding: 0.3rem; 
     background-color: white;
 }
 table td {
-    padding: 0.0rem; 
     background-color: white;
 }
 
 .table-sm td {
-    padding: 0.0rem;
     background-color: white;
 }
-/*Fuente Nav Submenu*/
-/*.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-    font-size: 17px;
-}
-.navbar-dark .navbar-nav .nav-link {
-    font-size: 17px;
-}*/
+
 
 /*Controles pequeños*/
 label {
@@ -100,18 +88,12 @@ label, .control-label, .help-block, .checkbox, .radio, .form-control-feedback {
     font-size: 0.72rem;
 }
 
+
 .selectize-input {
-    min-height: 0px;
-}
-.selectize-input {
-    padding: 0px 7px;
     padding-right: 18px;
 }
 
-.form-control-sm, .input-group-sm > .form-control, .input-group-sm > .input-group-prepend > .input-group-text, .input-group-sm > .input-group-append > .input-group-text, .input-group-sm > .input-group-prepend > .btn, .input-group-sm > .input-group-append > .btn {
-    height: 21.6px;
-    font-size: 11.5px;
-}
+
 
 
 /*Tallas Ventas y Compras*/
@@ -209,24 +191,6 @@ input {
     text-transform: none;
 }
 
-/*Login*/
-.Absolute-Center {
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-}
-
-.Absolute-Center.is-Responsive {
-    width: 50%; 
-    height: 340px;
-    min-width: 300px;
-    max-width: 600px;
-    padding: 30px;
-}
 .cursor-hand{
     cursor: pointer;
-}
-.table-responsive table{
-    display: table  !important;
-    width: 100% !important;
 }
