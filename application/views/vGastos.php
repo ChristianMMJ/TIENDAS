@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+            <div class="" id="tblRegistros"></div>
         </div>
     </div>
 </div>
@@ -100,26 +100,24 @@
             <!--DETALLE-->
             <div class=" d-none" id="pnlDatosDetalle">
                 <!--DETALLE-->
-                <div class="row">
-                    <div class="table-responsive">
-                        <table id="tblDetalle" class="table table-sm" width="100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Concepto</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">SubTotal</th>
-                                    <th scope="col" class="d-none">IDR</th>
-                                    <th scope="col" class="d-none">Orden</th>
-                                    <th scope="col" class="d-none">CatID</th>
-                                    <th scope="col" class="">Categoría</th>
-                                    <th scope="col" ></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="row ">
+                    <table id="tblDetalle" class="table table-sm" width="100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Concepto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">SubTotal</th>
+                                <th scope="col" class="d-none">IDR</th>
+                                <th scope="col" class="d-none">Orden</th>
+                                <th scope="col" class="d-none">CatID</th>
+                                <th scope="col" class="">Categoría</th>
+                                <th scope="col" ></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="w-100"><br></div>
                 <div class="row">
@@ -177,6 +175,7 @@
         "bLengthChange": false,
         "deferRender": true,
         "scrollY": 220,
+        "scrollX": true,
         "scrollCollapse": true,
         "bSort": true,
         "aaSorting": [
