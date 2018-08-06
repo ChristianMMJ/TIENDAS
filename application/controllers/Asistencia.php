@@ -55,9 +55,7 @@ class Asistencia extends CI_Controller {
                         $es['Tipo'] = 'SE';
                         $this->db->insert('sz_Asistencias', $es);
                         break;
-                }
-                $this->db->last_query();
-                $info_empleado["COUNT"] = count($dtm);
+                }  
                 print json_encode($info_empleado);
             }
         } catch (Exception $exc) {

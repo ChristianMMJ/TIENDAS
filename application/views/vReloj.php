@@ -102,7 +102,7 @@
                     var info = JSON.parse(data);
                     console.log('* DATA *', info[0]);
                     $("#ProfilePicture h1").text(ne);
-                    $("#ProfilePicture > img ").attr('src', base_url + info[0].FOTO);
+                    $("#ProfilePicture > img ").attr('src', (info[0].FOTO !== null ? base_url + info[0].FOTO : base_url + 'img/LOSO.png'));
                     $("#ProfileName > h1 ").text(info[0].Empleado);
                     swal({
                         title: 'GRACIAS',
