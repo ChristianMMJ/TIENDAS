@@ -19,6 +19,7 @@
                             <th>Número</th>
                             <th>Fecha</th>
                             <th>Hora</th>
+                            <th>Tipo</th>
                             <th>Estatus</th>
                         </tr>
                     </thead>
@@ -64,7 +65,7 @@
                     "dataSrc": ""
                 },
                 "columns": [
-                    {"data": "ID"}, {"data": "Usuario"}, {"data": "Numero"}, {"data": "Fecha"}, {"data": "Hora"}, {"data": "Estatus"}
+                    {"data": "ID"}, {"data": "Usuario"}, {"data": "Numero"}, {"data": "Fecha"}, {"data": "Hora"}, {"data": "Tipo"}, {"data": "Estatus"}
                 ],
                 "columnDefs": [
                     {

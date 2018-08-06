@@ -53,7 +53,7 @@
         <ul class="navbar-nav mr-auto">
             <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
             <br>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown mb-2">
                 <a class="nav-link dropdown-toggle active"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('USERNAME') ?>
                 </a>
@@ -70,8 +70,8 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "CAJERO", "SISTEMAS"))) {
                 ?>
 
-                <li class="nav-item dropdown">
-                    <a class="btn btn-success my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-success  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-hand-holding-usd"></i>  Ventas
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -81,14 +81,13 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesVentas') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?>
-            <br>
+            <?php } ?> 
             <!-------------------------------------CAJA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-secondary dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-cut"></i>  Caja
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -98,14 +97,13 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesCaja') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?>
-            <br>
+            <?php } ?> 
             <!-------------------------------------GASTOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-danger my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-danger  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-external-link-alt"></i>  Gastos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -114,14 +112,13 @@
                         <a class="dropdown-item" href="<?php print base_url('ReportesGastos') ?>">Reportes</a>
                     </div>
                 </li>
-            <?php } ?>
-            <br>
+            <?php } ?> 
             <!-------------------------------------COMPRAS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-warning my-2 my-sm-0  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-warning  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-shopping-cart"></i> Compras
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -131,13 +128,13 @@
                     </div>
                 </li>
             <?php } ?>
-            <br>
+                
             <!-------------------------------------INVENTARIOS--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-info my-2 my-sm-0 dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-info dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-list-alt"></i> Inventarios
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -151,13 +148,13 @@
                     </div>
                 </li>
             <?php } ?>
-            <br>
+                
             <!-------------------------------------NOMINA--------------------------------->
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-secondary my-2 my-sm-0 dropdown-toggle  btn-sm text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mb-2">
+                    <a class="btn btn-secondary dropdown-toggle  btn-sm text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-dollar-sign"></i> Nómina
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -174,12 +171,12 @@
             <?php
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "SISTEMAS"))) {
                 ?>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown mb-2">
                     <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-wrench"></i> Catálogos
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-                        <li class="nav-item dropdown dropdown-submenu">
+                        <li class="nav-item dropdown mb-2 dropdown-submenu">
                             <a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Generales
                             </a>
@@ -197,7 +194,7 @@
                                 <li><a class="dropdown-item" href="<?php print base_url('Generales/?modulo=GENEROS') ?>">Géneros</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown dropdown-submenu">
+                        <li class="nav-item dropdown mb-2 dropdown-submenu">
                             <a class="nav-link dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Nómina
                             </a>

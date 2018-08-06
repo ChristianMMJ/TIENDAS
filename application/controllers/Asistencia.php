@@ -37,7 +37,7 @@ class Asistencia extends CI_Controller {
                     'Hora' => Date('h:i:s a'),
                     'Estatus' => 'A',
                     'Empleado' => $dtm[0]->ID,
-                    'EmpleadoT' => $dtm[0]->Empleado);
+                    'EmpleadoT' => $dtm[0]->Empleado); 
                 switch (count($Entrada_Salida)) {
                     case 0:
                         $es['Tipo'] = 'E';
@@ -56,6 +56,8 @@ class Asistencia extends CI_Controller {
                         $this->db->insert('sz_Asistencias', $es);
                         break;
                 }
+                $this->db->last_query();
+                $info_empleado["COUNT"] = count($dtm);
                 print json_encode($info_empleado);
             }
         } catch (Exception $exc) {

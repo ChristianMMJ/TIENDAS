@@ -47,9 +47,9 @@
         });
 
         NumeroEmpleado.keyup(function (e) {
-            typed = true;
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 && typed) {
                 onLogIn();
+                NumeroEmpleado.val('');
                 typed = false;
             }
         });
