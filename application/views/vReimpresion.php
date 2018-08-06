@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <label for="">Introduce la cantidad de etiquetas que deseas imprimir por punto</label>
-                <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                <table id="tblTallas" class="Tallas" style="overflow-x:auto; white-space: nowrap;">
                     <thead></thead>
                     <tbody>
                         <tr>

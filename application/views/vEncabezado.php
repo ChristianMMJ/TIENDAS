@@ -105,8 +105,6 @@
             $('.money').maskMoney({prefix: '$', allowNegative: false, thousands: ',', decimal: '.', affixesStay: false});
 
             $('[data-toggle="tooltip"]').tooltip();
-            $("table.display").DataTable(tableOptions);
-            $('table').css('display', 'block');
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });

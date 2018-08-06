@@ -17,7 +17,7 @@ class gastos_model extends CI_Model {
             }
             $this->db->select("U.ID, IFNULL(U.DocMov,'') AS Documento ,"
                     . "CONCAT(T.Clave , '-',T.RazonSocial) AS 'Tienda' ,"
-                    . "U.FechaMov as 'Fecha Movimiento ', "
+                    . "U.FechaMov as 'FechaMovimiento', "
                     . "CONCAT('<strong>$',FORMAT(IFNULL(U.Importe,0),2),'</strong>') AS Importe,"
                     . "US.Usuario AS 'Usuario' ", false);
             $this->db->from('sz_Gastos AS U');

@@ -81,56 +81,58 @@
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblExistencias')) {
             tblExistencias.DataTable().destroy();
-            Existencias = tblExistencias.DataTable(
-                    {
-                        "dom": 'Bfrti',
-                        "columnDefs": [
-                            {
-                                "targets": [0],
-                                "visible": false,
-                                "searchable": false
-                            },
-                            {
-                                "targets": [1],
-                                "visible": false,
-                                "searchable": false
-                            }],
-                        language: lang,
-                        "autoWidth": true,
-                        "displayLength": 9999,
-                        "bLengthChange": false,
-                        "deferRender": true,
-                        "scrollCollapse": false,
-                        "bSort": false,
-                        keys: true,
-                        "createdRow": function (row, data, index) {
-                            $.each($(row).find("td"), function (k, v) {
-                                if (data[0] === "") {
-                                    $(v).addClass('Serie');
-                                } else {
-                                    $(row).find("td:eq(0),td:eq(1),td:eq(2)").addClass("zoom");
-                                }
-                                if ($.isNumeric($(v).text())) {
-                                    if (data[0] === "" && parseFloat($(v).text()) <= 0) {
-                                        $(v).addClass('Serie');
-                                        $(v).text("-");
-                                    } else if (parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) > 0) {
-                                        $(v).addClass('HasStock');
-                                    } else if (data[0] !== "" && parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) === 0) {
-                                        $(v).addClass('NoHasStock');
-                                        $(v).text("-");
-                                    }
-                                }
-                            });
-                            /*ANCHO*/
-                            $(row).find("td").eq(0).css("width", "220px");
-                            $(row).find("td").eq(1).css("width", "200px");
-                            $(row).find("td").eq(2).css("width", "340px");
-                        }
-                    });
         }
+        Existencias = tblExistencias.DataTable(
+                {
+                    "dom": 'Bfrti',
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": [1],
+                            "visible": false,
+                            "searchable": false
+                        }],
+                    language: lang,
+                    "autoWidth": true,
+                    "displayLength": 9999,
+                    "bLengthChange": false,
+                    "deferRender": true,
+                    "scrollCollapse": false,
+                    "bSort": false,
+                    keys: true,
+                    "createdRow": function (row, data, index) {
+                        $.each($(row).find("td"), function (k, v) {
+                            if (data[0] === "") {
+                                $(v).addClass('Serie');
+                            } else {
+                                $(row).find("td:eq(0),td:eq(1),td:eq(2)").addClass("zoom");
+                            }
+                            if ($.isNumeric($(v).text())) {
+                                if (data[0] === "" && parseFloat($(v).text()) <= 0) {
+                                    $(v).addClass('Serie');
+                                    $(v).text("-");
+                                } else if (parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) > 0) {
+                                    $(v).addClass('HasStock');
+                                } else if (data[0] !== "" && parseInt(k) > 2 && parseInt(k) < 25 && parseFloat($(v).text()) === 0) {
+                                    $(v).addClass('NoHasStock');
+                                    $(v).text("-");
+                                }
+                            }
+                        });
+                        /*ANCHO*/
+                        $(row).find("td").eq(0).css("width", "220px");
+                        $(row).find("td").eq(1).css("width", "200px");
+                        $(row).find("td").eq(2).css("width", "340px");
+                    }
+                });
+
         //PARA PRUEBAS
         Existencias.clear().draw();
+
         $.getJSON(master_url + 'getExistenciasByTienda', {Tienda: Tienda}).done(function (existencias) {
             console.log(existencias)
             var rows;
@@ -293,11 +295,11 @@
         background-color: #fff !important;
         color: #000 !important;
     }
-    .zoom{   
+    .zoom{
         -webkit-transition: all .2s ease-in-out;
         transition: all .2s ease-in-out;
     }
-    .zoom:hover{ 
+    .zoom:hover{
         font-weight: bold;
         background-color: #3498DB !important;
         color: #fff;

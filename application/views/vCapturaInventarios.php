@@ -95,7 +95,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <label for="">Tallas</label>
-                    <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                    <table id="tblTallas" class="Tallas" style="overflow-x:auto; white-space: nowrap;">
                         <thead></thead>
                         <tbody>
                             <tr id="rTallas">

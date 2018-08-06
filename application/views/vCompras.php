@@ -122,7 +122,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <label for="Mayoreo">Tallas</label>
-                            <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                            <table id="tblTallas" class="Tallas" style="overflow-x:auto; white-space: nowrap;">
                                 <thead></thead>
                                 <tbody>
                                     <tr>
@@ -489,7 +489,6 @@
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
                                 onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                                getRecords();
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -538,7 +537,6 @@
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
                                 onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                                getRecords();
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -582,6 +580,7 @@
             pnlDatos.addClass('d-none');
             pnlDatosDetalle.addClass('d-none');
             nuevo = true;
+            getRecords();
         });
         btnEliminar.click(function () {
             if (temp !== 0 && temp !== undefined && temp > 0) {

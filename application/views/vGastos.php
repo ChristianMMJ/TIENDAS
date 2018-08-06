@@ -20,8 +20,21 @@
                 <button type="button" class="btn btn-primary" id="btnEliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar""><span class="fa fa-trash"></span><br></button>
             </div>
         </div>
-        <div class="card-block">
-            <div class="" id="tblRegistros"></div>
+        <div id="Registros" class="row">
+            <table id="tblRegistros" class="table table-sm" style="width:100%">
+                <thead>
+                    <tr>
+                        <th >ID</th>
+                        <th >Documento</th>
+                        <th >Tienda</th>
+                        <th >Fecha</th>
+                        <th >Importe</th>
+                        <th >Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -96,61 +109,59 @@
                 </div>
 
             </div>
-            <hr>
-            <!--DETALLE-->
-            <div class=" d-none" id="pnlDatosDetalle">
-                <!--DETALLE-->
-                <div class="row ">
-                    <table id="tblDetalle" class="table table-sm" width="100%">
-                        <thead>
-                            <tr>
-                                <th scope="col">Concepto</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">SubTotal</th>
-                                <th scope="col" class="d-none">IDR</th>
-                                <th scope="col" class="d-none">Orden</th>
-                                <th scope="col" class="d-none">CatID</th>
-                                <th scope="col" class="">Categoría</th>
-                                <th scope="col" ></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="w-100"><br></div>
-                <div class="row">
-                    <div class="col-md-2">
 
-                    </div>
-                    <div class="col-md-12" align="center" style="background-color: #fff ">
-                        <div class="row">
-                            <div class="col-sm-4"></div>
-                            <div class="col-sm-2 text-info">
-                                Subtotal<br>
-                                <div id="SubTotal"><strong>$0.0</strong></div>
-                            </div>
-                            <div class="col-sm-2 text-warning">
-                                I.V.A<br>
-                                <div id="IVA" ><strong>$0.0</strong></div>
-                            </div>
-                            <div class="col-sm-2 text-success">
-                                Total<br>
-                                <div id="Total" ><strong>$0.0</strong></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-
-                    </div>
-                </div>
-                <!--FIN DETALLE-->
-            </div>
         </div>
     </div>
 </div>
+
+
+<!--DETALLE-->
+<div class="card-body d-none" id="pnlDatosDetalle">
+    <hr>
+    <div class="row ">
+        <table id="tblDetalle" class="table table-sm" width="100%">
+            <thead>
+                <tr>
+                    <th >Concepto</th>
+                    <th >Cantidad</th>
+                    <th >Precio</th>
+                    <th >SubTotal</th>
+                    <th  class="d-none">IDR</th>
+                    <th  class="d-none">Orden</th>
+                    <th  class="d-none">CatID</th>
+                    <th  class="">Categoría</th>
+                    <th  ></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="col-12 mt-4" align="center" style="background-color: #fff ">
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-2 text-info">
+                Subtotal<br>
+                <div id="SubTotal"><strong>$0.0</strong></div>
+            </div>
+            <div class="col-sm-2 text-warning">
+                I.V.A<br>
+                <div id="IVA" ><strong>$0.0</strong></div>
+            </div>
+            <div class="col-sm-2 text-success">
+                Total<br>
+                <div id="Total" ><strong>$0.0</strong></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!--FIN DETALLE-->
+
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/Gastos/';
@@ -166,10 +177,13 @@
     var nuevo = true;
     var btnAgregarDetalle = pnlControlesDetalle.find('#btnAgregarDetalle');
     /*DATATABLE GLOBAL*/
-    var tblDetalleGasto;
+    var tblRegistrosX = $("#tblRegistros"), Registros;
+
+
+
     var tblInicial = {
         "dom": 'rt',
-        "autoWidth": false,
+        "autoWidth": true,
         "displayLength": 500,
         "colReorder": true,
         "bLengthChange": false,
@@ -198,36 +212,7 @@
                 "searchable": false
             }
         ],
-        language: {
-            processing: "Proceso en curso...",
-            search: "Buscar:",
-            lengthMenu: "Mostrar _MENU_ Elementos",
-            info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-            infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-            infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-            infoPostFix: "",
-            loadingRecords: "Procesando los datos...",
-            zeroRecords: "No se encontro nada.",
-            emptyTable: "No existen datos en la tabla.",
-            paginate: {
-                first: "Primero",
-                previous: "Anterior",
-                next: "Siguiente",
-                last: "&Uacute;ltimo"
-            },
-            aria: {
-                sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
-                sortDescending: ": Habilitado para ordenar la columna en orden descendente"
-            },
-            buttons: {
-                copyTitle: 'Registros copiados a portapapeles',
-                copyKeys: 'Copiado con teclas clave.',
-                copySuccess: {
-                    _: ' %d Registros copiados',
-                    1: ' 1 Registro copiado'
-                }
-            }
-        }
+        language: lang
     };
 
 
@@ -323,13 +308,11 @@
                                 processData: false,
                                 data: f
                             }).done(function (data, x, jq) {
-
                                 $('#Encabezado').addClass('disabledForms');
                                 pnlControlesDetalle.addClass('disabledForms');
                                 btnGuardar.addClass('d-none');
                                 swal('INFO', 'MOVIMIENTO GUARDADO', 'success');
                                 nuevo = false;
-                                getRecords();
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -375,6 +358,7 @@
             pnlDatos.addClass('d-none');
             pnlDatosDetalle.addClass('d-none');
             nuevo = true;
+            Registros.ajax.reload();
         });
         btnEliminar.click(function () {
             if (temp !== 0 && temp !== undefined && temp > 0) {
@@ -397,7 +381,7 @@
                                 ID: temp
                             }
                         }).done(function (data, x, jq) {
-                            getRecords();
+                            Registros.ajax.reload();
                             swal("Hecho", "El registro se ha eliminado!", 'success');
 
                         }).fail(function (x, y, z) {
@@ -417,140 +401,134 @@
         handleEnter();
     });
 
+    IdMovimiento = 0;
     function getRecords() {
-        temp = 0;
-        HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
-        });
-        $.ajax({
-            url: master_url + 'getRecords',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Tienda: pnlTablero.find("#TiendaT").val()
+        HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblRegistros')) {
+            tblRegistrosX.DataTable().destroy();
+        }
+        Registros = tblRegistrosX.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataType": "json",
+                "type": "POST",
+                "dataSrc": "",
+                data: {
+                    Tienda: pnlTablero.find("#TiendaT").val()
+                }
+            },
+            "columns": [
+                {"data": "ID"},
+                {"data": "Documento"},
+                {"data": "Tienda"},
+                {"data": "FechaMovimiento"},
+                {"data": "Importe"},
+                {"data": "Usuario"}
+
+            ],
+            language: lang,
+            "autoWidth": true,
+            "bStateSave": true,
+            "colReorder": true,
+            "scrollX": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ],
+            "initComplete": function (settings, json) {
+                HoldOn.close();
             }
-        }).done(function (data, x, jq) {
-            if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblGastos', data));
-                $('#tblGastos tfoot th').each(function () {
-                    $(this).html('');
-                });
-                var thead = $('#tblGastos thead th');
-                var tfoot = $('#tblGastos tfoot th');
-                thead.eq(0).addClass("d-none");
-                tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblGastos tbody tr'), function (k, v) {
-                    var td = $(v).find("td");
-                    td.eq(0).addClass("d-none");
-                });
-                var tblSelected = $('#tblGastos').DataTable(tableOptions);
-                $('#tblGastos_filter input[type=search]').focus();
-                $('#tblGastos tbody').on('click', 'tr', function () {
+        });
+        $('#tblRegistros_filter input[type=search]').focus();
 
-                    $("#tblGastos tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                });
-                $('#tblGastos tbody').on('dblclick', 'tr', function () {
-                    $("#tblGastos tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        nuevo = false;
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getGastoByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-                            pnlDatos.find("input").val("");
-                            btnGuardar.addClass('d-none');
-                            pnlControlesDetalle.addClass('d-none');
-                            $('#Encabezado').addClass('disabledForms');
-                            $.each(pnlDatos.find("select"), function (k, v) {
-                                pnlDatos.find("select")[k].selectize.clear(true);
-                            });
-                            $.each(data[0], function (k, v) {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                }
-                            });
-                            //Cargar Detalle
-                            if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                                tblDetalleGasto.destroy();
-                                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
-                            }
-                            tblDetalleGasto = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-                            n = 1;
-                            /*DETALLE*/
-                            $.getJSON(master_url + 'getGastoDetalleByID', {ID: temp}).done(function (data, x, jq) {
-                                $.each(data, function (k, v) {
-                                    tblDetalleGasto.row.add([
-                                        v.Concepto,
-                                        v.Cantidad,
-                                        "$" + $.number(v.Precio, 2, '.', ','),
-                                        "$" + $.number(v.SubTotal, 2, '.', ','),
-                                        v.ID,
-                                        n,
-                                        v.Categoria,
-                                        v.CatNombre,
-                                        ''
-                                    ]).draw(false);
-                                    n += 1;
-                                });
-                            }).fail(function (x, y, z) {
-                                console.log(x, y, z);
-                            }).always(function () {
-                                HoldOn.close();
-                                onCalcularMontos();
-                            });
-                            /*FIN DETALLE*/
-                            /*MOSTRAR PANEL PRINCIPAL*/
-                            pnlTablero.addClass("d-none");
-                            pnlDatos.removeClass('d-none');
-                            pnlDatosDetalle.removeClass("d-none");
+        tblRegistrosX.find('tbody').on('click', 'tr', function () {
+            var dtm = Registros.row(this).data();
+            temp = parseInt(dtm.ID);
+            tblRegistrosX.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+        });
 
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                    }
+
+        tblRegistrosX.find('tbody').on('dblclick', 'tr', function () {
+            nuevo = false;
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
                 });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
+                $.ajax({
+                    url: master_url + 'getGastoByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+                    pnlDatos.find("input").val("");
+                    btnGuardar.addClass('d-none');
+                    pnlControlesDetalle.addClass('d-none');
+                    $('#Encabezado').addClass('disabledForms');
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        pnlDatos.find("[name='" + k + "']").val(v);
+                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                         }
                     });
+                    //Cargar Detalle
+                    if ($.fn.DataTable.isDataTable('#tblDetalle')) {
+                        tblDetalleGasto.destroy();
+                        pnlDatosDetalle.find("#tblDetalle > tbody").html("");
+                    }
+                    tblDetalleGasto = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                    n = 1;
+                    /*DETALLE*/
+                    $.getJSON(master_url + 'getGastoDetalleByID', {ID: temp}).done(function (data, x, jq) {
+                        $.each(data, function (k, v) {
+                            tblDetalleGasto.row.add([
+                                v.Concepto,
+                                v.Cantidad,
+                                "$" + $.number(v.Precio, 2, '.', ','),
+                                "$" + $.number(v.SubTotal, 2, '.', ','),
+                                v.ID,
+                                n,
+                                v.Categoria,
+                                v.CatNombre,
+                                ''
+                            ]).draw(false);
+                            n += 1;
+                        });
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                        onCalcularMontos();
+                    });
+                    /*FIN DETALLE*/
+                    /*MOSTRAR PANEL PRINCIPAL*/
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    pnlDatosDetalle.removeClass("d-none");
+
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
                 });
             } else {
-                $("#tblRegistros").html('');
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
             }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
+
         });
     }
 
@@ -629,8 +607,6 @@
         pnlControlesDetalle.find('input').val('');
         pnlControlesDetalle.find('#Concepto').focus();
     }
-
-
 
     var ImporteTotal = 0;
     function onCalcularMontos() {
