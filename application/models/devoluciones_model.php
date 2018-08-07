@@ -36,23 +36,52 @@ class devoluciones_model extends CI_Model {
         }
     }
 
-    public function getDevoluciones() {
+    public function getDevolucionesX() {
         try {
             $this->db->select(" V.ID, CONCAT(T.Clave, ' - ',T.RazonSocial) AS TIENDA, "
                             . "V.FolioTienda AS FOLIO, CONCAT(C.Clave, ' - ',C.RazonSocial) AS CLIENTE, "
                             . "V.FechaCreacion AS \"FECHA DE CREACION\", "
-                            . "CONCAT('<strong class=\"text-success\">$', FORMAT(V.Importe,2),'</strong>') AS IMPORTE,"
+                            . "CONCAT('<strong class=\"text-success\">$', FORMAT(D.Importe,2),'</strong>') AS IMPORTE,"
                             . "CONCAT('<button type=\"button\" class=\"btn btn-outline-danger\" onclick=\"getVentaXID(this)\">',"
                             . "'<span class=\"fa fa-check\"></span><br><strong>Seleccionar</strong></button>') AS ACCIONES", false)
                     ->from('sz_Ventas AS V')
                     ->join('sz_Tiendas AS T', 'V.Tienda = T.ID', 'left')
                     ->join('sz_Clientes AS C', 'V.Cliente = C.ID', 'left')
+                    ->join('sz_devoluciones AS D', 'V.ID = D.Venta', 'left')
                     ->where_in('V.Estatus', array('CERRADA'));
-            return $this->db->where_not_in('V.Tipo', array('V'))
-                            ->where_in('T.Estatus', array('ACTIVO'))
-                            ->where('V.Tienda', $this->session->userdata('TIENDA'))
-                            ->where('V.ID IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false)
-                            ->get()->result();
+            $this->db->where_in('V.Tipo', array('D'))
+                    ->where_in('T.Estatus', array('ACTIVO'))
+                    ->where('V.Tienda', $this->session->userdata('TIENDA'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDevoluciones() {
+        try {
+            $this->db->select("DEV.ID AS ID, T.RazonSocial AS TIENDA, DEV.FolioTienda AS FOLIO, "
+                    . "CL.RazonSocial AS CLIENTE, DEV.FechaCreacion AS \"FECHA DE CREACION\" , "
+                    . "CONCAT('<strong class=\"text-success\">$',FORMAT(DEV.Importe,2),'</span>') AS IMPORTE", false)
+                    ->from('sz_devoluciones AS DEV')
+                    ->join('sz_Tiendas AS T', 'DEV.Tienda = T.ID', 'left')
+                    ->join('sz_clientes AS CL', 'DEV.Cliente = CL.ID', 'left')
+                    ->where('Dev.Tienda', $this->session->userdata('TIENDA'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -60,21 +89,21 @@ class devoluciones_model extends CI_Model {
 
     public function getVentaXID($ID) {
         try {
-             $this->db->select("VD.ID AS ID,VD.Estilo AS ESTILO_ID, VD.Color AS COLOR_ID,V.TipoDoc AS TP, "
-                                    . "CONCAT(E.Clave,' - ',E.Descripcion) AS ESTILO,"
-                                    . "CONCAT(C.ID,' - ',C.Descripcion) AS COLOR,"
-                                    . "VD.Talla AS TALLA,"
-                                    . "VD.Cantidad AS CANTIDAD,"
-                                    . "CONCAT('<strong class=\"text-warning\">$',FORMAT(VD.Precio, 2),'</strong>') AS PRECIO,"
-                                    . "CONCAT('<strong class=\"text-danger\">$',FORMAT(VD.Descuento , 2),'</strong>') AS DESCUENTO,"
-                                    . "CONCAT('<strong class=\"text-success\">$',FORMAT(VD.Subtotal, 2),'</strong>') AS SUBTOTAL", false)
-                            ->from('sz_VentasDetalle AS VD')
-                            ->join('sz_Ventas AS V', 'V.ID = VD.Venta', 'left')
-                            ->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left')
-                            ->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left')
-                            ->where('V.Tipo', 'V')
-                            ->where('V.ID NOT IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false)
-                            ->where('VD.Venta', $ID);
+            $this->db->select("VD.ID AS ID,VD.Estilo AS ESTILO_ID, VD.Color AS COLOR_ID,V.TipoDoc AS TP, "
+                            . "CONCAT(E.Clave,' - ',E.Descripcion) AS ESTILO,"
+                            . "CONCAT(C.ID,' - ',C.Descripcion) AS COLOR,"
+                            . "VD.Talla AS TALLA,"
+                            . "VD.Cantidad AS CANTIDAD,"
+                            . "CONCAT('<strong class=\"text-warning\">$',FORMAT(VD.Precio, 2),'</strong>') AS PRECIO,"
+                            . "CONCAT('<strong class=\"text-danger\">$',FORMAT(VD.Descuento , 2),'</strong>') AS DESCUENTO,"
+                            . "CONCAT('<strong class=\"text-success\">$',FORMAT(VD.Subtotal, 2),'</strong>') AS SUBTOTAL", false)
+                    ->from('sz_VentasDetalle AS VD')
+                    ->join('sz_Ventas AS V', 'V.ID = VD.Venta', 'left')
+                    ->join('sz_Estilos AS E', 'E.ID = VD.Estilo', 'left')
+                    ->join('sz_Combinaciones AS C', 'C.ID = VD.Color', 'left')
+                    ->where('V.Tipo', 'V')
+                    ->where('V.ID NOT IN (SELECT D.Venta FROM sz_Devoluciones AS D)', null, false)
+                    ->where('VD.Venta', $ID);
             $query = $this->db->get();
 //            print $str = $this->db->last_query();
             return $query->result();
@@ -82,7 +111,6 @@ class devoluciones_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
 
     public function getCatalogosByFielID($FieldId) {
         try {
@@ -103,7 +131,7 @@ class devoluciones_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getCombinacionesXEstilo($Estilo) {
         try {
             $this->db->select("U.ID, CONCAT(U.Clave,'-', U.Descripcion) AS Descripcion ", false);
@@ -122,6 +150,7 @@ class devoluciones_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getSerieXEstiloConClave($Estilo) {
         try {
             $this->db->select("S.*, E.Clave AS ClaveEstilo", false);
@@ -139,7 +168,8 @@ class devoluciones_model extends CI_Model {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
+    }
+
     public function getVentabyID($ID) {
         try {
             return $this->db->select("V.*", false)
@@ -237,7 +267,7 @@ class devoluciones_model extends CI_Model {
                     ->where('Color', $Color)
                     ->set("Ex$index", $data)
                     ->update("sz_Existencias");
-            $str = $this->db->last_query(); 
+            $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -276,6 +306,7 @@ class devoluciones_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getExistenciasXEstiloXCombinacionT($Estilo, $combinacion) {
         try {
             $this->db->select("U.* "

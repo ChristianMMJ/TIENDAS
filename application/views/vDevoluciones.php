@@ -33,20 +33,7 @@
 <div id="" class="container-fluid ">
     <div class="card border-0 animated fadeIn d-none" id="pnlDatos"> 
         <div id="accordion">
-            <div class="card">
-                <div class="card-header mt-3" id="headingOne">
-                    <div class="row">
-                        <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
-                            <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span> CANCELAR</button>
-                        </div>
-                        <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10" align="center">
-                            <h5 class="mb-0">Buscar Venta</h5>
-                        </div>
-                        <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
-                            <button type='button' class="btn btn-primary btn-sm d-none" id='btnFinalizar'><span class="fa fa-check"></span> FINALIZAR</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="card d-none"> 
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 d-none" >
@@ -54,248 +41,376 @@
                         </div>
                     </div>
                     <!--SUBTOTAL DETALLE VENTA-->
-                    <div id="ResumenDevolucionesDetalle" class="row">
-                        <div class="col-7 col-sm-7 col-md-7 col-lg-8 col-xl-8" class="">
-                            <input type="text" id="NumeroDeVenta" name="NumeroDeVenta" class="form-control form-control-sm" placeholder="# de venta"> 
-                        </div>
-                        <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1" class="">
-                            <button type="button" class="btn btn-primary btn-sm" id="btnBuscarVenta">
-                                <span class="fa fa-search"></span>
-                            </button>
-                        </div>
-                        <div class="col-3 col-sm-2 col-md-2 col-lg-1 col-xl-1" align="left" >
-                            <div class="custom-control custom-checkbox" >
-                                <input type="checkbox" class="custom-control-input " style="cursor: pointer;" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)">
-                                <label class="custom-control-label" for="Todos" style="cursor: pointer;">Todos</label>
-                            </div>
-                        </div>
-                        <div class="w-100"><br></div>
-                        <div id="SubtotalEncabezado" align='center' class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <h1 class="text-success">$0.0</h1>
-                        </div>
-                    </div>
-                    <div id="DevolucionesDetalle" class="table-responsive table-sm d-none">
-                        <table id="tblDevolucionesDetalle" class="table table-bordered table-striped table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>ID</th> 
-                                    <th>ESTILO</th>
-                                    <th>COLOR</th> 
-                                    <th>TALLA</th> 
-                                    <th>CANTIDAD</th> 
-                                    <th>PRECIO</th> 
-                                    <th>DESCUENTO</th> 
-                                    <th>SUBTOTAL</th> 
-                                    <th>ACCION</th> 
-                                    <th>ESTILO_ID</th> 
-                                    <th>COLOR_ID</th> 
-                                    <th>CANTIDAD_VENTA</th>
-                                    <th>CANTIDAD_DEVOLUCION</th> 
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <!--                    <div id="ResumenDevolucionesDetalle" class="row">
+                                            <div class="col-7 col-sm-7 col-md-7 col-lg-8 col-xl-8" class="">
+                                                <input type="text" id="NumeroDeVenta" name="NumeroDeVenta" class="form-control form-control-sm" placeholder="# de venta"> 
+                                            </div>
+                                            <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1" class="">
+                                                <button type="button" class="btn btn-primary btn-sm" id="btnBuscarVenta">
+                                                    <span class="fa fa-search"></span>
+                                                </button>
+                                            </div>
+                                            <div class="col-3 col-sm-2 col-md-2 col-lg-1 col-xl-1" align="left" >
+                                                <div class="custom-control custom-checkbox" >
+                                                    <input type="checkbox" class="custom-control-input " style="cursor: pointer;" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)">
+                                                    <label class="custom-control-label" for="Todos" style="cursor: pointer;">Todos</label>
+                                                </div>
+                                            </div>
+                                            <div class="w-100"><br></div>
+                                            <div id="SubtotalEncabezado" align='center' class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                <h1 class="text-success">$0.0</h1>
+                                            </div>
+                                        </div>-->
+                    <!--                    <div id="DevolucionesDetalle" class="table-responsive table-sm d-none">
+                                            <table id="tblDevolucionesDetalle" class="table table-bordered table-striped table-hover" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th> 
+                                                        <th>ESTILO</th>
+                                                        <th>COLOR</th> 
+                                                        <th>TALLA</th> 
+                                                        <th>CANTIDAD</th> 
+                                                        <th>PRECIO</th> 
+                                                        <th>DESCUENTO</th> 
+                                                        <th>SUBTOTAL</th> 
+                                                        <th>ACCION</th> 
+                                                        <th>ESTILO_ID</th> 
+                                                        <th>COLOR_ID</th> 
+                                                        <th>CANTIDAD_VENTA</th>
+                                                        <th>CANTIDAD_DEVOLUCION</th> 
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>-->
                     <!--FIN SUBTOTAL DETALLE VENTA--> 
                 </div>  
             </div>
-            <div class="card border-dark">
-                <div class="card-header" id="headingTwo"  align="center">
-                    <h5 class="mb-0">
-                        Finalizar Devolucion 
-                    </h5>
-                </div> 
-                <div class="card-body">
-                    <!--ARTICULOS A ESCOGER-->
-                    <div id="ResumenDetalleParaIntercambio" class="row">
-
-                        <div class="col-2 d-none" align="center">
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label">
-                                    <input type="checkbox" autocomplete="off" id="btnActivarCodigoDevolucion" name="btnActivarCodigoDevolucion" class="form-control">
-                                    <br><strong>Código de barras</strong>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-8 d-none">
-                            <input type="text" id="CodigoBarrasDevolucion" name="CodigoBarrasDevolucion" class="form-control" placeholder="000123456">
-                        </div>
-                        <div class="col-2 d-none">     
-                            <button type='button' class="btn btn-primary btn-sm mt-1" id='btnBuscarCodigoDevolucion'><span class="fa fa-search"></span> BUSCAR CÓDIGO</button>
-                        </div>
-                    </div>
+            <div class="card border-dark"> 
+                <div class="card-body" style="padding-left: 0px;
+                     padding-right: 0px;">
                     <div class="row">
-                        <div class="w-100 d-none d-md-block"></div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                            <strong for="Estilo">Estilo</strong>
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                            <h3>DEVOLUCIONES</h3>
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="right"> 
+                            <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span> SALIR</button> 
+                            <button type='button' class="btn btn-primary btn-sm" id='btnFinalizar'><span class="fa fa-check"></span> GUARDAR</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="input-group mb-3">
-                                <select class="form-control form-control-sm "  name="Estilo">
-                                    <option value=""></option>
-                                </select>
+                                <input type="text" class="form-control form-control-sm" placeholder="NÚMERO DE VENTA" name="NumeroDeVenta" autofocus="">
                                 <span class="input-group-prepend">
-                                    <span class="input-group-text text-dark" id="btnExistencias" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                                    <span class="input-group-text text-dark" id="btnBuscarManual" onclick="onBusquedaManual()" data-toggle="tooltip" data-placement="top" title="Buscar por Venta">
                                         <i class="fa fa-search"></i>
                                     </span>
                                 </span>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
-                            <strong for="Combinacion">Color*</strong>
-                            <select class="form-control form-control-sm "  name="Combinacion">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
-                            <strong for="Talla">Talla</strong>
-                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
-                        </div> 
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
-                            <strong for="Talla">Cantidad</strong>
-                            <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
-                        </div> 
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
-                            <strong for="Precio">Precio</strong>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-1 col-xl-1">
-                            <br>
-                            <button  class="btn btn-primary btn-sm" id="btnAgregarADevolucion" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="col-sm-12" align="center">
-                            <h5> <span class="badge badge-pill badge-primary">* Tallas y Existencias *</span></h5>
-                            <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
-                                <thead></thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
-                                    </tr>
-                                    <tr class="disabledForms" id="rExistencias">
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21" readonly=""></td>
-                                        <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22" readonly=""></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="TieneTP" class="col-12" align="center">
-                            <input type="text" id="VentaTP" name="VentaTP" class="form-control d-none" readonly="">
-                            <strong class="text-danger">*Movimientos con I.V.A*</strong>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm numbersOnly" placeholder="CÓDIGO DEL ARTÍCULO" name="CodigoBarras" autofocus="">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text text-dark" id="btnBuscarManual" onclick="onBusquedaManual()" data-toggle="tooltip" data-placement="top" title="Buscar por Estilo">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <div id="DetalleParaIntercambio" class="table-responsive ">
-                        <table id="tblDetalleParaIntercambio" class="table table-bordered table-striped table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>ESTILOID</th> 
-                                    <th>ESTILO</th>
-                                    <th>COLORID</th> 
-                                    <th>COLOR</th> 
-                                    <th>TALLA</th> 
-                                    <th>CANTIDAD</th> 
-                                    <th>PRECIO</th>  
-                                    <th>SUBTOTAL</th> 
-                                    <th>ACCION</th> 
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <!--TOTALES-->
-                    <div id="ResumenDetalleParaIntercambioTotales" class="row">
-                        <div id="SubtotaPie" class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" align="center">
-                            <h5><strong class="badge badge-danger">* Monto devolución *</strong></h5><br>
-                            <strong class="text-dark">$ 0.0</strong>
-                        </div>
-                        <div id="TotalCubierto" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
-                            <h5><strong class="badge badge-info">* Subtotal *</strong></h5><br>
-                            <strong class="text-dark">$ 0.0</strong>
-                        </div>
-                        <div id="TotalCubiertoIVA" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
-                            <h5><strong class="badge badge-warning">* I. V. A. *</strong></h5><br>
-                            <strong class="text-dark">$ 0.0</strong>
-                        </div>
-                        <div id="TotalCubiertoTotal" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
-                            <h5><strong class="badge badge-primary">* Total *</strong></h5><br>
-                            <strong class="text-dark">$ 0.0</strong>
-                        </div>
-                        <div id="TotalDiferencia" class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" align="center">
-                            <h5><strong class="badge badge-success">* Diferencia a cobrar *</strong></h5><br>
-                            <strong class="text-dark">$ 0.0</strong>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-12" align="center"><br>
-                            <h3 class="text-info" id="ImporteEnLetraDevolucion"></h3>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <h5><strong class="badge badge-pill badge-danger">* Metodo de pago *</strong></h5>
-                            <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="">
-                            <h5><strong class="badge badge-pill badge-dark">* Su Pago *</strong></h5>
-                            <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control form-control-sm  numbersOnly text-success input-lg money" placeholder="0.0">
-                        </div>
-                        <div class="col-12"> 
-                            <div class="col-12 text-center">
-                                <h5><strong class="badge badge-warning">* Cambio *</strong></h5>
-                                <strong><legend for="TOTAL" class="text-dark" id="CambioDevolucion">$ 0.00</legend></strong>
-                            </div> 
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-12" align="center"><br>
-                            <h3 class="text-info" id="CambioEnLetraDevolucion"></h3>
-                        </div>
-                    </div>
-                    <!--FIN TOTALES--> 
                 </div>
+
+                <!--ARTICULOS A ESCOGER-->
+                <div id="ResumenDetalleParaIntercambio" class="row">
+
+                    <!--                        <div class="col-2 d-none" align="center">
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label">
+                                                        <input type="checkbox" autocomplete="off" id="btnActivarCodigoDevolucion" name="btnActivarCodigoDevolucion" class="form-control">
+                                                        <br><strong>Código de barras</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-8 d-none">
+                                                <input type="text" id="CodigoBarrasDevolucion" name="CodigoBarrasDevolucion" class="form-control" placeholder="000123456">
+                                            </div>
+                                            <div class="col-2 d-none">     
+                                                <button type='button' class="btn btn-primary btn-sm mt-1" id='btnBuscarCodigoDevolucion'><span class="fa fa-search"></span> BUSCAR CÓDIGO</button>
+                                            </div>-->
+                </div>
+
+                <div id="DetalleParaIntercambio" class="table-responsive ">
+                    <table id="tblDetalleParaIntercambio" class="table table-bordered table-striped table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ESTILOID</th> 
+                                <th>ESTILO</th>
+                                <th>COLORID</th> 
+                                <th>COLOR</th> 
+                                <th>TALLA</th> 
+                                <th>CANTIDAD</th> 
+                                <th>PRECIO</th>  
+                                <th>SUBTOTAL</th> 
+                                <th>ACCION</th> 
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!--TOTALES-->
+                <div id="ResumenDetalleParaIntercambioTotales" class="row">
+                    <div id="SubtotaPie" class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" align="center">
+                        <h5><strong class="badge badge-danger">* Monto devolución *</strong></h5><br>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubierto" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                        <h5><strong class="badge badge-info">* Subtotal *</strong></h5><br>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubiertoIVA" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                        <h5><strong class="badge badge-warning">* I. V. A. *</strong></h5><br>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalCubiertoTotal" class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2" align="center">
+                        <h5><strong class="badge badge-primary">* Total *</strong></h5><br>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div id="TotalDiferencia" class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" align="center">
+                        <h5><strong class="badge badge-success">* Diferencia a cobrar *</strong></h5><br>
+                        <strong class="text-dark">$ 0.0</strong>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-12" align="center"><br>
+                        <h3 class="text-info" id="ImporteEnLetraDevolucion"></h3>
+                    </div>
+                    <div class="w-100"></div>
+
+                </div>
+                <!--FIN TOTALES--> 
             </div>
         </div>
     </div>
 </div>
+</div>
+
+<div class="modal" id="mdlBuscar">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">BUSCAR VENTA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ResumenDevolucionesDetalle" class="row">
+                    <div class="col-7 col-sm-7 col-md-7 col-lg-8 col-xl-8" class="">
+                        <input type="text" id="NumeroDeVenta" name="NumeroDeVenta" class="form-control form-control-sm" placeholder="# de venta"> 
+                    </div>
+                    <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1" class="">
+                        <button type="button" class="btn btn-primary btn-sm" id="btnBuscarVenta">
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </div>
+                    <div class="col-3 col-sm-2 col-md-2 col-lg-1 col-xl-1" align="left" >
+                        <div class="custom-control custom-checkbox" >
+                            <input type="checkbox" class="custom-control-input " style="cursor: pointer;" id="Todos" name="Todos" onchange="onSeleccionarTodos(this)">
+                            <label class="custom-control-label" for="Todos" style="cursor: pointer;">Todos</label>
+                        </div>
+                    </div>
+                    <div class="w-100"><br></div>
+                    <div id="SubtotalEncabezado" align='center' class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <h1 class="text-success">$0.0</h1>
+                    </div>
+                </div>
+                <div id="DevolucionesDetalle" class="table-responsive table-sm d-none">
+                    <table id="tblDevolucionesDetalle" class="table table-bordered table-striped table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th> 
+                                <th>ESTILO</th>
+                                <th>COLOR</th> 
+                                <th>TALLA</th> 
+                                <th>CANTIDAD</th> 
+                                <th>PRECIO</th> 
+                                <th>DESCUENTO</th> 
+                                <th>SUBTOTAL</th> 
+                                <th>ACCION</th> 
+                                <th>ESTILO_ID</th> 
+                                <th>COLOR_ID</th> 
+                                <th>CANTIDAD_VENTA</th>
+                                <th>CANTIDAD_DEVOLUCION</th> 
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mdlBuscarArticulo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">BUSCAR ARTICULO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="w-100 d-none d-md-block"></div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                        <strong for="Estilo">Estilo</strong>
+                        <div class="input-group mb-3">
+                            <select class="form-control form-control-sm "  name="Estilo">
+                                <option value=""></option>
+                            </select>
+                            <span class="input-group-prepend">
+                                <span class="input-group-text text-dark" id="btnExistencias" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
+                        <strong for="Combinacion">Color*</strong>
+                        <select class="form-control form-control-sm "  name="Combinacion">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
+                        <strong for="Talla">Talla</strong>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" name="Talla" >
+                    </div> 
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
+                        <strong for="Talla">Cantidad</strong>
+                        <input type="text" class="form-control form-control-sm numbersOnly" name="Cantidad">
+                    </div> 
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-2 col-xl-2"> 
+                        <strong for="Precio">Precio</strong>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" maxlength="8" name="Precio" >
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-1 col-xl-1">
+                        <br>
+                        <button  class="btn btn-primary btn-sm" id="btnAgregarADevolucion" data-toggle="tooltip" data-placement="top" title="Agregar Producto" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col-sm-12" align="center" style="overflow-x:auto;">
+                        <h5> <span class="badge badge-pill badge-primary">* Tallas y Existencias *</span></h5>
+                        <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T2"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T3"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T4"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T5"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T6"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T7"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T8"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T9"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T10"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T11"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T12"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T13"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T14"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T15"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T16"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T17"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T18"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T19"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T20"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T21"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" disabled="" name="T22"></td>
+                                </tr>
+                                <tr class="disabledForms" id="rExistencias">
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex1" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex2" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex3" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex4" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex5" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex6" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex7" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex8" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex9" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex10" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex11" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex12" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex13" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex14" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex15" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex16" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex17" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex18" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex19" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex20" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex21" readonly=""></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="Ex22" readonly=""></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="TieneTP" class="col-12" align="center">
+                        <input type="text" id="VentaTP" name="VentaTP" class="form-control d-none" readonly="">
+                        <strong class="text-danger">*Movimientos con I.V.A*</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Aceptar</button> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mdlPago">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">FORMA DE PAGO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <h5><strong class="badge badge-pill badge-danger">* Metodo de pago *</strong></h5>
+                    <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="">
+                    <h5><strong class="badge badge-pill badge-dark">* Su Pago *</strong></h5>
+                    <input type="text" id="SuPagoDevolucion" name="SuPagoDevolucion" class="form-control form-control-sm  numbersOnly text-success input-lg money" placeholder="0.0">
+                </div>
+                <div class="col-12"> 
+                    <div class="col-12 text-center">
+                        <h5><strong class="badge badge-warning">* Cambio *</strong></h5>
+                        <strong><legend for="TOTAL" class="text-dark" id="CambioDevolucion">$ 0.00</legend></strong>
+                    </div> 
+                </div>
+                <div class="w-100"></div>
+                <div class="col-12" align="center"><br>
+                    <h3 class="text-info" id="CambioEnLetraDevolucion"></h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     var pnlTablero = $("#pnlTablero");
@@ -315,11 +430,106 @@
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var btnBuscarVenta = pnlDatos.find("#btnBuscarVenta");
 
+    var mdlBuscar = $("#mdlBuscar");
+    var mdlBuscarArticulo = $("#mdlBuscarArticulo");
+    var mdlPago = $("#mdlPago");
+
+    var tour = new Tour({
+        name: "tour",
+        steps: [
+            {
+                smartPlacement: true,
+                backdropContainer: 'body',
+                backdropPadding: 5,
+                placement: "auto",
+                element: "#btnBuscarVenta",
+                title: "Buscar venta",
+                content: "Con este boton buscas la venta."
+            }
+        ],
+        container: "body",
+        smartPlacement: true,
+        keyboard: true,
+        storage: window.localStorage,
+        debug: false,
+        backdrop: true,
+        backdropContainer: 'body',
+        backdropPadding: 0,
+        redirect: true,
+        orphan: false,
+        duration: false,
+        delay: false,
+        basePath: "",
+        afterGetState: function (key, value) {},
+        afterSetState: function (key, value) {},
+        afterRemoveState: function (key, value) {},
+        onStart: function (tour) {
+            console.log('onStart');
+        },
+        onEnd: function (tour) {
+            swal({
+                title: "Recorrido finalizado",
+                text: "En este momento ya es posible conocer a detalle que hace este módulo dentro del sistema.",
+                icon: "success",
+                buttons: {
+                    resumetour: {
+                        text: "Reiniciar recorrido",
+                        value: "resumetour"
+                    },
+                    endtour: {
+                        text: "Finalizar",
+                        value: "endtour"
+                    }
+                }
+            }).then((value) => {
+                switch (value) {
+                    case "resumetour":
+                        tour.init();
+                        tour.restart();
+                        break;
+                    case "endtour":
+                        swal.close();
+                        break;
+                }
+            });
+        },
+        onShow: function (tour) {
+            console.log('onShow');
+        },
+        onShown: function (tour) {
+            console.log('onShown');
+        },
+        onHide: function (tour) {
+            console.log('onHIDE');
+        },
+        onHidden: function (tour) {
+            console.log('onHidden');
+        },
+        onNext: function (tour) {},
+        onPrev: function (tour) {
+            console.log('onprev');
+        },
+        onPause: function (tour, duration) {
+            console.log('onpause');
+        },
+        onResume: function (tour, duration) {
+            console.log('RESUMIDO');
+        },
+        onRedirectError: function (tour) {
+            console.log('redirecterror');
+        }
+    });
+
     $(document).ready(function () {
         getRecords();
         getMetodosPago();
         getEstilos();
         handleEnter();
+
+// Initialize the tour
+        tour.init();
+// Start the tour
+        tour.start();
 
         pnlDatos.find("#NumeroDeVenta").keyup(function (e) {
             if (e.keyCode === 13) {
@@ -400,6 +610,8 @@
                 language: lang
             });
             tblDetalleParaIntercambio.clear().draw();
+        }).after(function () {
+
         });
 
         btnCancelarDevolucion.click(function () {
@@ -1249,48 +1461,48 @@
 //        });
         if ($.fn.DataTable.isDataTable('#tblDevolucionesACancelar')) {
             tblDevolucionesACancelar.DataTable().destroy();
-            DevolucionesACancelar = tblDevolucionesACancelar.DataTable({
-                "dom": 'Bfrtip',
-                buttons: buttons,
-                "ajax": {
-                    "url": devoluciones_url + 'getDevoluciones',
-                    "dataSrc": ""
-                },
-                "columns": [
-                    {"data": "ID"},
-                    {"data": "TIENDA"},
-                    {"data": "FOLIO"},
-                    {"data": "CLIENTE"},
-                    {"data": "FECHA DE CREACION"},
-                    {"data": "IMPORTE"}
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    }],
-                language: lang,
-                "autoWidth": true,
-                "colReorder": true,
-                "displayLength": 20,
-                "bLengthChange": false,
-                "deferRender": true,
-                "scrollCollapse": false,
-                keys: true,
-                "bSort": true,
-                "aaSorting": [
-                    [0, 'desc']/*ID*/
-                ]
-            });
-
-            tblDevolucionesACancelar.find('tbody').on('click', 'tr', function () {
-                tblDevolucionesACancelar.find("tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = DevolucionesACancelar.row(this).data();
-                devolucion_cancelar = parseInt(dtm.ID);
-            });
         }
+        DevolucionesACancelar = tblDevolucionesACancelar.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": devoluciones_url + 'getDevoluciones',
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"},
+                {"data": "TIENDA"},
+                {"data": "FOLIO"},
+                {"data": "CLIENTE"},
+                {"data": "FECHA DE CREACION"},
+                {"data": "IMPORTE"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            language: lang,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            keys: true,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ]
+        });
+
+        tblDevolucionesACancelar.find('tbody').on('click', 'tr', function () {
+            tblDevolucionesACancelar.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+            var dtm = DevolucionesACancelar.row(this).data();
+            devolucion_cancelar = parseInt(dtm.ID);
+        });
         HoldOn.close();
     }
 
@@ -1302,7 +1514,7 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                mdlBuscarArticulo.find("[name='Estilo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -1318,10 +1530,10 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='MetodoPago']")[0].selectize.addOption({text: v.SValue, value: v.ID});
-                pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                mdlPago.find("[name='MetodoPago']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                mdlPago.find("#MetodoPago")[0].selectize.addOption({text: v.SValue, value: v.ID});
             });
-            pnlDatos.find("[name='MetodoPago']")[0].selectize.setValue('1');
+            mdlPago.find("[name='MetodoPago']")[0].selectize.setValue('1');
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -1390,13 +1602,14 @@
         -o-transform: scale(2); /* Opera */
         padding: 10px;
     }
-    html{
-        background-color: rgb(255, 255, 255);
+    .table-responsive table {
+        display: table  !important;
+        width: 100% !important;
     }
-    body{
-        background-color: rgb(255, 255, 255);
-    }
-    .card-body {
-        background-color: rgb(255, 255, 255);
-    }
+
+    div.table-responsive tr:hover > td{
+        font-weight: bold;
+        color: #fff !important;
+        background-color: #2C3E50  !important;
+    } 
 </style>

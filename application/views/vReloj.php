@@ -5,10 +5,8 @@
                 <legend class="float-left">CONTROL DE ASISTENCIA</legend>
             </div>
         </div>
-        <div class="card-block"> 
+        <div class="card-block">
             <div class="row" align="center">
-
-
                 <div id="ProfilePicture" class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mb-4" >
                     <img src="<?php print base_url('img/LOSO.png'); ?>" class="img-rounded img-fluid" width="350" height="350" alt="Empleado">
                     <h1 class="display-1">0000</h1>
