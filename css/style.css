@@ -68,14 +68,21 @@ body{
 
 
 /*Tablas mas angostas*/
-.table th {
+
+
+table tbody tr{
+    cursor: pointer;
+    font-size: 0.8rem !important;
     background-color: white;
+
 }
-table td {
+table thead tr{
+    cursor: pointer;
     background-color: white;
 }
 
-.table-sm td {
+table tfoot tr{
+    cursor: pointer;
     background-color: white;
 }
 

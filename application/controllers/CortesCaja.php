@@ -67,7 +67,12 @@ class CortesCaja extends CI_Controller {
 
     public function getDetalleNuevo() {
         try {
-            print json_encode($this->cortesCaja_model->getDetalleNuevo());
+            $ID = $this->input->get('ID');
+            if ($ID === 'N') {
+                print json_encode($this->cortesCaja_model->getDetalleNuevo());
+            } else {
+                print json_encode($this->cortesCaja_model->getDetalleByID($ID));
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

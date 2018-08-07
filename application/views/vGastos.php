@@ -242,11 +242,6 @@
                 }
             }
         });
-        //Sombreado de la fila
-        pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
-            pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
-            $(this).addClass("success");
-        });
 
         //Evento en el control de costo para traer los porcentajes de venta y agregarselos al costo
         pnlControlesDetalle.find("[name='Cantidad']").blur(function () {

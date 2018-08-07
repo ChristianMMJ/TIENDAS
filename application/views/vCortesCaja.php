@@ -184,11 +184,11 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-2" style="background-color: #fff ">
+                        <div class="col-6 col-sm-2" style="background-color: #fff ">
                             <label for="VentasTotales">Ventas Totales</label>
                             <legend class="text-success" id="VentasTotales"><strong>$0.00</strong></legend>
                         </div>
-                        <div class="col-sm-2" style="background-color: #fff ">
+                        <div class="col-6 col-sm-2" style="background-color: #fff ">
                             <label for="Diferencia">Diferencia</label>
                             <legend class="text-danger" id="Diferencia"><strong>$0.00</strong></legend>
                         </div>
@@ -205,15 +205,24 @@
                         <table id="tblDetalle" class="table table-sm" width="100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">Documento</th>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Importe</th>
-                                    <th scope="col" class="d-none">IDR</th>
+                                    <th >Documento</th>
+                                    <th >Fecha</th>
+                                    <th >Tipo</th>
+                                    <th >Importe</th>
+                                    <th  class="d-none">IDR</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total:</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -237,67 +246,88 @@
     var currentDate = new Date();
     var nuevo = true;
     /*DATATABLE GLOBAL*/
-    var tblDetalleCorteCaja;
-    var tblInicial = {
-        "dom": 'frt',
-        "autoWidth": false,
-        "displayLength": 500,
-        "colReorder": true,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollY": 220,
-        "scrollCollapse": true,
-        "bSort": false,
-//        "aaSorting": [
-//            [0, 'asc']/*ID*/
-//        ],
-        "columnDefs": [
-            {
-                "targets": [4],
-                "visible": false,
-                "searchable": false
-            }
-        ],
-        language: {
-            processing: "Proceso en curso...",
-            search: "Buscar:",
-            lengthMenu: "Mostrar _MENU_ Elementos",
-            info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",
-            infoEmpty: "Mostrando 0 de 0 A 0 Elementos.",
-            infoFiltered: "(Filtrando un total _MAX_ Elementos. )",
-            infoPostFix: "",
-            loadingRecords: "Procesando los datos...",
-            zeroRecords: "No se encontro nada.",
-            emptyTable: "No existen datos en la tabla.",
-            paginate: {
-                first: "Primero",
-                previous: "Anterior",
-                next: "Siguiente",
-                last: "&Uacute;ltimo"
-            },
-            aria: {
-                sortAscending: ": Habilitado para ordenar la columna en orden ascendente",
-                sortDescending: ": Habilitado para ordenar la columna en orden descendente"
-            },
-            buttons: {
-                copyTitle: 'Registros copiados a portapapeles',
-                copyKeys: 'Copiado con teclas clave.',
-                copySuccess: {
-                    _: ' %d Registros copiados',
-                    1: ' 1 Registro copiado'
-                }
-            }
+
+    var tblDetalle = $("#tblDetalle"), RegistrosDetalle;
+    var ImporteInicialCaja;
+    function getDetalleNuevo(IDX) {
+        if ($.fn.DataTable.isDataTable('#tblDetalle')) {
+            tblDetalle.DataTable().destroy();
         }
-    };
+        HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
+        $.fn.dataTable.ext.errMode = 'throw';
+
+        RegistrosDetalle = tblDetalle.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getDetalleNuevo',
+                "dataType": "json",
+                "dataSrc": "",
+                "data": {
+                    ID: IDX
+                }
+            },
+            "columns": [
+                {"data": "Documento"},
+                {"data": "Fecha"},
+                {"data": "Cliente"},
+                {"data": "Importe"},
+                {"data": "ID"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [4],
+                    "visible": false,
+                    "searchable": false
+                }],
+            language: lang,
+            "autoWidth": false,
+            "displayLength": 500,
+            "colReorder": true,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollY": 220,
+            "scrollCollapse": true,
+            "bSort": false,
+            "initComplete": function (settings, json) {
+                HoldOn.close();
+                pnlDatos.find("#VentasTotales").find("strong").text('$' + $.number(ImporteInicialCaja, 2, '.', ','));
+            },
+            "createdRow": function (row, data, dataIndex) {
+                //Cambiar Formato de Importe
+                $(row).find("td").eq(3).text('$' + $.number(data.Importe, 2, '.', ', '));
+                $(row).find("td").eq(3).addClass('Highlight');
+
+                if (parseFloat(data.Importe) < 0) {
+                    $(row).addClass('Cargo');
+                }
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+                ImporteInicialCaja = api.column(3).data().reduce(function (a, b) {
+                    return  parseFloat(a) + parseFloat(b);
+                }, 0);
+
+                $(api.column(3).footer()).html(api.column(3, {page: 'current'}).data().reduce(function (a, b) {
+                    return '$' + $.number(ImporteInicialCaja, 2, '.', ', ');
+                }, 0));
+            }
+        });
+        $('#tblDetalle_filter input[type=search]').focus();
+
+        tblDetalle.find('tbody').on('click', 'tr', function () {
+            tblDetalle.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+        });
+
+    }
+
+
     $(document).ready(function () {
         pnlTablero.find("#TiendaT").change(function () {
             getRecords();
         });
-        //Sombreado de la fila
-        pnlDatosDetalle.find('#tblDetalle tbody').on('click', 'tr', function () {
-            pnlDatosDetalle.find("#tblDetalle tbody tr").removeClass("success");
-            $(this).addClass("success");
-        });
+
         //Captura
         var Total = 0;
         var Mil = 0;
@@ -370,7 +400,7 @@
 
         pnlDatos.find('#Saldo').change(function () {
             if ($(this).val() !== '' && parseFloat($(this).val()) > 0) {
-                var Diferencia = parseFloat($(this).val()) - totalCalculado;
+                var Diferencia = parseFloat($(this).val()) - ImporteInicialCaja;
                 pnlDatos.find("#Diferencia").find("strong").text('$' + $.number(Diferencia, 2, '.', ','));
             }
         });
@@ -394,20 +424,21 @@
                             /*AGREGAR DETALLE*/
                             var detalle = [];
                             //Destruye la instancia de datatable
-                            tblDetalleCorteCaja.destroy();
+                            RegistrosDetalle.destroy();
                             //Iteramos en la tabla natural
                             pnlDatosDetalle.find("#tblDetalle > tbody > tr").each(function (k, v) {
                                 var row = $(this).find("td");
                                 //Se declara y llena el objeto obteniendo su valor por el indice y se elimina cualquier espacio
-                                var material = {
+                                var desglose = {
                                     ID: row.eq(4).text().replace(/\s+/g, ''),
                                     Tipo: row.eq(2).text().replace(/\s+/g, '')
                                 };
                                 //Se mete el objeto al arreglo
-                                detalle.push(material);
+                                detalle.push(desglose);
                             });
                             //Convertimos a cadena el objeto en formato json
                             f.append('Detalle', JSON.stringify(detalle));
+
                             $.ajax({
                                 url: master_url + 'onAgregar',
                                 type: "POST",
@@ -425,8 +456,8 @@
                                 console.log(x, y, z);
                             }).always(function () {
                                 HoldOn.close();
-                                tblDetalleCorteCaja = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                             });
+
                         }
                     } else {
                         onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
@@ -437,11 +468,7 @@
 
         });
         btnNuevo.click(function () {
-            if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                tblDetalleCorteCaja.destroy();
-                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
-            }
-            tblDetalleCorteCaja = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatosDetalle.removeClass('d-none');
@@ -457,29 +484,8 @@
             });
             $(':input:text:enabled:visible:first').focus();
             nuevo = true;
-            //Cargar Detalle
-            if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                tblDetalleCorteCaja.destroy();
-                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
-            }
-            tblDetalleCorteCaja = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
             /*DETALLE*/
-            $.getJSON(master_url + 'getDetalleNuevo', {}).done(function (data, x, jq) {
-                $.each(data, function (k, v) {
-                    tblDetalleCorteCaja.row.add([
-                        v.Documento,
-                        v.Fecha,
-                        v.Cliente,
-                        "$" + $.number(v.Importe, 2, '.', ','),
-                        v.ID
-                    ]).draw(false);
-                });
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            }).always(function () {
-                HoldOn.close();
-                onCalcularMontos();
-            });
+            getDetalleNuevo('N');
 
 
         });
@@ -621,35 +627,8 @@
                                     pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                                 }
                             });
-                            //Cargar Detalle
-                            if ($.fn.DataTable.isDataTable('#tblDetalle')) {
-                                tblDetalleCorteCaja.destroy();
-                                pnlDatosDetalle.find("#tblDetalle > tbody").html("");
-                            }
-                            var Saldo = parseFloat(data[0].Saldo);
-                            tblDetalleCorteCaja = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
                             /*DETALLE*/
-                            var TotalTabla = 0;
-                            $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data, x, jq) {
-                                $.each(data, function (k, v) {
-                                    tblDetalleCorteCaja.row.add([
-                                        v.Documento,
-                                        v.Fecha,
-                                        v.Cliente,
-                                        "$" + $.number(v.Importe, 2, '.', ','),
-                                        v.ID
-                                    ]).draw(false);
-                                    //Calcular Diferencia
-                                    TotalTabla += parseFloat(v.Importe);
-                                });
-                                var Diferencia = parseFloat(Saldo) - parseFloat(TotalTabla);
-                                pnlDatos.find("#Diferencia").find("strong").text('$' + $.number(Diferencia, 2, '.', ','));
-                            }).fail(function (x, y, z) {
-                                console.log(x, y, z);
-                            }).always(function () {
-                                HoldOn.close();
-                                onCalcularMontos();
-                            });
+                            getDetalleNuevo(temp);
                             /*FIN DETALLE*/
                             /*MOSTRAR PANEL PRINCIPAL*/
                             pnlTablero.addClass("d-none");
@@ -683,15 +662,14 @@
             HoldOn.close();
         });
     }
-    var totalCalculado = 0.0;
-    function onCalcularMontos() {
-        $.each(tblDetalleCorteCaja.rows().data(), function () {
-            totalCalculado += getNumberFloat($(this)[3]);
-        });
-        if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 1) {
-            pnlDatos.find("#VentasTotales").find("strong").text('$' + $.number(totalCalculado, 2, '.', ','));
-        }
-    }
 
 </script>
-
+<style>
+    .Cargo {
+        color: #fff;
+        background-color: #E74C3C;
+    }
+    .Highlight {
+        font-weight: bold;
+    }
+</style>

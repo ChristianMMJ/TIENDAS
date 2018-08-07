@@ -184,6 +184,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 ORDER BY Fecha DESC ");
 
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -194,7 +195,7 @@ ORDER BY Fecha DESC ");
     public function getDetalleByID($ID) {
         try {
             $query = $this->db->query("
-SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha, CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
+SELECT V.FolioTienda AS Documento, STR_TO_DATE( V.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p')  AS Fecha, CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
 FROM sz_Ventas V
 left join sz_Clientes CT ON CT.ID = v.Cliente
 WHERE V.Estatus = 'CERRADA'
@@ -204,7 +205,7 @@ AND V.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT G.DocMov AS Documento, G.FechaCreacion AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
+SELECT G.DocMov AS Documento, STR_TO_DATE( G.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
 FROM sz_Gastos G
 WHERE G.Estatus = 'ACTIVO'
 AND G.CorteCaja = " . $ID . "
@@ -212,7 +213,7 @@ AND G.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente , D.Importe, D.ID
+SELECT '' AS Documento, STR_TO_DATE( D.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente , D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
@@ -221,7 +222,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
 UNION
 
-SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
+SELECT '' AS Documento, STR_TO_DATE(D.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
 FROM sz_Diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
