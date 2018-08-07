@@ -17,7 +17,6 @@
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
-                <button type="button" class="btn btn-primary" id="btnEliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar""><span class="fa fa-trash"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -36,7 +35,9 @@
             </div>
             <div class="col-md-7 float-right" align="right">
 
-                <button type="button" class="btn btn-danger btn-sm" id="btnSalir"><span class="fa fa-window-close"></span> SALIR </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnSalir"><span class="fa fa-arrow-left"></span> REGRESAR </button>
+                <button type="button" class="btn btn-danger btn-sm" id="btnEliminar"  data-toggle="tooltip" data-placement="top" title="Eliminar"><span class="fa fa-trash"></span> ELIMINAR</button>
+
                 <button type="button"  class="btn btn-primary btn-sm d-none" id="btnFinalizar"><span class="fa fa-check "></span> FIN. CAPTURA</button>
                 <button type="button" onclick="onImprimirInv()"  class="btn btn-info btn-sm d-none" id="btnImpInv"><span class="fa fa-print "></span> IMP. INVENTARIO</button>
                 <button type="button" onclick="onImprimirDiferencias()" class="btn btn-warning  btn-sm d-none" id="btnImpDif"><span class="fa fa-print "></span> IMP. DIFERENCIAS</button>
@@ -247,6 +248,7 @@
         var ColorCB = 0;
         var TallaCB = 0;
         pnlControlesDetalle.find("[name='CodigoBarras']").change(function () {
+
             if (!EstatusFinalizado) {
                 if ($(this).val() !== "") {
                     EstiloCB = $(this).val().slice(0, 5).replace(/^0+/, '');
@@ -474,6 +476,16 @@
             getExistenciasXEstiloXCombinacion(pnlDatos.find("[name='Estilo']").val(), $(this).val(), Mes.val(), Ano.val());
         });
 
+        pnlDatos.find("[name='Ano']").change(function () {
+            var Mes = pnlControlesDetalle.find("[name='Mes']");
+            onVerificarEstatusInicial(Mes.val(), $(this).val());
+        });
+
+        pnlDatos.find("[name='Mes']").change(function () {
+            var Ano = pnlControlesDetalle.find("[name='Ano']");
+            onVerificarEstatusInicial($(this).val(), Ano.val());
+        });
+
         //ACTUALIZAR ESTATUS A FINALIZADO
         btnFinalizar.click(function () {
             swal({
@@ -523,6 +535,7 @@
             pnlDatos.find('#btnImpDif').addClass('d-none');
             pnlDatos.find('#btnActInvFisAct').addClass('d-none');
             pnlControlesDetalle.removeClass('disabledForms');
+            btnEliminar.addClass('d-none');
 
             pnlDatos.find('#Ano').removeClass('disabledForms');
             pnlDatos.find('#Mes').removeClass('disabledForms');
@@ -541,31 +554,9 @@
             });
             $('#CodigoBarras').focus();
 
-            //Consultar inventario a capturar
-            $.ajax({
-                url: master_url + 'getEstatusInicial',
-                type: "POST",
-                data: {
-                    Mes: mes - 1,
-                    Ano: ano
-                }
-            }).done(function (data, x, jq) {
-                var dtm = JSON.parse(data);
-                if (dtm.length > 0) {
-                    if (dtm[0].Estatus === 'FINALIZADO') {
-                        EstatusFinalizado = true;
-                        getExistenciasCapturaFinalizadaByMesByAno(ano, mes - 1);
-                    } else {
-                        EstatusFinalizado = false;
-                        getExistenciasCapturaByMesByAno(ano, mes - 1);
-                    }
-                    onCalcularMontosDamaCaballero(mes - 1, ano);
-                }
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            }).always(function () {
-            });
-
+            var Ano = pnlControlesDetalle.find("[name='Ano']");
+            var Mes = pnlControlesDetalle.find("[name='Mes']");
+            onVerificarEstatusInicial(Mes.val(), Ano.val());
 
 
         });
@@ -595,6 +586,8 @@
                             Ano: AnoE
                         }
                     }).done(function (data, x, jq) {
+                        pnlTablero.removeClass("d-none");
+                        pnlDatos.addClass('d-none');
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -610,6 +603,61 @@
         getEstilos();
         handleEnter();
     });
+
+    function onVerificarEstatusInicial(mes, ano) {
+        //Consultar inventario a capturar
+        $.ajax({
+            url: master_url + 'getEstatusInicial',
+            type: "POST",
+            data: {
+                Mes: mes,
+                Ano: ano
+            }
+        }).done(function (data, x, jq) {
+            var dtm = JSON.parse(data);
+            if (dtm.length > 0) {
+                if (dtm[0].Estatus === 'FINALIZADO') {
+                    EstatusFinalizado = true;
+                    getExistenciasCapturaFinalizadaByMesByAno(ano, mes);
+                    pnlDatos.find('#btnFinalizar').addClass('d-none');
+                    pnlDatos.find('#btnImpInv').removeClass('d-none');
+                    pnlDatos.find('#btnImpDif').removeClass('d-none');
+                    pnlDatos.find('#btnActInvFisAct').removeClass('d-none');
+                    pnlControlesDetalle.find('input').prop("disabled", true);
+                    pnlControlesDetalle.find('#Mes').prop("disabled", false);
+                    pnlControlesDetalle.find('#Ano').prop("disabled", false);
+                    pnlDatos.find('#Estilo')[0].selectize.disable();
+                    pnlDatos.find('#Combinacion')[0].selectize.disable();
+                    btnEliminar.addClass('d-none');
+                    pnlControlesDetalle.find('#Mes').focus().select();
+                    pnlControlesDetalle.find('#Mes').focus();
+                } else {
+                    EstatusFinalizado = false;
+                    getExistenciasCapturaByMesByAno(ano, mes);
+                    pnlDatos.find('#btnFinalizar').removeClass('d-none');
+                    pnlDatos.find('#btnImpInv').addClass('d-none');
+                    pnlDatos.find('#btnImpDif').addClass('d-none');
+                    pnlDatos.find('#btnActInvFisAct').addClass('d-none');
+
+                    pnlControlesDetalle.find('#Mes').prop("disabled", false);
+                    pnlControlesDetalle.find('#Ano').prop("disabled", false);
+                    pnlControlesDetalle.find('#CodigoBarras').prop("disabled", false);
+                    pnlControlesDetalle.find('#Talla').prop("disabled", false);
+                    pnlControlesDetalle.find('#Cantidad').prop("disabled", false);
+                    pnlDatos.find('#Estilo')[0].selectize.enable();
+                    pnlDatos.find('#Combinacion')[0].selectize.enable();
+                    btnEliminar.removeClass('d-none');
+                    pnlControlesDetalle.find('#CodigoBarras').focus();
+                }
+                onCalcularMontosDamaCaballero(mes, ano);
+            }
+
+
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+    }
 
     function onActualizarInvFisAct() {
         swal({
@@ -1096,19 +1144,13 @@
 
                 var tblSelected = $('#tblRegistrosCaptura').DataTable(tableOptions);
                 $('#tblRegistrosCaptura_filter input[type=search]').focus();
+
                 $('#tblRegistrosCaptura tbody').on('click', 'tr', function () {
-
                     $("#tblRegistrosCaptura tbody tr").removeClass("success");
                     $(this).addClass("success");
-                    var dtm = tblSelected.row(this).data();
-                    AnoE = parseInt(dtm[0]);
-                    MesE = parseInt(dtm[1]);
-                    Estatus = dtm[3];
 
-                });
-                $('#tblRegistrosCaptura tbody').on('dblclick', 'tr', function () {
-                    $("#tblRegistrosCaptura tbody tr").removeClass("success");
-                    $(this).addClass("success");
+
+
                     var id = this.id;
                     var index = $.inArray(id, selected);
                     if (index === -1) {
@@ -1117,6 +1159,9 @@
                         selected.splice(index, 1);
                     }
                     var dtm = tblSelected.row(this).data();
+                    AnoE = parseInt(dtm[0]);
+                    MesE = parseInt(dtm[1]);
+                    Estatus = dtm[3];
 
                     //Traer detalle
                     if (Estatus === 'FINALIZADO') {
@@ -1128,6 +1173,7 @@
                         pnlControlesDetalle.find('input').prop("disabled", true);
                         pnlDatos.find('#Estilo')[0].selectize.disable();
                         pnlDatos.find('#Combinacion')[0].selectize.disable();
+                        btnEliminar.addClass('d-none');
 
                     } else {
                         getExistenciasCapturaByMesByAno(AnoE, MesE);
@@ -1143,6 +1189,7 @@
                         pnlControlesDetalle.find('#Cantidad').prop("disabled", false);
                         pnlDatos.find('#Estilo')[0].selectize.enable();
                         pnlDatos.find('#Combinacion')[0].selectize.enable();
+                        btnEliminar.removeClass('d-none');
                     }
 
 

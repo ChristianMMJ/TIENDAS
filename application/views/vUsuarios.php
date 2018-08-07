@@ -36,8 +36,9 @@
                     <div class="col-md-7 float-right">
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+
                     </div>
                 </div>
                 <div class="row">
@@ -248,14 +249,9 @@
                 });
                 var tblSelected = $('#tblUsuarios').DataTable(tableOptions);
                 $('#tblUsuarios_filter input[type=search]').focus();
+
                 $('#tblUsuarios tbody').on('click', 'tr', function () {
                     $("#tblUsuarios tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                });
-                $('#tblUsuarios tbody').on('dblclick', 'tr', function () {
-                    $("#tblCatalogos tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var id = this.id;
                     var index = $.inArray(id, selected);
@@ -265,6 +261,7 @@
                         selected.splice(index, 1);
                     }
                     var dtm = tblSelected.row(this).data();
+                    temp = parseInt(dtm[0]);
                     if (temp !== 0 && temp !== undefined && temp > 0) {
                         nuevo = false;
                         HoldOn.open({

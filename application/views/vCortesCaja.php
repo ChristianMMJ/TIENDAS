@@ -292,6 +292,7 @@
             "initComplete": function (settings, json) {
                 HoldOn.close();
                 pnlDatos.find("#VentasTotales").find("strong").text('$' + $.number(ImporteInicialCaja, 2, '.', ','));
+                pnlDatos.find("#Saldo").focus();
             },
             "createdRow": function (row, data, dataIndex) {
                 //Cambiar Formato de Importe
@@ -476,13 +477,14 @@
             $('#Encabezado').removeClass('disabledForms');
             btnGuardar.removeClass('d-none');
 
+
             pnlDatos.find("#Diferencia").find("strong").text('$0.00');
             pnlDatos.find("#VentasTotales").find("strong").text('$0.00');
 
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
-            $(':input:text:enabled:visible:first').focus();
+
             nuevo = true;
             /*DETALLE*/
             getDetalleNuevo('N');

@@ -14,7 +14,7 @@ class Proveedores extends CI_Controller {
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE"))) {
+            if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');
                 $this->load->view('vProveedores');

@@ -38,8 +38,9 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+
                     </div>
                 </div>
                 <div class="row">
@@ -182,93 +183,91 @@
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblRegistros')) {
             tblRegistrosX.DataTable().destroy();
-            Registros = tblRegistrosX.DataTable({
-                "dom": 'Bfrtip',
-                buttons: buttons,
-                "ajax": {
-                    "url": master_url + 'getRecords',
-                    "dataType": "jsonp",
-                    "dataSrc": ""
-                },
-                "columns": [
-                    {"data": "ID"},
-                    {"data": "Estilo"},
-                    {"data": "Color"}
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    }],
-                language: lang,
-                "autoWidth": true,
-                "colReorder": true,
-                "displayLength": 20,
-                "bLengthChange": false,
-                "deferRender": true,
-                "scrollCollapse": false,
-                keys: true,
-                "bSort": true,
-                "aaSorting": [
-                    [0, 'desc']/*ID*/
-                ]
-            });
-
-            tblRegistrosX.find('tbody').on('click', 'tr', function () {
-                tblRegistrosX.find("tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = Registros.row(this).data();
-                temp = parseInt(dtm.ID);
-            });
-
-            tblRegistrosX.find('tbody').on('dblclick', 'tr', function () {
-                nuevo = false;
-                tblRegistrosX.find("tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = Registros.row(this).data();
-                temp = parseInt(dtm.ID);
-                pnlDatos.removeClass("d-none");
-                pnlTablero.addClass("d-none");
-                if (temp !== 0 && temp !== undefined && temp > 0) {
-                    nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.ajax({
-                        url: master_url + 'getCombinacionByID',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            ID: temp
-                        }
-                    }).done(function (data, x, jq) {
-                        pnlDatos.find("input").val("");
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.clear(true);
-                        });
-                        $.each(data[0], function (k, v) {
-                            pnlDatos.find("[name='" + k + "']").val(v);
-                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                            }
-                        });
-                        pnlTablero.addClass("d-none");
-                        pnlDatos.removeClass('d-none');
-                        pnlDatos.find("[name='Descripcion']").focus();
-                        pnlDatos.find("[name='Descripcion']").select();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                }
-            });
         }
-        HoldOn.close();
+        Registros = tblRegistrosX.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataType": "jsonp",
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"},
+                {"data": "Estilo"},
+                {"data": "Color"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            language: lang,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            keys: true,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ],
+            initComplete: function (x, y) {
+                HoldOn.close();
+            }
+        });
+
+
+        tblRegistrosX.find('tbody').on('click', 'tr', function () {
+            nuevo = false;
+            tblRegistrosX.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+            var dtm = Registros.row(this).data();
+            temp = parseInt(dtm.ID);
+            pnlDatos.removeClass("d-none");
+            pnlTablero.addClass("d-none");
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
+                });
+                $.ajax({
+                    url: master_url + 'getCombinacionByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+                    pnlDatos.find("input").val("");
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        pnlDatos.find("[name='" + k + "']").val(v);
+                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                        }
+                    });
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    pnlDatos.find("[name='Descripcion']").focus();
+                    pnlDatos.find("[name='Descripcion']").select();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+            }
+        });
+
+
     }
     function getEstilos() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});

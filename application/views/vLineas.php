@@ -4,7 +4,7 @@
             <div class="col-sm-6 float-left">
                 <legend class="float-left">Gestión de Lineas</legend>
             </div>
-            <div class="col-sm-6 float-right" align="right"> 
+            <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
@@ -17,7 +17,7 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
             <form id="frmNuevo">
 
                 <div class="row">
@@ -28,8 +28,8 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
                     </div>
                 </div>
                 <div class="row">
@@ -37,11 +37,11 @@
                         <input type="text" class="" id="ID" name="ID" >
                     </div>
                     <div class="col-sm">
-                        <label for="Clave">Clave*</label>  
+                        <label for="Clave">Clave*</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-sm">
-                        <label for="Descripcion">Descripción*</label>  
+                        <label for="Descripcion">Descripción*</label>
                         <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
                     </div>
                 </div>
@@ -50,16 +50,16 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm required"  name="Estatus" required=""> 
-                            <option value=""></option>  
+                        <select class="form-control form-control-sm required"  name="Estatus" required="">
+                            <option value=""></option>
                             <option>ACTIVO</option>
-                            <option>INACTIVO</option> 
+                            <option>INACTIVO</option>
                         </select>
                     </div>
-                </div> 
+                </div>
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 
 <!--SCRIPT-->
@@ -163,15 +163,8 @@
             var tblSelected = $('#tblLineas').DataTable(tableOptions);
             $('#tblLineas_filter input[type=search]').focus();
 
+
             $('#tblLineas tbody').on('click', 'tr', function () {
-
-                $("#tblLineas tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = tblSelected.row(this).data();
-                temp = parseInt(dtm[0]);
-            });
-
-            $('#tblLineas tbody').on('dblclick', 'tr', function () {
                 $("#tblLineas tbody tr").removeClass("success");
                 $(this).addClass("success");
                 var id = this.id;
@@ -182,6 +175,7 @@
                     selected.splice(index, 1);
                 }
                 var dtm = tblSelected.row(this).data();
+                temp = parseInt(dtm[0]);
                 if (temp !== 0 && temp !== undefined && temp > 0) {
                     nuevo = false;
                     HoldOn.open({

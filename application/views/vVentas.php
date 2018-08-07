@@ -93,12 +93,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" style="overflow-x:auto; white-space: nowrap;">
                         <span class="input-group-text text-dark d-none" id="btnExistencias" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
                             <i class="fa fa-search"></i>
                         </span>
                         <label for="">Tallas y Existencias (Ctrl+E para ver en otras tiendas)</label>
-                        <table id="tblTallas" class="table Tallas" style="overflow-x:auto; white-space: nowrap;">
+                        <table id="tblTallas" class="Tallas" >
                             <thead></thead>
                             <tbody>
                                 <tr id="rTallasBuscaManual">
@@ -219,7 +219,7 @@
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnCancelarVenta"><span class="fa fa-ban"></span> CANCELAR</button>
                     <button type="button" class="btn btn-primary d-none btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
                     <a href="<?php print base_url('CortesCaja') ?>" target="_blank" class="btn btn-secondary btn-sm" id="btnCorteCaja"><span class="fa fa-cut"></span> (F7)CORTE</a>
-                    <button type="button" class="btn btn-success " id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> VENTA (F1)</button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnCerrarVenta"><span class="fa fa-dollar-sign"></span> VENTA (F1)</button>
                 </div>
             </div>
             <hr>

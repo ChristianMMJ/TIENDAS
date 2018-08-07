@@ -16,7 +16,7 @@
 <!--GUARDAR-->
 <div id="" class="container-fluid">
     <div class="card border-0  d-none" id="pnlDatos">
-        <div class="card-body text-dark"> 
+        <div class="card-body text-dark">
             <form id="frmNuevo">
                 <div class="row">
                     <div class="col-md-2 float-left">
@@ -26,8 +26,9 @@
 
                     </div>
                     <div class="col-md-3 float-right" align="right">
-                        <button type="button" class="btn btn-danger btn-sm" id="btnCancelar">SALIR</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">GUARDAR</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+
                     </div>
                 </div>
                 <div class="row">
@@ -36,21 +37,21 @@
                         <input type="text" class="" id="FieldId" name="FieldId" >
                     </div>
                     <div class="col-sm">
-                        <label for="IValue">Clave/Orden*</label>  
+                        <label for="IValue">Clave/Orden*</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" id="IValue" name="IValue" required >
                     </div>
                     <div class="col-sm">
-                        <label for="SValue">Nombre Corto*</label>  
+                        <label for="SValue">Nombre Corto*</label>
                         <input type="text" class="form-control form-control-sm" id="SValue" name="SValue" required >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Valor_Text">Descripción</label>  
+                        <label for="Valor_Text">Descripción</label>
                         <input type="text" class="form-control form-control-sm" id="Valor_Text" name="Valor_Text"  >
                     </div>
                     <div class="col-sm">
-                        <label for="Valor_Num">Valor</label>  
+                        <label for="Valor_Num">Valor</label>
                         <input type="number" class="form-control form-control-sm" id="Valor_Num" name="Valor_Num" >
                     </div>
 
@@ -58,24 +59,24 @@
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <label for="Special">Extra</label>  
+                        <label for="Special">Extra</label>
                         <input type="text" class="form-control form-control-sm" id="Special" name="Special"  >
                     </div>
 
                 </div>
-                <div class="row"> 
+                <div class="row">
                     <div class="col-sm">
                         <label for="Estatus">Estatus*</label>
-                        <select class="form-control form-control-sm "   name="Estatus" required=""> 
-                            <option value=""></option>  
-                            <option value="ACTIVO">ACTIVO</option>   
-                            <option value="INACTIVO">INACTIVO</option>   
+                        <select class="form-control form-control-sm "   name="Estatus" required="">
+                            <option value=""></option>
+                            <option value="ACTIVO">ACTIVO</option>
+                            <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
-                </div> 
+                </div>
             </form>
-        </div> 
-    </div> 
+        </div>
+    </div>
 </div>
 
 <!--SCRIPT-->
@@ -120,8 +121,8 @@
                     }).done(function (data, x, jq) {
                         console.log(data, x, jq);
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-pnlDatos.find('#ID').val(data);
-nuevo=false;
+                        pnlDatos.find('#ID').val(data);
+                        nuevo = false;
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -130,7 +131,7 @@ nuevo=false;
                     });
                 }
 
-            }else {
+            } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
@@ -196,14 +197,6 @@ nuevo=false;
                 $('#tblCatalogos_filter input[type=search]').focus();
 
                 $('#tblCatalogos tbody').on('click', 'tr', function () {
-
-                    $("#tblCatalogos tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                });
-
-                $('#tblCatalogos tbody').on('dblclick', 'tr', function () {
                     $("#tblCatalogos tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var id = this.id;
@@ -214,6 +207,7 @@ nuevo=false;
                         selected.splice(index, 1);
                     }
                     var dtm = tblSelected.row(this).data();
+                    temp = parseInt(dtm[0]);
                     if (temp !== 0 && temp !== undefined && temp > 0) {
                         nuevo = false;
                         HoldOn.open({

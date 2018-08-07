@@ -276,6 +276,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
+            $this->db->where_in('U.Estatus', array("ACTIVO", 'FINALIZADO'));
             $this->db->group_by(array("U.Estatus"));
             $query = $this->db->get();
             /*
