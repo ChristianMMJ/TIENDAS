@@ -6,28 +6,19 @@ class Combinaciones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('combinaciones_model');
-        $this->load->model('estilos_model');
+        $this->load->library('session')->model('combinaciones_model')->model('Estilos_model');
     }
 
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vCombinaciones');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vCombinaciones')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 

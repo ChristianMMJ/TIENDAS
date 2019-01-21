@@ -4,22 +4,18 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class usuario_model extends CI_Model {
+class Semanas_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function getRecords($Tienda) {
+    public function getRecords() {
         try {
-            if ($Tienda === 'TODAS') {
-                $Tienda = "";
-            }
-            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
-            $this->db->from('sz_Usuarios AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->select("U.Ano AS 'Año',U.Estatus  ", false);
+            $this->db->from('sz_semanas AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->like('U.Tienda', $Tienda, 'before');
+            $this->db->group_by(array('U.Ano', 'U.Estatus'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -33,15 +29,11 @@ class usuario_model extends CI_Model {
         }
     }
 
-    public function getAcceso($USUARIO, $CONTRASENA) {
+    public function onValidarExisteAno($Ano) {
         try {
-            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa ', false);
-            $this->db->from('sz_Usuarios AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Empresas AS E', 'T.Empresa = E.ID', 'left');
-            $this->db->where('U.Usuario', $USUARIO);
-            $this->db->where('U.Contrasena', $CONTRASENA);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select("COUNT(*) AS EXISTE", false)->from('sz_semanas AS S');
+            $this->db->where('S.Ano', $Ano);
+            $this->db->where_in('S.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -57,7 +49,7 @@ class usuario_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Usuarios", $array);
+            $this->db->insert("sz_semanas", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -69,7 +61,7 @@ class usuario_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Usuarios", $DATA);
+            $this->db->update("sz_semanas", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -80,19 +72,18 @@ class usuario_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Usuarios");
+            $this->db->update("sz_semanas");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getUsuarioByID($ID) {
+    public function getSemanaNominaByAno($Ano) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Usuarios AS U');
-            $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->from('sz_semanas AS U');
+            $this->db->where('U.Ano', $Ano);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -106,18 +97,39 @@ class usuario_model extends CI_Model {
         }
     }
 
-    public function getContrasena($USUARIO) {
+    public function getSemanasNominaByAno($Ano) {
         try {
-            $this->db->select('U.Contrasena', false);
-            $this->db->from('sz_Usuarios AS U');
-            $this->db->where('U.Usuario', $USUARIO);
-            $this->db->where_in('U.Estatus', 'Activo');
+            $this->db->select(""
+                    . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'NoSem',  "
+                    . "U.FechaIni AS 'FechaInicio', "
+                    . "U.FechaFin AS 'FechaFin' "
+                    . " ", false);
+            $this->db->from('sz_semanas AS U');
+            $this->db->where('U.Ano', $Ano);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//       print $str;
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanaByFecha($fecha) {
+        try {
+            $this->db->select('U.Sem', false);
+            $this->db->from('sz_semanas AS U');
+            $this->db->where('\'' . $fecha . '\' BETWEEN CONVERT(DATE,U.FechaIni) AND CONVERT(DATE,U.FechaFin)');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

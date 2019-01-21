@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class cortesCaja_model extends CI_Model {
+class CortesCaja_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -18,9 +18,9 @@ class cortesCaja_model extends CI_Model {
             $this->db->select("U.ID, "
                     . "U.FechaCreacion as 'Fecha Corte ', "
                     . "US.Usuario AS 'Usuario' ", false);
-            $this->db->from('sz_CortesCaja AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
+            $this->db->from('sz_cortescaja AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left');
             $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->where_in('U.Estatus', array('ACTIVO'));
             $query = $this->db->get();
@@ -38,7 +38,7 @@ class cortesCaja_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_CortesCaja", $array);
+            $this->db->insert("sz_cortescaja", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -50,7 +50,7 @@ class cortesCaja_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_CortesCaja", $DATA);
+            $this->db->update("sz_cortescaja", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -60,7 +60,7 @@ class cortesCaja_model extends CI_Model {
     public function onModificarGastos($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Gastos", $DATA);
+            $this->db->update("sz_gastos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,7 +69,7 @@ class cortesCaja_model extends CI_Model {
     public function onModificarVentas($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Ventas", $DATA);
+            $this->db->update("sz_ventas", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -78,7 +78,7 @@ class cortesCaja_model extends CI_Model {
     public function onModificarDiversos($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Diversos", $DATA);
+            $this->db->update("sz_diversos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -88,7 +88,7 @@ class cortesCaja_model extends CI_Model {
         try {
             $this->db->where('CorteCaja', $ID);
             $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_Ventas");
+            $this->db->update("sz_ventas");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +98,7 @@ class cortesCaja_model extends CI_Model {
         try {
             $this->db->where('CorteCaja', $ID);
             $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_Gastos");
+            $this->db->update("sz_gastos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -108,7 +108,7 @@ class cortesCaja_model extends CI_Model {
         try {
             $this->db->where('CorteCaja', $ID);
             $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_Diversos");
+            $this->db->update("sz_diversos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -118,7 +118,7 @@ class cortesCaja_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_CortesCaja");
+            $this->db->update("sz_cortescaja");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -128,7 +128,7 @@ class cortesCaja_model extends CI_Model {
     public function getCorteCajaByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_CortesCaja AS U');
+            $this->db->from('sz_cortescaja AS U');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*
@@ -147,8 +147,8 @@ class cortesCaja_model extends CI_Model {
         try {
             $query = $this->db->query("
 SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha,CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
-FROM sz_Ventas V
-left join sz_Clientes CT ON CT.ID = v.Cliente
+FROM sz_ventas V
+left join sz_clientes CT ON CT.ID = v.Cliente
 WHERE V.Estatus = 'CERRADA'
 AND V.CorteCaja IS NULL
 AND V.Tienda = " . $this->session->userdata('TIENDA') . "
@@ -156,7 +156,7 @@ AND V.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT G.DocMov AS Documento, G.FechaCreacion AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
-FROM sz_Gastos G
+FROM sz_gastos G
 WHERE G.Estatus = 'ACTIVO'
 AND G.CorteCaja IS NULL
 AND G.Tienda = " . $this->session->userdata('TIENDA') . "
@@ -164,7 +164,7 @@ AND G.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT '' AS Documento, D.FechaCreacion AS Fecha,CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, D.Importe, D.ID
-FROM sz_Diversos D
+FROM sz_diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja IS NULL
 AND D.Concepto ='ENTRADA'
@@ -173,7 +173,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT '' AS Documento, D.FechaCreacion AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
-FROM sz_Diversos D
+FROM sz_diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja IS NULL
 AND D.Concepto ='RETIRO'
@@ -196,8 +196,8 @@ ORDER BY Fecha DESC ");
         try {
             $query = $this->db->query("
 SELECT V.FolioTienda AS Documento, STR_TO_DATE( V.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p')  AS Fecha, CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
-FROM sz_Ventas V
-left join sz_Clientes CT ON CT.ID = v.Cliente
+FROM sz_ventas V
+left join sz_clientes CT ON CT.ID = v.Cliente
 WHERE V.Estatus = 'CERRADA'
 AND V.CorteCaja = " . $ID . "
 AND V.Tienda = " . $this->session->userdata('TIENDA') . "
@@ -206,7 +206,7 @@ AND V.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT G.DocMov AS Documento, STR_TO_DATE( G.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, 'GASTO' AS Cliente, -G.Importe, G.ID
-FROM sz_Gastos G
+FROM sz_gastos G
 WHERE G.Estatus = 'ACTIVO'
 AND G.CorteCaja = " . $ID . "
 AND G.Tienda = " . $this->session->userdata('TIENDA') . "
@@ -214,7 +214,7 @@ AND G.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT '' AS Documento, STR_TO_DATE( D.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente , D.Importe, D.ID
-FROM sz_Diversos D
+FROM sz_diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
 AND D.Concepto ='ENTRADA'
@@ -223,7 +223,7 @@ AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 UNION
 
 SELECT '' AS Documento, STR_TO_DATE(D.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p') AS Fecha, CONCAT(D.Concepto ,': ', D.Motivo) AS Cliente, -D.Importe, D.ID
-FROM sz_Diversos D
+FROM sz_diversos D
 WHERE D.Estatus = 'ACTIVO'
 AND D.CorteCaja = " . $ID . "
 AND D.Concepto ='RETIRO'

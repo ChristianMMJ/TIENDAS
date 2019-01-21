@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class asistencias_model extends CI_Model {
+class Asistencias_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -26,7 +26,7 @@ class asistencias_model extends CI_Model {
     public function onComprobarEntrada($Numero, $fecha) {
         try {
             $query = $this->db->select("A.ID, A.Usuario, A.Numero, A.Fecha, A.Hora, A.Estatus, A.Tipo, A.Empleado, A.EmpleadoT ", false)->from('sz_asistencias AS A')
-                    ->join('sz_Empleados AS E', 'E.NumeroEmpleado = A.Numero', 'left')
+                    ->join('sz_empleados AS E', 'E.NumeroEmpleado = A.Numero', 'left')
                     ->where('A.Numero', $Numero)
                     ->where('str_to_date(A.Fecha, \'%d/%m/%Y\') >= str_to_date(\'' . $fecha . '\', \'%d/%m/%Y\') ')
                     ->where('str_to_date(A.Fecha, \'%d/%m/%Y\') <= str_to_date(\'' . $fecha . '\', \'%d/%m/%Y\') ')
@@ -41,7 +41,7 @@ class asistencias_model extends CI_Model {
     public function getInformacionPorEmpleado($Numero) {
         try {
             return $this->db->select("E.ID AS ID, CONCAT(E.PrimerNombre,' ', E.SegundoNombre,' ',E.ApellidoP,' ',E.ApellidoM) AS Empleado, E.Foto AS FOTO ", false)
-                            ->from('sz_Empleados AS E')
+                            ->from('sz_empleados AS E')
                             ->where('E.NumeroEmpleado', $Numero)
                             ->limit(1)->get()->result();
         } catch (Exception $exc) {

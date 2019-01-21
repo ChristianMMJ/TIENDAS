@@ -7,14 +7,14 @@ class Compras extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('compras_model');
-        $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('proveedores_model');
-        $this->load->model('combinaciones_model');
-        $this->load->model('existencias_model');
-        $this->load->helper('reportes_helper');
+        $this->load->library('session')
+                ->model('Compras_model')
+                ->model('Estilos_model')
+                ->model('Tiendas_model')
+                ->model('Proveedores_model')
+                ->model('Combinaciones_model')
+                ->model('Existencias_model')
+                ->helper('reportes_helper');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -22,19 +22,12 @@ class Compras extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vCompras');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vCompras')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
@@ -44,7 +37,7 @@ class Compras extends CI_Controller {
             $pdf->SetFont('Arial', '', 10);
             $pdf->SetAutoPageBreak(false, 2);
 
-            $Detalle = $this->compras_model->getDetalleEtiquetas($this->input->post('ID'));
+            $Detalle = $this->Compras_model->getDetalleEtiquetas($this->input->post('ID'));
             if (!empty($Detalle)) {
                 foreach ($Detalle as $i => $data) {
                     $cont = 1;
@@ -121,7 +114,7 @@ class Compras extends CI_Controller {
             extract($this->input->post());
 
 
-            $data = $this->compras_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            $data = $this->Compras_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -131,7 +124,7 @@ class Compras extends CI_Controller {
     public function getCompraByID() {
         try {
             extract($this->input->post());
-            $data = $this->compras_model->getCompraByID($ID);
+            $data = $this->Compras_model->getCompraByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -140,7 +133,7 @@ class Compras extends CI_Controller {
 
     public function getCompraDetalleByID() {
         try {
-            print json_encode($this->compras_model->getCompraDetalleByID($this->input->get('ID')));
+            print json_encode($this->Compras_model->getCompraDetalleByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -149,7 +142,7 @@ class Compras extends CI_Controller {
     public function getEstilos() {
         try {
             extract($this->input->post());
-            $data = $this->estilos_model->getEstilos();
+            $data = $this->Estilos_model->getEstilos();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -159,7 +152,7 @@ class Compras extends CI_Controller {
     public function getCombinacionesXEstilo() {
         try {
             extract($this->input->post());
-            $data = $this->combinaciones_model->getCombinacionesXEstilo($Estilo);
+            $data = $this->Combinaciones_model->getCombinacionesXEstilo($Estilo);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -169,7 +162,7 @@ class Compras extends CI_Controller {
     public function getSerieXEstilo() {
         try {
             extract($this->input->post());
-            $data = $this->estilos_model->getSerieXEstilo($Estilo);
+            $data = $this->Estilos_model->getSerieXEstilo($Estilo);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -179,7 +172,7 @@ class Compras extends CI_Controller {
     public function getTiendas() {
         try {
             extract($this->input->post());
-            $data = $this->tiendas_model->getTiendas();
+            $data = $this->Tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -189,7 +182,7 @@ class Compras extends CI_Controller {
     public function getPorcentajesByTienda() {
         try {
             extract($this->input->post());
-            $data = $this->tiendas_model->getPorcentajesByTienda($ID);
+            $data = $this->Tiendas_model->getPorcentajesByTienda($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -199,7 +192,7 @@ class Compras extends CI_Controller {
     public function getProveedores() {
         try {
             extract($this->input->post());
-            $data = $this->proveedores_model->getProveedores();
+            $data = $this->Proveedores_model->getProveedores();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -227,7 +220,7 @@ class Compras extends CI_Controller {
                 'Estatus' => $Estatus,
                 'Usuario' => $this->session->userdata('ID')
             );
-            $ID = $this->compras_model->onAgregar($data);
+            $ID = $this->Compras_model->onAgregar($data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
@@ -241,7 +234,7 @@ class Compras extends CI_Controller {
                     'Subtotal' => $v->Subtotal,
                     'EsCoTa' => $v->EsCoTa
                 );
-                $this->compras_model->onAgregarDetalle($data);
+                $this->Compras_model->onAgregarDetalle($data);
             }
             /* INSERTA EXISTENCIAS */
             $Existencias = json_decode($this->input->post("Existencias"));
@@ -279,7 +272,7 @@ class Compras extends CI_Controller {
                     'Estatus' => $EstatusExistencias
                 );
 
-                $existe = $this->existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
+                $existe = $this->Existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
                 if (!empty($existe[0])) {
 
                     $dataM = array(
@@ -309,9 +302,9 @@ class Compras extends CI_Controller {
                         'PrecioMenudeo' => ($v->PrecioMenudeo > $existe[0]->PrecioMenudeo) ? $v->PrecioMenudeo : $existe[0]->PrecioMenudeo,
                         'PrecioMayoreo' => ($v->PrecioMayoreo > $existe[0]->PrecioMayoreo) ? $v->PrecioMayoreo : $existe[0]->PrecioMayoreo
                     );
-                    $this->existencias_model->onModificar($existe[0]->ID, $dataM);
+                    $this->Existencias_model->onModificar($existe[0]->ID, $dataM);
                 } else {
-                    $this->existencias_model->onAgregar($data);
+                    $this->Existencias_model->onAgregar($data);
                 }
             }
             print $ID;
@@ -327,11 +320,11 @@ class Compras extends CI_Controller {
             if ($this->input->post('AfecInv') === "1") {
 
                 //BUSCAR EXISTENCIAS QUE YA EXISTAN PERO AUN ESTEN EN ESTATUS 0 PARA MODIFICAR EXISTENCIAS
-                $ExistenciasVerifica = $this->existencias_model->getExistenciaByDocumento($ID);
+                $ExistenciasVerifica = $this->Existencias_model->getExistenciaByDocumento($ID);
                 $v = $ExistenciasVerifica[0];
                 if (!empty($v)) {
-                    $existeTemp = $this->existencias_model->onComprobarExistenciasTempXDoc($ID, $v->Tienda, $v->Estilo, $v->Color);
-                    $existeFinal = $this->existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
+                    $existeTemp = $this->Existencias_model->onComprobarExistenciasTempXDoc($ID, $v->Tienda, $v->Estilo, $v->Color);
+                    $existeFinal = $this->Existencias_model->onComprobarExistencias($v->Tienda, $v->Estilo, $v->Color);
                     if (!empty($existeTemp[0]) && !empty($existeFinal[0])) {
                         $dataEM = array(
                             'Ex1' => $existeFinal[0]->Ex1 + $existeTemp[0]->Ex1,
@@ -360,17 +353,17 @@ class Compras extends CI_Controller {
                             'PrecioMenudeo' => ($existeTemp[0]->PrecioMenudeo > $existeFinal[0]->PrecioMenudeo) ? $existeTemp[0]->PrecioMenudeo : $existeFinal[0]->PrecioMenudeo,
                             'PrecioMayoreo' => ($existeTemp[0]->PrecioMayoreo > $existeFinal[0]->PrecioMayoreo) ? $existeTemp[0]->PrecioMayoreo : $existeFinal[0]->PrecioMayoreo
                         );
-                        $this->existencias_model->onModificar($existeFinal[0]->ID, $dataEM);
-                        $this->existencias_model->onEliminarExistenciaTemp($existeTemp[0]->ID, $v->Tienda, $v->Estilo, $v->Color);
+                        $this->Existencias_model->onModificar($existeFinal[0]->ID, $dataEM);
+                        $this->Existencias_model->onEliminarExistenciaTemp($existeTemp[0]->ID, $v->Tienda, $v->Estilo, $v->Color);
 
                         /* MODIFICA ESTATUS EXISTENCIAS */
-                        $this->existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
+                        $this->Existencias_model->onModificarEstatusExistencias($ID, $EstatusExistencias);
                     }
                 }
 
 
                 $Estatus = 'AFECTADO';
-                $this->existencias_model->onModificarEstatusExistencias($ID, 1);
+                $this->Existencias_model->onModificarEstatusExistencias($ID, 1);
             } else {
                 $Estatus = 'ACTIVO';
             }
@@ -378,7 +371,7 @@ class Compras extends CI_Controller {
             $data = array(
                 'Estatus' => $Estatus
             );
-            $this->compras_model->onModificar($ID, $data);
+            $this->Compras_model->onModificar($ID, $data);
             /* FIN DETALLE */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -388,11 +381,11 @@ class Compras extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $Compra = $this->compras_model->getCompraByID($ID);
+            $Compra = $this->Compras_model->getCompraByID($ID);
             if (!empty($Compra[0])) {
                 if ($Compra[0]->Estatus === 'ACTIVO') {
-                    $this->compras_model->onEliminar($ID);
-                    $this->existencias_model->onEliminar($ID);
+                    $this->Compras_model->onEliminar($ID);
+                    $this->Existencias_model->onEliminar($ID);
                     print 1;
                 } else {
                     print 2;

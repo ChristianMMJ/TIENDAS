@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class reportesVentas_model extends CI_Model {
+class ReportesVentas_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -26,8 +26,8 @@ class reportesVentas_model extends CI_Model {
                 $FechaFin = "";
             }
             $this->db->select("T.ID AS IdTienda, CONCAT(T.Clave,'-', T.RazonSocial) AS 'Tienda' ", false);
-            $this->db->from('sz_Ventas AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->from('sz_ventas AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->like('U.TipoDoc', $TipoDoc);
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');
@@ -74,11 +74,11 @@ class reportesVentas_model extends CI_Model {
                     . "U.Importe,"
                     . "MP.SValue AS MetodoPago "
                     . " ", false);
-            $this->db->from('sz_Ventas AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->join('sz_Clientes AS Ct', 'U.Cliente = Ct.ID', 'left');
-            $this->db->join('sz_Catalogos AS MP', 'U.MetodoPago = MP.ID', 'left');
+            $this->db->from('sz_ventas AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left');
+            $this->db->join('sz_clientes AS Ct', 'U.Cliente = Ct.ID', 'left');
+            $this->db->join('sz_catalogos AS MP', 'U.MetodoPago = MP.ID', 'left');
             $this->db->like('U.TipoDoc', $TipoDoc);
             $this->db->where_in('U.Estatus', array('CERRADA'));
             $this->db->like('U.Tienda', $Tienda, 'before');

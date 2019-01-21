@@ -7,9 +7,9 @@ class Usuarios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('usuario_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('empresas_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Tiendas_model');
+        $this->load->model('Empresas_model');
     }
 
     public function index() {

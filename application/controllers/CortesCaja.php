@@ -6,9 +6,7 @@ class CortesCaja extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('cortesCaja_model');
-        $this->load->model('tiendas_model');
+        $this->load->library('session')->model('CortesCaja_model')->model('Tiendas_model');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -16,30 +14,20 @@ class CortesCaja extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vCortesCaja');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vCortesCaja')->view('vFooter');
             } else if (in_array($this->session->userdata["Tipo"], array("VENDEDOR"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vCortesCaja');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vCortesCaja')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-
-            $data = $this->cortesCaja_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            $data = $this->CortesCaja_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -48,7 +36,7 @@ class CortesCaja extends CI_Controller {
 
     public function getTiendas() {
         try {
-            $data = $this->tiendas_model->getTiendas();
+            $data = $this->Tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -58,7 +46,7 @@ class CortesCaja extends CI_Controller {
     public function getCorteCajaByID() {
         try {
             extract($this->input->post());
-            $data = $this->cortesCaja_model->getCorteCajaByID($ID);
+            $data = $this->CortesCaja_model->getCorteCajaByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -69,9 +57,9 @@ class CortesCaja extends CI_Controller {
         try {
             $ID = $this->input->get('ID');
             if ($ID === 'N') {
-                print json_encode($this->cortesCaja_model->getDetalleNuevo());
+                print json_encode($this->CortesCaja_model->getDetalleNuevo());
             } else {
-                print json_encode($this->cortesCaja_model->getDetalleByID($ID));
+                print json_encode($this->CortesCaja_model->getDetalleByID($ID));
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -80,7 +68,7 @@ class CortesCaja extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->cortesCaja_model->getDetalleByID($this->input->get('ID')));
+            print json_encode($this->CortesCaja_model->getDetalleByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,7 +83,7 @@ class CortesCaja extends CI_Controller {
                 'Usuario' => $this->session->userdata('ID'),
                 'Saldo' => ($this->input->post('Saldo') !== NULL) ? $this->input->post('Saldo') : NULL
             );
-            $ID = $this->cortesCaja_model->onAgregar($data);
+            $ID = $this->CortesCaja_model->onAgregar($data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
@@ -104,16 +92,16 @@ class CortesCaja extends CI_Controller {
                 );
 
                 if ($v->Tipo === 'GASTO') {
-                    $this->cortesCaja_model->onModificarGastos($v->ID, $data);
+                    $this->CortesCaja_model->onModificarGastos($v->ID, $data);
                 }
 
                 if (strpos($v->Tipo, 'ENTRADA') !== false) {
-                    $this->cortesCaja_model->onModificarDiversos($v->ID, $data);
+                    $this->CortesCaja_model->onModificarDiversos($v->ID, $data);
                 }
                 if (strpos($v->Tipo, 'RETIRO') !== false) {
-                    $this->cortesCaja_model->onModificarDiversos($v->ID, $data);
+                    $this->CortesCaja_model->onModificarDiversos($v->ID, $data);
                 } else {
-                    $this->cortesCaja_model->onModificarVentas($v->ID, $data);
+                    $this->CortesCaja_model->onModificarVentas($v->ID, $data);
                 }
             }
         } catch (Exception $exc) {
@@ -124,10 +112,10 @@ class CortesCaja extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->cortesCaja_model->onEliminar($ID);
-            $this->cortesCaja_model->onEliminarCorteCajaVentas($ID);
-            $this->cortesCaja_model->onEliminarCorteCajaGastos($ID);
-            $this->cortesCaja_model->onEliminarCorteCajaDiversos($ID);
+            $this->CortesCaja_model->onEliminar($ID);
+            $this->CortesCaja_model->onEliminarCorteCajaVentas($ID);
+            $this->CortesCaja_model->onEliminarCorteCajaGastos($ID);
+            $this->CortesCaja_model->onEliminarCorteCajaDiversos($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

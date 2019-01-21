@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class descuentos_model extends CI_Model {
+class ConceptosNomina_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,29 +12,9 @@ class descuentos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave, U.Descripcion", false);
-            $this->db->from('sz_Descuentos AS U');
+            $this->db->select("U.ID,U.Clave, U.Descripcion", false);
+            $this->db->from('sz_conceptosnomina AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getDescuentos() {
-        try {
-            $this->db->select("U.ID, U.Clave, U.Clave AS Descripcion, U.Porcentaje ", false);
-            $this->db->from('sz_Descuentos AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->where("U.Tienda", $this->session->userdata('TIENDA'));
-            $this->db->order_by("U.Clave", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -49,7 +29,7 @@ class descuentos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Descuentos", $array);
+            $this->db->insert("sz_conceptosnomina", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -61,7 +41,7 @@ class descuentos_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Descuentos", $DATA);
+            $this->db->update("sz_conceptosnomina", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -72,17 +52,17 @@ class descuentos_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Descuentos");
+            $this->db->update("sz_conceptosnomina");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getDescuentoByID($ID) {
+    public function getConceptoNominaByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Descuentos AS U');
+            $this->db->from('sz_conceptosnomina AS U');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*

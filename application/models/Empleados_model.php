@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class empleados_model extends CI_Model {
+class Empleados_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -15,8 +15,8 @@ class empleados_model extends CI_Model {
             $this->db->select("U.ID, "
                     . "CONCAT(U.ApellidoP,' ', U.ApellidoM ,' ', U.PrimerNombre,' ', IFNULL(U.SegundoNombre,'') ) As Empleado,"
                     . "CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
-            $this->db->from('sz_Empleados AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->from('sz_empleados AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
             //$this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -33,7 +33,7 @@ class empleados_model extends CI_Model {
     public function getEmpleados() {
         try {
             $this->db->select("U.ID, CONCAT(U.ID,'-',U.ApellidoP,' ', U.ApellidoM ,' ', U.PrimerNombre,' ', IFNULL(U.SegundoNombre,'')) As Empleado   ", false);
-            $this->db->from('sz_Empleados AS U');
+            $this->db->from('sz_empleados AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -49,7 +49,7 @@ class empleados_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Empleados", $array);
+            $this->db->insert("sz_empleados", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -61,7 +61,7 @@ class empleados_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Empleados", $DATA);
+            $this->db->update("sz_empleados", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -72,7 +72,7 @@ class empleados_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Empleados");
+            $this->db->update("sz_empleados");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -82,7 +82,7 @@ class empleados_model extends CI_Model {
     public function getEmpleadoByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Empleados AS U');
+            $this->db->from('sz_empleados AS U');
             $this->db->where('U.ID', $ID);
             //$this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();

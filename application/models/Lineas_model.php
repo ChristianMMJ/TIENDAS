@@ -4,34 +4,40 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class diversos_model extends CI_Model {
+class Lineas_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function getRecords($Tienda) {
+    public function getRecords() {
         try {
-            if ($Tienda === 'TODAS') {
-                $Tienda = "";
-            }
-            $this->db->select("U.ID, "
-                    . "CONCAT(T.Clave + '-'+T.RazonSocial) AS 'Tienda', ,"
-                    . "U.Concepto, "
-                    . "U.FechaCreacion as 'Fecha Movimiento ', "
-                    . "CONCAT('<strong>$',FORMAT(IFNULL(U.Importe,0),2),'</strong>') AS Importe,"
-                    . "US.Usuario AS 'Usuario' ", false);
-            $this->db->from('sz_Diversos AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->like('U.Tienda', $Tienda, 'before');
-            $this->db->where_in('U.Estatus', array('ACTIVO'));
+            $this->db->select("U.ID, U.Clave, U.Descripcion", false);
+            $this->db->from('sz_lineas AS U');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getLineas() {
+        try {
+            $this->db->select("U.ID, U.Clave, CONCAT(U.Clave,'-',U.Descripcion) AS Descripcion ", false);
+            $this->db->from('sz_lineas AS U');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->order_by("U.Clave", "ASC");
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -41,7 +47,7 @@ class diversos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Diversos", $array);
+            $this->db->insert("sz_lineas", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -53,7 +59,7 @@ class diversos_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Diversos", $DATA);
+            $this->db->update("sz_lineas", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -64,18 +70,19 @@ class diversos_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Diversos");
+            $this->db->update("sz_lineas");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getDiversoByID($ID) {
+    public function getLineaByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Diversos AS U');
+            $this->db->from('sz_lineas AS U');
             $this->db->where('U.ID', $ID);
+            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

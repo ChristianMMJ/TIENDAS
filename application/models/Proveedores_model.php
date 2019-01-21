@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class conceptosNomina_model extends CI_Model {
+class Proveedores_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,8 +12,25 @@ class conceptosNomina_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID,U.Clave, U.Descripcion", false);
-            $this->db->from('sz_ConceptosNomina AS U');
+            $this->db->select("U.ID, U.Clave, U.RazonSocial as 'Nombre' ", false);
+            $this->db->from('sz_proveedores AS U');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getProveedores() {
+        try {
+            $this->db->select("U.ID, CONCAT(U.Clave,'-',U.RazonSocial) AS Nombre ", false);
+            $this->db->from('sz_proveedores AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -29,7 +46,7 @@ class conceptosNomina_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_ConceptosNomina", $array);
+            $this->db->insert("sz_proveedores", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -41,7 +58,7 @@ class conceptosNomina_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_ConceptosNomina", $DATA);
+            $this->db->update("sz_proveedores", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -52,18 +69,19 @@ class conceptosNomina_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_ConceptosNomina");
+            $this->db->update("sz_proveedores");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getConceptoNominaByID($ID) {
+    public function getProveedorByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_ConceptosNomina AS U');
+            $this->db->from('sz_proveedores AS U');
             $this->db->where('U.ID', $ID);
+            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -13,7 +13,7 @@ class Asistencia extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('asistencias_model');
+        $this->load->library('session')->model('Asistencias_model','ASM');
     }
 
     public function index() {
@@ -27,8 +27,8 @@ class Asistencia extends CI_Controller {
     public function onAcceder() {
         try {
             $fecha = Date('d/m/Y');
-            $Entrada_Salida = $this->asistencias_model->onComprobarEntrada($this->input->post('Numero'), $fecha);
-            $info_empleado = $this->asistencias_model->getInformacionPorEmpleado($this->input->post('Numero'));
+            $Entrada_Salida = $this->ASM->onComprobarEntrada($this->input->post('Numero'), $fecha);
+            $info_empleado = $this->ASM->getInformacionPorEmpleado($this->input->post('Numero'));
             $dtm = json_decode(json_encode($info_empleado), FALSE);
             if (count($dtm) > 0) {
                 $es = array('Usuario' => $this->session->ID,
@@ -65,7 +65,7 @@ class Asistencia extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->asistencias_model->getRecords());
+            print json_encode($this->ASM->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class Asistencia extends CI_Controller {
 
     public function getInformacionSemana() {
         try {
-            print json_encode($this->asistencias_model->getInformacionSemana(Date('d/m/Y')));
+            print json_encode($this->ASM->getInformacionSemana(Date('d/m/Y')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

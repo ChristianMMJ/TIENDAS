@@ -4,37 +4,23 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class combinaciones_model extends CI_Model {
+class Tiendas_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Empresa) {
         try {
-            $this->db->select("U.ID, CONCAT(E.Clave , '-', E.Descripcion) AS Estilo,CONCAT( IFNULL(U.Clave,''),'-',U.Descripcion) AS Color ", false);
-            $this->db->from('sz_Combinaciones AS U');
-            $this->db->join('sz_Estilos AS E', 'E.ID = U.Estilo', 'left');
+            if ($Empresa === 'TODAS') {
+                $Empresa = "";
+            }
+            $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Tienda',CONCAT(E.Clave,'-',E.RazonSocial) AS 'Empresa' ", false);
+            $this->db->from('sz_tiendas AS U');
+            $this->db->join('sz_empresas AS E', 'U.Empresa = E.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("E.Clave", "ASC");
-            $this->db->order_by("U.Clave", "ASC");
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getUltimaClave($Estilo) {
-        try {
-            $this->db->select('MAX(U.Clave) As Clave ', false);
-            $this->db->from('sz_Combinaciones AS U');
-            $this->db->where('U.Estilo', $Estilo);
+            $this->db->like('U.Empresa', $Empresa, 'before');
+            $this->db->order_by('U.Clave', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -48,18 +34,17 @@ class combinaciones_model extends CI_Model {
         }
     }
 
-    public function getCombinacionesXEstilo($Estilo) {
+    public function getTiendas() {
         try {
-            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.Descripcion) AS Descripcion ", false);
-            $this->db->from('sz_Combinaciones AS U');
-            $this->db->where_in('U.Estilo', $Estilo);
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Tienda'  ", false);
+            $this->db->from('sz_tiendas AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->where('U.Empresa', $this->session->userdata('EMPRESA'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -67,20 +52,35 @@ class combinaciones_model extends CI_Model {
         }
     }
 
-    public function getCombinacionesXEstiloConExistencias($Estilo) {
+    public function getTiendasByEmpresa($Empresa) {
         try {
-            $this->db->select("C.ID, CONCAT(C.Clave,'-', C.Descripcion) AS Descripcion ", false);
-            $this->db->from('sz_Combinaciones AS C');
-            $this->db->join('sz_Existencias AS E', 'C.ID = E.Color');
-            $this->db->where_in('C.Estilo', $Estilo);
-            $this->db->where('(E.Ex1+E.Ex2+E.Ex3+E.Ex4+E.Ex5+E.Ex6+E.Ex7+E.Ex8+E.Ex9+E.Ex10+E.Ex11+E.Ex12+E.Ex13+E.Ex14+E.Ex15+E.Ex16+E.Ex17+E.Ex18+E.Ex19+E.Ex20+E.Ex21+E.Ex22) > 0', NULL, false);
-            $this->db->where_in('C.Estatus', 'ACTIVO');
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Tienda'  ", false);
+            $this->db->from('sz_tiendas AS U');
+            $this->db->where('U.Estatus', 'ACTIVO');
+            $this->db->where('U.Empresa', $Empresa);
+
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPorcentajesByTienda($ID) {
+        try {
+            $this->db->select("U.PorMen, U.PorMay  ", false);
+            $this->db->from('sz_tiendas AS U');
+            $this->db->where_in('U.ID', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -90,7 +90,7 @@ class combinaciones_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Combinaciones", $array);
+            $this->db->insert("sz_tiendas", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -102,7 +102,7 @@ class combinaciones_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Combinaciones", $DATA);
+            $this->db->update("sz_tiendas", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -113,17 +113,17 @@ class combinaciones_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Combinaciones");
+            $this->db->update("sz_tiendas");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getCombinacionByID($ID) {
+    public function getTiendaByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Combinaciones AS U');
+            $this->db->from('sz_tiendas AS U');
             $this->db->where('U.ID', $ID);
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();

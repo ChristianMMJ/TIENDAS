@@ -8,18 +8,18 @@ class Ventas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session');
-        $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('combinaciones_model');
-        $this->load->model('existencias_model');
-        $this->load->model('clientes_model');
-        $this->load->model('generales_model');
-        $this->load->model('empleados_model');
-        $this->load->model('descuentos_model');
-        $this->load->model('ventas_model');
-        $this->load->model('devoluciones_model');
-        $this->load->helper('ticket_helper');
+        $this->load->library('session')
+                ->model('estilos_model')
+                ->model('tiendas_model')
+                ->model('combinaciones_model')
+                ->model('existencias_model')
+                ->model('clientes_model')
+                ->model('generales_model')
+                ->model('empleados_model')
+                ->model('descuentos_model')
+                ->model('ventas_model')
+                ->model('devoluciones_model')
+                ->helper('ticket_helper');
     }
 
     public function index() {
@@ -28,18 +28,12 @@ class Ventas extends CI_Controller {
                 $this->session->set_userdata("Ventas", 1);
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vVentas');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vVentas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 

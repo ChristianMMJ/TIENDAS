@@ -115,6 +115,10 @@
             $('a[data-toggle="collapse"]').on('shown.bs.tab', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
+            $("select").selectize({
+                hideSelected: true,
+                openOnFocus: true
+            });
             $("select").not('.NotOpenDropDown').not('.notSelect').selectize({
                 hideSelected: true,
                 openOnFocus: true

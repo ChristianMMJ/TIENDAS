@@ -4,42 +4,23 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class semanas_model extends CI_Model {
+class Generales_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($FieldId) {
         try {
-            $this->db->select("U.Ano AS 'Año',U.Estatus  ", false);
-            $this->db->from('sz_Semanas AS U');
+            $this->db->select("U.ID ,U.IValue AS Clave, U.SValue AS Nombre,U.Valor_Text AS Descripción, U.Valor_Num AS Valor, U.Estatus AS Estatus ", false);
+            $this->db->from('sz_catalogos AS U');
+            $this->db->where_in('U.FieldId', $FieldId);
             $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->group_by(array('U.Ano', 'U.Estatus'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onValidarExisteAno($Ano) {
-        try {
-            $this->db->select("COUNT(*) AS EXISTE", false)->from('sz_Semanas AS S');
-            $this->db->where('S.Ano', $Ano);
-            $this->db->where_in('S.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -49,7 +30,7 @@ class semanas_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Semanas", $array);
+            $this->db->insert("sz_catalogos", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -61,7 +42,7 @@ class semanas_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Semanas", $DATA);
+            $this->db->update("sz_catalogos", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -72,18 +53,19 @@ class semanas_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Semanas");
+            $this->db->update("sz_catalogos");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getSemanaNominaByAno($Ano) {
+    public function getCatalogoByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Semanas AS U');
-            $this->db->where('U.Ano', $Ano);
+            $this->db->from('sz_catalogos AS U');
+            $this->db->where('U.ID', $ID);
+            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -97,15 +79,13 @@ class semanas_model extends CI_Model {
         }
     }
 
-    public function getSemanasNominaByAno($Ano) {
+    public function getCatalogosByFielID($FieldId) {
         try {
-            $this->db->select(""
-                    . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'NoSem',  "
-                    . "U.FechaIni AS 'FechaInicio', "
-                    . "U.FechaFin AS 'FechaFin' "
-                    . " ", false);
-            $this->db->from('sz_Semanas AS U');
-            $this->db->where('U.Ano', $Ano);
+            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue) AS SValue", false);
+            $this->db->from('sz_catalogos AS U');
+            $this->db->where('U.FieldId', $FieldId);
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->order_by("U.IValue", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -119,17 +99,19 @@ class semanas_model extends CI_Model {
         }
     }
 
-    public function getSemanaByFecha($fecha) {
+    public function getCatalogosDescripcionByFielID($FieldId) {
         try {
-            $this->db->select('U.Sem', false);
-            $this->db->from('sz_Semanas AS U');
-            $this->db->where('\'' . $fecha . '\' BETWEEN CONVERT(DATE,U.FechaIni) AND CONVERT(DATE,U.FechaFin)');
+            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue,'-',U.Valor_Text) AS SValue", false);
+            $this->db->from('sz_catalogos AS U');
+            $this->db->where('U.FieldId', $FieldId);
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->order_by("U.IValue", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//        print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

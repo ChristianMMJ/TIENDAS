@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class existencias_model extends CI_Model {
+class Existencias_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -43,11 +43,11 @@ class existencias_model extends CI_Model {
                     . "U.Ex21, "
                     . "U.Ex22,"
                     . "S.ID AS Serie", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
             $this->db->join('sz_series AS S', 'E.Serie = S.ID', 'left');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->like('U.Tienda', $Tienda);
             $this->db->order_by('U.Tienda', 'ASC');
@@ -68,8 +68,8 @@ class existencias_model extends CI_Model {
         try {
             $this->db->select("U.Estilo AS IdEstilo, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' "
                     . "", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->where_in('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->group_by(array("U.Estilo", "E.Clave", "E.Descripcion"));
@@ -90,8 +90,8 @@ class existencias_model extends CI_Model {
         try {
             $this->db->select("U.Tienda AS ID, CONCAT(E.Clave ,'-', E.RazonSocial) AS 'Tienda' "
                     . "", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Tiendas AS E', 'U.Tienda = E.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_tiendas AS E', 'U.Tienda = E.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->group_by(array("U.Tienda", "E.Clave", "E.RazonSocial"));
             $query = $this->db->get();
@@ -111,8 +111,8 @@ class existencias_model extends CI_Model {
         try {
             $this->db->select("U.Estilo AS IdEstilo, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' "
                     . "", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->group_by(array("U.Estilo", "E.Clave", "E.Descripcion"));
             $query = $this->db->get();
@@ -139,10 +139,10 @@ class existencias_model extends CI_Model {
                     . "IFNULL(Loc2,'') AS 'Ubicación 2', "
                     . "IFNULL(Loc3,'') AS 'Ubicación 3' "
                     . "", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             $this->db->where_in('U.Tienda', $Tienda);
             $query = $this->db->get();
@@ -187,10 +187,10 @@ class existencias_model extends CI_Model {
                     . "Ex22"
                     . " ", false);
 
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
             $this->db->where_in('U.Estatus', '1');
             if ($Estilo !== '') {
                 $this->db->where('U.Estilo', $Estilo);
@@ -215,7 +215,7 @@ class existencias_model extends CI_Model {
     public function onComprobarExistencias($Tienda, $Estilo, $Color) {
         try {
             $this->db->select("E.*", false);
-            $this->db->from('sz_Existencias AS E');
+            $this->db->from('sz_existencias AS E');
             $this->db->where('E.Tienda', $Tienda);
             $this->db->where('E.Estilo', $Estilo);
             $this->db->where('E.Color', $Color);
@@ -236,7 +236,7 @@ class existencias_model extends CI_Model {
     public function onComprobarExistenciasTempXDoc($ID, $Tienda, $Estilo, $Color) {
         try {
             $this->db->select("E.*", false);
-            $this->db->from('sz_Existencias AS E');
+            $this->db->from('sz_existencias AS E');
             $this->db->where('E.Tienda', $Tienda);
             $this->db->where('E.Estilo', $Estilo);
             $this->db->where('E.Color', $Color);
@@ -257,7 +257,7 @@ class existencias_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Existencias", $array);
+            $this->db->insert("sz_existencias", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -269,7 +269,7 @@ class existencias_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Existencias", $DATA);
+            $this->db->update("sz_existencias", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -281,7 +281,7 @@ class existencias_model extends CI_Model {
             $this->db->where('Tienda', $Tienda);
             $this->db->where('Estilo', $Estilo);
             $this->db->where('Color', $Color);
-            $this->db->update("sz_Existencias", $DATA);
+            $this->db->update("sz_existencias", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -297,7 +297,7 @@ class existencias_model extends CI_Model {
             $this->db->where('Color', $Color);
             $this->db->where('Tienda', $this->session->userdata('TIENDA'));
             $this->db->set('Estatus', '1');
-            $this->db->update("sz_Existencias", $DATA);
+            $this->db->update("sz_existencias", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -310,7 +310,7 @@ class existencias_model extends CI_Model {
                 'Estatus' => $DATA
             );
             $this->db->where('Documento', $ID);
-            $this->db->update("sz_Existencias", $DATOS);
+            $this->db->update("sz_existencias", $DATOS);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -320,7 +320,7 @@ class existencias_model extends CI_Model {
     public function onEliminar($ID) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->delete("sz_Existencias");
+            $this->db->delete("sz_existencias");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -334,7 +334,7 @@ class existencias_model extends CI_Model {
             $this->db->where('Estilo', $Estilo);
             $this->db->where('Tienda', $Tienda);
             $this->db->where('Color', $Color);
-            $this->db->delete("sz_Existencias");
+            $this->db->delete("sz_existencias");
             //print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -348,10 +348,10 @@ class existencias_model extends CI_Model {
                     . "CONCAT(E.Clave , '-',E.Descripcion) AS NombreEstilo, "
                     . "CONCAT(C.Clave , '-',C.Descripcion) AS NombreColor "
                     . " ", false);
-            $this->db->from('sz_Existencias AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID', 'left');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID', 'left');
+            $this->db->from('sz_existencias AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID', 'left');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID', 'left');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*
@@ -369,7 +369,7 @@ class existencias_model extends CI_Model {
     public function getExistenciaByDocumento($ID) {
         try {
             $this->db->select("U.* ", false);
-            $this->db->from('sz_Existencias AS U');
+            $this->db->from('sz_existencias AS U');
             $this->db->where('U.Documento', $ID);
             $query = $this->db->get();
             /*
@@ -388,7 +388,7 @@ class existencias_model extends CI_Model {
         try {
             $this->db->select("U.* "
                     . " ", false);
-            $this->db->from('sz_Existencias AS U');
+            $this->db->from('sz_existencias AS U');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Estilo', $Estilo);
             $this->db->where('U.Color', $combinacion);
@@ -418,8 +418,8 @@ class existencias_model extends CI_Model {
                                 S.T17,                                S.T18,
                                 S.T19,                                S.T20,
                                 S.T21,                                S.T22", false)
-                            ->from('sz_Estilos AS E')
-                            ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                            ->from('sz_estilos AS E')
+                            ->join('sz_series AS S', 'E.Serie = S.ID', 'left')
                             ->where('E.ID', $Estilo)
                             ->get()
                             ->result();
@@ -441,8 +441,8 @@ class existencias_model extends CI_Model {
                                 S.T17,                                S.T18,
                                 S.T19,                                S.T20,
                                 S.T21,                                S.T22", false)
-                            ->from('sz_Estilos AS E')
-                            ->join('sz_Series AS S', 'E.Serie = S.ID', 'left')
+                            ->from('sz_estilos AS E')
+                            ->join('sz_series AS S', 'E.Serie = S.ID', 'left')
                             ->where('E.ID', $Estilo)
                             ->get()
                             ->result();

@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class clientes_model extends CI_Model {
+class Empresas_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,26 +12,21 @@ class clientes_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave, U.RazonSocial as 'Nombre' ", false);
-            $this->db->from('sz_Clientes AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Razón Social' ", false)
+                            ->from('sz_empresas AS U')
+                            ->where_in('U.Estatus', 'ACTIVO')
+                            ->order_by('U.Clave', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getClientes() {
+    public function getEmpresas() {
         try {
-            $this->db->select("U.ID, CONCAT(U.Clave,'-',U.RazonSocial) AS Nombre ", false);
-            $this->db->from('sz_Clientes AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.RazonSocial) AS 'Empresa'  ", false)
+                    ->from('sz_empresas AS U')
+                    ->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -46,7 +41,7 @@ class clientes_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Clientes", $array);
+            $this->db->insert("sz_empresas", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -57,8 +52,7 @@ class clientes_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_Clientes", $DATA);
+            $this->db->where('ID', $ID)->update("sz_empresas", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -67,29 +61,22 @@ class clientes_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_Clientes");
+            $this->db->set('Estatus', 'INACTIVO')
+                    ->where('ID', $ID)
+                    ->update("sz_empresas");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getClienteByID($ID) {
+    public function getEmpresaByID($ID) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_Clientes AS U');
-            $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select('U.*', false)
+                            ->from('sz_empresas AS U')
+                            ->where('U.ID', $ID)
+                            ->where_in('U.Estatus', 'ACTIVO')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

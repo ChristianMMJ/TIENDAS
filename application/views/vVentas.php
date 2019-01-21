@@ -241,7 +241,7 @@
                         <div class="col-12 col-md-3">
                             <label for="Cliente">Cliente* (F9) Actualizar</label>
                             <div class="input-group mb-3">
-                                <select class="form-control form-control-sm required NotOpenDropDown" id="Cliente" name="Cliente">
+                                <select class="form-control form-control-sm required" id="Cliente" name="Cliente">
                                     <option value=""></option>
                                 </select>
                                 <div class="input-group-prepend">
@@ -257,7 +257,7 @@
                         </div>
                         <div class="col-12 col-md-2">
                             <label for="MetodoPago">Método de Pago*</label>
-                            <select class="form-control form-control-sm required NotOpenDropDown" id="MetodoPago"  name="MetodoPago">
+                            <select class="form-control form-control-sm required" id="MetodoPago"  name="MetodoPago">
                                 <option value=""></option>
                             </select>
                         </div>
@@ -276,7 +276,7 @@
             <div class="row">
                 <div class="col-12 col-md-2 col-sm-2 d-none" id="dDescuento">
                     <label for="Descuento" class="text-danger">Descuentos</label>
-                    <select class="form-control form-control-sm NotOpenDropDown"  name="Descuento">
+                    <select class="form-control form-control-sm"  name="Descuento">
                         <option value=""></option>
                     </select>
                 </div>
@@ -415,6 +415,10 @@
     };
 
     function getInicial() {
+        $("select").selectize({
+            hideSelected: true,
+            openOnFocus: true
+        });
         HoldOn.open({theme: "sk-bounce", message: "CARGANDO DATOS..."});
         getNuevoFolio();
         getClientes();
@@ -1708,18 +1712,19 @@
         });
     }
     function getClientes() {
-        pnlDatos.find("[name='Cliente']")[0].selectize.close();
-        pnlDatos.find("[name='Cliente']")[0].selectize.clear(true);
-        pnlDatos.find("[name='Cliente']")[0].selectize.clearOptions();
+        var Cliente = pnlDatos.find("[name='Cliente']")[0];
+        Cliente.selectize.close();
+        Cliente.selectize.clear(true);
+        Cliente.selectize.clearOptions();
         $.ajax({
             url: master_url + 'getClientes',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Cliente']")[0].selectize.addOption({text: v.Nombre, value: v.ID});
+                Cliente.selectize.addOption({text: v.Nombre, value: v.ID});
             });
-            pnlDatos.find("[name='Cliente']")[0].selectize.setValue('1');
+            Cliente.selectize.setValue('1');
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -1745,15 +1750,16 @@
         });
     }
     function getMetodosPago() {
+        var MP = pnlDatos.find("[name='MetodoPago']")[0];
         $.ajax({
             url: master_url + 'getMetodosPago',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='MetodoPago']")[0].selectize.addOption({text: v.SValue, value: v.ID});
+                MP.selectize.addOption({text: v.SValue, value: v.ID});
             });
-            pnlDatos.find("[name='MetodoPago']")[0].selectize.setValue('1');
+            MP.selectize.setValue('1');
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

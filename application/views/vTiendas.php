@@ -297,6 +297,7 @@
         getZonas();
         handleEnter();
     });
+    
     function getRecords() {
         temp = 0;
         HoldOn.open({

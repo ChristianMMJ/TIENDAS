@@ -7,14 +7,14 @@ class CapturaInventarios extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('existenciasCaptura_Model');
-        $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('combinaciones_model');
-        $this->load->model('existencias_model');
-        $this->load->helper('reportes_helper');
-        $this->load->helper('file');
+        $this->load->library('session')
+                ->model('ExistenciasCaptura_Model')
+                ->model('Estilos_model')
+                ->model('Tiendas_model')
+                ->model('Combinaciones_model')
+                ->model('existencias_model')
+                ->helper('reportes_helper')
+                ->helper('file');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -179,7 +179,7 @@ class CapturaInventarios extends CI_Controller {
     public function getEstilos() {
         try {
             extract($this->input->post());
-            $data = $this->estilos_model->getEstilos();
+            $data = $this->Estilos_model->getEstilos();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -199,7 +199,7 @@ class CapturaInventarios extends CI_Controller {
     public function getEncabezadoSerieXEstilo() {
         try {
             extract($this->input->post());
-            $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
+            $data = $this->Estilos_model->getEncabezadoSerieXEstilo($Estilo);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

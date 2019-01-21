@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class existenciasCaptura_Model extends CI_Model {
+class ExistenciasCaptura_Model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -23,8 +23,8 @@ class existenciasCaptura_Model extends CI_Model {
                     . "END) AS Estatus ,"
                     . "U.Estatus as EstatusSF "
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left');
             $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->order_by("U.Mes", "ASC");
             $this->db->order_by("U.Ano", "ASC");
@@ -71,7 +71,7 @@ class existenciasCaptura_Model extends CI_Model {
                     . "Ex21, "
                     . "Ex22"
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->from('sz_existenciascaptura AS U');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -115,9 +115,9 @@ class existenciasCaptura_Model extends CI_Model {
                     . "Se.T21, "
                     . "Se.T22 "
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_series AS Se', 'E.Serie = Se.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -170,10 +170,10 @@ class existenciasCaptura_Model extends CI_Model {
                     . "U.Ex21, "
                     . "U.Ex22"
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
-            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID');
+            $this->db->join('sz_series AS Se', 'E.Serie = Se.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -245,11 +245,11 @@ class existenciasCaptura_Model extends CI_Model {
                     . "Ex.Ex21 AS Exi21 ,"
                     . "Ex.Ex22 AS Exi22"
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
-            $this->db->join('sz_Series AS Se', 'E.Serie = Se.ID');
-            $this->db->join('sz_Existencias AS Ex', 'U.Estilo = Ex.Estilo and U.Color = Ex.Color and U.Tienda = Ex.Tienda ', 'left');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID');
+            $this->db->join('sz_series AS Se', 'E.Serie = Se.ID');
+            $this->db->join('sz_existencias AS Ex', 'U.Estilo = Ex.Estilo and U.Color = Ex.Color and U.Tienda = Ex.Tienda ', 'left');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -272,7 +272,7 @@ class existenciasCaptura_Model extends CI_Model {
         try {
             $this->db->select('U.Estatus AS Estatus '
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->from('sz_existenciascaptura AS U');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -295,7 +295,7 @@ class existenciasCaptura_Model extends CI_Model {
         try {
             $this->db->select("U.* "
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
+            $this->db->from('sz_existenciascaptura AS U');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Estilo', $Estilo);
             $this->db->where('U.Color', $combinacion);
@@ -345,9 +345,9 @@ class existenciasCaptura_Model extends CI_Model {
                     . "CONCAT('<span class=''fa fa-trash-alt'' "
                     . "onclick=''onEliminarRegistro(',U.ID,')  ''></span>') AS Eliminar "
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -393,9 +393,9 @@ class existenciasCaptura_Model extends CI_Model {
                     . "Ex21, "
                     . "Ex22"
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS U');
-            $this->db->join('sz_Estilos AS E', 'U.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'U.Color = C.ID');
+            $this->db->from('sz_existenciascaptura AS U');
+            $this->db->join('sz_estilos AS E', 'U.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'U.Color = C.ID');
             $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('U.Mes', $Mes);
             $this->db->where('U.Ano', $Ano);
@@ -437,9 +437,9 @@ class existenciasCaptura_Model extends CI_Model {
       +SUM(Ex.Ex21)
       +SUM(Ex.Ex22) AS TOTAL '
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS Ex');
-            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
-            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->from('sz_existenciascaptura AS Ex');
+            $this->db->join('sz_estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_catalogos AS GEN', 'E.Genero = GEN.ID');
             $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('GEN.Special', 'DAMA');
@@ -483,9 +483,9 @@ class existenciasCaptura_Model extends CI_Model {
       +SUM(Ex.Ex21)
       +SUM(Ex.Ex22) AS TOTAL '
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS Ex');
-            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
-            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->from('sz_existenciascaptura AS Ex');
+            $this->db->join('sz_estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_catalogos AS GEN', 'E.Genero = GEN.ID');
             $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('GEN.Special', 'CABALLERO');
@@ -529,9 +529,9 @@ class existenciasCaptura_Model extends CI_Model {
       +SUM(Ex.Ex21)
       +SUM(Ex.Ex22) AS TOTAL '
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS Ex');
-            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
-            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->from('sz_existenciascaptura AS Ex');
+            $this->db->join('sz_estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_catalogos AS GEN', 'E.Genero = GEN.ID');
             $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('GEN.Special', 'INFANTIL');
@@ -575,9 +575,9 @@ class existenciasCaptura_Model extends CI_Model {
       +SUM(Ex.Ex21)
       +SUM(Ex.Ex22) AS TOTAL '
                     . " ", false);
-            $this->db->from('sz_ExistenciasCaptura AS Ex');
-            $this->db->join('sz_Estilos AS E', 'Ex.Estilo = E.ID');
-            $this->db->join('sz_Catalogos AS GEN', 'E.Genero = GEN.ID');
+            $this->db->from('sz_existenciascaptura AS Ex');
+            $this->db->join('sz_estilos AS E', 'Ex.Estilo = E.ID');
+            $this->db->join('sz_catalogos AS GEN', 'E.Genero = GEN.ID');
             $this->db->like('GEN.FieldId', 'GENEROS');
             $this->db->where('Ex.Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('GEN.Special', 'UNISEX');
@@ -598,7 +598,7 @@ class existenciasCaptura_Model extends CI_Model {
 
     public function onAgregarExistenciasCaptura($array) {
         try {
-            $this->db->insert("sz_ExistenciasCaptura", $array);
+            $this->db->insert("sz_existenciascaptura", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -617,7 +617,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->where('Estilo', $Estilo);
             $this->db->where('Color', $Color);
             $this->db->where('Tienda', $this->session->userdata('TIENDA'));
-            $this->db->update("sz_ExistenciasCaptura", $DATA);
+            $this->db->update("sz_existenciascaptura", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -629,7 +629,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->where('Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('Mes', $Mes);
             $this->db->where('Ano', $Ano);
-            $this->db->update("sz_ExistenciasCaptura", $DATA);
+            $this->db->update("sz_existenciascaptura", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -641,7 +641,7 @@ class existenciasCaptura_Model extends CI_Model {
             $this->db->where('Tienda', $this->session->userdata('TIENDA'));
             $this->db->where('Mes', $Mes);
             $this->db->where('Ano', $Ano);
-            $this->db->delete("sz_ExistenciasCaptura");
+            $this->db->delete("sz_existenciascaptura");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -651,7 +651,7 @@ class existenciasCaptura_Model extends CI_Model {
     public function onEliminarRegistro($ID) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->delete("sz_ExistenciasCaptura");
+            $this->db->delete("sz_existenciascaptura");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

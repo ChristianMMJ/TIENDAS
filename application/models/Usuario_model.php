@@ -4,23 +4,50 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class generales_model extends CI_Model {
+class Usuario_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function getRecords($FieldId) {
+    public function getRecords($Tienda) {
         try {
-            $this->db->select("U.ID ,U.IValue AS Clave, U.SValue AS Nombre,U.Valor_Text AS Descripción, U.Valor_Num AS Valor, U.Estatus AS Estatus ", false);
-            $this->db->from('sz_Catalogos AS U');
-            $this->db->where_in('U.FieldId', $FieldId);
+            if ($Tienda === 'TODAS') {
+                $Tienda = "";
+            }
+            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
+            $this->db->from('sz_usuarios AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->like('U.Tienda', $Tienda, 'before');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAcceso($USUARIO, $CONTRASENA) {
+        try {
+            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa ', false);
+            $this->db->from('sz_usuarios AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_empresas AS E', 'T.Empresa = E.ID', 'left');
+            $this->db->where('U.Usuario', $USUARIO);
+            $this->db->where('U.Contrasena', $CONTRASENA);
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -30,7 +57,7 @@ class generales_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Catalogos", $array);
+            $this->db->insert("sz_usuarios", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -42,7 +69,7 @@ class generales_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Catalogos", $DATA);
+            $this->db->update("sz_usuarios", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -53,17 +80,17 @@ class generales_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Catalogos");
+            $this->db->update("sz_usuarios");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getCatalogoByID($ID) {
+    public function getUsuarioByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Catalogos AS U');
+            $this->db->from('sz_usuarios AS U');
             $this->db->where('U.ID', $ID);
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -79,39 +106,18 @@ class generales_model extends CI_Model {
         }
     }
 
-    public function getCatalogosByFielID($FieldId) {
+    public function getContrasena($USUARIO) {
         try {
-            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue) AS SValue", false);
-            $this->db->from('sz_Catalogos AS U');
-            $this->db->where('U.FieldId', $FieldId);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("U.IValue", "ASC");
+            $this->db->select('U.Contrasena', false);
+            $this->db->from('sz_usuarios AS U');
+            $this->db->where('U.Usuario', $USUARIO);
+            $this->db->where_in('U.Estatus', 'Activo');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getCatalogosDescripcionByFielID($FieldId) {
-        try {
-            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue,'-',U.Valor_Text) AS SValue", false);
-            $this->db->from('sz_Catalogos AS U');
-            $this->db->where('U.FieldId', $FieldId);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("U.IValue", "ASC");
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
+//       print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

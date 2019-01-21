@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class compras_model extends CI_Model {
+class Compras_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -24,9 +24,9 @@ class compras_model extends CI_Model {
                     . "CONCAT(T.Clave , '-',T.RazonSocial) AS 'Tienda' ,"
                     . "U.FechaMov as 'Fecha Movimiento ', "
                     . "US.Usuario AS 'Usuario' ", false);
-            $this->db->from('sz_Compras AS U');
-            $this->db->join('sz_Tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_Usuarios AS US', 'U.Usuario = US.ID', 'left');
+            $this->db->from('sz_compras AS U');
+            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
+            $this->db->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left');
             $this->db->where_in('U.Estatus', array('AFECTADO', 'ACTIVO'));
             $this->db->like('U.Tienda', $Tienda, 'before');
             $this->db->order_by("U.DocMov", "ASC");
@@ -45,7 +45,7 @@ class compras_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Compras", $array);
+            $this->db->insert("sz_compras", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -56,7 +56,7 @@ class compras_model extends CI_Model {
 
     public function onAgregarDetalle($array) {
         try {
-            $this->db->insert("sz_CompraDetalle", $array);
+            $this->db->insert("sz_compradetalle", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -68,7 +68,7 @@ class compras_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Compras", $DATA);
+            $this->db->update("sz_compras", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -79,7 +79,7 @@ class compras_model extends CI_Model {
         try {
             $this->db->where('ID', $ID);
             $this->db->where('Compra', $Compra);
-            $this->db->update("sz_CompraDetalle", $DATA);
+            $this->db->update("sz_compradetalle", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -88,7 +88,7 @@ class compras_model extends CI_Model {
     public function onEliminarDetalle($ID) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->delete("sz_CompraDetalle");
+            $this->db->delete("sz_compradetalle");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +98,7 @@ class compras_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Compras");
+            $this->db->update("sz_compras");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -108,7 +108,7 @@ class compras_model extends CI_Model {
     public function getCompraByID($ID) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('sz_Compras AS U');
+            $this->db->from('sz_compras AS U');
             $this->db->where('U.ID', $ID);
             $query = $this->db->get();
             /*
@@ -133,9 +133,9 @@ class compras_model extends CI_Model {
                     . 'CD.Precio AS Precio,'
                     . 'CD.Subtotal AS SubTotal,'
                     . 'CD.EsCoTa', false);
-            $this->db->from('sz_CompraDetalle AS CD');
-            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
+            $this->db->from('sz_compradetalle AS CD');
+            $this->db->join('sz_estilos AS E', 'CD.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'CD.Color = C.ID');
             $this->db->where('CD.Compra', $ID);
             $query = $this->db->get();
             /*
@@ -153,7 +153,7 @@ class compras_model extends CI_Model {
     public function Existe($Estilo, $Color, $Talla, $Compra) {
         try {
             $this->db->select('COUNT(*) AS EXISTE', false);
-            $this->db->from('sz_CompraDetalle AS CD ');
+            $this->db->from('sz_compradetalle AS CD ');
             $this->db->where('CD.Compra', $Compra);
             $this->db->where('CD.Talla', $Talla);
             $this->db->where('CD.Color', $Color);
@@ -186,12 +186,12 @@ class compras_model extends CI_Model {
                     . 'CD.Talla AS Talla,'
                     . 'CD.Cantidad AS Cantidad,'
                     . 'CD.EsCoTa', false);
-            $this->db->from('sz_CompraDetalle AS CD');
-            $this->db->join('sz_Estilos AS E', 'CD.Estilo = E.ID');
-            $this->db->join('sz_Combinaciones AS C', 'CD.Color = C.ID');
-            $this->db->join('sz_Compras AS COMS', 'CD.Compra = COMS.ID');
-            $this->db->join('sz_Tiendas AS T', 'COMS.Tienda = T.ID');
-            $this->db->join('sz_Empresas AS Em', 'T.Empresa = Em.ID');
+            $this->db->from('sz_compradetalle AS CD');
+            $this->db->join('sz_estilos AS E', 'CD.Estilo = E.ID');
+            $this->db->join('sz_combinaciones AS C', 'CD.Color = C.ID');
+            $this->db->join('sz_compras AS COMS', 'CD.Compra = COMS.ID');
+            $this->db->join('sz_tiendas AS T', 'COMS.Tienda = T.ID');
+            $this->db->join('sz_empresas AS Em', 'T.Empresa = Em.ID');
             $this->db->where('CD.Compra', $ID);
             $query = $this->db->get();
             /*

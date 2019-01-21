@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class estilos_model extends CI_Model {
+class Estilos_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -19,8 +19,8 @@ class estilos_model extends CI_Model {
                     . "THEN '<span class=\"badge badge-danger\">SIN LINEA</span>' "
                     . "ELSE CONCAT(L.Clave,'-',L.Descripcion) END AS Linea "
                     . " ", false);
-            $this->db->from('sz_Estilos AS E');
-            $this->db->join('sz_Lineas AS L', 'E.Linea = L.ID', 'left');
+            $this->db->from('sz_estilos AS E');
+            $this->db->join('sz_lineas AS L', 'E.Linea = L.ID', 'left');
             $this->db->where_in('E.Estatus', array('ACTIVO'));
             $query = $this->db->get();
             /*
@@ -38,7 +38,7 @@ class estilos_model extends CI_Model {
     public function getEstilos() {
         try {
             $this->db->select("U.ID, U.Clave, CONCAT(U.Clave,'-',U.Descripcion) AS Descripcion ", false);
-            $this->db->from('sz_Estilos AS U');
+            $this->db->from('sz_estilos AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -61,9 +61,9 @@ class estilos_model extends CI_Model {
                     . "CONCAT(E.Clave , ' ', E.Descripcion) AS Estilo,"
                     . "CONCAT( IFNULL(U.Clave,''),' ',U.Descripcion) AS Color, "
                     . "CONCAT('Serie: ' ,S.PuntoInicial,' AL ', S.PuntoFinal) AS Serie ", false);
-            $this->db->from('sz_Combinaciones AS U');
-            $this->db->join('sz_Estilos AS E', 'E.ID = U.Estilo', 'left');
-            $this->db->join('sz_Series AS S', 'S.ID =  E.Serie');
+            $this->db->from('sz_combinaciones AS U');
+            $this->db->join('sz_estilos AS E', 'E.ID = U.Estilo', 'left');
+            $this->db->join('sz_series AS S', 'S.ID =  E.Serie');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $this->db->like('E.Clave', $Estilo, 'after');
             $this->db->order_by("E.Clave", "ASC");
@@ -84,7 +84,7 @@ class estilos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("sz_Estilos", $array);
+            $this->db->insert("sz_estilos", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -96,7 +96,7 @@ class estilos_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Estilos", $DATA);
+            $this->db->update("sz_estilos", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -107,7 +107,7 @@ class estilos_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("sz_Estilos");
+            $this->db->update("sz_estilos");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -117,7 +117,7 @@ class estilos_model extends CI_Model {
     public function getEstiloByID($ID) {
         try {
             $this->db->select('E.*', false);
-            $this->db->from('sz_Estilos AS E');
+            $this->db->from('sz_estilos AS E');
             $this->db->where('E.ID', $ID);
             $this->db->where_in('E.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -136,8 +136,8 @@ class estilos_model extends CI_Model {
     public function getSerieXEstilo($Estilo) {
         try {
             $this->db->select("S.*, E.Clave AS ClaveEstilo", false);
-            $this->db->from('sz_Estilos AS E');
-            $this->db->join('sz_Series AS S', 'E.Serie = S.ID', 'left');
+            $this->db->from('sz_estilos AS E');
+            $this->db->join('sz_series AS S', 'E.Serie = S.ID', 'left');
             $this->db->where('E.ID', $Estilo);
             $query = $this->db->get();
             /*
@@ -177,8 +177,8 @@ class estilos_model extends CI_Model {
                     . "S.T21,"
                     . "S.T22"
                     . "", false);
-            $this->db->from('sz_Estilos AS E');
-            $this->db->join('sz_Series AS S', 'E.Serie = S.ID', 'left');
+            $this->db->from('sz_estilos AS E');
+            $this->db->join('sz_series AS S', 'E.Serie = S.ID', 'left');
             $this->db->where('E.ID', $Estilo);
             $query = $this->db->get();
             /*

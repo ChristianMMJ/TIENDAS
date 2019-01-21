@@ -7,35 +7,27 @@ class Estilos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('estilos_model');
-        $this->load->model('generales_model');
-        $this->load->model('lineas_model');
-        $this->load->model('series_model');
+        $this->load->model('Estilos_model');
+        $this->load->model('Generales_model');
+        $this->load->model('Lineas_model')->model('Series_model');
     }
 
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vEstilos');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vEstilos')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-            print json_encode($this->estilos_model->getRecords());
+            print json_encode($this->Estilos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -44,7 +36,7 @@ class Estilos extends CI_Controller {
     public function getMarcas() {
         try {
             extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('MARCAS');
+            $data = $this->Generales_model->getCatalogosByFielID('MARCAS');
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -54,7 +46,7 @@ class Estilos extends CI_Controller {
     public function getTemporadas() {
         try {
             extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('TEMPORADAS');
+            $data = $this->Generales_model->getCatalogosByFielID('TEMPORADAS');
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -64,7 +56,7 @@ class Estilos extends CI_Controller {
     public function getGeneros() {
         try {
             extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('GENEROS');
+            $data = $this->Generales_model->getCatalogosByFielID('GENEROS');
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -74,7 +66,7 @@ class Estilos extends CI_Controller {
     public function getTiposEstilo() {
         try {
             extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('TIPOS ESTILO');
+            $data = $this->Generales_model->getCatalogosByFielID('TIPOS ESTILO');
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -84,7 +76,7 @@ class Estilos extends CI_Controller {
     public function getSeries() {
         try {
             extract($this->input->post());
-            $data = $this->series_model->getSeries();
+            $data = $this->Series_model->getSeries();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -94,7 +86,7 @@ class Estilos extends CI_Controller {
     public function getLineas() {
         try {
             extract($this->input->post());
-            $data = $this->lineas_model->getLineas();
+            $data = $this->Lineas_model->getLineas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -103,7 +95,7 @@ class Estilos extends CI_Controller {
 
     public function getEstiloByID() {
         try {
-            print json_encode($this->estilos_model->getEstiloByID($this->input->post('ID')));
+            print json_encode($this->Estilos_model->getEstiloByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -127,7 +119,7 @@ class Estilos extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
 
-            $ID = $this->estilos_model->onAgregar($data);
+            $ID = $this->Estilos_model->onAgregar($data);
 
 
             $URL_DOC = 'uploads/Estilos/';
@@ -151,12 +143,12 @@ class Estilos extends CI_Controller {
                     $DATA = array(
                         'Foto' => ($img),
                     );
-                    $this->estilos_model->onModificar($ID, $DATA);
+                    $this->Estilos_model->onModificar($ID, $DATA);
                 } else {
                     $DATA = array(
                         'Foto' => (null),
                     );
-                    $this->estilos_model->onModificar($ID, $DATA);
+                    $this->Estilos_model->onModificar($ID, $DATA);
                 }
             }
             print $ID;
@@ -185,7 +177,7 @@ class Estilos extends CI_Controller {
                 'TipoEstilo' => ($this->input->post('TipoEstilo') !== NULL && $this->input->post('TipoEstilo') !== 'null') ? $this->input->post('TipoEstilo') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->estilos_model->onModificar($this->input->post('ID'), $data);
+            $this->Estilos_model->onModificar($this->input->post('ID'), $data);
 
             $Foto = $this->input->post('Foto');
             if (empty($Foto)) {
@@ -211,12 +203,12 @@ class Estilos extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->estilos_model->onModificar($ID, $DATA);
+                            $this->Estilos_model->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->estilos_model->onModificar($ID, $DATA);
+                            $this->Estilos_model->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -224,7 +216,7 @@ class Estilos extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->estilos_model->onModificar($ID, $DATA);
+                $this->Estilos_model->onModificar($ID, $DATA);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -233,7 +225,7 @@ class Estilos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->estilos_model->onEliminar($this->input->post('ID'));
+            $this->Estilos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
