@@ -1,56 +1,67 @@
 <div class="col-12">
     <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
-
-        <div class="card special-card  m-3" onclick="onLoadMenu(0)"> 
-            <div class="card-body ">
-                <span class="fa fa-wrench fa-2x mt-5 mt-5"></span>  
+        <?php
+        if ($this->session->Tipo === 'ADMINISTRADOR') {
+            ?>
+            <div class="card special-card  m-3" onclick="onLoadMenu(0)"> 
+                <div class="card-body ">
+                    <span class="fa fa-wrench fa-2x mt-5 mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">CATÁLOGOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">CATÁLOGOS</div>
-        </div>
+            <?php
+        }
 
-        <div class="card special-card m-3" onclick="onLoadMenu(1)">
-            <div class="card-body ">
-                <span class="fa fa-hand-holding-usd fa-2x mt-5"></span>  
+        if (in_array($this->session->Tipo, array("ADMINISTRADOR", "GERENTE", "CAJERO"))) {
+            ?>
+            <div class="card special-card m-3" onclick="onLoadMenu(1)">
+                <div class="card-body ">
+                    <span class="fa fa-hand-holding-usd fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">VENTAS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">VENTAS</div>
-        </div>
-
-        <div class="card special-card m-3" onclick="onLoadMenu(2)">
-            <div class="card-body ">
-                <span class="fa fa-cut fa-2x mt-5"></span>  
+            <?php
+        }
+        if (in_array($this->session->Tipo, array("ADMINISTRADOR", "GERENTE"))) {
+            ?>
+            <div class="card special-card m-3" onclick="onLoadMenu(2)">
+                <div class="card-body ">
+                    <span class="fa fa-cut fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">CAJA</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">CAJA</div>
-        </div>
 
-        <div class="card special-card m-3" onclick="onLoadMenu(3)">
-            <div class="card-body ">
-                <span class="fa fa-external-link-alt fa-2x mt-5"></span>  
+            <div class="card special-card m-3" onclick="onLoadMenu(3)">
+                <div class="card-body ">
+                    <span class="fa fa-external-link-alt fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">GASTOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">GASTOS</div>
-        </div>
 
-        <div class="card special-card m-3" onclick="onLoadMenu(4)">
-            <div class="card-body ">
-                <span class="fa fa-shopping-cart fa-2x mt-5"></span>  
+            <div class="card special-card m-3" onclick="onLoadMenu(4)">
+                <div class="card-body ">
+                    <span class="fa fa-shopping-cart fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">COMPRAS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">COMPRAS</div>
-        </div>
 
-        <div class="card special-card m-3" onclick="onLoadMenu(5)">
-            <div class="card-body ">
-                <span class="fa fa-cube fa-2x mt-5"></span>  
+            <div class="card special-card m-3" onclick="onLoadMenu(5)">
+                <div class="card-body ">
+                    <span class="fa fa-cube fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">INVENTARIOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">INVENTARIOS</div>
-        </div>
 
-        <div class="card special-card  m-3" onclick="onLoadMenu(6)">
+            <div class="card special-card  m-3" onclick="onLoadMenu(6)">
 
-            <div class="card-body ">
-                <span class="fa fa-dollar-sign fa-2x mt-5"></span>  
-            </div>
-            <div class="card-footer special-card-footer bg-transparent">NOMINA</div>
-        </div> 
-
+                <div class="card-body ">
+                    <span class="fa fa-dollar-sign fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">NOMINA</div>
+            </div> 
+            <?php
+        }
+        ?>
         <div class="card special-card  m-3" onclick="onAcceso()">
             <div class="card-body ">
                 <span class="fa fa-clock fa-2x mt-5"></span>  
@@ -60,6 +71,7 @@
 
     </div>
 </div>
+
 <!--MODAL - CATALOGOS-->
 <div id="mdlCatalogos" class="modal">
     <div class="modal-dialog modal-lg modal-dialog-centered special-modal-lg" role="document">
@@ -283,7 +295,6 @@
     </div>
 </div>
 
-
 <!--MODAL CATALOGOS/GENERALES-->
 <div id="mdlCatalogosNomina" class="modal">
     <div class="modal-dialog modal-lg modal-dialog-centered special-modal-lg" role="document">
@@ -330,10 +341,8 @@
 
 <script>
     var mdlCatalogos = $('#mdlCatalogos'), mdlCatalogosGenerales = $("#mdlCatalogosGenerales");
-    $(document).ready(function () {
-
-    });
-
+    $(".card").addClass(" animated bounceIn"); 
+    
     function onRef(e) {
         location.href = e;
     }

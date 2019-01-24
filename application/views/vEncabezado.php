@@ -116,7 +116,7 @@
 
     <script>
         function openNav() {
-            $('#myNav').width(220);
+            $('#myNav').width(250);
         }
 
         function closeNav() {

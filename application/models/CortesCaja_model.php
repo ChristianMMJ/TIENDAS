@@ -17,12 +17,12 @@ class CortesCaja_model extends CI_Model {
             }
             $this->db->select("U.ID, "
                     . "U.FechaCreacion as 'Fecha Corte ', "
-                    . "US.Usuario AS 'Usuario' ", false);
-            $this->db->from('sz_cortescaja AS U');
-            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left');
-            $this->db->like('U.Tienda', $Tienda, 'before');
-            $this->db->where_in('U.Estatus', array('ACTIVO'));
+                    . "US.Usuario AS 'Usuario' ", false)
+                    ->from('sz_cortescaja AS U')
+                    ->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left')
+                    ->join('sz_usuarios AS US', 'U.Usuario = US.ID', 'left')
+                    ->like('U.Tienda', $Tienda, 'before')
+                    ->where_in('U.Estatus', array('ACTIVO'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -49,8 +49,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_cortescaja", $DATA);
+            $this->db->where('ID', $ID)->update("sz_cortescaja", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -59,8 +58,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onModificarGastos($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_gastos", $DATA);
+            $this->db->where('ID', $ID)->update("sz_gastos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,8 +66,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onModificarVentas($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_ventas", $DATA);
+            $this->db->where('ID', $ID)->update("sz_ventas", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -77,8 +74,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onModificarDiversos($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_diversos", $DATA);
+            $this->db->where('ID', $ID)->update("sz_diversos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -86,9 +82,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onEliminarCorteCajaVentas($ID) {
         try {
-            $this->db->where('CorteCaja', $ID);
-            $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_ventas");
+            $this->db->where('CorteCaja', $ID)->set('CorteCaja', 'NULL', false)->update("sz_ventas");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -96,9 +90,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onEliminarCorteCajaGastos($ID) {
         try {
-            $this->db->where('CorteCaja', $ID);
-            $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_gastos");
+            $this->db->where('CorteCaja', $ID)->set('CorteCaja', 'NULL', false)->update("sz_gastos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,9 +98,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onEliminarCorteCajaDiversos($ID) {
         try {
-            $this->db->where('CorteCaja', $ID);
-            $this->db->set('CorteCaja', 'NULL', false);
-            $this->db->update("sz_diversos");
+            $this->db->where('CorteCaja', $ID)->set('CorteCaja', 'NULL', false)->update("sz_diversos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -116,9 +106,7 @@ class CortesCaja_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_cortescaja");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("sz_cortescaja");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -127,9 +115,7 @@ class CortesCaja_model extends CI_Model {
 
     public function getCorteCajaByID($ID) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_cortescaja AS U');
-            $this->db->where('U.ID', $ID);
+            $this->db->select('U.*', false)->from('sz_cortescaja AS U')->where('U.ID', $ID);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -148,7 +134,7 @@ class CortesCaja_model extends CI_Model {
             $query = $this->db->query("
 SELECT V.FolioTienda AS Documento, V.FechaCreacion AS Fecha,CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
 FROM sz_ventas V
-left join sz_clientes CT ON CT.ID = v.Cliente
+left join sz_clientes CT ON CT.ID = V.Cliente
 WHERE V.Estatus = 'CERRADA'
 AND V.CorteCaja IS NULL
 AND V.Tienda = " . $this->session->userdata('TIENDA') . "
@@ -179,12 +165,10 @@ AND D.CorteCaja IS NULL
 AND D.Concepto ='RETIRO'
 AND D.Tienda = " . $this->session->userdata('TIENDA') . "
 
-
-
 ORDER BY Fecha DESC ");
 
             $str = $this->db->last_query();
-            //print $str;
+//            print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
@@ -197,7 +181,7 @@ ORDER BY Fecha DESC ");
             $query = $this->db->query("
 SELECT V.FolioTienda AS Documento, STR_TO_DATE( V.FechaCreacion ,'%d/%m/%Y %h:%i:%s %p')  AS Fecha, CONCAT( 'VENTA: ', CT.RazonSocial) AS Cliente,V.Importe, V.ID
 FROM sz_ventas V
-left join sz_clientes CT ON CT.ID = v.Cliente
+left join sz_clientes CT ON CT.ID = V.Cliente
 WHERE V.Estatus = 'CERRADA'
 AND V.CorteCaja = " . $ID . "
 AND V.Tienda = " . $this->session->userdata('TIENDA') . "

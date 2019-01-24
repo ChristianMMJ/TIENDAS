@@ -47,6 +47,7 @@ class Generales extends CI_Controller {
                 'Special' => ($X->post('Special') !== NULL) ? $X->post('Special') : NULL,
                 'Valor_Num' => ($X->post('Valor_Num') !== NULL) ? $X->post('Valor_Num') : NULL,
                 'Valor_Text' => ($X->post('Valor_Text') !== NULL) ? $X->post('Valor_Text') : NULL,
+                'NumeroProducto' => ($X->post('NumeroProducto') !== NULL) ? $X->post('NumeroProducto') : NULL,
                 'Estatus' => 'ACTIVO'
             );
             $ID = $this->generales_model->onAgregar($data);
@@ -65,7 +66,8 @@ class Generales extends CI_Controller {
                 'Special' => ($X->post('Special') !== NULL) ? $X->post('Special') : NULL,
                 'Valor_Num' => ($X->post('Valor_Num') !== NULL) ? $X->post('Valor_Num') : NULL,
                 'Valor_Text' => ($X->post('Valor_Text') !== NULL) ? $X->post('Valor_Text') : NULL,
-                'Estatus' => ($X->post('Estatus') !== NULL) ? $X->post('Estatus') : NULL
+                'Estatus' => ($X->post('Estatus') !== NULL) ? $X->post('Estatus') : NULL,
+                'NumeroProducto' => ($X->post('NumeroProducto') !== NULL) ? $X->post('NumeroProducto') : NULL
             );
             $this->generales_model->onModificar($X->post('ID'), $DATA);
         } catch (Exception $exc) {

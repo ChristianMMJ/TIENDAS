@@ -1,8 +1,8 @@
-<div id="myNav" class="overlay">
+<div id="myNav" class="overlay" >
     <a class="closebtn " onclick="closeNav()">&times;</a>
     <div class="overlay-content navbar">
         <ul class="navbar-nav mr-auto">
-            <a href="<?php print base_url(); ?>"><img src="<?php print base_url(); ?>img/logo_mediano.png" width="160"></a>
+            <a href="<?php print base_url(); ?>"><img src="<?php print base_url(); ?>img/logo_mediano.png" width="180"></a>
             <br>
             <div class="dropdown-divider"></div>
             <!-------------------------------------CATALOGOS--------------------------------->
@@ -10,7 +10,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-success  btn-sm   dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-wrench"></i> Catálogos
                     </a>
                     <ul class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdownMenuLink">
@@ -63,7 +63,7 @@
                 ?>
 
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-success  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-hand-holding-usd"></i>  Ventas
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -79,7 +79,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-secondary dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-cut"></i>  Caja
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -95,7 +95,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-danger  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-external-link-alt"></i>  Gastos
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -110,7 +110,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-warning  btn-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-shopping-cart"></i> Compras
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -126,7 +126,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-info dropdown-toggle  btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-list-alt"></i> Inventarios
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -146,7 +146,7 @@
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
                 ?>
                 <li class="nav-item dropdown mb-2">
-                    <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-primary btn-block dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-dollar-sign"></i> Nómina
                     </a>
                     <div class="dropdown-menu dropdown-menu-transparent" aria-labelledby="navbarDropdown">
@@ -504,7 +504,7 @@
     .navbar-brand {
         font-size: 14px;
     }
-    
+
     .special-card{
         min-width: 18rem;
         max-width: 18rem;
@@ -568,5 +568,39 @@
         right: 20px;
         color: #fff !important;
         font-size: 30px !important;
+    }
+    .dropdown-item{
+        transition: all 1s;
+    }
+    .dropdown-item:hover{
+        color: #fff;
+        text-decoration: none;
+        background-color: #2C3E50;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold; 
+        transition: all 0.3s;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        /*background: #f1f1f1;*/ 
+        background: #486071;  
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        /*background: #888;*/ 
+        background: #2C3E50;  
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        /*background: #555;*/ 
+        background: #2C3E50;  
     }
 </style>

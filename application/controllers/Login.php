@@ -18,7 +18,7 @@ class Login extends CI_Controller {
                 }
                 $this->load->view('vEncabezado')->view('vVentas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFondo')->view('vQuickMenu')->view('vStyles')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vFondo')->view('vNavegacion')->view('vQuickMenu')->view('vStyles')->view('vFooter');
             }
         } else {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');

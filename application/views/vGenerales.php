@@ -54,15 +54,22 @@
                         <label for="Valor_Num">Valor</label>
                         <input type="number" class="form-control form-control-sm" id="Valor_Num" name="Valor_Num" >
                     </div>
-
-
                 </div>
                 <div class="row">
                     <div class="col-sm">
                         <label for="Special">Extra</label>
                         <input type="text" class="form-control form-control-sm" id="Special" name="Special"  >
                     </div>
-
+                    <?php
+                    if ($_GET['modulo'] === 'GENEROS') {
+                        ?>
+                        <div class="col-sm">
+                            <label for="NumeroProducto">Numero de producto</label>
+                            <input type="text" class="form-control form-control-sm" id="NumeroProducto" name="NumeroProducto"  >
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <div class="row">
                     <div class="col-sm">
@@ -94,6 +101,9 @@
             isValid('pnlDatos');
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                if (getParameterByName('modulo') !== 'GENEROS') {
+                    frm.append('NumeroProducto', '');
+                }
                 if (!nuevo) {
                     $.ajax({
                         url: master_url + 'onModificar',
@@ -103,8 +113,9 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        getRecords();
+                        swal('SUCCESS', 'SE HAN GUARDADO LOS CAMBIOS', 'success').then((value) => {
+                            location.reload();
+                        });
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
