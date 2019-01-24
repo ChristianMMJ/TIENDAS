@@ -9,13 +9,45 @@
         <link rel="icon" type="image/png" sizes="192x192"  href="<?php print base_url(); ?>img/LS32X32.png">
         <meta name="theme-color" content="#ffffff">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>PV ZAP v1.0</title>
+        <title>TRAVUKO TIENDAS v1.0</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!-- Bootstrap CSS -->
-        <link href="<?php print base_url('css/bootstrap-r.css') ?>" rel="stylesheet">
-
+        <?php
+        switch ($this->session->THEME) {
+            case 1:
+                print '<link href="' . base_url('css/bootstrap-r.css') . '" rel="stylesheet">';
+                break;
+            case 2:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/sandstone/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">';
+                break;
+            case 3:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/minty/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">';
+                break;
+            case 4:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/slate/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">';
+                break;
+            case 5:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/lux/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">';
+                break;
+            case 6:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/materia/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">';
+                break;
+            case 7:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/litera/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">';
+                break;
+            case 8:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">';
+                break;
+            case 9:
+                print '<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">';
+                break;
+            default:
+                print '<link href="' . base_url('css/bootstrap-r.css') . '" rel="stylesheet">';
+                break;
+        }
+        ?> 
         <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet">
 
         <!--DataTables Plugin-->
@@ -36,7 +68,8 @@
         <!-- Shortcut key -->
         <script src="<?php echo base_url(); ?>js/ShortCut/shortcut.js"></script>
         <!--Font Awesome Icons-->
-        <script defer src="<?php print base_url(); ?>js/fontawesome-all.js"></script>
+        <!--<script defer src="<?php print base_url(); ?>js/fontawesome-all.js"></script>-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <link rel="stylesheet" href="<?php print base_url(); ?>css/animate.min.css">
         <!--HoldOn Stupid Accions-->
         <link href="<?php print base_url(); ?>css/HoldOn.min.css" rel="stylesheet">
@@ -76,7 +109,7 @@
         <!-- BOOTSTRAP TOUR JS -->
         <link href="<?php echo base_url(); ?>js/bootstrap-tour-master/build/css/bootstrap-tour.min.css" rel="stylesheet">
         <script src="<?php echo base_url(); ?>js/bootstrap-tour-master/build/js/bootstrap-tour.js"></script>
-        
+
         <!-- Custom scripts for this template -->
         <script src="<?php echo base_url(); ?>js/scripts.js"></script>
     </head>

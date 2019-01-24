@@ -67,13 +67,13 @@ class Devoluciones_model extends CI_Model {
 
     public function getDevoluciones() {
         try {
-            $this->db->select("DEV.ID AS ID, T.RazonSocial AS TIENDA, DEV.FolioTienda AS FOLIO, "
-                    . "CL.RazonSocial AS CLIENTE, DEV.FechaCreacion AS \"FECHA DE CREACION\" , "
-                    . "CONCAT('<strong class=\"text-success\">$',FORMAT(DEV.Importe,2),'</span>') AS IMPORTE", false)
-                    ->from('sz_devoluciones AS DEV')
-                    ->join('sz_tiendas AS T', 'DEV.Tienda = T.ID', 'left')
-                    ->join('sz_clientes AS CL', 'DEV.Cliente = CL.ID', 'left')
-                    ->where('Dev.Tienda', $this->session->userdata('TIENDA'));
+            $this->db->select("D.ID AS ID, T.RazonSocial AS TIENDA, D.FolioTienda AS FOLIO, "
+                    . "CL.RazonSocial AS CLIENTE, D.FechaCreacion AS \"FECHA DE CREACION\" , "
+                    . "CONCAT('<strong class=\"text-success\">$',FORMAT(D.Importe,2),'</span>') AS IMPORTE", false)
+                    ->from('sz_devoluciones AS D')
+                    ->join('sz_tiendas AS T', 'D.Tienda = T.ID', 'left')
+                    ->join('sz_clientes AS CL', 'D.Cliente = CL.ID', 'left')
+                    ->where('D.Tienda', $this->session->userdata('TIENDA'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -114,11 +114,8 @@ class Devoluciones_model extends CI_Model {
 
     public function getCatalogosByFielID($FieldId) {
         try {
-            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue) AS SValue", false);
-            $this->db->from('sz_catalogos AS U');
-            $this->db->where('U.FieldId', $FieldId);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("U.IValue", "ASC");
+            $this->db->select("U.ID, CONCAT(U.IValue,' ',U.SValue) AS SValue", false)->from('sz_catalogos AS U')
+                    ->where('U.FieldId', $FieldId)->where_in('U.Estatus', 'ACTIVO')->order_by("U.IValue", "ASC");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -134,10 +131,8 @@ class Devoluciones_model extends CI_Model {
 
     public function getCombinacionesXEstilo($Estilo) {
         try {
-            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.Descripcion) AS Descripcion ", false);
-            $this->db->from('sz_combinaciones AS U');
-            $this->db->where_in('U.Estilo', $Estilo);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select("U.ID, CONCAT(U.Clave,'-', U.Descripcion) AS Descripcion ", false)
+                    ->from('sz_combinaciones AS U')->where_in('U.Estilo', $Estilo)->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -153,10 +148,10 @@ class Devoluciones_model extends CI_Model {
 
     public function getSerieXEstiloConClave($Estilo) {
         try {
-            $this->db->select("S.*, E.Clave AS ClaveEstilo", false);
-            $this->db->from('sz_estilos AS E');
-            $this->db->join('sz_series AS S', 'E.Serie = S.ID', 'left');
-            $this->db->where('E.ID', $Estilo);
+            $this->db->select("S.*, E.Clave AS ClaveEstilo", false)
+                    ->from('sz_estilos AS E')
+                    ->join('sz_series AS S', 'E.Serie = S.ID', 'left')
+                    ->where('E.ID', $Estilo);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -311,10 +306,9 @@ class Devoluciones_model extends CI_Model {
         try {
             $this->db->select("U.* "
                     . " ", false);
-            $this->db->from('sz_existencias AS U');
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
-            $this->db->where('U.Estilo', $Estilo);
-            $this->db->where('U.Color', $combinacion);
+            $this->db->from('sz_existencias AS U')
+                    ->where('U.Tienda', $this->session->userdata('TIENDA'))
+                    ->where('U.Estilo', $Estilo)->where('U.Color', $combinacion);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -16,7 +16,7 @@ class Traspasos extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vTraspasos')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuInventarios')->view('vTraspasos')->view('vFooter');
             } else {
                 $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }

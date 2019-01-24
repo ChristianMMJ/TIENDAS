@@ -6,38 +6,24 @@ class Lineas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('lineas_model');
-        $this->load->model('generales_model');
+        $this->load->library('session')->model('lineas_model')->model('generales_model');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vLineas');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCatalogos')->view('vLineas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-            extract($this->input->post());
-
-
-            $data = $this->lineas_model->getRecords();
-            print json_encode($data);
+            print json_encode($this->lineas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,9 +31,7 @@ class Lineas extends CI_Controller {
 
     public function getLineaByID() {
         try {
-            extract($this->input->post());
-            $data = $this->lineas_model->getLineaByID($ID);
-            print json_encode($data);
+            print json_encode($this->lineas_model->getLineaByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,13 +53,13 @@ class Lineas extends CI_Controller {
 
     public function onModificar() {
         try {
-            extract($this->input->post());
+            $x = $this->input;
             $DATA = array(
-                'Clave' => ($this->input->post('Clave') !== NULL) ? $this->input->post('Clave') : NULL,
-                'Descripcion' => ($this->input->post('Descripcion') !== NULL) ? $this->input->post('Descripcion') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
+                'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
+                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
+                'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL
             );
-            $this->lineas_model->onModificar($ID, $DATA);
+            $this->lineas_model->onModificar($this->input->post('ID'), $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,11 +67,9 @@ class Lineas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->lineas_model->onEliminar($ID);
+            $this->lineas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
 }

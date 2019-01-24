@@ -6,36 +6,24 @@ class Existencias extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('estilos_model');
-        $this->load->model('existencias_model');
+        $this->load->library('session')->model('estilos_model')->model('existencias_model');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vExistencias');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuInventarios')->view('vExistencias')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getEncabezadoSerieXEstilo() {
-        try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
-            print json_encode($data);
+        try { 
+            print json_encode($this->estilos_model->getEncabezadoSerieXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -51,9 +39,7 @@ class Existencias extends CI_Controller {
 
     public function getTiendasConExistencias() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getTiendasConExistencias();
-            print json_encode($data);
+            print json_encode($this->existencias_model->getTiendasConExistencias());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -61,9 +47,7 @@ class Existencias extends CI_Controller {
 
     public function getSerieXEstilo() {
         try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getSerieXEstilo($Estilo);
-            print json_encode($data);
+            print json_encode($this->estilos_model->getSerieXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -76,6 +60,7 @@ class Existencias extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getSerieXEstiloTRG() {
         try {
             print json_encode($this->existencias_model->getSerieXEstiloTRG($this->input->get('Estilo')));
@@ -86,12 +71,9 @@ class Existencias extends CI_Controller {
 
     public function getExistenciaByID() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getExistenciaByID($ID);
-            print json_encode($data);
+            print json_encode($this->existencias_model->getExistenciaByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
 }

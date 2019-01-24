@@ -16,19 +16,12 @@ class Login extends CI_Controller {
                 if ($this->session->userdata['Ventas'] === 0) {
                     $this->session->set_userdata("Ventas", 1);
                 }
-                $this->load->view('vEncabezado'); 
-                $this->load->view('vVentas');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vVentas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFondo');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFondo')->view('vQuickMenu')->view('vStyles')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
@@ -37,17 +30,19 @@ class Login extends CI_Controller {
             extract(filter_input_array(INPUT_POST));
             $data = $this->usuario_model->getAcceso($USUARIO, $CONTRASENA);
             if (count($data) > 0) {
+                $r = $data[0];
                 $newdata = array(
-                    'USERNAME' => $data[0]->Usuario,
-                    'PASSWORD' => $data[0]->Contrasena,
-                    'TIENDA' => $data[0]->Tienda,
-                    'TIENDA_NOMBRE' => $data[0]->RazonSocial,
-                    'EMPRESA' => $data[0]->EmpresaID,
-                    'EMPRESA_LOGO' => $data[0]->FotoEmpresa,
-                    'ID' => $data[0]->ID,
+                    'USERNAME' => $r->Usuario,
+                    'PASSWORD' => $r->Contrasena,
+                    'TIENDA' => $r->Tienda,
+                    'TIENDA_NOMBRE' => $r->RazonSocial,
+                    'EMPRESA' => $r->EmpresaID,
+                    'EMPRESA_LOGO' => $r->FotoEmpresa,
+                    'ID' => $r->ID,
                     'LOGGED' => TRUE,
-                    'Tipo' => $data[0]->Tipo,
-                    'Ventas' => 0
+                    'Tipo' => $r->Tipo,
+                    'Ventas' => 0,
+                    'THEME' => $r->Theme
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);

@@ -6,36 +6,24 @@ class Prestamos extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('prestamos_model');
-        $this->load->model('empleados_model');
-        $this->load->model('tiendas_model');
+        $this->load->library('session')->model('prestamos_model')->model('empleados_model')->model('tiendas_model');
         date_default_timezone_set('America/Mexico_City');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vPrestamos');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuNomina')->view('vPrestamos')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-
             $data = $this->prestamos_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
@@ -54,9 +42,7 @@ class Prestamos extends CI_Controller {
 
     public function getPrestamoByID() {
         try {
-            extract($this->input->post());
-            $data = $this->prestamos_model->getPrestamoByID($ID);
-            print json_encode($data);
+            print json_encode($this->prestamos_model->getPrestamoByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -87,8 +73,7 @@ class Prestamos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->prestamos_model->onEliminar($ID);
+            $this->prestamos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

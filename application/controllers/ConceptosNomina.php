@@ -13,7 +13,7 @@ class ConceptosNomina extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vConceptosNomina')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCatalogos')->view('vConceptosNomina')->view('vFooter');
             } else {
                 $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
@@ -24,9 +24,7 @@ class ConceptosNomina extends CI_Controller {
 
     public function getRecords() {
         try {
-            extract($this->input->post());
-            $data = $this->cnm->getRecords();
-            print json_encode($data);
+            print json_encode($this->cnm->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -34,9 +32,7 @@ class ConceptosNomina extends CI_Controller {
 
     public function getConceptoNominaByID() {
         try {
-            extract($this->input->post());
-            $data = $this->cnm->getConceptoNominaByID($ID);
-            print json_encode($data);
+            print json_encode($this->cnm->getConceptoNominaByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -76,8 +72,7 @@ class ConceptosNomina extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->cnm->onEliminar($ID);
+            $this->cnm->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

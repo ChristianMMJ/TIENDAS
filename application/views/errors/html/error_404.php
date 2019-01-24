@@ -57,8 +57,8 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<h1>404 PÁGINA NO ENCONTRADA</h1>
+		LO QUE ESTAS BUSCANDO NO EXISTE DENTRO DE ESTE SISTEMA
 	</div>
 </body>
 </html>

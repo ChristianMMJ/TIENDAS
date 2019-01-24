@@ -7,12 +7,8 @@ class Reimpresion extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('combinaciones_model');
-        $this->load->model('compras_model');
-        $this->load->helper('reportes_helper');
+        $this->load->library('session')->model('estilos_model')->model('tiendas_model')->model('combinaciones_model');
+        $this->load->model('compras_model')->helper('reportes_helper');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -20,19 +16,12 @@ class Reimpresion extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vReimpresion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuInventarios')->view('vReimpresion')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 

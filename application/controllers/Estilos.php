@@ -6,17 +6,15 @@ class Estilos extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('Estilos_model');
-        $this->load->model('Generales_model');
-        $this->load->model('Lineas_model')->model('Series_model');
+        $this->load->library('session')->model('Estilos_model')
+                ->model('Generales_model')->model('Lineas_model')->model('Series_model');
     }
 
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vEstilos')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCatalogos')->view('vEstilos')->view('vFooter');
             } else {
                 $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }

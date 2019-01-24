@@ -14,7 +14,7 @@ class CortesCaja extends CI_Controller {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vCortesCaja')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCaja')->view('vCortesCaja')->view('vFooter');
             } else if (in_array($this->session->userdata["Tipo"], array("VENDEDOR"))) {
                 $this->load->view('vEncabezado')->view('vCortesCaja')->view('vFooter');
             } else {

@@ -7,7 +7,7 @@ class Devoluciones extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->model('devoluciones_model')->model('ventas_model');
+        $this->load->model('devoluciones_model','dvm')->model('ventas_model');
     }
 
     public function index() {
@@ -16,7 +16,7 @@ class Devoluciones extends CI_Controller {
                 $this->session->set_userdata("Ventas", 1);
             }
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "VENDEDOR", "SISTEMAS"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vDevoluciones')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuVentas')->view('vDevoluciones')->view('vFooter');
             } else {
                 $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
@@ -27,7 +27,7 @@ class Devoluciones extends CI_Controller {
 
     public function getVentas() {
         try {
-            print json_encode($this->devoluciones_model->getVentas()); /* JSONP */
+            print json_encode($this->dvm->getVentas()); /* JSONP */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -35,7 +35,7 @@ class Devoluciones extends CI_Controller {
 
     public function getDevoluciones() {
         try {
-            print json_encode($this->devoluciones_model->getDevoluciones());  /* JSONP */
+            print json_encode($this->dvm->getDevoluciones());  /* JSONP */
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -43,7 +43,7 @@ class Devoluciones extends CI_Controller {
 
     public function getEstilos() {
         try {
-            print json_encode($this->devoluciones_model->getEstilos());
+            print json_encode($this->dvm->getEstilos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -51,7 +51,7 @@ class Devoluciones extends CI_Controller {
 
     public function getCombinacionesXEstilo() {
         try {
-            print json_encode($this->devoluciones_model->getCombinacionesXEstilo($this->input->post('Estilo')));
+            print json_encode($this->dvm->getCombinacionesXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -59,7 +59,7 @@ class Devoluciones extends CI_Controller {
 
     public function getSerieXEstilo() {
         try {
-            print json_encode($this->devoluciones_model->getSerieXEstiloConClave($this->input->post('Estilo')));
+            print json_encode($this->dvm->getSerieXEstiloConClave($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -67,7 +67,7 @@ class Devoluciones extends CI_Controller {
 
     public function getMetodosPago() {
         try {
-            print json_encode($this->devoluciones_model->getCatalogosByFielID('CONDICIONES DE PAGO'));
+            print json_encode($this->dvm->getCatalogosByFielID('CONDICIONES DE PAGO'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,7 +75,7 @@ class Devoluciones extends CI_Controller {
 
     public function getVentaXID() {
         try {
-            print json_encode($this->devoluciones_model->getVentaXID($this->input->get('ID')));
+            print json_encode($this->dvm->getVentaXID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,7 +83,7 @@ class Devoluciones extends CI_Controller {
 
     public function getExistenciasXEstiloXCombinacion() {
         try {
-            print json_encode($this->devoluciones_model->getExistenciasXEstiloXCombinacionT($this->input->post('Estilo'), $this->input->post('Combinacion')));
+            print json_encode($this->dvm->getExistenciasXEstiloXCombinacionT($this->input->post('Estilo'), $this->input->post('Combinacion')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -96,7 +96,7 @@ class Devoluciones extends CI_Controller {
         try {
             if ($this->input->post('Venta') !== '' && $this->input->post('Venta') > 0) {
                 $Datos = $this->ventas_model->onCrearFolio($this->input->post('TP'));
-                $vta = $this->devoluciones_model->getVentabyID($this->input->post('Venta'));
+                $vta = $this->dvm->getVentabyID($this->input->post('Venta'));
                 /* GENERAR VENTA */
                 $Folio = $Datos[0]->FolioTienda;
                 if (empty($Folio)) {
@@ -122,7 +122,7 @@ class Devoluciones extends CI_Controller {
                     'ImporteEnLetra' => $this->input->post('ImporteEnLetra'),
                     'Tipo' => 'D'
                 );
-                $ID = $this->devoluciones_model->onAgregar($data);
+                $ID = $this->dvm->onAgregar($data);
                 print '{ "ID":' . $ID . '}'; /* ID REQUERIDO PARA EL TICKET */
                 $data = array(
                     'Venta' => $this->input->post('Venta'),
@@ -141,7 +141,7 @@ class Devoluciones extends CI_Controller {
                     'ImporteEnLetra' => $this->input->post('ImporteEnLetra'),
                     'Tipo' => 'D'
                 );
-                $IDD = $this->devoluciones_model->onAgregarDevolucion($data);
+                $IDD = $this->dvm->onAgregarDevolucion($data);
 
                 /* DETALLE DE LA VENTA DEVUELTO */
                 $DetalleDevuelto = json_decode($this->input->post("DetalleDevuelto"));
@@ -149,21 +149,21 @@ class Devoluciones extends CI_Controller {
                     /* AGREGAR LOS PRODUCTOS DEVUELTOS (SUMAR) */
 
                     /* OBTENER SERIE X ESTILO */
-                    $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
+                    $serie = $this->dvm->getSerieXEstilo($v->Estilo);
 
                     /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
                     $existencia = 0;
                     for ($index = 1; $index <= 22; $index++) {
                         /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
-                        $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        $existencias = $this->dvm->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                         /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
-                        $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        $existencias_disponibles = $this->dvm->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                         // print "Talla : " . $v->Talla . "-" . $v->Cantidad . ", EXDES: " . $existencias_disponibles[0]->{"Ex$index"} . "\n";
                         if ($serie[0]->{"T$index"} == $v->Talla) {
                             /* SUMAR LA CANTIDAD EN LA TALLA DE LA TIENDA DESTINO */
                             $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
                             /* AGREGAR EXISTENCIAS DE LA TIENDA DESTINO */
-                            $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
+                            $this->dvm->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
                             $data = array(
                                 'Devolucion' => $IDD,
                                 'Estilo' => $v->Estilo,
@@ -176,7 +176,7 @@ class Devoluciones extends CI_Controller {
                                 'PorcentajeDesc' => 0,
                                 'Registro' => Date('d/m/Y h:i:s a')
                             );
-                            $this->devoluciones_model->onAgregarDevolucionDetalle($data);
+                            $this->dvm->onAgregarDevolucionDetalle($data);
                         }
                     }/* FIN AGREGAR LOS PRODUCTOS DEVUELTOS */
                 }
@@ -186,21 +186,21 @@ class Devoluciones extends CI_Controller {
                 foreach ($Detalle as $key => $v) {
                     /* ENTREGAR LOS PRODUCTOS SELECCIONADOS (RESTAR) */
                     /* OBTENER SERIE X ESTILO */
-                    $serie = $this->devoluciones_model->getSerieXEstilo($v->Estilo);
+                    $serie = $this->dvm->getSerieXEstilo($v->Estilo);
 
                     /* ACTUALIZA LAS EXISTENCIAS DE LA TIENDA DESTINO */
                     $existencia = 0;
                     for ($index = 1; $index <= 22; $index++) {
                         /* CONSULTAR EXISTENCIAS DE LA TIENDA DESTINO */
-                        $existencias = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        $existencias = $this->dvm->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
                         /* COMPROBAR EXISTENCIAS EN LA TIENDA ORIGEN TENGA DISPONIBLES DE LA TALLA SOLICITADA */
-                        $existencias_disponibles = $this->devoluciones_model->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
+                        $existencias_disponibles = $this->dvm->getExistenciasXTiendaXEstiloXColor($this->session->userdata('TIENDA'), $v->Estilo, $v->Color);
 
                         if ($serie[0]->{"T$index"} > 0 && $serie[0]->{"T$index"} == $v->Talla && $existencias_disponibles[0]->{"Ex$index"} > 0) {
                             /* RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
                             $existencia = ($existencias_disponibles[0]->{"Ex$index"} - $v->Cantidad);
                             /* REMOVER EXISTENCIAS DE LA TIENDA ACTUAL/ORIGEN */
-                            $this->devoluciones_model->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
+                            $this->dvm->onModificarExistencias($this->session->userdata('TIENDA'), $v->Estilo, $v->Color, $existencia, $index);
                             /* FIN RESTAR LA CANTIDAD EN LA TALLA DE LA TIENDA ORIGEN */
                             /* AGREGAR UN REGISTRO EN EL DETALLE DE LA DEVOLUCIÓN */
                             $data = array(
@@ -214,7 +214,7 @@ class Devoluciones extends CI_Controller {
                                 'Precio' => $v->Precio,
                                 'PorcentajeDesc' => 0
                             );
-                            $this->devoluciones_model->onAgregarDetalle($data);
+                            $this->dvm->onAgregarDetalle($data);
                             break;
                         }
                     }
@@ -241,7 +241,7 @@ class Devoluciones extends CI_Controller {
 
     function getTicketXVenta() {
         try {
-            $e = $this->devoluciones_model->getVentaXTicket($this->input->post('ID'))[0];
+            $e = $this->dvm->getVentaXTicket($this->input->post('ID'))[0];
             $pdf = new FPDF('P', 'mm', array(75/* ANCHO */, 80/* ALTURA */));
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(false);

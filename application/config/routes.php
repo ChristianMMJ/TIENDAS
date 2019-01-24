@@ -55,4 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 //VENTAS
 $route['ventas_devoluciones'] = 'Ventas/getDevoluciones';
+$route['cambio_tema'] = 'Usuarios/onChangeTheme';
+$route['menu/:num'] = 'Menu/menu/$1/';
+$route['logout'] = 'Login/onSalir';
 

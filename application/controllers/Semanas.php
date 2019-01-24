@@ -6,35 +6,24 @@ class Semanas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('semanas_model');
+        $this->load->library('session')->model('semanas_model');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vSemanas');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCatalogos')->view('vSemanas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-            extract($this->input->post());
-            $data = $this->semanas_model->getRecords();
-            print json_encode($data);
+            print json_encode($this->semanas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,9 +39,7 @@ class Semanas extends CI_Controller {
 
     public function getSemanaNominaByAno() {
         try {
-            extract($this->input->post());
-            $data = $this->semanas_model->getSemanaNominaByAno($this->input->post('Ano'));
-            print json_encode($data);
+            print json_encode($this->semanas_model->getSemanaNominaByAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -111,11 +98,9 @@ class Semanas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->semanas_model->onEliminar($ID);
+            $this->semanas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
 }

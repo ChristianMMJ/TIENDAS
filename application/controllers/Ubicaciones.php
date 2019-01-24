@@ -6,30 +6,19 @@ class Ubicaciones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('estilos_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('combinaciones_model');
-        $this->load->model('existencias_model');
+        $this->load->library('session')->model('estilos_model')->model('tiendas_model')->model('combinaciones_model')->model('existencias_model');
     }
 
     public function index() {
 
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vUbicaciones');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuInventarios')->view('vUbicaciones')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 

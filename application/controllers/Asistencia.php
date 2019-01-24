@@ -18,7 +18,7 @@ class Asistencia extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado')->view('vNavegacion')->view('vAsistencia')->view('vFooter');
+            $this->load->view('vEncabezado')->view('vMenuNomina')->view('vAsistencia')->view('vFooter');
         } else {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }

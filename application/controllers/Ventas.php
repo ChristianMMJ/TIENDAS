@@ -17,7 +17,7 @@ class Ventas extends CI_Controller {
                 ->model('generales_model')
                 ->model('empleados_model')
                 ->model('descuentos_model')
-                ->model('ventas_model')
+                ->model('ventas_model', 'vtm')
                 ->model('devoluciones_model')
                 ->helper('ticket_helper');
     }
@@ -54,9 +54,7 @@ class Ventas extends CI_Controller {
 
     public function getEncabezadoSerieXEstilo() {
         try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getEncabezadoSerieXEstilo($Estilo);
-            print json_encode($data);
+            print json_encode($this->estilos_model->getEncabezadoSerieXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,8 +62,7 @@ class Ventas extends CI_Controller {
 
     public function onEliminarDetalle() {
         try {
-            extract($this->input->post());
-            $this->ventas_model->onEliminarDetalle($ID);
+            $this->vtm->onEliminarDetalle($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +70,7 @@ class Ventas extends CI_Controller {
 
     public function getNuevoFolio() {
         try {
-            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TipoDoc'));
+            $Datos = $this->vtm->onCrearFolio($this->input->post('TipoDoc'));
             $Folio = $Datos[0]->FolioTienda;
             if (empty($Folio)) {
                 $Folio = 1;
@@ -89,7 +86,7 @@ class Ventas extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $Datos = $this->ventas_model->onCrearFolio($this->input->post('TipoDoc'));
+            $Datos = $this->vtm->onCrearFolio($this->input->post('TipoDoc'));
             $Folio = $Datos[0]->FolioTienda;
             if (empty($Folio)) {
                 $Folio = 1;
@@ -113,7 +110,7 @@ class Ventas extends CI_Controller {
                 'Tipo' => 'V',
                 'ImporteEnLetra' => ''
             );
-            $ID = $this->ventas_model->onAgregar($data);
+            $ID = $this->vtm->onAgregar($data);
             $dataCliente = array(
                 'ID' => $ID,
                 'FolioTienda' => $Folio
@@ -139,7 +136,7 @@ class Ventas extends CI_Controller {
                 'Subtotal' => ($x->post('Subtotal') !== NULL) ? $x->post('Subtotal') : NULL,
                 'PorcentajeDesc' => ($x->post('PorcentajeDesc') !== '' && $x->post('PorcentajeDesc') !== NULL) ? $x->post('PorcentajeDesc') : 0.0
             );
-            $this->ventas_model->onAgregarDetalle($data);
+            $this->vtm->onAgregarDetalle($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -147,14 +144,15 @@ class Ventas extends CI_Controller {
 
     public function onModificar() {
         try {
+            $x = $this->input;
             $data = array(
-                'Cliente' => ($this->input->post('Cliente') !== NULL) ? $this->input->post('Cliente') : NULL,
-                'Vendedor' => ($this->input->post('Vendedor') !== NULL) ? $this->input->post('Vendedor') : NULL,
-                'FechaMov' => ($this->input->post('FechaMov') !== NULL) ? $this->input->post('FechaMov') : NULL,
-                'MetodoPago' => ($this->input->post('MetodoPago') !== NULL) ? $this->input->post('MetodoPago') : NULL,
-                'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL
+                'Cliente' => ($x->post('Cliente') !== NULL) ? $x->post('Cliente') : NULL,
+                'Vendedor' => ($x->post('Vendedor') !== NULL) ? $x->post('Vendedor') : NULL,
+                'FechaMov' => ($x->post('FechaMov') !== NULL) ? $x->post('FechaMov') : NULL,
+                'MetodoPago' => ($x->post('MetodoPago') !== NULL) ? $x->post('MetodoPago') : NULL,
+                'Importe' => ($x->post('Importe') !== NULL) ? $x->post('Importe') : NULL
             );
-            $this->ventas_model->onModificar($this->input->post('ID'), $data);
+            $this->vtm->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -165,7 +163,7 @@ class Ventas extends CI_Controller {
             $data = array(
                 'Importe' => ($this->input->post('Importe') !== NULL) ? $this->input->post('Importe') : NULL
             );
-            $this->ventas_model->onModificar($this->input->post('ID'), $data);
+            $this->vtm->onModificar($this->input->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -173,12 +171,13 @@ class Ventas extends CI_Controller {
 
     public function onModificarEstatus() {
         try {
+            $x = $this->input;
             $data = array(
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
-                'SuPago' => ($this->input->post('SuPago') !== NULL) ? $this->input->post('SuPago') : NULL,
-                'ImporteEnLetra' => ($this->input->post('ImporteEnLetra') !== NULL) ? $this->input->post('ImporteEnLetra') : NULL
+                'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL,
+                'SuPago' => ($x->post('SuPago') !== NULL) ? $x->post('SuPago') : NULL,
+                'ImporteEnLetra' => ($x->post('ImporteEnLetra') !== NULL) ? $x->post('ImporteEnLetra') : NULL
             );
-            $this->ventas_model->onModificar($this->input->post('ID'), $data);
+            $this->vtm->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -186,10 +185,9 @@ class Ventas extends CI_Controller {
 
     public function onModificarDetalle() {
         try {
-
             extract($this->input->post());
             unset($_POST['ID']);
-            $this->ventas_model->onModificarDetalle($ID, $this->input->post());
+            $this->vtm->onModificarDetalle($ID, $this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -205,9 +203,7 @@ class Ventas extends CI_Controller {
 
     public function getVentaByFolioTiendaByTipoDocByTienda() {
         try {
-            extract($this->input->post());
-            $data = $this->ventas_model->getVentaByFolioTiendaByTipoDocByTienda($FolioTienda, $TipoDoc);
-            print json_encode($data);
+            print json_encode($this->vtm->getVentaByFolioTiendaByTipoDocByTienda($this->input->post('FolioTienda'), $this->input->post('TipoDoc')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -215,9 +211,7 @@ class Ventas extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            extract($this->input->post());
-            $data = $this->ventas_model->getDetalleByID($ID);
-            print json_encode($data);
+            print json_encode($this->vtm->getDetalleByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -225,9 +219,7 @@ class Ventas extends CI_Controller {
 
     public function getExistenciasByEstiloByColor() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getExistenciasByEstiloByColor($Estilo, $Color);
-            print json_encode($data);
+            print json_encode($this->existencias_model->getExistenciasByEstiloByColor($this->input->post('Estilo'), $this->input->post('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -235,9 +227,7 @@ class Ventas extends CI_Controller {
 
     public function getExistenciaByID() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getExistenciaByID($ID);
-            print json_encode($data);
+            print json_encode($this->existencias_model->getExistenciaByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -245,9 +235,7 @@ class Ventas extends CI_Controller {
 
     public function getVendedores() {
         try {
-            extract($this->input->post());
-            $data = $this->empleados_model->getEmpleados();
-            print json_encode($data);
+            print json_encode($this->empleados_model->getEmpleados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -255,9 +243,7 @@ class Ventas extends CI_Controller {
 
     public function getMetodosPago() {
         try {
-            extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('CONDICIONES DE PAGO');
-            print json_encode($data);
+            print json_encode($this->generales_model->getCatalogosByFielID('CONDICIONES DE PAGO'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -265,9 +251,7 @@ class Ventas extends CI_Controller {
 
     public function getClientes() {
         try {
-            extract($this->input->post());
-            $data = $this->clientes_model->getClientes();
-            print json_encode($data);
+            print json_encode($this->clientes_model->getClientes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -275,9 +259,7 @@ class Ventas extends CI_Controller {
 
     public function getEstilos() {
         try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getEstilos();
-            print json_encode($data);
+            print json_encode($this->estilos_model->getEstilos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -285,9 +267,7 @@ class Ventas extends CI_Controller {
 
     public function getEstilosExistentesXTienda() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getEstilosExistentesXTienda();
-            print json_encode($data);
+            print json_encode($this->existencias_model->getEstilosExistentesXTienda());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -295,9 +275,7 @@ class Ventas extends CI_Controller {
 
     public function getEstilosExt() {
         try {
-            extract($this->input->post());
-            $data = $this->existencias_model->getEstilosExt();
-            print json_encode($data);
+            print json_encode($this->existencias_model->getEstilosExt());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -305,9 +283,7 @@ class Ventas extends CI_Controller {
 
     public function getDescuentos() {
         try {
-            extract($this->input->post());
-            $data = $this->descuentos_model->getDescuentos();
-            print json_encode($data);
+            print json_encode($this->descuentos_model->getDescuentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -315,9 +291,7 @@ class Ventas extends CI_Controller {
 
     public function getCombinacionesXEstilo() {
         try {
-            extract($this->input->post());
-            $data = $this->combinaciones_model->getCombinacionesXEstilo($Estilo);
-            print json_encode($data);
+            print json_encode($this->combinaciones_model->getCombinacionesXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -325,9 +299,7 @@ class Ventas extends CI_Controller {
 
     public function getSerieXEstilo() {
         try {
-            extract($this->input->post());
-            $data = $this->estilos_model->getSerieXEstilo($Estilo);
-            print json_encode($data);
+            print json_encode($this->estilos_model->getSerieXEstilo($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -335,8 +307,7 @@ class Ventas extends CI_Controller {
 
     public function getEstiloByID() {
         try {
-            extract($this->input->post());
-            print json_encode($this->estilos_model->getEstiloByID($Estilo));
+            print json_encode($this->estilos_model->getEstiloByID($this->input->post('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -379,23 +350,23 @@ class Ventas extends CI_Controller {
             /* DEVOLVER LAS EXISTENCIAS A SU REGISTRO CORRESPONDIENTE */
             foreach ($Detalle as $key => $v) {
                 /* COMPROBAR SI TIENE DE ESE ESTILO/COLOR/TALLA EN LA TIENDA */
-                $existe = $this->ventas_model->onComprobarExistenciaFisica($Tienda, $v->Estilo, $v->Color);
+                $existe = $this->vtm->onComprobarExistenciaFisica($Tienda, $v->Estilo, $v->Color);
                 PRINT "\nEXISTE EN LA TIENDA $Tienda EL ESTILO " . $v->Estilo . ", COLOR " . $v->Color . ": " . $existe[0]->EXISTE . "\n";
                 if ($existe[0]->EXISTE > 0) {
 
                     /* OBTENER SERIE X ESTILO */
-                    $serie = $this->ventas_model->getSerieXEstilo($v->Estilo);
+                    $serie = $this->vtm->getSerieXEstilo($v->Estilo);
 
                     for ($index = 1; $index <= 22; $index++) {
                         /* OBTENER LAS EXISTENCIAS POR TIENDA, ESTILO Y COLOR/COMBINACION */
-                        $existencias = $this->ventas_model->getExistenciasXTiendaXEstiloXColor($Tienda, $v->Estilo, $v->Color);
+                        $existencias = $this->vtm->getExistenciasXTiendaXEstiloXColor($Tienda, $v->Estilo, $v->Color);
 
                         if ($serie[0]->{"T$index"} > 0 &&
                                 $serie[0]->{"T$index"} == $v->Talla) {
                             /* SUMAR LA CANTIDAD EN LA TALLA A LA TIENDA */
                             $existencia = ($existencias[0]->{"Ex$index"} + $v->Cantidad);
                             /* AGREGAR EXISTENCIAS A LA TIENDA */
-                            $this->ventas_model->onModificarExistencias($Tienda, $v->Estilo, $v->Color, $existencia, $index);
+                            $this->vtm->onModificarExistencias($Tienda, $v->Estilo, $v->Color, $existencia, $index);
                         }
                     }
                 }
@@ -430,7 +401,7 @@ class Ventas extends CI_Controller {
             $pdf->Line(/* Izq-X */2, /* Top-Y */ $pdf->GetY() + 1.5, /* Largo */ 72, $pdf->GetY() + 1.5); /* FIN ENCABEZADO */
 
             /* DETALLE */
-            $detalle = $this->ventas_model->getVentaDetalleByID($this->input->post('ID'));
+            $detalle = $this->vtm->getVentaDetalleByID($this->input->post('ID'));
             $pdf->SetFont('Arial', '', 5);
             $Y = $pdf->GetY() + 2;
             $af = 2.5;
@@ -537,7 +508,7 @@ class Ventas extends CI_Controller {
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/Ventas/')) {
-
+                
             }
             $pdf->Output($url);
             print base_url() . $url;

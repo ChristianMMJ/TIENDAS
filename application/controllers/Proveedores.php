@@ -6,28 +6,18 @@ class Proveedores extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('proveedores_model');
-        $this->load->model('generales_model');
+        $this->load->library('session')->model('proveedores_model')->model('generales_model');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vProveedores');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuCatalogos')->view('vProveedores')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
@@ -43,9 +33,7 @@ class Proveedores extends CI_Controller {
 
     public function getRegimenesFiscales() {
         try {
-            extract($this->input->post());
-            $data = $this->generales_model->getCatalogosDescripcionByFielID('REGIMENES FISCALES');
-            print json_encode($data);
+            print json_encode($this->generales_model->getCatalogosDescripcionByFielID('REGIMENES FISCALES'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,9 +41,7 @@ class Proveedores extends CI_Controller {
 
     public function getProveedorByID() {
         try {
-            extract($this->input->post());
-            $data = $this->proveedores_model->getProveedorByID($ID);
-            print json_encode($data);
+            print json_encode($this->proveedores_model->getProveedorByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -192,8 +178,7 @@ class Proveedores extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->proveedores_model->onEliminar($ID);
+            $this->proveedores_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

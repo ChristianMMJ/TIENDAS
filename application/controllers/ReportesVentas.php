@@ -7,42 +7,25 @@ class ReportesVentas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-
-        $this->load->model('reportesVentas_model');
-        $this->load->model('generales_model');
-        $this->load->model('tiendas_model');
-        $this->load->model('estilos_model');
-        $this->load->helper('reportes_helper');
-        $this->load->helper('file');
+        $this->load->library('session')->model('reportesVentas_model')->model('generales_model')->model('tiendas_model')->model('estilos_model')->helper('reportes_helper')->helper('file');
         date_default_timezone_set('America/Mexico_City');
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["Tipo"], array("ADMINISTRADOR", "GERENTE", "SISTEMAS"))) {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vReportesVentas');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vMenuVentas')->view('vReportesVentas')->view('vFooter');
             } else {
-                $this->load->view('vEncabezado');
-                $this->load->view('vNavegacion');
-                $this->load->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
             }
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getTiendas() {
         try {
-            extract($this->input->post());
-            $data = $this->tiendas_model->getTiendas();
-            print json_encode($data);
+            print json_encode($this->tiendas_model->getTiendas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,9 +33,7 @@ class ReportesVentas extends CI_Controller {
 
     public function getMetodosPago() {
         try {
-            extract($this->input->post());
-            $data = $this->generales_model->getCatalogosByFielID('CONDICIONES DE PAGO');
-            print json_encode($data);
+            print json_encode($this->generales_model->getCatalogosByFielID('CONDICIONES DE PAGO'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

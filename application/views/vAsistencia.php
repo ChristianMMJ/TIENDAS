@@ -40,12 +40,12 @@
             getRecords();
         });
         btnRefrescar.trigger('click');
-        loop();
     });
 
     function loop() {
         Asistencias.ajax.reload();
-        setTimeout(loop, 5000);
+        setTimeout(loop, 2500);
+        console.log('Verificando...')
     }
 
     function getRecords() {
@@ -57,54 +57,55 @@
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblAsistencias')) {
             tblAsistencias.DataTable().destroy();
-            Asistencias = tblAsistencias.DataTable({
-                "dom": 'Bfrtip',
-                buttons: buttons,
-                "ajax": {
-                    "url": master_url + 'getRecords',
-                    "dataSrc": ""
-                },
-                "columns": [
-                    {"data": "ID"}, {"data": "Usuario"}, {"data": "Numero"}, {"data": "Fecha"}, {"data": "Hora"}, {"data": "Tipo"}, {"data": "Estatus"}
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    }
-                ],
-                language: lang,
-                select: true,
-                "autoWidth": true,
-                "colReorder": true,
-                "displayLength": 20,
-                "bLengthChange": false,
-                "deferRender": true,
-                "scrollCollapse": false,
-                "bSort": true,
-                "aaSorting": [
-                    [0, 'desc']/*ID*/
-                ]
-            });
-
-            $('#tblAsistencias_filter input[type=search]').focus();
-
-            tblAsistencias.find('tbody').on('click', 'tr', function () {
-                tblAsistencias.find("tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = Asistencias.row(this).data();
-                temp = parseInt(dtm.ID);
-            });
-            tblAsistencias.find('tbody').on('dblclick', 'tr', function () {
-                nuevo = false;
-                tblAsistencias.find("tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var dtm = Asistencias.row(this).data();
-                temp = parseInt(dtm.ID);
-            });
         }
+        Asistencias = tblAsistencias.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Usuario"}, {"data": "Numero"}, {"data": "Fecha"}, {"data": "Hora"}, {"data": "Tipo"}, {"data": "Estatus"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ]
+        });
+
+        $('#tblAsistencias_filter input[type=search]').focus();
+
+        tblAsistencias.find('tbody').on('click', 'tr', function () {
+            tblAsistencias.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+            var dtm = Asistencias.row(this).data();
+            temp = parseInt(dtm.ID);
+        });
+        tblAsistencias.find('tbody').on('dblclick', 'tr', function () {
+            nuevo = false;
+            tblAsistencias.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+            var dtm = Asistencias.row(this).data();
+            temp = parseInt(dtm.ID);
+        });
         HoldOn.close();
+        loop();
     }
 </script>
 <style>

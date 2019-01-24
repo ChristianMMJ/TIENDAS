@@ -201,6 +201,7 @@
                         message: "CARGANDO DATOS..."
                     });
                     var feC = pnlDatos.find("#FechaIni").val().split("/");
+                    console.log(feC[2], feC[1] - 1, feC[0]);
                     var feI = new Date(feC[2], feC[1] - 1, feC[0]);
                     var cont = 1;
                     var Sem = 1;
