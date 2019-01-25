@@ -32,4 +32,24 @@
     .fa-2x {
         font-size: 7.5em;
     }
+    
+    .dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 0.25rem 1.5rem;
+        clear: both;
+        font-weight: 400;
+        color: #7b8a8b;
+        text-align: inherit;
+        white-space: nowrap;
+        background-color: transparent;
+        border: 0;
+        transition: all 2s;
+    }
+    .dropdown-item:hover, .dropdown-item:focus {
+        color: #fff;
+        text-decoration: none;
+        background-color: #2C3E50;
+        transition: all 0.3s;
+    }
 </style>
