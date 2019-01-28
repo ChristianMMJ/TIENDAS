@@ -12,7 +12,7 @@ class CapturaInventarios extends CI_Controller {
                 ->model('Estilos_model')
                 ->model('Tiendas_model')
                 ->model('Combinaciones_model')
-                ->model('existencias_model')
+                ->model('Existencias_model')
                 ->helper('reportes_helper')
                 ->helper('file');
         date_default_timezone_set('America/Mexico_City');
@@ -43,7 +43,7 @@ class CapturaInventarios extends CI_Controller {
                 'Color' => ($this->input->post('Color') !== NULL) ? $this->input->post('Color') : NULL,
                 $this->input->post('Posicion') => ($this->input->post('Existencia') !== NULL) ? $this->input->post('Existencia') : 0
             );
-            $this->existenciasCaptura_Model->onAgregarExistenciasCaptura($data);
+            $this->ExistenciasCaptura_Model->onAgregarExistenciasCaptura($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class CapturaInventarios extends CI_Controller {
     public function onModifcarExistenciasCaptura() {
         try {
 
-            $this->existenciasCaptura_Model->onModifcarExistenciasCaptura($this->input->post('Mes'), $this->input->post('Ano'), $this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
+            $this->ExistenciasCaptura_Model->onModifcarExistenciasCaptura($this->input->post('Mes'), $this->input->post('Ano'), $this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,7 +64,7 @@ class CapturaInventarios extends CI_Controller {
             $DATA = array(
                 'Estatus' => 'FINALIZADO'
             );
-            $this->existenciasCaptura_Model->onModificarEstatus($Mes, $Ano, $DATA);
+            $this->ExistenciasCaptura_Model->onModificarEstatus($Mes, $Ano, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class CapturaInventarios extends CI_Controller {
     public function getRecords() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            $data = $this->ExistenciasCaptura_Model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -82,7 +82,7 @@ class CapturaInventarios extends CI_Controller {
 
     public function getTiendas() {
         try {
-            $data = $this->tiendas_model->getTiendas();
+            $data = $this->Tiendas_model->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -92,7 +92,7 @@ class CapturaInventarios extends CI_Controller {
     public function getExistenciasXEstiloXCombinacion() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion, $Mes, $Ano);
+            $data = $this->ExistenciasCaptura_Model->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion, $Mes, $Ano);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -102,7 +102,7 @@ class CapturaInventarios extends CI_Controller {
     public function getEstatusInicial() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getEstatusInicial($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getEstatusInicial($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -112,7 +112,7 @@ class CapturaInventarios extends CI_Controller {
     public function getExistenciasCapturaByMesByAno() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getExistenciasCapturaByMesByAno($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getExistenciasCapturaByMesByAno($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -122,7 +122,7 @@ class CapturaInventarios extends CI_Controller {
     public function getExistenciasCapturaFinalizadaByMesByAno() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getExistenciasCapturaFinalizadaByMesByAno($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getExistenciasCapturaFinalizadaByMesByAno($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -132,7 +132,7 @@ class CapturaInventarios extends CI_Controller {
     public function getTotalDama() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getTotalDama($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getTotalDama($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -142,7 +142,7 @@ class CapturaInventarios extends CI_Controller {
     public function getTotalCaballero() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getTotalCaballero($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getTotalCaballero($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -152,7 +152,7 @@ class CapturaInventarios extends CI_Controller {
     public function getTotalInfantil() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getTotalInfantil($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getTotalInfantil($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -162,7 +162,7 @@ class CapturaInventarios extends CI_Controller {
     public function getTotalUnisex() {
         try {
             extract($this->input->post());
-            $data = $this->existenciasCaptura_Model->getTotalUnisex($Ano, $Mes);
+            $data = $this->ExistenciasCaptura_Model->getTotalUnisex($Ano, $Mes);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -202,7 +202,7 @@ class CapturaInventarios extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->existenciasCaptura_Model->onEliminar($Mes, $Ano);
+            $this->ExistenciasCaptura_Model->onEliminar($Mes, $Ano);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -211,7 +211,7 @@ class CapturaInventarios extends CI_Controller {
     public function onEliminarRegistro() {
         try {
             extract($this->input->post());
-            $this->existenciasCaptura_Model->onEliminarRegistro($ID);
+            $this->ExistenciasCaptura_Model->onEliminarRegistro($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -220,7 +220,7 @@ class CapturaInventarios extends CI_Controller {
     public function onActualizarInvFisAct() {
         /* ACTUALIZA INV EXISTENCIAS */
         extract($this->input->post());
-        $ExistenciasCaptura = $this->existenciasCaptura_Model->onActualizarInvFisAct($Mes, $Ano);
+        $ExistenciasCaptura = $this->ExistenciasCaptura_Model->onActualizarInvFisAct($Mes, $Ano);
 
         foreach ($ExistenciasCaptura as $key => $v) {
             $data = array(
@@ -247,14 +247,14 @@ class CapturaInventarios extends CI_Controller {
                 'Ex21' => $v->Ex21,
                 'Ex22' => $v->Ex22
             );
-            $this->existencias_model->onActualizarExistenciasActualesVsFisico($v->Tienda, $v->Estilo, $v->Color, $data);
+            $this->Existencias_model->onActualizarExistenciasActualesVsFisico($v->Tienda, $v->Estilo, $v->Color, $data);
         }
     }
 
     public function onImprimirInv() {
         extract($this->input->post());
 
-        $Series = $this->existenciasCaptura_Model->getSerieReporteExistencias($Mes, $Ano);
+        $Series = $this->ExistenciasCaptura_Model->getSerieReporteExistencias($Mes, $Ano);
         if (!empty($Series)) {
             $Encabezado = $Series[0];
             $pdf = new PDFIF('L', 'mm', array(215.9, 279.4));
@@ -269,7 +269,7 @@ class CapturaInventarios extends CI_Controller {
             $pdf->Cell(110, 4, utf8_decode($this->session->userdata('TIENDA_NOMBRE')), 0/* BORDE */, 1, 'L');
             $Y = 25;
             foreach ($Series as $i => $v) {
-                $Datos = $this->existenciasCaptura_Model->getReporteCapturaInvByMesByAno($Mes, $Ano, $v->Serie);
+                $Datos = $this->ExistenciasCaptura_Model->getReporteCapturaInvByMesByAno($Mes, $Ano, $v->Serie);
                 $pdf->SetY($Y);
                 $pdf->SetX(70);
                 $pdf->SetFont('Arial', 'B', 7);
@@ -327,7 +327,7 @@ class CapturaInventarios extends CI_Controller {
 
     public function onImprimirDiferencias() {
 
-        $Series = $this->existenciasCaptura_Model->getSerieReporteExistencias($this->input->post('Mes'), $this->input->post('Ano'));
+        $Series = $this->ExistenciasCaptura_Model->getSerieReporteExistencias($this->input->post('Mes'), $this->input->post('Ano'));
         if (!empty($Series)) {
             $pdf = new PDFDI('L', 'mm', array(215.9, 279.4));
             $pdf->AliasNbPages();
@@ -345,7 +345,7 @@ class CapturaInventarios extends CI_Controller {
             $Y = 25;
 
             foreach ($Series as $i => $v) {
-                $Datos = $this->existenciasCaptura_Model->getReporteDiferenciasInvByMesByAno($this->input->post('Mes'), $this->input->post('Ano'), $v->Serie);
+                $Datos = $this->ExistenciasCaptura_Model->getReporteDiferenciasInvByMesByAno($this->input->post('Mes'), $this->input->post('Ano'), $v->Serie);
                 $pdf->SetY($Y);
                 $pdf->SetX(70);
                 $pdf->SetFont('Arial', 'B', 6.5);

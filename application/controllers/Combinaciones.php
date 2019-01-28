@@ -6,7 +6,7 @@ class Combinaciones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('combinaciones_model')->model('Estilos_model');
+        $this->load->library('session')->model('Combinaciones_model','cbnm')->model('Estilos_model','etm');
     }
 
     public function index() {
@@ -24,7 +24,7 @@ class Combinaciones extends CI_Controller {
 
     public function getUltimaClave() {
         try {
-            $Datos = $this->combinaciones_model->getUltimaClave($this->input->post('Estilo'));
+            $Datos = $this->cbnm->getUltimaClave($this->input->post('Estilo'));
             $Clave = $Datos[0]->Clave;
             if (empty($Clave)) {
                 $Clave = 1;
@@ -40,8 +40,8 @@ class Combinaciones extends CI_Controller {
 
     public function getRecords() {
         try {
-            //$data = $this->combinaciones_model->getRecords();
-            print $_GET['callback'] . '(' . json_encode($this->combinaciones_model->getRecords()) . ');'; /* JSONP */
+            //$data = $this->cbnm->getRecords();
+            print $_GET['callback'] . '(' . json_encode($this->cbnm->getRecords()) . ');'; /* JSONP */
             //print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -51,7 +51,7 @@ class Combinaciones extends CI_Controller {
     public function getCombinacionByID() {
         try {
             extract($this->input->post());
-            $data = $this->combinaciones_model->getCombinacionByID($ID);
+            $data = $this->cbnm->getCombinacionByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -61,7 +61,7 @@ class Combinaciones extends CI_Controller {
     public function getEstilos() {
         try {
             extract($this->input->post());
-            $data = $this->estilos_model->getEstilos();
+            $data = $this->etm->getEstilos();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -76,7 +76,7 @@ class Combinaciones extends CI_Controller {
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL,
                 'Estilo' => ($this->input->post('Estilo') !== NULL) ? $this->input->post('Estilo') : NULL
             );
-            $ID = $this->combinaciones_model->onAgregar($data);
+            $ID = $this->cbnm->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -90,7 +90,7 @@ class Combinaciones extends CI_Controller {
                 'Descripcion' => ($this->input->post('Descripcion') !== NULL) ? $this->input->post('Descripcion') : NULL,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->combinaciones_model->onModificar($ID, $DATA);
+            $this->cbnm->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -99,7 +99,7 @@ class Combinaciones extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->combinaciones_model->onEliminar($ID);
+            $this->cbnm->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

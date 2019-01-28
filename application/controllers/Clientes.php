@@ -6,7 +6,7 @@ class Clientes extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('Clientes_model')->model('Generales_model');
+        $this->load->library('session')->model('Clientes_model','clm')->model('Generales_model','grm');
     }
 
     public function index() {
@@ -24,7 +24,7 @@ class Clientes extends CI_Controller {
 
     public function getRecords() {
         try {  
-            print json_encode($this->Clientes_model->getRecords());
+            print json_encode($this->clm->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -32,7 +32,7 @@ class Clientes extends CI_Controller {
 
     public function getRegimenesFiscales() {
         try {  
-            print json_encode($this->Generales_model->getCatalogosDescripcionByFielID('REGIMENES FISCALES'));
+            print json_encode($this->grm->getCatalogosDescripcionByFielID('REGIMENES FISCALES'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -40,7 +40,7 @@ class Clientes extends CI_Controller {
 
     public function getClienteByID() {
         try { 
-            print json_encode($this->Clientes_model->getClienteByID($this->input->post('ID')));
+            print json_encode($this->clm->getClienteByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,7 +68,7 @@ class Clientes extends CI_Controller {
                 'PlazoPagos' => ($x->post('PlazoPagos') !== NULL && $x->post('PlazoPagos') !== "") ? $x->post('PlazoPagos') : 0,
                 'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL
             );
-            $ID = $this->Clientes_model->onAgregar($data);
+            $ID = $this->clm->onAgregar($data);
 
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Clientes/';
@@ -92,12 +92,12 @@ class Clientes extends CI_Controller {
                     $DATA = array(
                         'Foto' => ($img),
                     );
-                    $this->Clientes_model->onModificar($ID, $DATA);
+                    $this->clm->onModificar($ID, $DATA);
                 } else {
                     $DATA = array(
                         'Foto' => (null),
                     );
-                    $this->Clientes_model->onModificar($ID, $DATA);
+                    $this->clm->onModificar($ID, $DATA);
                 }
             }
             print $ID;
@@ -129,7 +129,7 @@ class Clientes extends CI_Controller {
                 'PlazoPagos' => ($this->input->post('PlazoPagos') !== NULL) ? $this->input->post('PlazoPagos') : 0,
                 'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
             );
-            $this->Clientes_model->onModificar($ID, $DATA);
+            $this->clm->onModificar($ID, $DATA);
             /* MODIFICAR FOTO */
 
             $Foto = $this->input->post('Foto');
@@ -150,12 +150,12 @@ class Clientes extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->Clientes_model->onModificar($ID, $DATA);
+                            $this->clm->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->Clientes_model->onModificar($ID, $DATA);
+                            $this->clm->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ class Clientes extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->Clientes_model->onModificar($ID, $DATA);
+                $this->clm->onModificar($ID, $DATA);
             }
             /* FIN MODIFICAR FOTO */
         } catch (Exception $exc) {
@@ -174,7 +174,7 @@ class Clientes extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->Clientes_model->onEliminar($ID);
+            $this->clm->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

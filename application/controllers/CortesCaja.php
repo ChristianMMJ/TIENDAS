@@ -6,7 +6,7 @@ class CortesCaja extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('CortesCaja_model')->model('Tiendas_model');
+        $this->load->library('session')->model('CortesCaja_model','ccm')->model('Tiendas_model','tsm');
         date_default_timezone_set('America/Mexico_City');
     }
 
@@ -27,7 +27,7 @@ class CortesCaja extends CI_Controller {
 
     public function getRecords() {
         try {
-            $data = $this->CortesCaja_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
+            $data = $this->ccm->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -36,7 +36,7 @@ class CortesCaja extends CI_Controller {
 
     public function getTiendas() {
         try {
-            $data = $this->Tiendas_model->getTiendas();
+            $data = $this->tsm->getTiendas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -46,7 +46,7 @@ class CortesCaja extends CI_Controller {
     public function getCorteCajaByID() {
         try {
             extract($this->input->post());
-            $data = $this->CortesCaja_model->getCorteCajaByID($ID);
+            $data = $this->ccm->getCorteCajaByID($ID);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -57,9 +57,9 @@ class CortesCaja extends CI_Controller {
         try {
             $ID = $this->input->get('ID');
             if ($ID === 'N') {
-                print json_encode($this->CortesCaja_model->getDetalleNuevo());
+                print json_encode($this->ccm->getDetalleNuevo());
             } else {
-                print json_encode($this->CortesCaja_model->getDetalleByID($ID));
+                print json_encode($this->ccm->getDetalleByID($ID));
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -68,7 +68,7 @@ class CortesCaja extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->CortesCaja_model->getDetalleByID($this->input->get('ID')));
+            print json_encode($this->ccm->getDetalleByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,7 +83,7 @@ class CortesCaja extends CI_Controller {
                 'Usuario' => $this->session->userdata('ID'),
                 'Saldo' => ($this->input->post('Saldo') !== NULL) ? $this->input->post('Saldo') : NULL
             );
-            $ID = $this->CortesCaja_model->onAgregar($data);
+            $ID = $this->ccm->onAgregar($data);
             /* DETALLE */
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
@@ -92,16 +92,16 @@ class CortesCaja extends CI_Controller {
                 );
 
                 if ($v->Tipo === 'GASTO') {
-                    $this->CortesCaja_model->onModificarGastos($v->ID, $data);
+                    $this->ccm->onModificarGastos($v->ID, $data);
                 }
 
                 if (strpos($v->Tipo, 'ENTRADA') !== false) {
-                    $this->CortesCaja_model->onModificarDiversos($v->ID, $data);
+                    $this->ccm->onModificarDiversos($v->ID, $data);
                 }
                 if (strpos($v->Tipo, 'RETIRO') !== false) {
-                    $this->CortesCaja_model->onModificarDiversos($v->ID, $data);
+                    $this->ccm->onModificarDiversos($v->ID, $data);
                 } else {
-                    $this->CortesCaja_model->onModificarVentas($v->ID, $data);
+                    $this->ccm->onModificarVentas($v->ID, $data);
                 }
             }
         } catch (Exception $exc) {
@@ -112,10 +112,10 @@ class CortesCaja extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->CortesCaja_model->onEliminar($ID);
-            $this->CortesCaja_model->onEliminarCorteCajaVentas($ID);
-            $this->CortesCaja_model->onEliminarCorteCajaGastos($ID);
-            $this->CortesCaja_model->onEliminarCorteCajaDiversos($ID);
+            $this->ccm->onEliminar($ID);
+            $this->ccm->onEliminarCorteCajaVentas($ID);
+            $this->ccm->onEliminarCorteCajaGastos($ID);
+            $this->ccm->onEliminarCorteCajaDiversos($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -19,7 +19,7 @@ class Existencias_model extends CI_Model {
                     . "U.Estilo AS IdEstilo, "
                     . "CONCAT(T.Clave ,'-', T.RazonSocial) AS 'Tienda', "
                     . "CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' ,"
-                    . "CONCAT(C.Clave ,'-', c.Descripcion) AS 'Color', "
+                    . "CONCAT(C.Clave ,'-', C.Descripcion) AS 'Color', "
                     . "U.Ex1, "
                     . "U.Ex2, "
                     . "U.Ex3, "
@@ -134,7 +134,7 @@ class Existencias_model extends CI_Model {
                 $Tienda = "";
             }
             $this->db->select("U.ID, CONCAT(E.Clave ,'-', E.Descripcion) AS 'Estilo' , "
-                    . "CONCAT(C.Clave ,'-', c.Descripcion) AS 'Color', "
+                    . "CONCAT(C.Clave ,'-', C.Descripcion) AS 'Color', "
                     . "IFNULL(Loc1,'') AS 'Ubicación 1', "
                     . "IFNULL(Loc2,'') AS 'Ubicación 2', "
                     . "IFNULL(Loc3,'') AS 'Ubicación 3' "

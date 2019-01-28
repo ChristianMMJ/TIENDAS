@@ -6,7 +6,7 @@ class Descuentos extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('descuentos_model')->model('tiendas_model');
+        $this->load->library('session')->model('Descuentos_model','dsm')->model('Tiendas_model','tsm');
     }
 
     public function index() {
@@ -23,7 +23,7 @@ class Descuentos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->descuentos_model->getRecords());
+            print json_encode($this->tsm->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -31,7 +31,7 @@ class Descuentos extends CI_Controller {
 
     public function getDescuentos() {
         try {
-            print json_encode($this->descuentos_model->getDescuentos());
+            print json_encode($this->tsm->getDescuentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -47,7 +47,7 @@ class Descuentos extends CI_Controller {
 
     public function getDescuentoByID() {
         try {
-            print json_encode($this->descuentos_model->getDescuentoByID($this->input->post('ID')));
+            print json_encode($this->tsm->getDescuentoByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -63,7 +63,7 @@ class Descuentos extends CI_Controller {
                 'Tienda' => ($x->post('Tienda') !== NULL) ? $x->post('Tienda') : NULL,
                 'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL
             );
-            $ID = $this->descuentos_model->onAgregar($data);
+            $ID = $this->tsm->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -80,7 +80,7 @@ class Descuentos extends CI_Controller {
                 'Tienda' => ($x->post('Tienda') !== NULL) ? $x->post('Tienda') : NULL,
                 'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL
             );
-            $this->descuentos_model->onModificar($x->post('ID'), $data);
+            $this->tsm->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -88,7 +88,7 @@ class Descuentos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->descuentos_model->onEliminar($this->input->post('ID'));
+            $this->tsm->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
