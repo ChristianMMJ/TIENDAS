@@ -17,7 +17,7 @@
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <?php
-                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS"))) {
+                if (in_array($this->session->userdata["Tipo"], array("SISTEMAS", "ADMINISTRADOR"))) {
                     ?>
                     <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
                 <?php } ?>
@@ -164,7 +164,7 @@
                 <!-- FOTO -->
                 <div for="" align="center">
                     <br>
-                    <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
+                    <h3>Puede subir una imagen (JPG,GIF,PNG) etc.</h3>
                 </div>
                 <div class="col-md-12" align="center">
                     <input type="file" id="Foto" name="Foto" class="d-none">

@@ -335,7 +335,7 @@
                         <br>
                         <!-- FOTO -->
                         <center>
-                            <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
+                            <h3>Puede subir una imagen (JPG,GIF,PNG) etc.</h3>
                         </center>
                         <div class="col-md-12" align="center">
                             <input type="file" id="Foto" name="Foto" class="d-none" accept="image/x-png,image/jpeg">

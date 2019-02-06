@@ -341,8 +341,8 @@
 
 <script>
     var mdlCatalogos = $('#mdlCatalogos'), mdlCatalogosGenerales = $("#mdlCatalogosGenerales");
-    $(".card").addClass(" animated bounceIn"); 
-    
+    $(".card").addClass(" animated bounceIn");
+
     function onRef(e) {
         location.href = e;
     }
@@ -360,3 +360,29 @@
         window.location.href = '<?php print base_url('menu'); ?>/' + e;
     }
 </script>
+<style>
+    .card{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid;    
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom, #25306B, #0099cc, rgb(0,0,0,0)) 1 100% ; 
+    }
+    .card:hover{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
+    }
+    .card:hover span { 
+        background: -webkit-linear-gradient(#25306B,#25306B,#25306B ); 
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>

@@ -227,6 +227,7 @@
         getTiendas();
         handleEnter();
     });
+    
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -280,9 +281,6 @@
                             $.each(pnlDatos.find("select"), function (k, v) {
                                 pnlDatos.find("select")[k].selectize.clear(true);
                             });
-
-
-
                             $.each(data[0], function (k, v) {
                                 if (k !== 'Foto') {
                                     pnlDatos.find("[name='" + k + "']").val(v);

@@ -11,17 +11,20 @@
         background-color: rgba(0, 0, 0, 0.03) !important;
         border-top: 1px solid rgba(0, 0, 0, 0.125) !important;
     }
+    .card:hover .special-card-footer{
+        background-color: #fff !important;
+    }
     .special-card:hover{        
         cursor: pointer !important;
         font-weight: bold;
-        background-color: #2384c6 !important;
-        color: #fff; 
+        background-color: #ffffff !important;
+        color: #3F51B5 !important;
     }
     .special-card:hover .card-body{
         cursor: pointer !important;
-        font-weight: bold;
-        background-color: #2384c6 !important;
-        color: #fff !important;
+        font-weight: bold; 
+        background-color: #ffffff !important;
+        color: #3F51B5 !important;
     }
     .special-card .card-body{
         color: #495057 !important;
@@ -32,7 +35,7 @@
     .fa-2x {
         font-size: 7.5em;
     }
-    
+
     .dropdown-item {
         display: block;
         width: 100%;

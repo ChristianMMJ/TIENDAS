@@ -139,7 +139,7 @@
                 <!-- FOTO -->
                 <div for="" align="center">
                     <br>
-                    <h3>Puede subir un archivo PDF, imagen (JPG,GIF,PNG) etc.</h3>
+                    <h3>Puede subir una imagen (JPG,GIF,PNG) etc.</h3>
                 </div>
                 <div class="col-md-12" align="center">
                     <input type="file" id="Foto" name="Foto" class="d-none">
