@@ -333,10 +333,10 @@
         }).done(function (data, x, jq) {
             //console.log(data);
             if (data.length > 0) {
-                swal('ATENCIÓN', 'REPORTE GENERADO','success');
+                swal('ATENCIÓN', 'REPORTE GENERADO', 'success');
                 window.open(data, '_blank');
             } else {
-                swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');
+                swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE', 'warning');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -488,7 +488,9 @@
                                     btnGuardar.addClass('d-none');
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
-                                swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
+                                swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
+                                    btnCancelar.trigger('click');
+                                });
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -536,7 +538,7 @@
                                     btnGuardar.addClass('d-none');
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
-                                swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
+                                swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -545,7 +547,7 @@
                             });
                         }
                     } else {
-                        swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
+                        swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'warning');
                     }
                 }
             });
@@ -617,7 +619,7 @@
                     }
                 });
             } else {
-                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
             }
         });
         getRecords();
@@ -775,7 +777,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
                     }
                 });
                 // Apply the search
@@ -965,7 +967,7 @@
                                 }
                             }
                         });
-                        swal('ATENCIÓN', 'REGISTROS AGREGADOS','success');
+                        swal('ATENCIÓN', 'REGISTROS AGREGADOS', 'success');
                         onCalcularMontos();
                     } else {
                         swal('ATENCIÓN', 'COMPLETA LOS CAMPOS', 'warning');
@@ -977,11 +979,11 @@
                 }
                 /*VALIDAR ESTILO Y COMBINACION*/
             } else {
-                swal('ATENCIÓN', 'DEBE DE ESTABLECER UN COSTO','warning');
+                swal('ATENCIÓN', 'DEBE DE ESTABLECER UN COSTO', 'warning');
                 pnlDatos.find("input[name='PrecioMov']").focus();
             }
         } else {
-            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO','warning');
+            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO', 'warning');
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }

@@ -281,7 +281,7 @@
         pnlDatos.find("[name='Tienda']").change(function () {
             if ($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue()) {
                 pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
-                swal('ATENCIÓN', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN','warning');
+                swal('ATENCIÓN', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN', 'warning');
             }
 
         });
@@ -418,7 +418,9 @@
                             pnlDatos.find('#ControlesDetalle').addClass('disabledForms');
                             btnGuardar.addClass('d-none');
                         }
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
+                            btnCancelar.trigger('click');
+                        });
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -457,7 +459,7 @@
                         data: f
                     }).done(function (data, x, jq) {
                         console.log(data);
-                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
+                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
                         getRecords();
@@ -469,7 +471,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'warning');
             }
         });
         btnNuevo.click(function () {
@@ -622,7 +624,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
                     }
                 });
                 // Apply the search

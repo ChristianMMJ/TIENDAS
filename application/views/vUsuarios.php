@@ -142,7 +142,7 @@
 
     $(document).ready(function () {
         pnlTablero.find("#TiendaT").change(function () {
-                        Usuarios.ajax.reload(); 
+            Usuarios.ajax.reload();
         });
         pnlDatos.find("[name='Empresa']").change(function () {
             pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
@@ -193,9 +193,10 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
+                            btnCancelar.trigger('click');
+                        });
                         Usuarios.ajax.reload();
-                        btnCancelar.trigger('click');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -210,9 +211,9 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
-                        pnlDatos.find('#ID').val(data); 
-                        Usuarios.ajax.reload(); 
+                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        pnlDatos.find('#ID').val(data);
+                        Usuarios.ajax.reload();
                         btnCancelar.trigger('click');
                         nuevo = false;
                     }).fail(function (x, y, z) {
@@ -222,7 +223,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'warning');
             }
         });
         btnNuevo.click(function () {
@@ -376,7 +377,7 @@
                     HoldOn.close();
                 });
             } else {
-                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
             }
         });
     }

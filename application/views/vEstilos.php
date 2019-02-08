@@ -182,8 +182,9 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         console.log(data);
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
-                        getRecords();
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
+                            btnCancelar.trigger('click');
+                        });
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -198,7 +199,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
+                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
                         getRecords();
@@ -210,7 +211,7 @@
                 }
 
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'warning');
             }
         });
         btnNuevo.click(function () {
@@ -331,7 +332,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
                     }
                 });
                 // Apply the search
@@ -344,7 +345,7 @@
                     });
                 });
             } else {
-                swal('ATENCIÓN', 'NO SE ENCONTRARON REGISTROS','warning');
+                swal('ATENCIÓN', 'NO SE ENCONTRARON REGISTROS', 'warning');
             }
 
         }).fail(function (x, y, z) {
