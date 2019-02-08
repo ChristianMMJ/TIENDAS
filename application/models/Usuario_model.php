@@ -15,19 +15,11 @@ class Usuario_model extends CI_Model {
             if ($Tienda === 'TODAS') {
                 $Tienda = "";
             }
-            $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false);
-            $this->db->from('sz_usuarios AS U');
-            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->like('U.Tienda', $Tienda, 'before');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.ID, U.Usuario, U.Estatus, U.Tipo, CONCAT(IFNULL(T.Clave,''),'-',IFNULL(T.RazonSocial,'')) as Tienda ", false)
+                            ->from('sz_usuarios AS U')
+                            ->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left')
+                            ->where_in('U.Estatus', 'ACTIVO')
+                            ->like('U.Tienda', $Tienda, 'before')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -35,13 +27,13 @@ class Usuario_model extends CI_Model {
 
     public function getAcceso($USUARIO, $CONTRASENA) {
         try {
-            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa ', false);
-            $this->db->from('sz_usuarios AS U');
-            $this->db->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left');
-            $this->db->join('sz_empresas AS E', 'T.Empresa = E.ID', 'left');
-            $this->db->where('U.Usuario', $USUARIO);
-            $this->db->where('U.Contrasena', $CONTRASENA);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa ', false)
+                    ->from('sz_usuarios AS U')
+                    ->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left')
+                    ->join('sz_empresas AS E', 'T.Empresa = E.ID', 'left')
+                    ->where('U.Usuario', $USUARIO)
+                    ->where('U.Contrasena', $CONTRASENA)
+                    ->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -68,8 +60,7 @@ class Usuario_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_usuarios", $DATA);
+            $this->db->where('ID', $ID)->update("sz_usuarios", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -78,9 +69,7 @@ class Usuario_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_usuarios");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("sz_usuarios");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -89,10 +78,7 @@ class Usuario_model extends CI_Model {
 
     public function getUsuarioByID($ID) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_usuarios AS U');
-            $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
+            $this->db->select('U.*', false)->from('sz_usuarios AS U')->where('U.ID', $ID)->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -108,10 +94,7 @@ class Usuario_model extends CI_Model {
 
     public function getContrasena($USUARIO) {
         try {
-            $this->db->select('U.Contrasena', false);
-            $this->db->from('sz_usuarios AS U');
-            $this->db->where('U.Usuario', $USUARIO);
-            $this->db->where_in('U.Estatus', 'Activo');
+            $this->db->select('U.Contrasena', false)->from('sz_usuarios AS U')->where('U.Usuario', $USUARIO)->where_in('U.Estatus', 'Activo');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

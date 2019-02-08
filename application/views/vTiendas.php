@@ -392,7 +392,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
                     }
                 });
                 // Apply the search

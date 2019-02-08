@@ -153,7 +153,7 @@
                     onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
                     window.open(data, '_blank');
                 } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN DATOS PARA EL REPORTE', 'danger');
+                    swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');
                 }
             }).fail(function (x, y, z) {
                 console.log(x, y, z);

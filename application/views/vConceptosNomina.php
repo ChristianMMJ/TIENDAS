@@ -126,7 +126,7 @@
                     });
                 }
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
             }
         });
 
@@ -231,7 +231,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
                     }
                 });
                 // Apply the search

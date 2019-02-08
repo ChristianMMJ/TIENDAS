@@ -6,7 +6,7 @@ class Usuarios extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('Usuario_model')->model('Tiendas_model')->model('Empresas_model');
+        $this->load->library('session')->model('Usuario_model','usm')->model('Tiendas_model','tim')->model('Empresas_model','emm');
     }
 
     public function index() {
@@ -22,10 +22,8 @@ class Usuarios extends CI_Controller {
     }
 
     public function getRecords() {
-        try {
-            //var_dump($this->input->post('Tienda'));
-            $data = $this->Usuario_model->getRecords(($this->input->post('Tienda') !== NULL && $this->input->post('Tienda') !== '' ) ? $this->input->post('Tienda') : $this->session->userdata('TIENDA'));
-            print json_encode($data);
+        try {  
+            print json_encode($this->usm->getRecords(($this->input->get('Tienda') !== NULL && $this->input->get('Tienda') !== '' ) ? $this->input->get('Tienda') : $this->session->userdata('TIENDA')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -33,7 +31,7 @@ class Usuarios extends CI_Controller {
 
     public function getEmpresas() {
         try {
-            print json_encode($this->Empresas_model->getEmpresas());
+            print json_encode($this->emm->getEmpresas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -41,7 +39,7 @@ class Usuarios extends CI_Controller {
 
     public function getTiendas() {
         try {
-            print json_encode($this->Tiendas_model->getTiendas());
+            print json_encode($this->tim->getTiendas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -49,7 +47,7 @@ class Usuarios extends CI_Controller {
 
     public function getTiendasByEmpresa() {
         try {
-            print json_encode($this->Tiendas_model->getTiendasByEmpresa($this->input->post('Empresa')));
+            print json_encode($this->tim->getTiendasByEmpresa($this->input->post('Empresa')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,7 +55,7 @@ class Usuarios extends CI_Controller {
 
     public function getUsuarioByID() {
         try {
-            print json_encode($this->Usuario_model->getUsuarioByID($this->input->post('ID')));
+            print json_encode($this->usm->getUsuarioByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,7 +73,7 @@ class Usuarios extends CI_Controller {
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
                 'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL
             );
-            $ID = $this->Usuario_model->onAgregar($data);
+            $ID = $this->usm->onAgregar($data);
             /* SUBIR FOTO */
             $URL_DOC = 'uploads/Usuarios/';
             $master_url = $URL_DOC . '/';
@@ -98,12 +96,12 @@ class Usuarios extends CI_Controller {
                     $DATA = array(
                         'Foto' => ($img),
                     );
-                    $this->Usuario_model->onModificar($ID, $DATA);
+                    $this->usm->onModificar($ID, $DATA);
                 } else {
                     $DATA = array(
                         'Foto' => (null),
                     );
-                    $this->Usuario_model->onModificar($ID, $DATA);
+                    $this->usm->onModificar($ID, $DATA);
                 }
             }
             print $ID;
@@ -125,7 +123,7 @@ class Usuarios extends CI_Controller {
                 'Tienda' => ($this->input->post('Tienda') !== NULL) ? $this->input->post('Tienda') : NULL,
                 'Empresa' => ($this->input->post('Empresa') !== NULL) ? $this->input->post('Empresa') : NULL
             );
-            $this->Usuario_model->onModificar($ID, $DATA);
+            $this->usm->onModificar($ID, $DATA);
 
             /* MODIFICAR FOTO */
             $Foto = $this->input->post('Foto');
@@ -152,12 +150,12 @@ class Usuarios extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->Usuario_model->onModificar($ID, $DATA);
+                            $this->usm->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->Usuario_model->onModificar($ID, $DATA);
+                            $this->usm->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -165,7 +163,7 @@ class Usuarios extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->Usuario_model->onModificar($ID, $DATA);
+                $this->usm->onModificar($ID, $DATA);
             }
             /* FIN MODIFICAR FOTO */
         } catch (Exception $exc) {
@@ -175,7 +173,7 @@ class Usuarios extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->Usuario_model->onEliminar($this->input->post('ID'));
+            $this->usm->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

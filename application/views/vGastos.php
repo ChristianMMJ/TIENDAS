@@ -317,7 +317,7 @@
                             });
                         }
                     } else {
-                        onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                        swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
                     }
                 }
             });
@@ -387,7 +387,7 @@
                     }
                 });
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
             }
         });
         getRecords();
@@ -521,7 +521,7 @@
                     HoldOn.close();
                 });
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
             }
 
         });
@@ -589,11 +589,11 @@
                 onLimpiarCampos();
                 /*VALIDAR ESTILO Y COMBINACION*/
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', 'DEBE DE ESTABLECER UN PRECIO', 'danger');
+                swal('ATENCIÓN', 'DEBE DE ESTABLECER UN PRECIO','warning');
                 pnlDatos.find("input[name='PrecioMov']").focus();
             }
         } else {
-            onNotify('<span class="fa fa-times fa-lg"></span>', 'DEBE DE ESTABLECER UN TIPO', 'danger');
+            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO','warning');
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }

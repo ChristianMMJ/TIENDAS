@@ -210,7 +210,7 @@
                 }
 
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
             }
         });
         btnNuevo.click(function () {
@@ -331,7 +331,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
                     }
                 });
                 // Apply the search
@@ -344,7 +344,7 @@
                     });
                 });
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO SE ENCONTRARON REGISTROS', 'danger');
+                swal('ATENCIÓN', 'NO SE ENCONTRARON REGISTROS','warning');
             }
 
         }).fail(function (x, y, z) {

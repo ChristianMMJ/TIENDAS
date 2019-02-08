@@ -281,7 +281,7 @@
         pnlDatos.find("[name='Tienda']").change(function () {
             if ($(this).val() === pnlDatos.find("[name='dTienda']")[0].selectize.getValue()) {
                 pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
-                onNotify('<span class="fa fa-times fa-lg"></span>', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN', 'danger');
+                swal('ATENCIÓN', 'LA TIENDA DESTINO DEBE SER DIFERENTE A LA DE ORIGEN','warning');
             }
 
         });
@@ -469,7 +469,7 @@
                     });
                 }
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
             }
         });
         btnNuevo.click(function () {
@@ -622,7 +622,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
                     }
                 });
                 // Apply the search

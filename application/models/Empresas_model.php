@@ -12,7 +12,7 @@ class Empresas_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Razón Social' ", false)
+            return $this->db->select("U.ID, U.Clave AS CLAVE, U.RazonSocial AS RS ", false)
                             ->from('sz_empresas AS U')
                             ->where_in('U.Estatus', 'ACTIVO')
                             ->order_by('U.Clave', 'ASC')

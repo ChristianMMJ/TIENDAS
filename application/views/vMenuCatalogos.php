@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="<?php print base_url(); ?>"><span class="fa fa-wrench"></span> Catálogos</a>
+    <a class="navbar-brand" href="<?php print base_url(''); ?>"><span class="fa fa-wrench"></span> Catálogos</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" onclick="openNav()" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

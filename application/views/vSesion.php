@@ -72,7 +72,7 @@
                     if (parseInt(data) === 1) {
                         location.reload(true);
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', data, 'danger');
+                        swal('ATENCIÓN', data,'warning');
                     }
                     HoldOn.close();
                 }).fail(function (x, y, z) {

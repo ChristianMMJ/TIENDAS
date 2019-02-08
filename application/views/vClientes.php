@@ -243,7 +243,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
                         getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -260,7 +260,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
                         getRecords();
@@ -271,7 +271,7 @@
                     });
                 }
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
             }
         });
 
@@ -389,7 +389,7 @@
                             HoldOn.close();
                         });
                     } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                        swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
                     }
                 });
                 // Apply the search

@@ -12,7 +12,7 @@ class Ventas extends CI_Controller {
                 ->model('estilos_model')
                 ->model('tiendas_model')
                 ->model('combinaciones_model')
-                ->model('existencias_model')
+                ->model('existencias_model','exm')
                 ->model('clientes_model')
                 ->model('generales_model')
                 ->model('empleados_model')
@@ -124,21 +124,34 @@ class Ventas extends CI_Controller {
 
     public function onAgregarDetalle() {
         try {
-            $x = $this->input;
+        $x = $this->input;
             $data = array(
-                'Venta' => ($x->post('Venta') !== NULL) ? $x->post('Venta') : NULL,
-                'Estilo' => ($x->post('Estilo') !== NULL) ? $x->post('Estilo') : NULL,
-                'Color' => ($x->post('Color') !== NULL) ? $x->post('Color') : NULL,
-                'Talla' => ($x->post('Talla') !== NULL) ? $x->post('Talla') : NULL,
-                'Cantidad' => ($x->post('Cantidad') !== NULL) ? $x->post('Cantidad') : NULL,
-                'Precio' => ($x->post('Precio') !== NULL) ? $x->post('Precio') : NULL,
-                'Descuento' => ($x->post('Descuento') !== NULL) ? $x->post('Descuento') : NULL,
-                'Subtotal' => ($x->post('Subtotal') !== NULL) ? $x->post('Subtotal') : NULL,
-                'PorcentajeDesc' => ($x->post('PorcentajeDesc') !== '' && $x->post('PorcentajeDesc') !== NULL) ? $x->post('PorcentajeDesc') : 0.0
+                'Venta' => $this->isValidField('Venta', 1),
+                'Estilo' => $this->isValidField('Estilo', 1),
+                'Color' => $this->isValidField('Color', 1),
+                'Talla' => $this->isValidField('Talla', 1),
+                'Cantidad' => $this->isValidField('Cantidad', 1),
+                'Precio' => $this->isValidField('Precio', 1),
+                'Descuento' => $this->isValidField('Descuento', 1),
+                'Subtotal' => $this->isValidField('Subtotal', 1),
+                'PorcentajeDesc' => ($x->post('PorcentajeDesc') !== '' && $x->post('PorcentajeDesc') !== NULL) ? $x->post('PorcentajeDesc') : 0.0,
+                'Registro' => Date('d/m/Y h:i:s a')
             );
             $this->vtm->onAgregarDetalle($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+        }
+    }
+
+    public function isValidField($field, $type) {
+        $x = $this->input;
+        switch ($type) {
+            case 1:
+                return ($x->post($field) !== NULL) ? $x->post($field) : NULL;
+                break;
+            case 2:
+                return ($x->post($field) !== NULL) ? $x->post($field) : 0.0;
+                break;
         }
     }
 
@@ -195,7 +208,7 @@ class Ventas extends CI_Controller {
 
     public function onModifcarExistenciaXEstiloXColorXTienda() {
         try {
-            $this->existencias_model->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
+            $this->exm->onModifcarExistenciaXEstiloXColorXTienda($this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Posicion'), $this->input->post('ExistenciaNueva'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -219,7 +232,7 @@ class Ventas extends CI_Controller {
 
     public function getExistenciasByEstiloByColor() {
         try {
-            print json_encode($this->existencias_model->getExistenciasByEstiloByColor($this->input->post('Estilo'), $this->input->post('Color')));
+            print json_encode($this->exm->getExistenciasByEstiloByColor($this->input->post('Estilo'), $this->input->post('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -227,7 +240,7 @@ class Ventas extends CI_Controller {
 
     public function getExistenciaByID() {
         try {
-            print json_encode($this->existencias_model->getExistenciaByID($this->input->post('ID')));
+            print json_encode($this->exm->getExistenciaByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -235,7 +248,7 @@ class Ventas extends CI_Controller {
 
     public function getVendedores() {
         try {
-            print json_encode($this->empleados_model->getEmpleados());
+            print json_encode($this->vtm->getEmpleados($this->session->userdata('TIENDA')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -267,7 +280,7 @@ class Ventas extends CI_Controller {
 
     public function getEstilosExistentesXTienda() {
         try {
-            print json_encode($this->existencias_model->getEstilosExistentesXTienda());
+            print json_encode($this->exm->getEstilosExistentesXTienda());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -275,7 +288,7 @@ class Ventas extends CI_Controller {
 
     public function getEstilosExt() {
         try {
-            print json_encode($this->existencias_model->getEstilosExt());
+            print json_encode($this->exm->getEstilosExt());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -316,7 +329,7 @@ class Ventas extends CI_Controller {
     public function getExistenciasXEstiloXCombinacion() {
         try {
             extract($this->input->post());
-            $data = $this->existencias_model->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion);
+            $data = $this->exm->getExistenciasXEstiloXCombinacion($Estilo, $Combinacion);
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

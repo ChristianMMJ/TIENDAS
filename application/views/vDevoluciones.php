@@ -7,7 +7,7 @@
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo"><span class="fa fa-plus"></span><br></button>
-                <button type="button" class="btn btn-primary" id="btnConfirmarEliminar"><span class="fa fa-trash"></span><br></button>
+                <button type="button" class="btn btn-primary d-none" id="btnConfirmarEliminar"><span class="fa fa-trash"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -91,13 +91,15 @@
                      padding-right: 0px;">
                     <div class="row">
                         <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
-                            <h3>DEVOLUCIONES</h3>
+                            <h4>Devoluciones</h4>
                         </div>
                         <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="right"> 
                             <button type='button' class="btn btn-danger btn-sm" id='btnCancelarAtras'><span class="fa fa-arrow-left "></span> SALIR</button> 
                             <button type='button' class="btn btn-primary btn-sm" id='btnFinalizar'><span class="fa fa-check"></span> GUARDAR</button>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="col-12"><hr></div>
+                        <div class="w-100 my-2"></div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control form-control-sm" placeholder="NÚMERO DE VENTA" name="NumeroDeVenta" autofocus="">
                                 <span class="input-group-prepend">
@@ -107,7 +109,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control form-control-sm numbersOnly" placeholder="CÓDIGO DEL ARTÍCULO" name="CodigoBarras" autofocus="">
                                 <span class="input-group-prepend">
@@ -1090,7 +1092,7 @@
                 });
                 if (!tallaValida) {
 //                    onBeep(2);
-//                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'Ingresa una talla válida', 'danger');
+//                    swal('ATENCIÓN', 'Ingresa una talla válida','warning');
                     pnlDatos.find("[name='Talla']").val('');
 //                    pnlDatos.find("[name='Talla']").focus();
 //                    swal({
@@ -1345,7 +1347,7 @@
 //        if (total_devuelto > 0) {
 //            onNotify('<span class="fa fa-check fa-lg"></span>', tf, 'success');
 //        } else {
-//            onNotify('<span class="fa fa-exclamation fa-lg"></span>', tf, 'danger');
+//            swal('ATENCIÓN', tf,'warning');
 //        }
     }
 

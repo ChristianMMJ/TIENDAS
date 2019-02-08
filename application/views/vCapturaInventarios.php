@@ -702,10 +702,10 @@
         }).done(function (data, x, jq) {
             console.log(data);
             if (data.length > 0) {
-                onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                swal('ATENCIÓN', 'REPORTE GENERADO','success');
                 window.open(data, '_blank');
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN DATOS PARA EL REPORTE', 'danger');
+                swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');
             }
             HoldOn.close();
         }).fail(function (x, y, z) {
@@ -726,10 +726,10 @@
         }).done(function (data, x, jq) {
             console.log(data);
             if (data.length > 0) {
-                onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                swal('ATENCIÓN', 'REPORTE GENERADO','success');
                 window.open(data, '_blank');
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'NO EXISTEN DATOS PARA EL REPORTE', 'danger');
+                swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');
             }
             HoldOn.close();
         }).fail(function (x, y, z) {
@@ -803,7 +803,7 @@
                 }
             });
         } else {
-            onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+            swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
         }
     }
 

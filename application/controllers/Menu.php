@@ -13,7 +13,12 @@ class Menu extends CI_Controller {
 
     public function menu() {
         $menus = array('Catalogos', 'Ventas', 'Caja', 'Gastos', 'Compras', 'Inventarios', 'Nomina');
-        $this->load->view('vEncabezado')->view("vMenu{$menus[$this->uri->segment(2)]}")->view('vFondo')->view('vStyles')->view('vFooter');
+        $this->load->view('vEncabezado')
+                ->view('vFondo')
+                ->view("vMenu{$menus[$this->uri->segment(2)]}")
+                ->view("vQuickMenu{$menus[$this->uri->segment(2)]}")
+                ->view('vStyles')
+                ->view('vFooter');
     }
 
 }

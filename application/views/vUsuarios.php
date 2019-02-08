@@ -21,6 +21,22 @@
         </div>
         <div class="card-block">
             <div class="table-responsive" id="tblRegistros"></div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div id="Usuarios" class="table-responsive">
+                    <table id="tblUsuarios" class="table table-hover table-sm table-bordered  compact" style="width:100%">
+                        <thead>
+                            <tr> 
+                                <th scope="col">ID</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Estatus</th>
+                                <th scope="col">Tipo</th>    
+                                <th scope="col">Tienda</th>    
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -122,9 +138,11 @@
     var btnArchivo = pnlDatos.find("#btnArchivo");
     var VistaPrevia = pnlDatos.find("#VistaPrevia");
     var nuevo = true;
+    var Usuarios, tblUsuarios = pnlTablero.find("#tblUsuarios");
+
     $(document).ready(function () {
         pnlTablero.find("#TiendaT").change(function () {
-            getRecords();
+                        Usuarios.ajax.reload(); 
         });
         pnlDatos.find("[name='Empresa']").change(function () {
             pnlDatos.find("[name='Tienda']")[0].selectize.clear(true);
@@ -176,7 +194,8 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        getRecords();
+                        Usuarios.ajax.reload();
+                        btnCancelar.trigger('click');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -192,9 +211,9 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
-                        pnlDatos.find('#ID').val(data);
-                        getRecords();
-                        pnlDatos.find('#ID').val(data);
+                        pnlDatos.find('#ID').val(data); 
+                        Usuarios.ajax.reload(); 
+                        btnCancelar.trigger('click');
                         nuevo = false;
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -203,7 +222,7 @@
                     });
                 }
             } else {
-                onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
             }
         });
         btnNuevo.click(function () {
@@ -222,139 +241,146 @@
             nuevo = true;
         });
         /*CALLS*/
-        getRecords();
+        getRecordsX();
         getEmpresas();
         getTiendas();
         handleEnter();
     });
-    
-    function getRecords() {
-        temp = 0;
-        HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
+    function getRecordsX() {
+        Usuarios = tblUsuarios.DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel',
+                {
+                    exportOptions: {
+                        columns: ':visible',
+                        search: 'applied',
+                        order: 'applied'
+                    },
+                    className: 'selectNotEnter',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape', //portrait
+                    pageSize: 'letter', //A3 , A5 , A6 , legal , letter
+                    text: 'PDF',
+                    titleAttr: 'PDF'
+                }, 'print'
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "contentType": "application/json",
+                "dataSrc": "",
+                "data": function (d) {
+                    d.Tienda = pnlTablero.find("#TiendaT").val();
+                }
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Usuario"},
+                {"data": "Estatus"}, {"data": "Tipo"},
+                {"data": "Tienda"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            select: {
+                style: 'single'
+            },
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "350px",
+            "scrollX": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ]
         });
-        $.ajax({
-            url: master_url + 'getRecords',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Tienda: pnlTablero.find("#TiendaT").val()
-            }
-        }).done(function (data, x, jq) {
-            if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblUsuarios', data));
-                $('#tblUsuarios tfoot th').each(function () {
-                    $(this).html('');
-                });
-                var tblSelected = $('#tblUsuarios').DataTable(tableOptions);
-                $('#tblUsuarios_filter input[type=search]').focus();
 
-                $('#tblUsuarios tbody').on('click', 'tr', function () {
-                    $("#tblUsuarios tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        nuevo = false;
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getUsuarioByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-                            var dtm = data[0];
-                            pnlDatos.find("input").val("");
-                            $.each(pnlDatos.find("select"), function (k, v) {
-                                pnlDatos.find("select")[k].selectize.clear(true);
-                            });
-                            $.each(data[0], function (k, v) {
-                                if (k !== 'Foto') {
-                                    pnlDatos.find("[name='" + k + "']").val(v);
-                                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                    }
-                                }
-                            });
-
-                            $.ajax({
-                                url: master_url + 'getTiendasByEmpresa',
-                                type: "POST",
-                                dataType: "JSON",
-                                data: {
-                                    Empresa: dtm.Empresa
-                                }
-                            }).done(function (data, x, jq) {
-                                $.each(data, function (k, v) {
-                                    pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
-                                });
-                                pnlDatos.find("[name='Tienda']")[0].selectize.setValue(dtm.Tienda);
-                                pnlDatos.find("[name='Tienda']")[0].selectize.close();
-                                pnlDatos.find("[name='Usuario']").focus();
-                                pnlDatos.find("[name='Usuario']").select();
-                            }).fail(function (x, y, z) {
-                                console.log(x, y, z);
-                            }).always(function () {
-                            });
-                            /*COLOCAR FOTO*/
-                            if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
-                                var ext = getExt(dtm.Foto);
-                                if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
-                                    pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
-                                }
-                                if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
-                                    pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
-                                }
-                                if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
-                                    pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
-                                }
-                            } else {
-                                pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
-                            }
-                            /*FIN COLOCAR FOTO*/
-                            pnlTablero.addClass("d-none");
-                            pnlDatos.removeClass('d-none');
-                            //$(':input:text:enabled:visible:first').focus();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                    }
+        tblUsuarios.find('tbody').on('dblclick', 'tr', function () {
+            temp = Usuarios.row($(this)).data().ID;
+            if (temp) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
                 });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
+                $.ajax({
+                    url: master_url + 'getUsuarioByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+                    var dtm = data[0];
+                    pnlDatos.find("input").val("");
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        if (k !== 'Foto') {
+                            pnlDatos.find("[name='" + k + "']").val(v);
+                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            }
                         }
                     });
+
+                    $.ajax({
+                        url: master_url + 'getTiendasByEmpresa',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            Empresa: dtm.Empresa
+                        }
+                    }).done(function (data, x, jq) {
+                        $.each(data, function (k, v) {
+                            pnlDatos.find("[name='Tienda']")[0].selectize.addOption({text: v.Tienda, value: v.ID});
+                        });
+                        pnlDatos.find("[name='Tienda']")[0].selectize.setValue(dtm.Tienda);
+                        pnlDatos.find("[name='Tienda']")[0].selectize.close();
+                        pnlDatos.find("[name='Usuario']").focus();
+                        pnlDatos.find("[name='Usuario']").select();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                    });
+                    /*COLOCAR FOTO*/
+                    if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
+                        var ext = getExt(dtm.Foto);
+                        if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                        }
+                        if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                        }
+                        if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                        }
+                    } else {
+                        pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                    }
+                    /*FIN COLOCAR FOTO*/
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    //$(':input:text:enabled:visible:first').focus();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
                 });
             } else {
-                $("#tblRegistros").html('');
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO','warning');
             }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
         });
     }
+
     function getEmpresas() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.ajax({

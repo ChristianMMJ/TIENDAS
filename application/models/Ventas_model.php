@@ -53,11 +53,20 @@ class Ventas_model extends CI_Model {
         }
     }
 
+    public function getEmpleados($TIENDA) {
+        try {
+            return $this->db->select("U.ID, CONCAT(U.ID,'-',U.ApellidoP,' ', U.ApellidoM ,' ', U.PrimerNombre,' ', IFNULL(U.SegundoNombre,'')) As Empleado   ", false)
+                            ->from('sz_empleados AS U')
+                            ->where('U.Tienda', $TIENDA)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_ventas", $DATA);
-//            print $str = $this->db->last_query();
+            $this->db->where('ID', $ID)->update("sz_ventas", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,9 +74,7 @@ class Ventas_model extends CI_Model {
 
     public function onModificarDetalle($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_ventasdetalle", $DATA);
-//            print $str = $this->db->last_query();
+            $this->db->where('ID', $ID)->update("sz_ventasdetalle", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,8 +82,7 @@ class Ventas_model extends CI_Model {
 
     public function onEliminarDetalle($ID) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->delete("sz_ventasdetalle");
+            $this->db->where('ID', $ID)->delete("sz_ventasdetalle");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -84,10 +90,7 @@ class Ventas_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_ventas");
-//            print $str = $this->db->last_query();
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("sz_ventas");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,19 +98,10 @@ class Ventas_model extends CI_Model {
 
     public function getVentaByFolioTiendaByTipoDocByTienda($FolioTienda, $TipoDoc) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_ventas AS U');
-            $this->db->where('U.FolioTienda', $FolioTienda);
-            $this->db->where('U.TipoDoc', $TipoDoc);
-            $this->db->where('U.Tienda', $this->session->userdata('TIENDA'));
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select('U.*', false)
+                            ->from('sz_ventas AS U')
+                            ->where('U.FolioTienda', $FolioTienda)->where('U.TipoDoc', $TipoDoc)->where('U.Tienda', $this->session->userdata('TIENDA'))
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -115,27 +109,16 @@ class Ventas_model extends CI_Model {
 
     public function getVentaByID($ID) {
         try {
-            $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR,
+            return $this->db->select('V.TipoDoc TIPODOC,   V.FolioTienda AS FOLIO, C.RazonSocial AS CLIENTE, CONCAT(E.PrimerNombre, \' \',E.ApellidoP) AS VENDEDOR,
 	   V.FechaCreacion AS FECHA_DE_CREACION, V.FechaMov AS FECHA_MOV, CA.SValue AS METODO_PAGO, V.Estatus AS ESTATUS, V.SuPago AS SUPAGO
       ,V.Importe      ,V.Usuario      ,V.Tipo, T.RazonSocial AS TIENDA,
       CONCAT(T.Direccion,\' #\', T.NoExt,\', \',T.Colonia,\' \', T.Ciudad,\', \', T.Estado,\' C.P \',T.CP) AS DIRECCION,
       CONCAT(T.Ciudad,\',\',T.Estado) AS LUGAR_EXPEDICION, V.ImporteEnLetra  AS TOTAL_EN_LETRA,V.Tienda AS TIENDA_ID, T.Foto AS FOTO_TIENDA,
-      (SELECT SUM(VD.Descuento) FROM sz_ventasdetalle AS VD WHERE VD.Venta = V.ID) AS DESCUENTO_TOTAL', false);
-            $this->db->from('sz_ventas AS V');
-            $this->db->join('sz_tiendas AS T', 'V.Tienda = T.ID');
-            $this->db->join('sz_clientes AS C', 'V.Cliente = C.ID');
-            $this->db->join('sz_empleados AS E', 'V.Tienda = E.ID');
-            $this->db->join('sz_catalogos AS CA', 'V.MetodoPago = CA.ID');
-            $this->db->where('V.ID', $ID);
-//            $this->db->where('V.Tipo', 'V');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+      (SELECT SUM(VD.Descuento) FROM sz_ventasdetalle AS VD WHERE VD.Venta = V.ID) AS DESCUENTO_TOTAL', false)
+                            ->from('sz_ventas AS V')
+                            ->join('sz_tiendas AS T', 'V.Tienda = T.ID')->join('sz_clientes AS C', 'V.Cliente = C.ID')
+                            ->join('sz_empleados AS E', 'V.Tienda = E.ID')->join('sz_catalogos AS CA', 'V.MetodoPago = CA.ID')
+                            ->where('V.ID', $ID)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

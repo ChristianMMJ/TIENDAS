@@ -7,9 +7,22 @@
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
-        </div>
-        <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+        </div>        
+        <div class="card-block"> 
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div id="Empresas" class="table-responsive">
+                    <table id="tblEmpresas" class="table table-hover table-sm table-bordered  compact" style="width:100%">
+                        <thead>
+                            <tr> 
+                                <th scope="col">ID</th>
+                                <th scope="col">Clave</th>
+                                <th scope="col">Razón Social</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -224,8 +237,9 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
-                        getRecords();
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        Empresas.ajax.reload();
+                        btnCancelar.trigger('click');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -240,10 +254,11 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                        swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
-                        getRecords();
+                        Empresas.ajax.reload();
+                        btnCancelar.trigger('click');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -270,10 +285,123 @@
             nuevo = true;
         });
 
-        getRecords();
+        getRecordsX();
         getRegimenesFiscales();
         handleEnter();
     });
+
+    var Empresas, tblEmpresas = pnlTablero.find("#tblEmpresas");
+
+    function getRecordsX() {
+        Empresas = tblEmpresas.DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel',
+                {
+                    exportOptions: {
+                        columns: ':visible',
+                        search: 'applied',
+                        order: 'applied'
+                    },
+                    className: 'selectNotEnter',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape', //portrait
+                    pageSize: 'letter', //A3 , A5 , A6 , legal , letter
+                    text: 'PDF',
+                    titleAttr: 'PDF'
+                }, 'print'
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "contentType": "application/json",
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "CLAVE"}, {"data": "RS"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            select: {
+                style: 'single'
+            },
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "350px",
+            "scrollX": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ]
+        });
+        tblEmpresas.find('tbody').on('dblclick click', 'tr', function () {
+            temp = Empresas.row($(this)).data().ID;
+            if (temp) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
+                });
+                $.ajax({
+                    url: master_url + 'getEmpresaByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+
+                    var dtm = data[0];
+                    pnlDatos.find("input").val("");
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        if (k !== 'Foto') {
+                            pnlDatos.find("[name='" + k + "']").val(v);
+                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            }
+                        }
+                    });
+                    /*COLOCAR FOTO*/
+                    if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
+                        var ext = getExt(dtm.Foto);
+                        if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                        }
+                        if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                        }
+                        if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                        }
+                    } else {
+                        pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                    }
+                    /*FIN COLOCAR FOTO*/
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    $(':input:text:enabled:visible:first').focus();
+                    $(':input:text:enabled:visible:first').select();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                swal('OPS!', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
+            }
+        });
+    }
 
     function getRecords() {
         temp = 0;
@@ -286,7 +414,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            $("#tblRegistros").html(getTable('tblEmpresas', data));
+            $("#tblEmpresas").html(getTable('tblEmpresas', data));
 
             $('#tblEmpresas tfoot th').each(function () {
                 $(this).html('');
@@ -372,7 +500,7 @@
                         HoldOn.close();
                     });
                 } else {
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                    swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'error');
                 }
             });
             // Apply the search
