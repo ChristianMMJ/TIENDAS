@@ -792,7 +792,7 @@
                     processData: false,
                     data: f
                 }).done(function (data, x, jq) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                    swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
                     //Agregar renglon Detalle
                     if (AddCodigoBarras) {
                         onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
@@ -823,7 +823,7 @@
                     btnCancelarVenta.removeClass('d-none');
                     pnlDatos.find('#ID').val(Folios.ID);
                     pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                    swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
                     //Agregar renglon Detalle
                     if (AddCodigoBarras) {
                         onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);

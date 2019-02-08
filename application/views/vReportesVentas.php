@@ -164,7 +164,7 @@
             }).done(function (data, x, jq) {
                 console.log(data);
                 if (data.length > 0) {
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                    swal('ATENCIÓN', 'REPORTE GENERADO','success');
                     window.open(data, '_blank');
                 } else {
                     swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');

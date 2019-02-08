@@ -1345,7 +1345,7 @@
 //        pnlDatos.find("#SubtotalEncabezado h1").text(tf);
 //        pnlDatos.find("#SubtotaPie strong").text(tf);
 //        if (total_devuelto > 0) {
-//            onNotify('<span class="fa fa-check fa-lg"></span>', tf, 'success');
+//            swal('ATENCIÓN', tf,'success');
 //        } else {
 //            swal('ATENCIÓN', tf,'warning');
 //        }

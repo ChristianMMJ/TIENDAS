@@ -333,7 +333,7 @@
         }).done(function (data, x, jq) {
             //console.log(data);
             if (data.length > 0) {
-                onNotify('<span class="fa fa-check fa-lg"></span>', 'REPORTE GENERADO', 'success');
+                swal('ATENCIÓN', 'REPORTE GENERADO','success');
                 window.open(data, '_blank');
             } else {
                 swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE','warning');
@@ -488,7 +488,7 @@
                                     btnGuardar.addClass('d-none');
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
-                                onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                                swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -536,7 +536,7 @@
                                     btnGuardar.addClass('d-none');
                                     swal('INFO', 'EXISTENCIAS ACTUALIZADAS', 'success');
                                 }
-                                onNotify('<span class="fa fa-check fa-lg"></span>', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
+                                swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
                             }).fail(function (x, y, z) {
                                 console.log(x, y, z);
                             }).always(function () {
@@ -965,7 +965,7 @@
                                 }
                             }
                         });
-                        onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+                        swal('ATENCIÓN', 'REGISTROS AGREGADOS','success');
                         onCalcularMontos();
                     } else {
                         swal('ATENCIÓN', 'COMPLETA LOS CAMPOS', 'warning');

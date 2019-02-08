@@ -584,7 +584,7 @@
                     '<span class="fa fa-trash" onclick="onEliminarFila(this)"></span>'
                 ]).draw(false);
                 n += 1;
-                onNotify('<span class="fa fa-check fa-lg"></span>', 'REGISTROS AGREGADOS', 'success');
+                swal('ATENCIÓN', 'REGISTROS AGREGADOS','success');
                 onCalcularMontos();
                 onLimpiarCampos();
                 /*VALIDAR ESTILO Y COMBINACION*/
