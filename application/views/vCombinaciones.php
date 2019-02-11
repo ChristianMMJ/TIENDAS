@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="card-block">
-            <div id="Registros" class="table-responsive">
-                <table id="tblRegistros" class="table table-sm display " style="width:100%">
+            <div id="Colores" class="table-responsive">
+                <table id="tblColores" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -176,17 +176,17 @@
         getEstilos();
         handleEnter();
     });
-    var tblRegistrosX = $("#tblRegistros"), Registros;
+    var tblColoresX = $("#tblColores"), Colores;
     function getRecords() {
         HoldOn.open({
             theme: 'sk-cube',
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblRegistros')) {
-            tblRegistrosX.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblColores')) {
+            tblColoresX.DataTable().destroy();
         }
-        Registros = tblRegistrosX.DataTable({
+        Colores = tblColoresX.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -223,11 +223,11 @@
         });
 
 
-        tblRegistrosX.find('tbody').on('click', 'tr', function () {
+        tblColoresX.find('tbody').on('click', 'tr', function () {
             nuevo = false;
-            tblRegistrosX.find("tbody tr").removeClass("success");
+            tblColoresX.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Registros.row(this).data();
+            var dtm = Colores.row(this).data();
             temp = parseInt(dtm.ID);
             pnlDatos.removeClass("d-none");
             pnlTablero.addClass("d-none");
@@ -287,4 +287,4 @@
             HoldOn.close();
         });
     }
-</script>
+</script> 

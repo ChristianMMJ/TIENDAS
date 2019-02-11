@@ -6,8 +6,7 @@ class Series extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('series_model');
+        $this->load->library('session')->model('series_model');
     }
 
     public function index() {

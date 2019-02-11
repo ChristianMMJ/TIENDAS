@@ -15,7 +15,7 @@ class Tiendas_model extends CI_Model {
             if ($Empresa === 'TODAS') {
                 $Empresa = "";
             }
-            $this->db->select("U.ID, U.Clave, U.RazonSocial AS 'Tienda',CONCAT(E.Clave,'-',E.RazonSocial) AS 'Empresa' ", false);
+            $this->db->select("U.ID, U.Clave, U.RazonSocial AS Tienda,CONCAT(E.Clave,'-',E.RazonSocial) AS 'Empresa' ", false);
             $this->db->from('sz_tiendas AS U');
             $this->db->join('sz_empresas AS E', 'U.Empresa = E.ID', 'left');
             $this->db->where_in('U.Estatus', 'ACTIVO');

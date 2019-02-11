@@ -11,6 +11,22 @@
         <div class="card-block">
             <div class="table-responsive" id="tblRegistros"></div>
         </div>
+        <div class="card-block">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div id="Lineas" class="table-responsive">
+                    <table id="tblLineas" class="table table-hover table-sm  compact" style="width:100%">
+                        <thead>
+                            <tr> 
+                                <th scope="col">ID</th>
+                                <th scope="col">Clave</th>
+                                <th scope="col">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -71,6 +87,7 @@
     var btnGuardar = pnlDatos.find("#btnGuardar");
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var nuevo = true;
+    var Lineas, tblLineas = pnlTablero.find("#tblLineas");
     $(document).ready(function () {
 
         btnGuardar.click(function () {
@@ -89,7 +106,7 @@
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
                             btnCancelar.trigger('click');
                         });
-                        getRecords();
+                        Lineas.ajax.reload();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -107,7 +124,7 @@
                         swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
-                        getRecords();
+                        Lineas.ajax.reload();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -133,102 +150,115 @@
             pnlDatos.addClass('d-none');
             nuevo = true;
         });
-
-        getRecords();
+        getRecordsX();
         handleEnter();
     });
 
-    function getRecords() {
-        temp = 0;
+    function getRecordsX() {
         HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
+            theme: 'sk-rect',
+            message: 'Cargando...'
         });
-        $.ajax({
-            url: master_url + 'getRecords',
-            type: "POST",
-            dataType: "JSON"
-        }).done(function (data, x, jq) {
-            $("#tblRegistros").html(getTable('tblLineas', data));
-
-            $('#tblLineas tfoot th').each(function () {
-                $(this).html('');
-            });
-            var thead = $('#tblLineas thead th');
-            var tfoot = $('#tblLineas tfoot th');
-            thead.eq(0).addClass("d-none");
-            tfoot.eq(0).addClass("d-none");
-            $.each($.find('#tblLineas tbody tr'), function (k, v) {
-                var td = $(v).find("td");
-                td.eq(0).addClass("d-none");
-            });
-            var tblSelected = $('#tblLineas').DataTable(tableOptions);
-            $('#tblLineas_filter input[type=search]').focus();
-
-
-            $('#tblLineas tbody').on('click', 'tr', function () {
-                $("#tblLineas tbody tr").removeClass("success");
-                $(this).addClass("success");
-                var id = this.id;
-                var index = $.inArray(id, selected);
-                if (index === -1) {
-                    selected.push(id);
-                } else {
-                    selected.splice(index, 1);
+        Lineas = tblLineas.DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel',
+                {
+                    exportOptions: {
+                        columns: ':visible',
+                        search: 'applied',
+                        order: 'applied'
+                    },
+                    className: 'selectNotEnter',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape', //portrait
+                    pageSize: 'letter', //A3 , A5 , A6 , legal , letter
+                    text: 'PDF',
+                    titleAttr: 'PDF'
+                }, 'print'
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "contentType": "application/json",
+                "dataSrc": "",
+                "data": function (d) {
+                    d.Empresa = pnlTablero.find("#EmpresaT").val();
                 }
-                var dtm = tblSelected.row(this).data();
-                temp = parseInt(dtm[0]);
-                if (temp !== 0 && temp !== undefined && temp > 0) {
-                    nuevo = false;
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.ajax({
-                        url: master_url + 'getLineaByID',
-                        type: "POST",
-                        dataType: "JSON",
-                        data: {
-                            ID: temp
-                        }
-                    }).done(function (data, x, jq) {
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Clave"},
+                {"data": "Descripcion"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            select: {
+                style: 'single'
+            },
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "500px",
+            "scrollX": true,
+            "aaSorting": [
+                [1, 'desc']/*ID*/
+            ],
+            "initComplete": function (settings, json) {
+                HoldOn.close();
+            }
+        });
 
-                        pnlDatos.find("input").val("");
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.clear(true);
-                        });
-                        $.each(data[0], function (k, v) {
+        tblLineas.find('tbody').on('dblclick', 'tr', function () {
+            temp = Lineas.row($(this)).data().ID;
+            if (temp) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
+                });
+                $.ajax({
+                    url: master_url + 'getLineaByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+                    var dtm = data[0];
+                    pnlDatos.find("input").val("");
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        if (k !== 'Foto') {
                             pnlDatos.find("[name='" + k + "']").val(v);
                             if (pnlDatos.find("[name='" + k + "']").is('select')) {
                                 pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                             }
-                        });
-                        pnlTablero.addClass("d-none");
-                        pnlDatos.removeClass('d-none');
-                        $(':input:text:enabled:visible:first').focus();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
+                        }
                     });
-                } else {
-                    swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
-                }
-            });
-            // Apply the search
-            tblSelected.columns().every(function () {
-                var that = this;
-                $('input', this.footer()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that.search(this.value).draw();
-                    }
+                    /*FIN COLOCAR FOTO*/
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    $(':input:text:enabled:visible:first').focus();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
                 });
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
+            } else {
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
+            }
         });
-    }
+    } 
 
 </script>
+ 

@@ -12,11 +12,10 @@ class Series_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave,"
-                    . "CONCAT('DEL ',U.PuntoInicial,' AL',U.PuntoFinal) AS 'Numeración' ", false);
-            $this->db->from('sz_series AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $this->db->order_by("U.ID", "asc");
+            $this->db->select("U.ID, U.Clave,CONCAT('DEL ',U.PuntoInicial,' AL',U.PuntoFinal) AS Numeracion ", false)
+                    ->from('sz_series AS U')
+                    ->where_in('U.Estatus', 'ACTIVO')
+                    ->order_by("U.ID", "asc");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -11,7 +11,7 @@
         <div class="card-block"> 
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div id="Empresas" class="table-responsive">
-                    <table id="tblEmpresas" class="table table-hover table-sm table-bordered  compact" style="width:100%">
+                    <table id="tblEmpresas" class="table table-hover table-sm  compact" style="width:100%">
                         <thead>
                             <tr> 
                                 <th scope="col">ID</th>

@@ -54,5 +54,21 @@
         text-decoration: none;
         background-color: #2C3E50;
         transition: all 0.3s;
+    } 
+    table thead th{
+        background-color: #2C3E50;
+        color: #fff; 
+    }
+    
+    table thead th:first-child{
+        background-color: #006699;
+        color: #fff;
+        /*border-radius: 10px;*/
+        border-top-left-radius: 10px;
+    }
+    table thead th:last-child{ 
+        color: #fff;
+        /*border-radius: 10px;*/
+        border-top-right-radius: 10px;
     }
 </style>

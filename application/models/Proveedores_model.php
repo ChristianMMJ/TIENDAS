@@ -12,16 +12,10 @@ class Proveedores_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave, U.RazonSocial as 'Nombre' ", false);
-            $this->db->from('sz_proveedores AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.ID, U.Clave, U.RazonSocial as 'Nombre' ", false)
+                            ->from('sz_proveedores AS U')
+                            ->where_in('U.Estatus', 'ACTIVO')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -29,16 +23,9 @@ class Proveedores_model extends CI_Model {
 
     public function getProveedores() {
         try {
-            $this->db->select("U.ID, CONCAT(U.Clave,'-',U.RazonSocial) AS Nombre ", false);
-            $this->db->from('sz_proveedores AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.ID, CONCAT(U.Clave,'-',U.RazonSocial) AS Nombre ", false)
+                            ->from('sz_proveedores AS U')
+                            ->where_in('U.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,9 +44,7 @@ class Proveedores_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_proveedores", $DATA);
-//            print $str = $this->db->last_query();
+            $this->db->where('ID', $ID)->update("sz_proveedores", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -67,10 +52,7 @@ class Proveedores_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
-            $this->db->update("sz_proveedores");
-//            print $str = $this->db->last_query();
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("sz_proveedores");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -78,18 +60,11 @@ class Proveedores_model extends CI_Model {
 
     public function getProveedorByID($ID) {
         try {
-            $this->db->select('U.*', false);
-            $this->db->from('sz_proveedores AS U');
-            $this->db->where('U.ID', $ID);
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select('U.*', false)
+                    ->from('sz_proveedores AS U')
+                    ->where('U.ID', $ID)
+                    ->where_in('U.Estatus', 'ACTIVO')
+                    ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

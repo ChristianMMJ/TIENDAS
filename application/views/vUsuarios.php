@@ -23,7 +23,7 @@
             <div class="table-responsive" id="tblRegistros"></div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div id="Usuarios" class="table-responsive">
-                    <table id="tblUsuarios" class="table table-hover table-sm table-bordered  compact" style="width:100%">
+                    <table id="tblUsuarios" class="table table-hover table-sm compact" style="width:100%">
                         <thead>
                             <tr> 
                                 <th scope="col">ID</th>
@@ -247,6 +247,7 @@
         getTiendas();
         handleEnter();
     });
+    
     function getRecordsX() {
         Usuarios = tblUsuarios.DataTable({
             dom: 'Bfrtip',
@@ -440,3 +441,4 @@
         $('#Foto').val('N');
     }
 </script>
+ 

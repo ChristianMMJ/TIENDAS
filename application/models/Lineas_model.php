@@ -12,16 +12,10 @@ class Lineas_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("U.ID, U.Clave, U.Descripcion", false);
-            $this->db->from('sz_lineas AS U');
-            $this->db->where_in('U.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.ID, U.Clave, U.Descripcion", false)
+                    ->from('sz_lineas AS U')
+                    ->where_in('U.Estatus', 'ACTIVO')
+                    ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

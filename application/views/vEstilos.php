@@ -9,7 +9,20 @@
             </div>
         </div>
         <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div id="Estilos" class="table-responsive">
+                    <table id="tblEstilos" class="table table-hover table-sm  compact" style="width:100%">
+                        <thead>
+                            <tr> 
+                                <th scope="col">ID</th>
+                                <th scope="col">Estilo</th>
+                                <th scope="col">Linea</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -137,6 +150,7 @@
     var btnArchivo = $("#btnArchivo");
     var VistaPrevia = $("#VistaPrevia");
     var nuevo = true;
+    var Estilos, tblEstilos = pnlTablero.find("#tblEstilos");
     $(document).ready(function () {
         btnArchivo.on("click", function () {
             $('#Foto').attr("type", "file");
@@ -202,7 +216,7 @@
                         swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
                         nuevo = false;
-                        getRecords();
+                        Estilos.ajax.reload();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -231,7 +245,7 @@
         });
         /*CALLS*/
         handleEnter();
-        getRecords();
+        getRecordsX();
         getMarcas();
         getTiposEstilo();
         getTemporadas();
@@ -239,6 +253,127 @@
         getLineas();
         getSeries();
     });
+
+    function getRecordsX() {
+        HoldOn.open({
+            theme: 'sk-rect',
+            message: 'Cargando...'
+        });
+        Estilos = tblEstilos.DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel',
+                {
+                    exportOptions: {
+                        columns: ':visible',
+                        search: 'applied',
+                        order: 'applied'
+                    },
+                    className: 'selectNotEnter',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape', //portrait
+                    pageSize: 'letter', //A3 , A5 , A6 , legal , letter
+                    text: 'PDF',
+                    titleAttr: 'PDF'
+                }, 'print'
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "contentType": "application/json",
+                "dataSrc": "",
+                "data": function (d) {
+                    d.Empresa = pnlTablero.find("#EmpresaT").val();
+                }
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Estilo"},
+                {"data": "Linea"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            select: {
+                style: 'single'
+            },
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "500px",
+            "scrollX": true,
+            "aaSorting": [
+                [1, 'desc']/*ID*/
+            ],
+            "initComplete": function (settings, json) {
+                HoldOn.close();
+            }
+        });
+
+        tblEstilos.find('tbody').on('dblclick', 'tr', function () {
+            temp = Estilos.row($(this)).data().ID;
+            if (temp) {
+                nuevo = false;
+                HoldOn.open({
+                    theme: "sk-bounce",
+                    message: "CARGANDO DATOS..."
+                });
+                $.ajax({
+                    url: master_url + 'getEstiloByID',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        ID: temp
+                    }
+                }).done(function (data, x, jq) {
+                    var dtm = data[0];
+                    pnlDatos.find("input").val("");
+                    $.each(pnlDatos.find("select"), function (k, v) {
+                        pnlDatos.find("select")[k].selectize.clear(true);
+                    });
+                    $.each(data[0], function (k, v) {
+                        if (k !== 'Foto') {
+                            pnlDatos.find("[name='" + k + "']").val(v);
+                            if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            }
+                        }
+                    });
+                    /*COLOCAR FOTO*/
+                    if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
+                        var ext = getExt(dtm.Foto);
+                        if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div><div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="400px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                        }
+                        if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <div class="col-md-4"><button type="button" class="btn btn-default" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br></div><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                        }
+                        if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
+                            pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                        }
+                    } else {
+                        pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                    }
+                    /*FIN COLOCAR FOTO*/
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    $(':input:text:enabled:visible:first').focus();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
+            }
+        });
+    }
 
     function getRecords() {
         temp = 0;
@@ -469,3 +604,4 @@
         win.focus();
     }
 </script>
+ 
