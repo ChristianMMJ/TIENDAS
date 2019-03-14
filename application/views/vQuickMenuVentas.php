@@ -1,19 +1,25 @@
 <div class="col-12">
     <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
-        <!--REGISTRAR VENTA-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Ventas')">
-            <div class="card-body ">
-                <span class="fa fa-shopping-cart fa-2x mt-5"></span>  
+        <?php
+        if (in_array($this->session->Tipo, array('ADMINISTRADOR','VENDEDOR'))) {
+            ?>
+            <!--REGISTRAR VENTA-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Ventas')">
+                <div class="card-body ">
+                    <span class="fa fa-shopping-cart fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">REGISTRAR VENTA</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">REGISTRAR VENTA</div>
-        </div>
-        <!--DEVOLUCIONES-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Devoluciones')">
-            <div class="card-body ">
-                <span class="fa fa-undo-alt fa-2x mt-5"></span>  
+            <!--DEVOLUCIONES-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Devoluciones')">
+                <div class="card-body ">
+                    <span class="fa fa-undo-alt fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">DEVOLUCIONES</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">DEVOLUCIONES</div>
-        </div>
+            <?php
+        }
+        ?>
         <!--REPORTES-->
         <div class="card special-card m-3" onclick="onLoadMenuOption('ReportesVentas')">
             <div class="card-body ">

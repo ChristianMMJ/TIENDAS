@@ -12,7 +12,7 @@
             <?php
         }
 
-        if (in_array($this->session->Tipo, array("ADMINISTRADOR", "GERENTE", "CAJERO"))) {
+        if (in_array($this->session->Tipo, array("ADMINISTRADOR", "GERENTE", "CAJERO", "VENDEDOR"))) {
             ?>
             <div class="card special-card m-3" onclick="onLoadMenu(1)">
                 <div class="card-body ">

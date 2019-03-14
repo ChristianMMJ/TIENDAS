@@ -1,77 +1,83 @@
-<div class="col-12">
-    <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
-        <!--USUARIOS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Usuarios')">
-            <div class="card-body ">
-                <span class="fa fa-user-shield fa-2x mt-5"></span>  
+<?php
+if (in_array($this->session->Tipo, array('ADMINISTRADOR'))) {
+    ?>
+    <div class="col-12">
+        <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
+            <!--USUARIOS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Usuarios')">
+                <div class="card-body ">
+                    <span class="fa fa-user-shield fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">USUARIOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">USUARIOS</div>
-        </div>
-        <!--EMPRESAS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Empresas')">
-            <div class="card-body ">
-                <span class="fa fa-industry fa-2x mt-5"></span>  
+            <!--EMPRESAS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Empresas')">
+                <div class="card-body ">
+                    <span class="fa fa-industry fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">EMPRESAS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">EMPRESAS</div>
-        </div>
-        <!--TIENDAS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Tiendas')">
-            <div class="card-body ">
-                <span class="fa fa-store fa-2x mt-5"></span>  
+            <!--TIENDAS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Tiendas')">
+                <div class="card-body ">
+                    <span class="fa fa-store fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">TIENDAS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">TIENDAS</div>
-        </div>
-        <!--CLIENTES-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Clientes')">
-            <div class="card-body ">
-                <span class="fa fa-users fa-2x mt-5"></span>  
+            <!--CLIENTES-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Clientes')">
+                <div class="card-body ">
+                    <span class="fa fa-users fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">CLIENTES</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">CLIENTES</div>
-        </div>
-        <!--PROVEEDORES-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Proveedores')">
-            <div class="card-body ">
-                <span class="fa fa-truck fa-2x mt-5"></span>  
+            <!--PROVEEDORES-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Proveedores')">
+                <div class="card-body ">
+                    <span class="fa fa-truck fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">PROVEEDORES</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">PROVEEDORES</div>
-        </div>
-        <!--ESTILOS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Estilos')">
-            <div class="card-body ">
-                <span class="fa fa-paint-brush fa-2x mt-5"></span>  
+            <!--ESTILOS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Estilos')">
+                <div class="card-body ">
+                    <span class="fa fa-paint-brush fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">ESTILOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">ESTILOS</div>
-        </div>
-        <!--LINEAS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Lineas')">
-            <div class="card-body ">
-                <span class="fa fa-sliders-h fa-2x mt-5"></span>  
+            <!--LINEAS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Lineas')">
+                <div class="card-body ">
+                    <span class="fa fa-sliders-h fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">LINEAS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">LINEAS</div>
-        </div>
-        <!--COLORES-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Combinaciones')">
-            <div class="card-body ">
-                <span class="fa fa-palette fa-2x mt-5"></span>  
+            <!--COLORES-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Combinaciones')">
+                <div class="card-body ">
+                    <span class="fa fa-palette fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">COLORES</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">COLORES</div>
-        </div>
-        <!--SERIES-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Series')">
-            <div class="card-body ">
-                <span class="fa fa-ellipsis-h fa-2x mt-5"></span>  
+            <!--SERIES-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Series')">
+                <div class="card-body ">
+                    <span class="fa fa-ellipsis-h fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">SERIES</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">SERIES</div>
-        </div>
-        <!--DESCUENTOS-->
-        <div class="card special-card m-3" onclick="onLoadMenuOption('Descuentos')">
-            <div class="card-body ">
-                <span class="fa fa-wallet fa-2x mt-5"></span>  
+            <!--DESCUENTOS-->
+            <div class="card special-card m-3" onclick="onLoadMenuOption('Descuentos')">
+                <div class="card-body ">
+                    <span class="fa fa-wallet fa-2x mt-5"></span>  
+                </div>
+                <div class="card-footer special-card-footer bg-transparent">DESCUENTOS</div>
             </div>
-            <div class="card-footer special-card-footer bg-transparent">DESCUENTOS</div>
         </div>
     </div>
-</div>
+    <?php
+}
+?>
 <script>
     function onLoadMenuOption(e) {
         window.location.href = '<?php print base_url(); ?>/' + e;

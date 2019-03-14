@@ -24,47 +24,53 @@
 
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="Nomina" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-coins"></span>  Nomina
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?php print base_url('Semanas') ?>"><span class="fa fa-angle-right"></span> Semanas de nomina</a>
-                    <a class="dropdown-item" href="<?php print base_url('ConceptosNomina') ?>"><span class="fa fa-angle-right"></span> Conceptos de nomina</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Empleados') ?>"><span class="fa fa-angle-right"></span> Empleados</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Usuarios') ?>"> <span class="fa fa-user-shield"></span>  Usuarios</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Empresas') ?>"> <span class="fa fa-industry"></span>  Empresas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Tiendas') ?>"> <span class="fa fa-store"></span>  Tiendas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Clientes') ?>"> <span class="fa fa-users"></span>  Clientes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Proveedores') ?>"> <span class="fa fa-truck"></span>  Proveedores</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Estilos') ?>"> <span class="fa fa-paint-brush"></span>  Estilos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Lineas') ?>"> <span class="fa fa-sliders-h"></span>  Lineas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Combinaciones') ?>"> <span class="fa fa-palette"></span>  Colores</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Series') ?>"> <span class="fa fa-ellipsis-h"></span>  Series</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Descuentos') ?>"> <span class="fa fa-wallet"></span>  Descuentos</a>
-            </li>
+            <?php
+            if (in_array($this->session->Tipo, array('ADMINISTRADOR'))) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Nomina" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-coins"></span>  Nomina
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="<?php print base_url('Semanas') ?>"><span class="fa fa-angle-right"></span> Semanas de nomina</a>
+                        <a class="dropdown-item" href="<?php print base_url('ConceptosNomina') ?>"><span class="fa fa-angle-right"></span> Conceptos de nomina</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?php print base_url('Empleados') ?>"><span class="fa fa-angle-right"></span> Empleados</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Usuarios') ?>"> <span class="fa fa-user-shield"></span>  Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Empresas') ?>"> <span class="fa fa-industry"></span>  Empresas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Tiendas') ?>"> <span class="fa fa-store"></span>  Tiendas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Clientes') ?>"> <span class="fa fa-users"></span>  Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Proveedores') ?>"> <span class="fa fa-truck"></span>  Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Estilos') ?>"> <span class="fa fa-paint-brush"></span>  Estilos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Lineas') ?>"> <span class="fa fa-sliders-h"></span>  Lineas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Combinaciones') ?>"> <span class="fa fa-palette"></span>  Colores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Series') ?>"> <span class="fa fa-ellipsis-h"></span>  Series</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Descuentos') ?>"> <span class="fa fa-wallet"></span>  Descuentos</a>
+                </li>
+                <?php
+            }
+            ?>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">

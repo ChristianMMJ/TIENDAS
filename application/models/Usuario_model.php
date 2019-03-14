@@ -27,7 +27,7 @@ class Usuario_model extends CI_Model {
 
     public function getAcceso($USUARIO, $CONTRASENA) {
         try {
-            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa ', false)
+            $this->db->select('U.*,T.RazonSocial, E.ID AS EmpresaID, E.Foto AS FotoEmpresa,T.Clave AS CLAVE_TIENDA ', false)
                     ->from('sz_usuarios AS U')
                     ->join('sz_tiendas AS T', 'U.Tienda = T.ID', 'left')
                     ->join('sz_empresas AS E', 'T.Empresa = E.ID', 'left')

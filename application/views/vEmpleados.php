@@ -443,9 +443,9 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
+                            getRecords();
                             btnCancelar.trigger('click');
                         });
-                        getRecords();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {

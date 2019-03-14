@@ -5,12 +5,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Ventas') ?>"><span class="fa fa-shopping-cart"></span> Registrar venta<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php print base_url('Devoluciones') ?>"><span class="fa fa-undo-alt"></span> Devoluciones</a>
-            </li>
+            <?php
+            if (in_array($this->session->Tipo, array('ADMINISTRADOR','VENDEDOR'))) {
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Ventas') ?>"><span class="fa fa-shopping-cart"></span> Registrar venta<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php print base_url('Devoluciones') ?>"><span class="fa fa-undo-alt"></span> Devoluciones</a>
+                </li>
+                <?php
+            }
+            ?>
             <li class="nav-item">
                 <a class="nav-link" href="<?php print base_url('ReportesVentas') ?>"><span class="fa fa-file-pdf"></span> Reportes</a>
             </li>  

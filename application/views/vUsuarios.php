@@ -193,9 +193,8 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success').then((value) => {
-                            btnCancelar.trigger('click');
-                        });
+                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'success');
+                        btnCancelar.trigger('click');
                         Usuarios.ajax.reload();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -213,8 +212,8 @@
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO', 'success');
                         pnlDatos.find('#ID').val(data);
-                        Usuarios.ajax.reload();
                         btnCancelar.trigger('click');
+                        Usuarios.ajax.reload();
                         nuevo = false;
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);

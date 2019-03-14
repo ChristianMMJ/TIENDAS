@@ -34,6 +34,7 @@ class Login extends CI_Controller {
                     'USERNAME' => $r->Usuario,
                     'PASSWORD' => $r->Contrasena,
                     'TIENDA' => $r->Tienda,
+                    'CLAVE_TIENDA' => $r->CLAVE_TIENDA,
                     'TIENDA_NOMBRE' => $r->RazonSocial,
                     'EMPRESA' => $r->EmpresaID,
                     'EMPRESA_LOGO' => $r->FotoEmpresa,

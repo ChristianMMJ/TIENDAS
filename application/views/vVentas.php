@@ -86,7 +86,7 @@
             <!--ACCIONES-->
             <div class="row">
                 <div class="col-md-5 float-left">
-                    <span class="badge badge-primary" style="font-size:16px ;">VENTAS: <?php echo $this->session->userdata('TIENDA') . " " . $this->session->userdata('TIENDA_NOMBRE') ?></span>
+                    <span class="badge badge-primary" style="font-size:16px ;">VENTAS: <?php echo $this->session->userdata('CLAVE_TIENDA') . " " . $this->session->userdata('TIENDA_NOMBRE') ?></span>
                 </div>
                 <div class="col-md-2 text-center">
                     <span class="badge badge-danger d-none" id="lCancelada" style="font-size:16px ;">CANCELADA</span>
@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-12 col-md-1">
                             <label for="TipoDoc">RF*</label>
-                            <input type="text"  class="form-control form-control-sm " maxlength="1" id="TipoDoc" name="TipoDoc" required >
+                            <input type="text"  class="form-control form-control-sm " autofocus="" maxlength="1" id="TipoDoc" name="TipoDoc" required >
                         </div>
                         <div class="col-12 col-md-3">
                             <label for="Cliente">Cliente* (F9) Actualizar</label>
@@ -415,11 +415,11 @@
     var btnReloadClientes = pnlDatos.find("#btnReloadClientes");
 
     $(document).ready(function () {
-        
-        btnReloadClientes.click(function(){
+
+        btnReloadClientes.click(function () {
             getClientes();
         });
-        
+
         getEstilosExt();
         btnDevolucion.click(function () {
             location.href = base_url + 'Devoluciones';
@@ -573,7 +573,7 @@
                         HoldOn.close();
                     });
                 } else {
-                    swal('ATENCIÓN', 'ASEGURATE DE LLENAR EL TP','warning');
+                    swal('ATENCIÓN', 'ASEGURATE DE LLENAR EL TP', 'warning');
                 }
             }
         });
@@ -638,7 +638,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *','warning');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'warning');
             }
         });
         //Validaciones tallas
@@ -781,8 +781,13 @@
                     contentType: false,
                     processData: false,
                     data: f
-                }).done(function (data, x, jq) {
-                    swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO','success');
+                }).done(function (data, x, jq) { 
+                    swal({
+                        title: "ATENCIÓN!",
+                        text: "SE HA MODIFICADO UN NUEVO REGISTRO",
+                        type: "success",
+                        timer: 1500
+                    });
                     //Agregar renglon Detalle
                     if (AddCodigoBarras) {
                         onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
@@ -813,7 +818,12 @@
                     btnCancelarVenta.removeClass('d-none');
                     pnlDatos.find('#ID').val(Folios.ID);
                     pnlDatos.find('#FolioTienda').val(Folios.FolioTienda);
-                    swal('ATENCIÓN', 'SE HA AÑADIDO UN NUEVO REGISTRO','success');
+                    swal({
+                        title: "ATENCIÓN!",
+                        text: "SE HA AÑADIDO UN NUEVO REGISTRO",
+                        type: "success",
+                        timer: 1500
+                    });
                     //Agregar renglon Detalle
                     if (AddCodigoBarras) {
                         onAgregarFilaCB(IdMov, EstiloCB, ColorCB, TallaCB, PrecioCB);
@@ -935,6 +945,7 @@
                 swal("INFO", "LA VENTA NO EXISTE", 'warning');
             }
         });
+        pnlDatos.find("#TipoDoc").focus();
     });
     function onBusquedaManual() {
         getEstilos();
@@ -1035,7 +1046,7 @@
                 });
             }
         } else {
-            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO','warning');
+            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO', 'warning');
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
@@ -1116,7 +1127,7 @@
                 });
             }
         } else {
-            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO','warning');
+            swal('ATENCIÓN', 'DEBE DE ESTABLECER UN TIPO', 'warning');
             pnlDatos.find("input[name='TipoDoc']").focus();
         }
     }
@@ -1824,8 +1835,8 @@
 
     function getClientes() {
         HoldOn.open({
-            theme:'sk-rect',
-            message:'Espere...'
+            theme: 'sk-rect',
+            message: 'Espere...'
         });
         var Cliente = pnlDatos.find("[name='Cliente']")[0];
         Cliente.selectize.close();
@@ -1893,7 +1904,6 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Vendedor']")[0].selectize.addOption({text: v.Empleado, value: v.ID});
             });
-            pnlDatos.find("[name='Vendedor']")[0].selectize.open();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -2020,7 +2030,7 @@
                     getEncabezadoSerieXEstilo(cellEstilo);
                 });
             } else {
-                swal('ATENCIÓN', 'NO HAY EXISTENCIAS DE ESTE ESTILO','warning');
+                swal('ATENCIÓN', 'NO HAY EXISTENCIAS DE ESTE ESTILO', 'warning');
                 $("#tblRegistrosExistencias").html("");
             }
         }).fail(function (x, y, z) {
@@ -2073,7 +2083,7 @@
                     getEncabezadoSerieXEstilo(cellEstilo);
                 });
             } else {
-                swal('ATENCIÓN', 'NO HAY EXISTENCIAS DE ESTE ESTILO','warning');
+                swal('ATENCIÓN', 'NO HAY EXISTENCIAS DE ESTE ESTILO', 'warning');
                 pnlControlesDetalle.find("#tblRegistrosExistencias").html("");
             }
         }).fail(function (x, y, z) {
